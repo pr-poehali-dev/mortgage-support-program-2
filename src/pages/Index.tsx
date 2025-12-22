@@ -89,6 +89,183 @@ const faqItems = [
   }
 ];
 
+const documentsData = [
+  {
+    program: 'family',
+    name: 'Семейная ипотека',
+    icon: 'Users',
+    color: 'bg-blue-500',
+    requirements: [
+      {
+        category: 'Общие требования',
+        items: [
+          'Гражданство РФ',
+          'Возраст от 21 до 75 лет (на момент погашения)',
+          'Наличие детей, рождённых с 2018 года',
+          'Первоначальный взнос от 20%',
+          'Подтверждённый доход'
+        ]
+      },
+      {
+        category: 'Документы о заёмщике',
+        items: [
+          'Паспорт РФ',
+          'СНИЛС / ИНН',
+          'Справка о доходах (2-НДФЛ или по форме банка)',
+          'Трудовая книжка или трудовой договор',
+          'Свидетельство о браке (при наличии)',
+          'Свидетельства о рождении всех детей'
+        ]
+      },
+      {
+        category: 'Документы на недвижимость',
+        items: [
+          'Договор купли-продажи или долевого участия',
+          'Выписка из ЕГРН (не старее 30 дней)',
+          'Отчёт об оценке жилья',
+          'Документы на первоначальный взнос',
+          'Сертификат материнского капитала (при использовании)'
+        ]
+      }
+    ]
+  },
+  {
+    program: 'it',
+    name: 'IT-ипотека',
+    icon: 'Laptop',
+    color: 'bg-purple-500',
+    requirements: [
+      {
+        category: 'Общие требования',
+        items: [
+          'Гражданство РФ',
+          'Возраст от 21 до 75 лет',
+          'Работа в аккредитованной IT-компании',
+          'Стаж в IT-сфере от 3 месяцев',
+          'Первоначальный взнос от 20%'
+        ]
+      },
+      {
+        category: 'Документы о заёмщике',
+        items: [
+          'Паспорт РФ',
+          'СНИЛС',
+          'Справка о доходах 2-НДФЛ',
+          'Трудовой договор',
+          'Справка о занятости в IT-компании',
+          'Копия диплома (при наличии)'
+        ]
+      },
+      {
+        category: 'Документы от работодателя',
+        items: [
+          'Справка об аккредитации компании',
+          'Письмо о занятости в IT-компании',
+          'Выписка из реестра Минцифры'
+        ]
+      },
+      {
+        category: 'Документы на недвижимость',
+        items: [
+          'Договор купли-продажи',
+          'Выписка из ЕГРН',
+          'Отчёт об оценке',
+          'Документы на первоначальный взнос'
+        ]
+      }
+    ]
+  },
+  {
+    program: 'military',
+    name: 'Военная ипотека',
+    icon: 'Shield',
+    color: 'bg-green-500',
+    requirements: [
+      {
+        category: 'Общие требования',
+        items: [
+          'Гражданство РФ',
+          'Военнослужащий по контракту',
+          'Участие в НИС (накопительно-ипотечной системе)',
+          'Стаж в НИС от 3 лет (для участников СВО — сразу)',
+          'Первоначальный взнос от 20,1%'
+        ]
+      },
+      {
+        category: 'Документы о заёмщике',
+        items: [
+          'Паспорт РФ',
+          'Военный билет',
+          'Контракт о прохождении военной службы',
+          'Свидетельство участника НИС',
+          'Справка о накоплениях в НИС'
+        ]
+      },
+      {
+        category: 'Документы от воинской части',
+        items: [
+          'Рапорт на получение целевого жилищного займа',
+          'Справка о праве на использование НИС',
+          'Письмо от командования'
+        ]
+      },
+      {
+        category: 'Документы на недвижимость',
+        items: [
+          'Договор купли-продажи',
+          'Выписка из ЕГРН',
+          'Отчёт об оценке',
+          'Документы о целевом жилищном займе'
+        ]
+      }
+    ]
+  },
+  {
+    program: 'rural',
+    name: 'Сельская ипотека',
+    icon: 'Home',
+    color: 'bg-emerald-500',
+    requirements: [
+      {
+        category: 'Общие требования',
+        items: [
+          'Гражданство РФ',
+          'Возраст от 21 до 75 лет',
+          'Покупка жилья в населённом пункте до 30 тыс. человек',
+          'Первоначальный взнос от 20%',
+          'Подтверждённый доход'
+        ]
+      },
+      {
+        category: 'Документы о заёмщике',
+        items: [
+          'Паспорт РФ',
+          'СНИЛС',
+          'Справка о доходах 2-НДФЛ',
+          'Трудовая книжка или трудовой договор'
+        ]
+      },
+      {
+        category: 'Документы на недвижимость',
+        items: [
+          'Договор купли-продажи',
+          'Выписка из ЕГРН',
+          'Отчёт об оценке',
+          'Документы на первоначальный взнос',
+          'Справка о численности населения населённого пункта'
+        ]
+      },
+      {
+        category: 'Дополнительные документы',
+        items: [
+          'Документ, подтверждающий статус сельской местности',
+          'Справка из администрации населённого пункта'
+        ]
+      }
+    ]
+  }
+];
+
 const blogArticles = [
   {
     id: 1,
@@ -258,6 +435,7 @@ export default function Index() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<number | null>(null);
   const [blogCategory, setBlogCategory] = useState('all');
+  const [selectedDocProgram, setSelectedDocProgram] = useState('family');
 
   const quizQuestions = [
     {
@@ -553,6 +731,10 @@ export default function Index() {
             <TabsTrigger value="calculator" className="flex items-center gap-2 py-3">
               <Icon name="Calculator" size={18} />
               <span className="hidden sm:inline">Калькулятор</span>
+            </TabsTrigger>
+            <TabsTrigger value="documents" className="flex items-center gap-2 py-3">
+              <Icon name="FileText" size={18} />
+              <span className="hidden sm:inline">Документы</span>
             </TabsTrigger>
             <TabsTrigger value="faq" className="flex items-center gap-2 py-3">
               <Icon name="HelpCircle" size={18} />
@@ -876,6 +1058,142 @@ export default function Index() {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          <TabsContent value="documents" className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-3xl font-bold mb-2">Документы и требования</h2>
+              <p className="text-gray-600">Полный список необходимых документов для каждой программы</p>
+            </div>
+
+            <div className="grid md:grid-cols-4 gap-4 mb-8">
+              {documentsData.map((doc) => (
+                <Card
+                  key={doc.program}
+                  className={`cursor-pointer transition-all hover:shadow-lg ${
+                    selectedDocProgram === doc.program ? 'ring-2 ring-primary' : ''
+                  }`}
+                  onClick={() => setSelectedDocProgram(doc.program)}
+                >
+                  <CardContent className="p-6 text-center">
+                    <div className={`w-16 h-16 ${doc.color} rounded-lg flex items-center justify-center mx-auto mb-3`}>
+                      <Icon name={doc.icon} className="text-white" size={32} />
+                    </div>
+                    <p className="font-semibold text-sm">{doc.name}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {documentsData
+              .filter((doc) => doc.program === selectedDocProgram)
+              .map((doc) => (
+                <div key={doc.program} className="space-y-6">
+                  <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-2">
+                    <CardHeader>
+                      <div className="flex items-center gap-4">
+                        <div className={`w-16 h-16 ${doc.color} rounded-lg flex items-center justify-center`}>
+                          <Icon name={doc.icon} className="text-white" size={32} />
+                        </div>
+                        <div>
+                          <CardTitle className="text-2xl">{doc.name}</CardTitle>
+                          <CardDescription className="text-base mt-1">
+                            {programs.find(p => p.id === doc.program)?.description}
+                          </CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid md:grid-cols-3 gap-4 bg-white/80 p-4 rounded-lg">
+                        <div className="text-center">
+                          <p className="text-sm text-gray-600">Ставка</p>
+                          <p className="text-2xl font-bold text-primary">
+                            {programs.find(p => p.id === doc.program)?.rate}
+                          </p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-sm text-gray-600">Максимальная сумма</p>
+                          <p className="text-2xl font-bold">
+                            {programs.find(p => p.id === doc.program)?.maxAmount}
+                          </p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-sm text-gray-600">Срок</p>
+                          <p className="text-2xl font-bold">
+                            {programs.find(p => p.id === doc.program)?.term}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {doc.requirements.map((req, idx) => (
+                    <Card key={idx}>
+                      <CardHeader>
+                        <CardTitle className="text-xl flex items-center gap-2">
+                          <Icon name="CheckCircle2" className="text-primary" size={24} />
+                          {req.category}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <ul className="space-y-3">
+                          {req.items.map((item, itemIdx) => (
+                            <li key={itemIdx} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                              <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <Icon name="Check" className="text-primary" size={14} />
+                              </div>
+                              <span className="text-gray-700">{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
+                  ))}
+
+                  <Card className="bg-gradient-to-br from-green-50 to-blue-50 border-2 border-green-200">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Icon name="Info" className="text-green-600" size={24} />
+                        Важная информация
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <p className="text-gray-700">
+                        <strong>Все документы</strong> должны быть предоставлены в оригинале или нотариально заверенных копиях.
+                      </p>
+                      <p className="text-gray-700">
+                        <strong>Сроки действия:</strong> Справки и выписки действительны 30 дней с момента выдачи.
+                      </p>
+                      <p className="text-gray-700">
+                        <strong>Дополнительные документы</strong> могут потребоваться в зависимости от требований банка.
+                      </p>
+                      <div className="border-t border-green-200 pt-4 mt-4">
+                        <p className="font-semibold mb-3 flex items-center gap-2">
+                          <Icon name="Phone" className="text-primary" size={18} />
+                          Нужна помощь с документами?
+                        </p>
+                        <p className="text-gray-700 mb-4">
+                          Мы поможем подготовить все необходимые документы и проверим их корректность
+                        </p>
+                        <div className="flex gap-3">
+                          <Button asChild size="sm">
+                            <a href="tel:+79781281850">
+                              <Icon name="Phone" className="mr-2" size={16} />
+                              Позвонить
+                            </a>
+                          </Button>
+                          <Button variant="outline" size="sm" asChild>
+                            <a href="mailto:ipoteka_krym@mail.ru">
+                              <Icon name="Mail" className="mr-2" size={16} />
+                              Написать
+                            </a>
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
           </TabsContent>
 
           <TabsContent value="faq" className="space-y-6">
