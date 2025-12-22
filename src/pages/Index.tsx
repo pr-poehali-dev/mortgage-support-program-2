@@ -8,6 +8,7 @@ import FloatingApplicationButton from '@/components/FloatingApplicationButton';
 import StatisticsCounter from '@/components/StatisticsCounter';
 import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
+import TelegramButton from '@/components/TelegramButton';
 
 export default function Index() {
   const [activeTab, setActiveTab] = useState('programs');
@@ -111,6 +112,7 @@ export default function Index() {
 
       <StatisticsCounter />
       <FloatingApplicationButton />
+      <TelegramButton />
       <Toaster />
     </div>
   );
