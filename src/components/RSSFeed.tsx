@@ -14,6 +14,8 @@ export default function RSSFeed() {
   const [articles, setArticles] = useState<RSSItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [selectedSources, setSelectedSources] = useState<string[]>([]);
+  const [availableSources, setAvailableSources] = useState<string[]>([]);
 
   useEffect(() => {
     fetchRSSFeed();
@@ -34,6 +36,9 @@ export default function RSSFeed() {
       
       if (data.articles && Array.isArray(data.articles)) {
         setArticles(data.articles);
+        
+        const sources = Array.from(new Set(data.articles.map((a: RSSItem) => a.source)));
+        setAvailableSources(sources);
       } else {
         throw new Error('Invalid response format');
       }
@@ -60,6 +65,22 @@ export default function RSSFeed() {
     
     return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
   };
+
+  const toggleSource = (source: string) => {
+    setSelectedSources(prev => 
+      prev.includes(source) 
+        ? prev.filter(s => s !== source)
+        : [...prev, source]
+    );
+  };
+
+  const clearFilters = () => {
+    setSelectedSources([]);
+  };
+
+  const filteredArticles = selectedSources.length > 0
+    ? articles.filter(article => selectedSources.includes(article.source))
+    : articles;
 
   if (loading) {
     return (
@@ -97,7 +118,7 @@ export default function RSSFeed() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2">
           <Icon name="Newspaper" size={32} className="text-blue-600" />
           Новости ипотеки
@@ -111,8 +132,52 @@ export default function RSSFeed() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {articles.map((article, index) => (
+      {availableSources.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-sm font-semibold text-gray-700 flex items-center gap-1">
+            <Icon name="Filter" size={16} />
+            Источники:
+          </span>
+          <button
+            onClick={clearFilters}
+            className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors ${
+              selectedSources.length === 0
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            Все ({articles.length})
+          </button>
+          {availableSources.map(source => (
+            <button
+              key={source}
+              onClick={() => toggleSource(source)}
+              className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors ${
+                selectedSources.includes(source)
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              {source} ({articles.filter(a => a.source === source).length})
+            </button>
+          ))}
+        </div>
+      )}
+
+      {filteredArticles.length === 0 ? (
+        <Card className="p-8 text-center">
+          <Icon name="Search" size={48} className="text-gray-300 mx-auto mb-4" />
+          <p className="text-gray-600">Нет новостей от выбранных источников</p>
+          <button
+            onClick={clearFilters}
+            className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Сбросить фильтры
+          </button>
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredArticles.map((article, index) => (
           <a
             key={index}
             href={article.link}
@@ -142,8 +207,9 @@ export default function RSSFeed() {
               </div>
             </Card>
           </a>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       <Card className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 text-center border-2 border-blue-100">
         <p className="text-gray-700">
