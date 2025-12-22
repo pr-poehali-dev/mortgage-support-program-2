@@ -949,117 +949,159 @@ export default function Index() {
           </TabsContent>
 
           <TabsContent value="calculator" className="space-y-4 sm:space-y-6">
-            <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-2xl">Калькулятор ипотеки</CardTitle>
-                  <CardDescription>Рассчитайте ежемесячный платёж</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="program">Программа</Label>
-                    <select
-                      id="program"
-                      value={selectedProgramCalc}
-                      onChange={(e) => setSelectedProgramCalc(e.target.value)}
-                      className="w-full p-3 border rounded-lg bg-white"
-                    >
-                      {programs.map((program) => (
-                        <option key={program.id} value={program.id}>
-                          {program.name} ({program.rate})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+            <Card className="max-w-5xl mx-auto">
+              <CardHeader className="border-b">
+                <CardTitle className="text-3xl">Ипотечный калькулятор</CardTitle>
+                <CardDescription className="text-base">Рассчитайте ваш ежемесячный платёж по ипотеке</CardDescription>
+              </CardHeader>
+              <CardContent className="p-6 sm:p-8 space-y-8">
+                <div className="space-y-2">
+                  <Label htmlFor="program" className="text-base font-semibold">Программа ипотеки</Label>
+                  <select
+                    id="program"
+                    value={selectedProgramCalc}
+                    onChange={(e) => setSelectedProgramCalc(e.target.value)}
+                    className="w-full p-4 border-2 rounded-xl bg-white text-lg font-medium hover:border-primary focus:border-primary transition-colors"
+                  >
+                    {programs.map((program) => (
+                      <option key={program.id} value={program.id}>
+                        {program.name} — {program.rate}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-                  <div className="space-y-2">
-                    <Label>Стоимость жилья: {calcAmount[0].toLocaleString('ru-RU')} ₽</Label>
+                <div className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-base font-semibold">Стоимость недвижимости</Label>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="number"
+                          value={calcAmount[0]}
+                          onChange={(e) => setCalcAmount([Number(e.target.value)])}
+                          className="w-40 text-right text-lg font-bold border-2"
+                        />
+                        <span className="text-lg font-medium text-gray-600">₽</span>
+                      </div>
+                    </div>
                     <Slider
                       value={calcAmount}
                       onValueChange={setCalcAmount}
                       min={1000000}
                       max={15000000}
                       step={100000}
-                      className="py-4"
+                      className="py-2"
                     />
-                    <div className="flex justify-between text-xs text-gray-500">
+                    <div className="flex justify-between text-sm text-gray-500">
                       <span>1 млн ₽</span>
                       <span>15 млн ₽</span>
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label>Первоначальный взнос: {calcDownPayment[0]}%</Label>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-base font-semibold">Первоначальный взнос</Label>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="number"
+                          value={calc.downPayment}
+                          onChange={(e) => {
+                            const value = Number(e.target.value);
+                            const percent = Math.round((value / calcAmount[0]) * 100);
+                            setCalcDownPayment([Math.min(Math.max(percent, 10), 90)]);
+                          }}
+                          className="w-40 text-right text-lg font-bold border-2"
+                        />
+                        <span className="text-lg font-medium text-gray-600">₽</span>
+                      </div>
+                    </div>
                     <Slider
                       value={calcDownPayment}
                       onValueChange={setCalcDownPayment}
                       min={10}
-                      max={50}
+                      max={90}
                       step={5}
-                      className="py-4"
+                      className="py-2"
                     />
-                    <div className="flex justify-between text-xs text-gray-500">
-                      <span>10%</span>
-                      <span>50%</span>
+                    <div className="flex justify-between text-sm text-gray-500">
+                      <span>10% ({Math.round(calcAmount[0] * 0.1).toLocaleString('ru-RU')} ₽)</span>
+                      <span className="text-center font-medium text-primary text-base">{calcDownPayment[0]}%</span>
+                      <span>90% ({Math.round(calcAmount[0] * 0.9).toLocaleString('ru-RU')} ₽)</span>
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label>Срок кредита: {calcTerm[0]} лет</Label>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-base font-semibold">Срок кредита</Label>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="number"
+                          value={calcTerm[0]}
+                          onChange={(e) => setCalcTerm([Number(e.target.value)])}
+                          className="w-24 text-right text-lg font-bold border-2"
+                          min={1}
+                          max={30}
+                        />
+                        <span className="text-lg font-medium text-gray-600">лет</span>
+                      </div>
+                    </div>
                     <Slider
                       value={calcTerm}
                       onValueChange={setCalcTerm}
-                      min={5}
+                      min={1}
                       max={30}
                       step={1}
-                      className="py-4"
+                      className="py-2"
                     />
-                    <div className="flex justify-between text-xs text-gray-500">
-                      <span>5 лет</span>
+                    <div className="flex justify-between text-sm text-gray-500">
+                      <span>1 год</span>
                       <span>30 лет</span>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
 
-              <Card className="bg-gradient-to-br from-blue-500 to-purple-600 text-white">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-white">Результат расчёта</CardTitle>
-                  <CardDescription className="text-blue-100">
-                    {programs.find(p => p.id === selectedProgramCalc)?.name}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
-                    <p className="text-blue-100 mb-2">Ежемесячный платёж</p>
-                    <p className="text-5xl font-bold">{calc.monthly.toLocaleString('ru-RU')} ₽</p>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                      <p className="text-blue-100 text-sm mb-1">Сумма кредита</p>
-                      <p className="text-2xl font-bold">{calc.loanAmount.toLocaleString('ru-RU')} ₽</p>
+                <div className="border-t-2 pt-8 mt-8">
+                  <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 sm:p-8 space-y-6">
+                    <div className="text-center">
+                      <p className="text-gray-600 mb-2 text-lg">Ежемесячный платёж</p>
+                      <p className="text-5xl sm:text-6xl font-bold text-primary mb-1">{calc.monthly.toLocaleString('ru-RU')} ₽</p>
+                      <p className="text-sm text-gray-500">на {calcTerm[0]} {calcTerm[0] === 1 ? 'год' : calcTerm[0] < 5 ? 'года' : 'лет'}</p>
                     </div>
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                      <p className="text-blue-100 text-sm mb-1">Первый взнос</p>
-                      <p className="text-2xl font-bold">{calc.downPayment.toLocaleString('ru-RU')} ₽</p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                        <p className="text-sm text-gray-600 mb-1">Сумма кредита</p>
+                        <p className="text-2xl font-bold text-gray-900">{calc.loanAmount.toLocaleString('ru-RU')} ₽</p>
+                      </div>
+                      <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                        <p className="text-sm text-gray-600 mb-1">Первый взнос</p>
+                        <p className="text-2xl font-bold text-gray-900">{calc.downPayment.toLocaleString('ru-RU')} ₽</p>
+                      </div>
+                      <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                        <p className="text-sm text-gray-600 mb-1">Переплата</p>
+                        <p className="text-2xl font-bold text-orange-600">{(calc.total - calc.loanAmount).toLocaleString('ru-RU')} ₽</p>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                    <p className="text-blue-100 text-sm mb-1">Переплата за {calcTerm[0]} лет</p>
-                    <p className="text-2xl font-bold">
-                      {(calc.total - calc.loanAmount).toLocaleString('ru-RU')} ₽
-                    </p>
-                  </div>
+                    <div className="bg-white rounded-xl p-4 shadow-sm">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-600">Процентная ставка</span>
+                        <span className="text-xl font-bold text-primary">{programs.find(p => p.id === selectedProgramCalc)?.rate}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium text-gray-600">Общая сумма выплат</span>
+                        <span className="text-xl font-bold text-gray-900">{calc.total.toLocaleString('ru-RU')} ₽</span>
+                      </div>
+                    </div>
 
-                  <Dialog open={showApplicationForm} onOpenChange={setShowApplicationForm}>
-                    <DialogTrigger asChild>
-                      <Button variant="secondary" className="w-full" size="lg">
-                        <Icon name="Send" className="mr-2" />
-                        Отправить заявку
-                      </Button>
-                    </DialogTrigger>
+                    <Dialog open={showApplicationForm} onOpenChange={setShowApplicationForm}>
+                      <DialogTrigger asChild>
+                        <Button className="w-full" size="lg">
+                          <Icon name="Send" className="mr-2" />
+                          Отправить заявку на ипотеку
+                        </Button>
+                      </DialogTrigger>
                     <DialogContent className="max-w-md">
                       <DialogHeader>
                         <DialogTitle>Заявка на ипотеку</DialogTitle>
@@ -1144,11 +1186,12 @@ export default function Index() {
                           Нажимая кнопку, вы соглашаетесь на обработку персональных данных
                         </p>
                       </div>
-                    </DialogContent>
-                  </Dialog>
-                </CardContent>
-              </Card>
-            </div>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="documents" className="space-y-4 sm:space-y-6">
