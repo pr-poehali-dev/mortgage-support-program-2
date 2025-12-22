@@ -1,0 +1,207 @@
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { TabsContent } from '@/components/ui/tabs';
+import Icon from '@/components/ui/icon';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { faqItems } from '@/data/mortgageData';
+
+export default function ContactAndFaqTabs() {
+  return (
+    <>
+      <TabsContent value="faq" className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">Часто задаваемые вопросы</CardTitle>
+            <CardDescription>Ответы на популярные вопросы об ипотеке</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Accordion type="single" collapsible className="w-full">
+              {faqItems.map((item, index) => (
+                <AccordionItem key={index} value={`item-${index}`}>
+                  <AccordionTrigger className="text-left text-lg font-semibold">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-700 text-base leading-relaxed">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="contact" className="space-y-4 sm:space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl">Свяжитесь с нами</CardTitle>
+              <CardDescription>Получите бесплатную консультацию по ипотеке</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
+                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+                    <Icon name="User" className="text-white" size={24} />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">Николаев Дмитрий Юрьевич</p>
+                    <p className="text-sm text-gray-600">Специалист по ипотеке</p>
+                  </div>
+                </div>
+
+                <a
+                  href="tel:+79781281850"
+                  className="flex items-center gap-4 p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors group"
+                >
+                  <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Icon name="Phone" className="text-white" size={24} />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Телефон</p>
+                    <p className="font-semibold text-xl text-gray-900">+7 978 128-18-50</p>
+                  </div>
+                </a>
+
+                <a
+                  href="mailto:ipoteka_krym@mail.ru"
+                  className="flex items-center gap-4 p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors group"
+                >
+                  <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Icon name="Mail" className="text-white" size={24} />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Email</p>
+                    <p className="font-semibold text-gray-900">ipoteka_krym@mail.ru</p>
+                  </div>
+                </a>
+
+                <a
+                  href="https://agencies.domclick.ru/agent/5621837?utm_source=partnerhub&utm_content=profile"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors group"
+                >
+                  <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Icon name="ExternalLink" className="text-white" size={24} />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Профиль на Домклик</p>
+                    <p className="font-semibold text-gray-900">Посмотреть профиль</p>
+                  </div>
+                </a>
+
+                <a
+                  href="https://t.me/ipoteka_krym_rf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 p-4 bg-sky-50 rounded-lg hover:bg-sky-100 transition-colors group"
+                >
+                  <div className="w-12 h-12 bg-sky-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Icon name="MessageCircle" className="text-white" size={24} />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Telegram</p>
+                    <p className="font-semibold text-gray-900">Написать в мессенджер</p>
+                  </div>
+                </a>
+              </div>
+
+              <div className="border-t pt-6">
+                <h4 className="font-semibold mb-3">Наши услуги:</h4>
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2">
+                    <Icon name="CheckCircle2" className="text-green-600 flex-shrink-0 mt-1" size={18} />
+                    <span>Подбор оптимальной ипотечной программы</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Icon name="CheckCircle2" className="text-green-600 flex-shrink-0 mt-1" size={18} />
+                    <span>Помощь в сборе и оформлении документов</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Icon name="CheckCircle2" className="text-green-600 flex-shrink-0 mt-1" size={18} />
+                    <span>Полное сопровождение сделки</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Icon name="CheckCircle2" className="text-green-600 flex-shrink-0 mt-1" size={18} />
+                    <span>Консультации по всем вопросам ипотеки</span>
+                  </li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-blue-600 to-purple-600 text-white">
+            <CardHeader>
+              <CardTitle className="text-2xl text-white">Преимущества работы с нами</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-4">
+                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Icon name="BadgeCheck" className="text-white" size={24} />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-lg mb-1">Экспертность</h4>
+                  <p className="text-blue-100">Глубокие знания всех ипотечных программ и актуальных условий</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Icon name="Clock" className="text-white" size={24} />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-lg mb-1">Экономия времени</h4>
+                  <p className="text-blue-100">Берём на себя всю рутинную работу с документами и банками</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Icon name="Shield" className="text-white" size={24} />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-lg mb-1">Надёжность</h4>
+                  <p className="text-blue-100">Гарантируем юридическую чистоту сделки</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Icon name="TrendingDown" className="text-white" size={24} />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-lg mb-1">Лучшие условия</h4>
+                  <p className="text-blue-100">Помогаем получить максимально выгодные условия кредитования</p>
+                </div>
+              </div>
+
+              <div className="border-t border-white/20 pt-6 mt-6 space-y-3">
+                <Button variant="secondary" className="w-full" size="lg" asChild>
+                  <a href="https://t.me/ipoteka_krym_rf" target="_blank" rel="noopener noreferrer">
+                    <Icon name="MessageCircle" className="mr-2" />
+                    Получить консультацию в Telegram
+                  </a>
+                </Button>
+                <div className="grid grid-cols-2 gap-3">
+                  <Button variant="outline" className="w-full bg-white/10 hover:bg-white/20 border-white/30 text-white" asChild>
+                    <a href="https://agencies.domclick.ru/agent/5621837?utm_source=partnerhub&utm_content=profile" target="_blank" rel="noopener noreferrer">
+                      <Icon name="ExternalLink" className="mr-2" size={18} />
+                      Домклик
+                    </a>
+                  </Button>
+                  <Button variant="outline" className="w-full bg-white/10 hover:bg-white/20 border-white/30 text-white" asChild>
+                    <a href="tel:+79781281850">
+                      <Icon name="Phone" className="mr-2" size={18} />
+                      Позвонить
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </TabsContent>
+    </>
+  );
+}
