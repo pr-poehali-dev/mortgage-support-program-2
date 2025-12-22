@@ -5,36 +5,54 @@ import RSSFeed from '@/components/RSSFeed';
 export default function HomeTab() {
   return (
     <div className="space-y-8">
-      {/* Hero секция */}
+      {/* Hero секция с видео */}
       <div className="relative bg-gradient-to-r from-blue-600 via-blue-500 to-purple-600 rounded-3xl overflow-hidden shadow-2xl">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-30"></div>
         
         <div className="relative px-6 sm:px-12 py-12 sm:py-16">
-          <div className="max-w-3xl">
-            <h1 className="text-3xl sm:text-5xl font-bold text-white mb-4 sm:mb-6">
-              Ипотека в Крыму от 0.1% годовых
-            </h1>
-            <p className="text-lg sm:text-xl text-blue-50 mb-6 sm:mb-8">
-              Профессиональная помощь в получении ипотеки. Работаю со всеми программами господдержки 2025-2026
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href="https://t.me/ipoteka_krym_rf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-colors shadow-lg"
-              >
-                <Icon name="Send" size={20} />
-                Получить консультацию
-              </a>
-              <a
-                href="tel:+79781281850"
-                className="inline-flex items-center justify-center gap-2 bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-800 transition-colors"
-              >
-                <Icon name="Phone" size={20} />
-                +7 978 128-18-50
-              </a>
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            <div>
+              <h1 className="text-3xl sm:text-5xl font-bold text-white mb-4 sm:mb-6">
+                Ипотека в Крыму от 0.1% годовых
+              </h1>
+              <p className="text-lg sm:text-xl text-blue-50 mb-6 sm:mb-8">
+                Профессиональная помощь в получении ипотеки. Работаю со всеми программами господдержки 2025-2026
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href="https://t.me/ipoteka_krym_rf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-colors shadow-lg"
+                >
+                  <Icon name="Send" size={20} />
+                  Получить консультацию
+                </a>
+                <a
+                  href="tel:+79781281850"
+                  className="inline-flex items-center justify-center gap-2 bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-800 transition-colors"
+                >
+                  <Icon name="Phone" size={20} />
+                  +7 978 128-18-50
+                </a>
+              </div>
+            </div>
+
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-white/10 backdrop-blur-sm">
+              <div className="aspect-video">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                  title="Видео об ипотеке"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="rounded-xl"
+                ></iframe>
+              </div>
+              <div className="absolute inset-0 pointer-events-none border-2 border-white/20 rounded-xl"></div>
             </div>
           </div>
         </div>
