@@ -1,5 +1,6 @@
 import Icon from '@/components/ui/icon';
 import { Card } from '@/components/ui/card';
+import RSSFeed from '@/components/RSSFeed';
 
 export default function HomeTab() {
   return (
@@ -169,6 +170,9 @@ export default function HomeTab() {
           </div>
         </div>
       </div>
+
+      {/* RSS Лента новостей */}
+      <RSSFeed />
 
       {/* CTA */}
       <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8 text-center">
