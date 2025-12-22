@@ -11,6 +11,9 @@ interface RSSItem {
 }
 
 const STORAGE_KEY = 'rss-feed-selected-sources';
+const SORT_KEY = 'rss-feed-sort-order';
+
+type SortOrder = 'newest' | 'oldest' | 'source';
 
 export default function RSSFeed() {
   const [articles, setArticles] = useState<RSSItem[]>([]);
@@ -21,6 +24,10 @@ export default function RSSFeed() {
     return saved ? JSON.parse(saved) : [];
   });
   const [availableSources, setAvailableSources] = useState<string[]>([]);
+  const [sortOrder, setSortOrder] = useState<SortOrder>(() => {
+    const saved = localStorage.getItem(SORT_KEY);
+    return (saved as SortOrder) || 'newest';
+  });
 
   useEffect(() => {
     fetchRSSFeed();
@@ -29,6 +36,10 @@ export default function RSSFeed() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedSources));
   }, [selectedSources]);
+
+  useEffect(() => {
+    localStorage.setItem(SORT_KEY, sortOrder);
+  }, [sortOrder]);
 
   const fetchRSSFeed = async () => {
     try {
@@ -91,6 +102,19 @@ export default function RSSFeed() {
     ? articles.filter(article => selectedSources.includes(article.source))
     : articles;
 
+  const sortedArticles = [...filteredArticles].sort((a, b) => {
+    if (sortOrder === 'newest') {
+      return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
+    }
+    if (sortOrder === 'oldest') {
+      return new Date(a.pubDate).getTime() - new Date(b.pubDate).getTime();
+    }
+    if (sortOrder === 'source') {
+      return a.source.localeCompare(b.source);
+    }
+    return 0;
+  });
+
   if (loading) {
     return (
       <div className="space-y-4">
@@ -141,12 +165,13 @@ export default function RSSFeed() {
         </button>
       </div>
 
-      {availableSources.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-semibold text-gray-700 flex items-center gap-1">
-            <Icon name="Filter" size={16} />
-            Источники:
-          </span>
+      <div className="flex flex-col sm:flex-row gap-4">
+        {availableSources.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm font-semibold text-gray-700 flex items-center gap-1">
+              <Icon name="Filter" size={16} />
+              Источники:
+            </span>
           <button
             onClick={clearFilters}
             className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors ${
@@ -170,8 +195,46 @@ export default function RSSFeed() {
               {source} ({articles.filter(a => a.source === source).length})
             </button>
           ))}
+          </div>
+        )}
+
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-sm font-semibold text-gray-700 flex items-center gap-1">
+            <Icon name="ArrowUpDown" size={16} />
+            Сортировка:
+          </span>
+          <button
+            onClick={() => setSortOrder('newest')}
+            className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors ${
+              sortOrder === 'newest'
+                ? 'bg-purple-600 text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            Новые первые
+          </button>
+          <button
+            onClick={() => setSortOrder('oldest')}
+            className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors ${
+              sortOrder === 'oldest'
+                ? 'bg-purple-600 text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            Старые первые
+          </button>
+          <button
+            onClick={() => setSortOrder('source')}
+            className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors ${
+              sortOrder === 'source'
+                ? 'bg-purple-600 text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            По источнику
+          </button>
         </div>
-      )}
+      </div>
 
       {filteredArticles.length === 0 ? (
         <Card className="p-8 text-center">
@@ -186,7 +249,7 @@ export default function RSSFeed() {
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredArticles.map((article, index) => (
+          {sortedArticles.map((article, index) => (
           <a
             key={index}
             href={article.link}
