@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
+import { jsPDF } from 'jspdf';
 
 const programs = [
   {
@@ -513,6 +514,93 @@ export default function Index() {
   };
 
   const calc = calculateMonthlyPayment();
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    const selectedDoc = documentsData.find(d => d.program === selectedDocProgram);
+    const selectedProgram = programs.find(p => p.id === selectedDocProgram);
+    
+    if (!selectedDoc || !selectedProgram) return;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.text('Чек-лист документов для ипотеки', 105, 20, { align: 'center' });
+    
+    doc.setFontSize(16);
+    doc.text(selectedDoc.name, 105, 35, { align: 'center' });
+    
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Ставка: ${selectedProgram.rate} | Сумма: ${selectedProgram.maxAmount} | Срок: ${selectedProgram.term}`, 105, 45, { align: 'center' });
+    
+    let yPos = 60;
+    
+    selectedDoc.requirements.forEach((req) => {
+      if (yPos > 270) {
+        doc.addPage();
+        yPos = 20;
+      }
+      
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.text(req.category, 20, yPos);
+      yPos += 8;
+      
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      
+      req.items.forEach((item) => {
+        if (yPos > 270) {
+          doc.addPage();
+          yPos = 20;
+        }
+        
+        const lines = doc.splitTextToSize(`• ${item}`, 170);
+        doc.text(lines, 25, yPos);
+        yPos += lines.length * 6;
+      });
+      
+      yPos += 5;
+    });
+    
+    if (yPos > 240) {
+      doc.addPage();
+      yPos = 20;
+    }
+    
+    yPos += 10;
+    doc.setFillColor(240, 248, 255);
+    doc.rect(15, yPos - 5, 180, 35, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text('Важная информация:', 20, yPos);
+    yPos += 7;
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.text('• Все документы должны быть в оригинале или нотариально заверены', 20, yPos);
+    yPos += 6;
+    doc.text('• Справки и выписки действительны 30 дней с момента выдачи', 20, yPos);
+    yPos += 6;
+    doc.text('• Дополнительные документы могут потребоваться банком', 20, yPos);
+    yPos += 10;
+    
+    doc.setFont('helvetica', 'bold');
+    doc.text('Контакты для консультации:', 20, yPos);
+    yPos += 6;
+    doc.setFont('helvetica', 'normal');
+    doc.text('Телефон: +7 978 128-18-50', 20, yPos);
+    yPos += 5;
+    doc.text('Email: ipoteka_krym@mail.ru', 20, yPos);
+    
+    doc.save(`Чек-лист_${selectedDoc.name.replace(/ /g, '_')}.pdf`);
+    
+    toast({
+      title: 'PDF скачан!',
+      description: 'Чек-лист документов сохранен на ваше устройство',
+      className: 'bg-green-50 border-green-200'
+    });
+  };
 
   const handleSubmitApplication = async () => {
     if (!formData.name || !formData.phone || !formData.email) {
@@ -1152,10 +1240,16 @@ export default function Index() {
 
                   <Card className="bg-gradient-to-br from-green-50 to-blue-50 border-2 border-green-200">
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Icon name="Info" className="text-green-600" size={24} />
-                        Важная информация
-                      </CardTitle>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="flex items-center gap-2">
+                          <Icon name="Info" className="text-green-600" size={24} />
+                          Важная информация
+                        </CardTitle>
+                        <Button onClick={generatePDF} size="sm" variant="outline">
+                          <Icon name="Download" className="mr-2" size={16} />
+                          Скачать PDF
+                        </Button>
+                      </div>
                     </CardHeader>
                     <CardContent className="space-y-3">
                       <p className="text-gray-700">
