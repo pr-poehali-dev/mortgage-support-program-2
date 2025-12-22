@@ -1272,7 +1272,7 @@ export default function Index() {
                         <p className="text-gray-700 mb-4">
                           Мы поможем подготовить все необходимые документы и проверим их корректность
                         </p>
-                        <div className="flex gap-3">
+                        <div className="flex flex-wrap gap-2">
                           <Button asChild size="sm">
                             <a href="tel:+79781281850">
                               <Icon name="Phone" className="mr-2" size={16} />
@@ -1283,6 +1283,12 @@ export default function Index() {
                             <a href="mailto:ipoteka_krym@mail.ru">
                               <Icon name="Mail" className="mr-2" size={16} />
                               Написать
+                            </a>
+                          </Button>
+                          <Button variant="outline" size="sm" asChild>
+                            <a href="https://agencies.domclick.ru/agent/5621837?utm_source=partnerhub&utm_content=profile" target="_blank" rel="noopener noreferrer">
+                              <Icon name="ExternalLink" className="mr-2" size={16} />
+                              Домклик
                             </a>
                           </Button>
                         </div>
@@ -1428,17 +1434,23 @@ export default function Index() {
                               Нужна консультация?
                             </h4>
                             <p className="text-gray-700 mb-4">Свяжитесь с нашим экспертом для получения персональной консультации</p>
-                            <div className="flex gap-3">
-                              <Button asChild>
+                            <div className="flex flex-wrap gap-2">
+                              <Button asChild size="sm">
                                 <a href="tel:+79781281850">
                                   <Icon name="Phone" className="mr-2" size={16} />
                                   Позвонить
                                 </a>
                               </Button>
-                              <Button variant="outline" asChild>
+                              <Button variant="outline" size="sm" asChild>
                                 <a href="mailto:ipoteka_krym@mail.ru">
                                   <Icon name="Mail" className="mr-2" size={16} />
                                   Написать
+                                </a>
+                              </Button>
+                              <Button variant="outline" size="sm" asChild>
+                                <a href="https://agencies.domclick.ru/agent/5621837?utm_source=partnerhub&utm_content=profile" target="_blank" rel="noopener noreferrer">
+                                  <Icon name="ExternalLink" className="mr-2" size={16} />
+                                  Домклик
                                 </a>
                               </Button>
                             </div>
@@ -1494,6 +1506,21 @@ export default function Index() {
                       <div>
                         <p className="text-sm text-gray-600">Email</p>
                         <p className="font-semibold text-gray-900">ipoteka_krym@mail.ru</p>
+                      </div>
+                    </a>
+
+                    <a
+                      href="https://agencies.domclick.ru/agent/5621837?utm_source=partnerhub&utm_content=profile"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-4 p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors group"
+                    >
+                      <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Icon name="ExternalLink" className="text-white" size={24} />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Профиль на Домклик</p>
+                        <p className="font-semibold text-gray-900">Посмотреть профиль</p>
                       </div>
                     </a>
                   </div>
@@ -1567,10 +1594,18 @@ export default function Index() {
                     </div>
                   </div>
 
-                  <div className="border-t border-white/20 pt-6 mt-6">
-                    <Button variant="secondary" className="w-full" size="lg">
-                      <Icon name="MessageCircle" className="mr-2" />
-                      Получить консультацию
+                  <div className="border-t border-white/20 pt-6 mt-6 space-y-3">
+                    <Button variant="secondary" className="w-full" size="lg" asChild>
+                      <a href="https://agencies.domclick.ru/agent/5621837?utm_source=partnerhub&utm_content=profile" target="_blank" rel="noopener noreferrer">
+                        <Icon name="ExternalLink" className="mr-2" />
+                        Мой профиль на Домклик
+                      </a>
+                    </Button>
+                    <Button variant="secondary" className="w-full" size="lg" asChild>
+                      <a href="tel:+79781281850">
+                        <Icon name="Phone" className="mr-2" />
+                        Позвонить
+                      </a>
                     </Button>
                   </div>
                 </CardContent>
