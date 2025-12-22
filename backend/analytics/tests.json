@@ -1,0 +1,29 @@
+{
+  "tests": [
+    {
+      "name": "Test unauthorized access",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 401
+    },
+    {
+      "name": "Test authorized GET with password",
+      "method": "GET",
+      "path": "/?days=7",
+      "headers": {
+        "X-Admin-Password": "admin123"
+      },
+      "expectedStatus": 200
+    },
+    {
+      "name": "Test track event without auth",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "event_type": "page_view",
+        "source": "direct"
+      },
+      "expectedStatus": 401
+    }
+  ]
+}

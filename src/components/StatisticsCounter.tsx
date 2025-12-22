@@ -10,9 +10,25 @@ export default function StatisticsCounter() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Track page view
+    // Track page view with referrer source
     const trackPageView = async () => {
       try {
+        const source = document.referrer 
+          ? new URL(document.referrer).hostname 
+          : 'direct';
+        
+        await fetch('https://functions.poehali.dev/66427508-92e1-41bc-837c-dfc3f217d6c3', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            event_type: 'page_view',
+            source: source 
+          })
+        });
+
+        // Also update old counter for backward compatibility
         await fetch('https://functions.poehali.dev/9c63ab81-cbed-4119-87cf-8ad688fe4856', {
           method: 'POST',
           headers: {
