@@ -459,3 +459,155 @@ export const blogArticles = [
     `
   }
 ];
+
+export const realEstateObjects = [
+  {
+    id: 1,
+    type: 'apartment',
+    title: '2-комнатная квартира в новостройке',
+    price: 5800000,
+    location: 'Симферополь, ул. Крымская, 15',
+    area: 62,
+    rooms: 2,
+    floor: 7,
+    totalFloors: 14,
+    image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80',
+    description: 'Современная квартира с панорамным остеклением, чистовая отделка',
+    features: ['Панорамные окна', 'Чистовая отделка', 'Подземный паркинг', 'Детская площадка']
+  },
+  {
+    id: 2,
+    type: 'apartment',
+    title: '1-комнатная квартира у моря',
+    price: 4200000,
+    location: 'Ялта, набережная им. Ленина, 3',
+    area: 45,
+    rooms: 1,
+    floor: 3,
+    totalFloors: 5,
+    image: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80',
+    description: 'Квартира с видом на море, 5 минут до пляжа',
+    features: ['Вид на море', 'Рядом с пляжем', 'Мебель включена', 'Балкон']
+  },
+  {
+    id: 3,
+    type: 'apartment',
+    title: '3-комнатная квартира в центре',
+    price: 7500000,
+    location: 'Севастополь, проспект Нахимова, 8',
+    area: 85,
+    rooms: 3,
+    floor: 5,
+    totalFloors: 9,
+    image: 'https://images.unsplash.com/photo-1502672260066-6bc2614b4a0c?w=800&q=80',
+    description: 'Просторная квартира в историческом центре города',
+    features: ['Центр города', 'Высокие потолки', 'Два санузла', 'Лоджия']
+  },
+  {
+    id: 4,
+    type: 'house',
+    title: 'Дом с участком в пригороде',
+    price: 12000000,
+    location: 'Симферополь, пос. Маршала Жукова',
+    area: 150,
+    landArea: 8,
+    floors: 2,
+    image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&q=80',
+    description: 'Кирпичный дом с современной планировкой и благоустроенным участком',
+    features: ['Гараж', 'Баня', 'Беседка', 'Газ', 'Скважина']
+  },
+  {
+    id: 5,
+    type: 'house',
+    title: 'Коттедж у моря',
+    price: 25000000,
+    location: 'Алушта, ул. Набережная, 45',
+    area: 220,
+    landArea: 6,
+    floors: 3,
+    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
+    description: 'Элитный коттедж с панорамным видом на море и горы',
+    features: ['Вид на море', 'Бассейн', 'Сауна', 'Гараж на 2 авто', 'Ландшафтный дизайн']
+  },
+  {
+    id: 6,
+    type: 'house',
+    title: 'Дачный дом в горах',
+    price: 6500000,
+    location: 'Бахчисарай, СТ "Горное"',
+    area: 80,
+    landArea: 12,
+    floors: 1,
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
+    description: 'Уютный дом для отдыха в окружении природы',
+    features: ['Садовый участок', 'Летняя кухня', 'Колодец', 'Плодовые деревья']
+  },
+  {
+    id: 7,
+    type: 'land',
+    title: 'Участок под ИЖС у моря',
+    price: 3500000,
+    location: 'Феодосия, ул. Береговая',
+    landArea: 10,
+    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80',
+    description: 'Ровный участок с коммуникациями, 300м до моря',
+    features: ['ИЖС', 'Электричество', 'Газ по границе', 'Рядом с морем']
+  },
+  {
+    id: 8,
+    type: 'land',
+    title: 'Земля сельхозназначения',
+    price: 2800000,
+    location: 'Белогорский район, с. Криничное',
+    landArea: 50,
+    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80',
+    description: 'Плодородная земля для ведения сельского хозяйства',
+    features: ['СНТ', 'Электричество', 'Подъезд круглый год', 'Плодородная почва']
+  },
+  {
+    id: 9,
+    type: 'land',
+    title: 'Участок в коттеджном поселке',
+    price: 4500000,
+    location: 'Симферополь, КП "Крымский дворик"',
+    landArea: 8,
+    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80',
+    description: 'Участок в охраняемом поселке с развитой инфраструктурой',
+    features: ['ИЖС', 'Все коммуникации', 'Охрана 24/7', 'Детская площадка']
+  },
+  {
+    id: 10,
+    type: 'commercial',
+    title: 'Торговое помещение в ТЦ',
+    price: 8500000,
+    location: 'Симферополь, ТЦ "Меганом"',
+    area: 75,
+    floor: 1,
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
+    description: 'Готовое помещение с отделкой в популярном торговом центре',
+    features: ['Высокий трафик', 'Отдельный вход', 'Парковка', 'Кондиционер']
+  },
+  {
+    id: 11,
+    type: 'commercial',
+    title: 'Офисное здание',
+    price: 35000000,
+    location: 'Севастополь, ул. Большая Морская, 12',
+    area: 450,
+    floors: 3,
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80',
+    description: 'Отдельно стоящее здание в деловом центре города',
+    features: ['Парковка 15 мест', 'Центральное расположение', 'Современный ремонт', 'Лифт']
+  },
+  {
+    id: 12,
+    type: 'commercial',
+    title: 'Кафе с летней верандой',
+    price: 15000000,
+    location: 'Ялта, набережная, 25',
+    area: 120,
+    image: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800&q=80',
+    description: 'Действующее кафе на первой линии у моря',
+    features: ['Первая линия', 'Летняя веранда', 'Полное оборудование', 'Постоянные клиенты']
+  }
+];

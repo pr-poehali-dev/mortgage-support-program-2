@@ -34,10 +34,11 @@ export default function Index() {
         <MortgageQuiz onNavigateToCalculator={() => setActiveTab('calculator')} />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-8">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-7 h-auto gap-1 sm:gap-2 bg-white p-1.5 sm:p-2 rounded-xl shadow-sm overflow-x-auto">
+          <TabsList className="grid w-full grid-cols-4 md:grid-cols-8 h-auto gap-1 sm:gap-2 bg-white p-1.5 sm:p-2 rounded-xl shadow-sm overflow-x-auto">
             <TabsTrigger value="programs" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
               <Icon name="Home" size={16} className="sm:w-[18px] sm:h-[18px]" />
-              <span>Программы</span>
+              <span className="hidden md:inline">Программы</span>
+              <span className="md:hidden">Прогр.</span>
             </TabsTrigger>
             <TabsTrigger value="comparison" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
               <Icon name="GitCompare" size={16} className="sm:w-[18px] sm:h-[18px]" />
@@ -48,6 +49,11 @@ export default function Index() {
               <Icon name="Calculator" size={16} className="sm:w-[18px] sm:h-[18px]" />
               <span className="hidden md:inline">Калькулятор</span>
               <span className="md:hidden">Калькул.</span>
+            </TabsTrigger>
+            <TabsTrigger value="catalog" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
+              <Icon name="Building2" size={16} className="sm:w-[18px] sm:h-[18px]" />
+              <span className="hidden md:inline">Каталог</span>
+              <span className="md:hidden">Катал.</span>
             </TabsTrigger>
             <TabsTrigger value="documents" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
               <Icon name="FileText" size={16} className="sm:w-[18px] sm:h-[18px]" />
