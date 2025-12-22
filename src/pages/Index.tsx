@@ -10,6 +10,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@/hooks/use-toast';
 
 const programs = [
   {
@@ -96,6 +98,14 @@ export default function Index() {
   const [calcDownPayment, setCalcDownPayment] = useState([20]);
   const [calcTerm, setCalcTerm] = useState([20]);
   const [selectedProgramCalc, setSelectedProgramCalc] = useState('family');
+  const [showApplicationForm, setShowApplicationForm] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    comment: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const quizQuestions = [
     {
@@ -173,6 +183,58 @@ export default function Index() {
   };
 
   const calc = calculateMonthlyPayment();
+
+  const handleSubmitApplication = async () => {
+    if (!formData.name || !formData.phone || !formData.email) {
+      toast({
+        title: 'Ошибка',
+        description: 'Пожалуйста, заполните все обязательные поля',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      const response = await fetch('https://functions.poehali.dev/2ea2118e-5b11-45d1-8e9d-bd90ba41a588', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          program: selectedProgramCalc,
+          amount: calcAmount[0],
+          comment: formData.comment
+        })
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast({
+          title: 'Заявка отправлена!',
+          description: result.message,
+          className: 'bg-green-50 border-green-200'
+        });
+        setShowApplicationForm(false);
+        setFormData({ name: '', phone: '', email: '', comment: '' });
+      } else {
+        throw new Error(result.error || 'Ошибка отправки');
+      }
+    } catch (error) {
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось отправить заявку. Позвоните нам: +7 978 128-18-50',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -562,10 +624,99 @@ export default function Index() {
                     </p>
                   </div>
 
-                  <Button variant="secondary" className="w-full" size="lg">
-                    <Icon name="Send" className="mr-2" />
-                    Отправить заявку
-                  </Button>
+                  <Dialog open={showApplicationForm} onOpenChange={setShowApplicationForm}>
+                    <DialogTrigger asChild>
+                      <Button variant="secondary" className="w-full" size="lg">
+                        <Icon name="Send" className="mr-2" />
+                        Отправить заявку
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-md">
+                      <DialogHeader>
+                        <DialogTitle>Заявка на ипотеку</DialogTitle>
+                        <DialogDescription>
+                          {programs.find(p => p.id === selectedProgramCalc)?.name} • {calc.monthly.toLocaleString('ru-RU')} ₽/мес
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="name">Ваше имя *</Label>
+                          <Input
+                            id="name"
+                            placeholder="Иван Иванов"
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="phone">Телефон *</Label>
+                          <Input
+                            id="phone"
+                            type="tel"
+                            placeholder="+7 900 123-45-67"
+                            value={formData.phone}
+                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="email">Email *</Label>
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="ivan@example.com"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="comment">Комментарий</Label>
+                          <Textarea
+                            id="comment"
+                            placeholder="Дополнительная информация..."
+                            value={formData.comment}
+                            onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
+                            rows={3}
+                          />
+                        </div>
+                        <div className="bg-blue-50 p-4 rounded-lg space-y-2 text-sm">
+                          <p className="font-semibold">Параметры заявки:</p>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Программа:</span>
+                            <span className="font-medium">{programs.find(p => p.id === selectedProgramCalc)?.name}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Стоимость жилья:</span>
+                            <span className="font-medium">{calcAmount[0].toLocaleString('ru-RU')} ₽</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Ежемесячный платёж:</span>
+                            <span className="font-medium text-primary">{calc.monthly.toLocaleString('ru-RU')} ₽</span>
+                          </div>
+                        </div>
+                        <Button
+                          onClick={handleSubmitApplication}
+                          disabled={isSubmitting}
+                          className="w-full"
+                          size="lg"
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <Icon name="Loader2" className="mr-2 animate-spin" size={20} />
+                              Отправка...
+                            </>
+                          ) : (
+                            <>
+                              <Icon name="Send" className="mr-2" size={20} />
+                              Отправить заявку
+                            </>
+                          )}
+                        </Button>
+                        <p className="text-xs text-center text-gray-500">
+                          Нажимая кнопку, вы соглашаетесь на обработку персональных данных
+                        </p>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </CardContent>
               </Card>
             </div>
