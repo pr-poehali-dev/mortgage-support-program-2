@@ -24,52 +24,20 @@ export default function RSSFeed() {
       setLoading(true);
       setError(false);
 
-      const mockArticles: RSSItem[] = [
-        {
-          title: 'ЦБ РФ снизил ключевую ставку: что это значит для ипотечных заёмщиков',
-          link: 'https://www.cbr.ru/',
-          description: 'Центральный банк России принял решение о снижении ключевой ставки. Эксперты прогнозируют снижение ставок по ипотеке на 0.5-1% в ближайшие месяцы.',
-          pubDate: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-          source: 'ЦБ РФ'
-        },
-        {
-          title: 'Семейная ипотека: изменения с 2025 года',
-          link: 'https://дом.рф/',
-          description: 'С 1 января 2025 года вступили в силу новые условия программы семейной ипотеки. Максимальная сумма кредита увеличена до 12 млн рублей.',
-          pubDate: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-          source: 'ДОМ.РФ'
-        },
-        {
-          title: 'IT-ипотека: кто может получить льготный кредит',
-          link: 'https://дом.рф/',
-          description: 'Программа IT-ипотеки стала доступна большему числу специалистов. Расширен список компаний-работодателей, участвующих в программе.',
-          pubDate: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
-          source: 'Минцифры РФ'
-        },
-        {
-          title: 'Сельская ипотека 2025: новые возможности для жителей регионов',
-          link: 'https://минсельхоз.рф/',
-          description: 'Минсельхоз расширил географию программы сельской ипотеки. Теперь под программу попадают новые населённые пункты Крыма.',
-          pubDate: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
-          source: 'Минсельхоз РФ'
-        },
-        {
-          title: 'Военная ипотека: увеличен размер накоплений',
-          link: 'https://rosvoenipoteka.ru/',
-          description: 'С 2025 года размер ежегодных накоплений по программе военной ипотеки увеличен на 15%. Это позволит военнослужащим приобретать более дорогое жильё.',
-          pubDate: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(),
-          source: 'Росвоенипотека'
-        },
-        {
-          title: 'Банки снижают ставки по базовой ипотеке',
-          link: 'https://www.banki.ru/',
-          description: 'Крупнейшие банки России начали снижать ставки по базовой ипотеке. Средняя ставка на рынке сейчас составляет 16.5% годовых.',
-          pubDate: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-          source: 'Banki.ru'
-        }
-      ];
+      const response = await fetch('https://functions.poehali.dev/fa7fba79-8d4e-408d-9177-7d0078f39e64');
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch RSS feed');
+      }
 
-      setArticles(mockArticles);
+      const data = await response.json();
+      
+      if (data.articles && Array.isArray(data.articles)) {
+        setArticles(data.articles);
+      } else {
+        throw new Error('Invalid response format');
+      }
+
       setLoading(false);
     } catch (err) {
       console.error('Error fetching RSS:', err);
