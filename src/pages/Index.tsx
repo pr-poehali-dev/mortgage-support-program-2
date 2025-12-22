@@ -1523,6 +1523,21 @@ export default function Index() {
                         <p className="font-semibold text-gray-900">Посмотреть профиль</p>
                       </div>
                     </a>
+
+                    <a
+                      href="https://t.me/ipoteka_krym_rf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-4 p-4 bg-sky-50 rounded-lg hover:bg-sky-100 transition-colors group"
+                    >
+                      <div className="w-12 h-12 bg-sky-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Icon name="MessageCircle" className="text-white" size={24} />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Telegram</p>
+                        <p className="font-semibold text-gray-900">Написать в мессенджер</p>
+                      </div>
+                    </a>
                   </div>
 
                   <div className="border-t pt-6">
@@ -1596,17 +1611,25 @@ export default function Index() {
 
                   <div className="border-t border-white/20 pt-6 mt-6 space-y-3">
                     <Button variant="secondary" className="w-full" size="lg" asChild>
-                      <a href="https://agencies.domclick.ru/agent/5621837?utm_source=partnerhub&utm_content=profile" target="_blank" rel="noopener noreferrer">
-                        <Icon name="ExternalLink" className="mr-2" />
-                        Мой профиль на Домклик
+                      <a href="https://t.me/ipoteka_krym_rf" target="_blank" rel="noopener noreferrer">
+                        <Icon name="MessageCircle" className="mr-2" />
+                        Получить консультацию в Telegram
                       </a>
                     </Button>
-                    <Button variant="secondary" className="w-full" size="lg" asChild>
-                      <a href="tel:+79781281850">
-                        <Icon name="Phone" className="mr-2" />
-                        Позвонить
-                      </a>
-                    </Button>
+                    <div className="grid grid-cols-2 gap-3">
+                      <Button variant="outline" className="w-full bg-white/10 hover:bg-white/20 border-white/30 text-white" asChild>
+                        <a href="https://agencies.domclick.ru/agent/5621837?utm_source=partnerhub&utm_content=profile" target="_blank" rel="noopener noreferrer">
+                          <Icon name="ExternalLink" className="mr-2" size={18} />
+                          Домклик
+                        </a>
+                      </Button>
+                      <Button variant="outline" className="w-full bg-white/10 hover:bg-white/20 border-white/30 text-white" asChild>
+                        <a href="tel:+79781281850">
+                          <Icon name="Phone" className="mr-2" size={18} />
+                          Позвонить
+                        </a>
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
