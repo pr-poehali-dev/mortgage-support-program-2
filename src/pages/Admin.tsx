@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Icon from '@/components/ui/icon';
+import * as XLSX from 'xlsx';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -104,6 +105,82 @@ export default function Admin() {
       fetchAnalytics(password);
     }
   }, [period]);
+
+  const exportToExcel = () => {
+    if (!analytics) return;
+
+    const wb = XLSX.utils.book_new();
+
+    // Summary sheet
+    const summaryData = [
+      ['Отчет по аналитике сайта'],
+      ['Период', `${period} дней`],
+      ['Дата создания', new Date().toLocaleString('ru-RU')],
+      [],
+      ['Метрика', 'Значение'],
+      ['Всего просмотров', analytics.totals.total_views],
+      ['Всего заявок', analytics.totals.total_applications],
+      ['Конверсия', `${((analytics.totals.total_applications / analytics.totals.total_views) * 100).toFixed(2)}%`]
+    ];
+    const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+    XLSX.utils.book_append_sheet(wb, wsSummary, 'Сводка');
+
+    // Daily views sheet
+    const viewsData = [
+      ['Дата', 'Просмотры'],
+      ...analytics.daily_views.map(d => [
+        new Date(d.date).toLocaleDateString('ru-RU'),
+        d.views
+      ])
+    ];
+    const wsViews = XLSX.utils.aoa_to_sheet(viewsData);
+    XLSX.utils.book_append_sheet(wb, wsViews, 'Просмотры по дням');
+
+    // Daily applications sheet
+    const appsData = [
+      ['Дата', 'Заявки'],
+      ...analytics.daily_applications.map(d => [
+        new Date(d.date).toLocaleDateString('ru-RU'),
+        d.applications
+      ])
+    ];
+    const wsApps = XLSX.utils.aoa_to_sheet(appsData);
+    XLSX.utils.book_append_sheet(wb, wsApps, 'Заявки по дням');
+
+    // Traffic sources sheet
+    const sourcesData = [
+      ['Источник', 'Количество', 'Процент'],
+      ...analytics.traffic_sources.map(s => {
+        const total = analytics.traffic_sources.reduce((sum, src) => sum + src.count, 0);
+        const percentage = ((s.count / total) * 100).toFixed(1);
+        return [s.source, s.count, `${percentage}%`];
+      })
+    ];
+    const wsSources = XLSX.utils.aoa_to_sheet(sourcesData);
+    XLSX.utils.book_append_sheet(wb, wsSources, 'Источники трафика');
+
+    // Popular programs sheet
+    const programsData = [
+      ['Программа', 'Заявок', 'Процент'],
+      ...analytics.popular_programs.map(p => {
+        const total = analytics.popular_programs.reduce((sum, prog) => sum + prog.count, 0);
+        const percentage = ((p.count / total) * 100).toFixed(1);
+        return [
+          PROGRAM_NAMES[p.program] || p.program,
+          p.count,
+          `${percentage}%`
+        ];
+      })
+    ];
+    const wsPrograms = XLSX.utils.aoa_to_sheet(programsData);
+    XLSX.utils.book_append_sheet(wb, wsPrograms, 'Популярные программы');
+
+    // Generate filename with date
+    const filename = `Аналитика_${period}дней_${new Date().toISOString().split('T')[0]}.xlsx`;
+    
+    // Download file
+    XLSX.writeFile(wb, filename);
+  };
 
   if (!isAuthenticated) {
     return (
@@ -237,6 +314,13 @@ export default function Admin() {
               <option value={90}>90 дней</option>
               <option value={365}>1 год</option>
             </select>
+            <Button
+              onClick={exportToExcel}
+              className="h-10 bg-green-600 hover:bg-green-700"
+            >
+              <Icon name="Download" className="mr-2" size={18} />
+              Скачать Excel
+            </Button>
             <Button
               onClick={() => window.location.href = '/'}
               variant="outline"
