@@ -1,0 +1,61 @@
+{
+  "name": "Ипотека Крым 2025 - Все программы ипотечного кредитования",
+  "short_name": "Ипотека Крым",
+  "description": "Специалист по ипотеке в Крыму. Семейная, IT, Военная, Сельская, Базовая ипотека. Консультации и помощь в оформлении",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "lang": "ru",
+  "dir": "ltr",
+  "categories": ["finance", "business"],
+  "icons": [
+    {
+      "src": "https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/2a987310-09a5-48c9-800f-436827a5e12a.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/2a987310-09a5-48c9-800f-436827a5e12a.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/f370c3f9-abf4-4e5f-928a-9cde6c4a8ee0.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Калькулятор",
+      "short_name": "Калькулятор",
+      "description": "Рассчитать ипотеку",
+      "url": "/#calculator",
+      "icons": [
+        {
+          "src": "https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/2a987310-09a5-48c9-800f-436827a5e12a.jpg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Программы",
+      "short_name": "Программы",
+      "description": "Ипотечные программы",
+      "url": "/#programs",
+      "icons": [
+        {
+          "src": "https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/2a987310-09a5-48c9-800f-436827a5e12a.jpg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
