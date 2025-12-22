@@ -8,6 +8,7 @@ interface RSSItem {
   description: string;
   pubDate: string;
   source: string;
+  image?: string;
 }
 
 const STORAGE_KEY = 'rss-feed-selected-sources';
@@ -298,25 +299,49 @@ export default function RSSFeed() {
             rel="noopener noreferrer"
             className="group"
           >
-            <Card className="p-6 h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 border-transparent hover:border-blue-200">
-              <div className="flex items-start justify-between mb-3">
-                <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
-                  {article.source}
-                </span>
-                <span className="text-xs text-gray-500">{formatDate(article.pubDate)}</span>
-              </div>
+            <Card className="overflow-hidden h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 border-transparent hover:border-blue-200">
+              {article.image && (
+                <div className="relative h-48 overflow-hidden bg-gray-100">
+                  <img
+                    src={article.image}
+                    alt={article.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <span className="absolute top-3 left-3 text-xs font-semibold text-white bg-blue-600/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                    {article.source}
+                  </span>
+                  <span className="absolute top-3 right-3 text-xs text-white bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full">
+                    {formatDate(article.pubDate)}
+                  </span>
+                </div>
+              )}
               
-              <h3 className="font-bold text-lg mb-3 text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
-                {article.title}
-              </h3>
-              
-              <p className="text-gray-600 text-sm line-clamp-3 mb-4">
-                {article.description}
-              </p>
-              
-              <div className="flex items-center text-blue-600 text-sm font-semibold">
-                <span>Читать далее</span>
-                <Icon name="ArrowRight" size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+              <div className="p-6">
+                {!article.image && (
+                  <div className="flex items-start justify-between mb-3">
+                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+                      {article.source}
+                    </span>
+                    <span className="text-xs text-gray-500">{formatDate(article.pubDate)}</span>
+                  </div>
+                )}
+                
+                <h3 className="font-bold text-lg mb-3 text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+                  {article.title}
+                </h3>
+                
+                <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+                  {article.description}
+                </p>
+                
+                <div className="flex items-center text-blue-600 text-sm font-semibold">
+                  <span>Читать далее</span>
+                  <Icon name="ArrowRight" size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
             </Card>
           </a>

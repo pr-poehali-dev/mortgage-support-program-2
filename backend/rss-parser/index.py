@@ -153,6 +153,9 @@ def parse_rss_feed(url: str, source: str, keywords: List[str]) -> List[Dict[str,
                 desc_elem = item.find('description') or item.find('{http://purl.org/rss/1.0/modules/content/}encoded')
                 date_elem = item.find('pubDate') or item.find('{http://www.w3.org/2005/Atom}published')
                 
+                # Ищем изображение
+                image_url = extract_image(item, desc_elem)
+                
                 if title_elem is None:
                     continue
                 
@@ -173,7 +176,8 @@ def parse_rss_feed(url: str, source: str, keywords: List[str]) -> List[Dict[str,
                         'link': link,
                         'description': description,
                         'pubDate': normalize_date(pub_date),
-                        'source': source
+                        'source': source,
+                        'image': image_url
                     })
             except Exception as e:
                 print(f"Error parsing item: {str(e)}")
@@ -231,6 +235,41 @@ def normalize_date(date_str: str) -> str:
     except Exception:
         return datetime.now().isoformat()
 
+def extract_image(item, desc_elem) -> str:
+    """
+    Извлекает URL изображения из RSS-элемента
+    """
+    import re
+    
+    # Проверяем media:thumbnail (Media RSS)
+    media_ns = '{http://search.yahoo.com/mrss/}'
+    thumbnail = item.find(f'{media_ns}thumbnail')
+    if thumbnail is not None and thumbnail.get('url'):
+        return thumbnail.get('url')
+    
+    # Проверяем media:content
+    content = item.find(f'{media_ns}content')
+    if content is not None and content.get('url'):
+        url = content.get('url')
+        if any(ext in url.lower() for ext in ['.jpg', '.jpeg', '.png', '.webp']):
+            return url
+    
+    # Проверяем enclosure
+    enclosure = item.find('enclosure')
+    if enclosure is not None:
+        enc_type = enclosure.get('type', '')
+        if 'image' in enc_type:
+            return enclosure.get('url', '')
+    
+    # Ищем изображение в описании
+    if desc_elem is not None and desc_elem.text:
+        img_match = re.search(r'<img[^>]+src=["\']([^"\'>]+)["\']', desc_elem.text, re.IGNORECASE)
+        if img_match:
+            return img_match.group(1)
+    
+    # Возвращаем placeholder
+    return ''
+
 def get_mock_articles() -> List[Dict[str, str]]:
     """
     Возвращает моковые данные на случай, если RSS не доступен
@@ -241,33 +280,38 @@ def get_mock_articles() -> List[Dict[str, str]]:
             'link': 'https://www.cbr.ru/',
             'description': 'Центральный банк России принял решение о снижении ключевой ставки. Эксперты прогнозируют снижение ставок по ипотеке на 0.5-1% в ближайшие месяцы.',
             'pubDate': datetime.now().isoformat(),
-            'source': 'ЦБ РФ'
+            'source': 'ЦБ РФ',
+            'image': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80'
         },
         {
             'title': 'Семейная ипотека: изменения с 2025 года',
             'link': 'https://дом.рф/',
             'description': 'С 1 января 2025 года вступили в силу новые условия программы семейной ипотеки. Максимальная сумма кредита увеличена до 12 млн рублей.',
             'pubDate': datetime.now().isoformat(),
-            'source': 'ДОМ.РФ'
+            'source': 'ДОМ.РФ',
+            'image': 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=800&q=80'
         },
         {
             'title': 'IT-ипотека: кто может получить льготный кредит',
             'link': 'https://дом.рф/',
             'description': 'Программа IT-ипотеки стала доступна большему числу специалистов. Расширен список компаний-работодателей, участвующих в программе.',
             'pubDate': datetime.now().isoformat(),
-            'source': 'Минцифры РФ'
+            'source': 'Минцифры РФ',
+            'image': 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'
         },
         {
             'title': 'Сельская ипотека 2025: новые возможности для жителей регионов',
             'link': 'https://минсельхоз.рф/',
             'description': 'Минсельхоз расширил географию программы сельской ипотеки. Теперь под программу попадают новые населённые пункты Крыма.',
             'pubDate': datetime.now().isoformat(),
-            'source': 'Минсельхоз РФ'
+            'source': 'Минсельхоз РФ',
+            'image': 'https://images.unsplash.com/photo-1554995207-c18c203602cb?w=800&q=80'
         },
         {
             'title': 'Военная ипотека: увеличен размер накоплений',
             'link': 'https://rosvoenipoteka.ru/',
             'description': 'С 2025 года размер ежегодных накоплений по программе военной ипотеки увеличен на 15%. Это позволит военнослужащим приобретать более дорогое жильё.',
+            'image': 'https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&q=80',
             'pubDate': datetime.now().isoformat(),
             'source': 'Росвоенипотека'
         },
