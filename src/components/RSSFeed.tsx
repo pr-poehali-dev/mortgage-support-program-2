@@ -10,16 +10,25 @@ interface RSSItem {
   source: string;
 }
 
+const STORAGE_KEY = 'rss-feed-selected-sources';
+
 export default function RSSFeed() {
   const [articles, setArticles] = useState<RSSItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [selectedSources, setSelectedSources] = useState<string[]>([]);
+  const [selectedSources, setSelectedSources] = useState<string[]>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : [];
+  });
   const [availableSources, setAvailableSources] = useState<string[]>([]);
 
   useEffect(() => {
     fetchRSSFeed();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedSources));
+  }, [selectedSources]);
 
   const fetchRSSFeed = async () => {
     try {
