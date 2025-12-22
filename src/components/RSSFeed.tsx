@@ -28,6 +28,7 @@ export default function RSSFeed() {
     const saved = localStorage.getItem(SORT_KEY);
     return (saved as SortOrder) || 'newest';
   });
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetchRSSFeed();
@@ -98,9 +99,13 @@ export default function RSSFeed() {
     setSelectedSources([]);
   };
 
-  const filteredArticles = selectedSources.length > 0
-    ? articles.filter(article => selectedSources.includes(article.source))
-    : articles;
+  const filteredArticles = articles.filter(article => {
+    const matchesSource = selectedSources.length === 0 || selectedSources.includes(article.source);
+    const matchesSearch = searchQuery === '' || 
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesSource && matchesSearch;
+  });
 
   const sortedArticles = [...filteredArticles].sort((a, b) => {
     if (sortOrder === 'newest') {
@@ -163,6 +168,25 @@ export default function RSSFeed() {
           <Icon name="RefreshCw" size={16} />
           Обновить
         </button>
+      </div>
+
+      <div className="relative">
+        <Icon name="Search" size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Поиск по новостям..."
+          className="w-full pl-10 pr-10 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
+        />
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery('')}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <Icon name="X" size={20} />
+          </button>
+        )}
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
@@ -236,16 +260,33 @@ export default function RSSFeed() {
         </div>
       </div>
 
-      {filteredArticles.length === 0 ? (
+      {sortedArticles.length === 0 ? (
         <Card className="p-8 text-center">
           <Icon name="Search" size={48} className="text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-600">Нет новостей от выбранных источников</p>
-          <button
-            onClick={clearFilters}
-            className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Сбросить фильтры
-          </button>
+          <p className="text-gray-600 mb-2">
+            {searchQuery ? 'Ничего не найдено по вашему запросу' : 'Нет новостей от выбранных источников'}
+          </p>
+          {searchQuery && (
+            <p className="text-sm text-gray-500 mb-4">Попробуйте изменить поисковый запрос</p>
+          )}
+          <div className="flex flex-wrap gap-2 justify-center">
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                Очистить поиск
+              </button>
+            )}
+            {selectedSources.length > 0 && (
+              <button
+                onClick={clearFilters}
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Сбросить фильтры
+              </button>
+            )}
+          </div>
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
