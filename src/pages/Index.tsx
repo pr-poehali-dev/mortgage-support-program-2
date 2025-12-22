@@ -11,7 +11,7 @@ import StructuredData from '@/components/StructuredData';
 import TelegramButton from '@/components/TelegramButton';
 
 export default function Index() {
-  const [activeTab, setActiveTab] = useState('programs');
+  const [activeTab, setActiveTab] = useState('home');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -41,9 +41,13 @@ export default function Index() {
         <MortgageQuiz onNavigateToCalculator={() => setActiveTab('calculator')} />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-8">
-          <TabsList className="grid w-full grid-cols-4 md:grid-cols-8 h-auto gap-1 sm:gap-2 bg-white p-1.5 sm:p-2 rounded-xl shadow-sm overflow-x-auto">
-            <TabsTrigger value="programs" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
+          <TabsList className="grid w-full grid-cols-5 md:grid-cols-9 h-auto gap-1 sm:gap-2 bg-white p-1.5 sm:p-2 rounded-xl shadow-sm overflow-x-auto">
+            <TabsTrigger value="home" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
               <Icon name="Home" size={16} className="sm:w-[18px] sm:h-[18px]" />
+              <span>Главная</span>
+            </TabsTrigger>
+            <TabsTrigger value="programs" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
+              <Icon name="ClipboardList" size={16} className="sm:w-[18px] sm:h-[18px]" />
               <span className="hidden md:inline">Программы</span>
               <span className="md:hidden">Прогр.</span>
             </TabsTrigger>
