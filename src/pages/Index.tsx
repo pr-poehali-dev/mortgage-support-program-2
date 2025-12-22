@@ -657,41 +657,40 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <header className="border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <Icon name="Home" className="text-white" size={24} />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-lg flex items-center justify-center">
+                <Icon name="Home" className="text-white" size={20} />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Ипотека РФ 2025</h1>
-                <p className="text-sm text-gray-600">Льготные программы с господдержкой</p>
+                <h1 className="text-lg sm:text-2xl font-bold text-gray-900">Ипотека РФ 2025</h1>
+                <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Льготные программы с господдержкой</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <a href="tel:+79781281850" className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
-                <Icon name="Phone" size={20} />
-                <span className="font-semibold hidden md:inline">+7 978 128-18-50</span>
-              </a>
-            </div>
+            <a href="tel:+79781281850" className="flex items-center gap-1.5 sm:gap-2 text-primary hover:text-primary/80 transition-colors">
+              <Icon name="Phone" size={18} className="sm:w-5 sm:h-5" />
+              <span className="font-semibold text-sm sm:text-base hidden sm:inline">+7 978 128-18-50</span>
+            </a>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
-        <section className="mb-12 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+      <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
+        <section className="mb-8 sm:mb-12 text-center">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent px-2">
             Найдите свою ипотеку за 3 вопроса
           </h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-base sm:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
             Подберём оптимальную программу на основе вашей ситуации
           </p>
           
           <Dialog>
             <DialogTrigger asChild>
-              <Button size="lg" className="text-lg px-8 py-6 hover:scale-105 transition-transform">
-                <Icon name="MessageSquare" className="mr-2" />
-                Пройти опрос — подобрать программу
+              <Button size="lg" className="text-sm sm:text-lg px-4 sm:px-8 py-4 sm:py-6 hover:scale-105 transition-transform w-full sm:w-auto max-w-md mx-auto">
+                <Icon name="MessageSquare" className="mr-2" size={18} />
+                <span className="hidden sm:inline">Пройти опрос — подобрать программу</span>
+                <span className="sm:hidden">Подобрать программу</span>
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-2xl">
@@ -806,40 +805,44 @@ export default function Index() {
           </Dialog>
         </section>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 h-auto gap-2 bg-white p-2 rounded-xl shadow-sm">
-            <TabsTrigger value="programs" className="flex items-center gap-2 py-3">
-              <Icon name="Home" size={18} />
-              <span className="hidden sm:inline">Программы</span>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-8">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-7 h-auto gap-1 sm:gap-2 bg-white p-1.5 sm:p-2 rounded-xl shadow-sm overflow-x-auto">
+            <TabsTrigger value="programs" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
+              <Icon name="Home" size={16} className="sm:w-[18px] sm:h-[18px]" />
+              <span>Программы</span>
             </TabsTrigger>
-            <TabsTrigger value="comparison" className="flex items-center gap-2 py-3">
-              <Icon name="GitCompare" size={18} />
-              <span className="hidden sm:inline">Сравнение</span>
+            <TabsTrigger value="comparison" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
+              <Icon name="GitCompare" size={16} className="sm:w-[18px] sm:h-[18px]" />
+              <span className="hidden md:inline">Сравнение</span>
+              <span className="md:hidden">Сравн.</span>
             </TabsTrigger>
-            <TabsTrigger value="calculator" className="flex items-center gap-2 py-3">
-              <Icon name="Calculator" size={18} />
-              <span className="hidden sm:inline">Калькулятор</span>
+            <TabsTrigger value="calculator" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
+              <Icon name="Calculator" size={16} className="sm:w-[18px] sm:h-[18px]" />
+              <span className="hidden md:inline">Калькулятор</span>
+              <span className="md:hidden">Калькул.</span>
             </TabsTrigger>
-            <TabsTrigger value="documents" className="flex items-center gap-2 py-3">
-              <Icon name="FileText" size={18} />
-              <span className="hidden sm:inline">Документы</span>
+            <TabsTrigger value="documents" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
+              <Icon name="FileText" size={16} className="sm:w-[18px] sm:h-[18px]" />
+              <span className="hidden md:inline">Документы</span>
+              <span className="md:hidden">Докум.</span>
             </TabsTrigger>
-            <TabsTrigger value="faq" className="flex items-center gap-2 py-3">
-              <Icon name="HelpCircle" size={18} />
-              <span className="hidden sm:inline">FAQ</span>
+            <TabsTrigger value="faq" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
+              <Icon name="HelpCircle" size={16} className="sm:w-[18px] sm:h-[18px]" />
+              <span>FAQ</span>
             </TabsTrigger>
-            <TabsTrigger value="blog" className="flex items-center gap-2 py-3">
-              <Icon name="BookOpen" size={18} />
-              <span className="hidden sm:inline">Блог</span>
+            <TabsTrigger value="blog" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
+              <Icon name="BookOpen" size={16} className="sm:w-[18px] sm:h-[18px]" />
+              <span>Блог</span>
             </TabsTrigger>
-            <TabsTrigger value="contact" className="flex items-center gap-2 py-3">
-              <Icon name="Phone" size={18} />
-              <span className="hidden sm:inline">Контакты</span>
+            <TabsTrigger value="contact" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
+              <Icon name="Phone" size={16} className="sm:w-[18px] sm:h-[18px]" />
+              <span className="hidden md:inline">Контакты</span>
+              <span className="md:hidden">Конт.</span>
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="programs" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <TabsContent value="programs" className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               {programs.map((program) => (
                 <Card key={program.id} className="hover:shadow-xl transition-all hover:scale-[1.02] cursor-pointer">
                   <CardHeader>
@@ -945,8 +948,8 @@ export default function Index() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="calculator" className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
+          <TabsContent value="calculator" className="space-y-4 sm:space-y-6">
+            <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-2xl">Калькулятор ипотеки</CardTitle>
@@ -1148,13 +1151,13 @@ export default function Index() {
             </div>
           </TabsContent>
 
-          <TabsContent value="documents" className="space-y-6">
-            <div className="mb-6">
-              <h2 className="text-3xl font-bold mb-2">Документы и требования</h2>
-              <p className="text-gray-600">Полный список необходимых документов для каждой программы</p>
+          <TabsContent value="documents" className="space-y-4 sm:space-y-6">
+            <div className="mb-4 sm:mb-6">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2">Документы и требования</h2>
+              <p className="text-sm sm:text-base text-gray-600">Полный список необходимых документов для каждой программы</p>
             </div>
 
-            <div className="grid md:grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mb-6 sm:mb-8">
               {documentsData.map((doc) => (
                 <Card
                   key={doc.program}
@@ -1163,11 +1166,11 @@ export default function Index() {
                   }`}
                   onClick={() => setSelectedDocProgram(doc.program)}
                 >
-                  <CardContent className="p-6 text-center">
-                    <div className={`w-16 h-16 ${doc.color} rounded-lg flex items-center justify-center mx-auto mb-3`}>
-                      <Icon name={doc.icon} className="text-white" size={32} />
+                  <CardContent className="p-3 sm:p-6 text-center">
+                    <div className={`w-12 h-12 sm:w-16 sm:h-16 ${doc.color} rounded-lg flex items-center justify-center mx-auto mb-2 sm:mb-3`}>
+                      <Icon name={doc.icon} className="text-white" size={24} className="sm:w-8 sm:h-8" />
                     </div>
-                    <p className="font-semibold text-sm">{doc.name}</p>
+                    <p className="font-semibold text-xs sm:text-sm">{doc.name}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -1313,13 +1316,13 @@ export default function Index() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="blog" className="space-y-6">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-3xl font-bold">Блог об ипотеке</h2>
-                <p className="text-gray-600 mt-2">Полезные статьи и советы от экспертов</p>
+          <TabsContent value="blog" className="space-y-4 sm:space-y-6">
+            <div className="mb-4 sm:mb-6">
+              <div className="mb-3 sm:mb-4">
+                <h2 className="text-2xl sm:text-3xl font-bold">Блог об ипотеке</h2>
+                <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">Полезные статьи и советы от экспертов</p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <Button
                   variant={blogCategory === 'all' ? 'default' : 'outline'}
                   size="sm"
@@ -1351,7 +1354,7 @@ export default function Index() {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {blogArticles
                 .filter(article => blogCategory === 'all' || article.category === blogCategory)
                 .map((article) => (
@@ -1449,8 +1452,8 @@ export default function Index() {
             </div>
           </TabsContent>
 
-          <TabsContent value="contact" className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
+          <TabsContent value="contact" className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-2xl">Свяжитесь с нами</CardTitle>
@@ -1577,25 +1580,25 @@ export default function Index() {
         </Tabs>
       </main>
 
-      <footer className="bg-gray-900 text-white mt-16 py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <Icon name="Home" className="text-white" size={24} />
+      <footer className="bg-gray-900 text-white mt-8 sm:mt-16 py-6 sm:py-8">
+        <div className="container mx-auto px-3 sm:px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-lg flex items-center justify-center">
+                <Icon name="Home" className="text-white" size={20} />
               </div>
               <div>
-                <p className="font-bold">Ипотека РФ 2025</p>
-                <p className="text-sm text-gray-400">Льготные программы с господдержкой</p>
+                <p className="font-bold text-sm sm:text-base">Ипотека РФ 2025</p>
+                <p className="text-xs sm:text-sm text-gray-400">Льготные программы с господдержкой</p>
               </div>
             </div>
             <div className="text-center md:text-right">
-              <p className="font-semibold">Николаев Дмитрий Юрьевич</p>
-              <p className="text-gray-400">+7 978 128-18-50</p>
-              <p className="text-gray-400">ipoteka_krym@mail.ru</p>
+              <p className="font-semibold text-sm sm:text-base">Николаев Дмитрий Юрьевич</p>
+              <p className="text-sm text-gray-400">+7 978 128-18-50</p>
+              <p className="text-sm text-gray-400">ipoteka_krym@mail.ru</p>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-6 pt-6 text-center text-gray-400 text-sm">
+          <div className="border-t border-gray-800 mt-4 sm:mt-6 pt-4 sm:pt-6 text-center text-gray-400 text-xs sm:text-sm">
             <p>© 2025 Все права защищены. Информация носит справочный характер.</p>
           </div>
         </div>
