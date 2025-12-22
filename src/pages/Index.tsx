@@ -89,6 +89,156 @@ const faqItems = [
   }
 ];
 
+const blogArticles = [
+  {
+    id: 1,
+    title: 'Как правильно выбрать программу ипотеки в 2025 году',
+    excerpt: 'Разбираем ключевые критерии выбора льготной ипотеки: от семейного положения до региона покупки недвижимости.',
+    category: 'Советы',
+    icon: 'Lightbulb',
+    color: 'bg-yellow-500',
+    date: '15 декабря 2024',
+    readTime: '5 мин',
+    content: `
+      <h3>Основные факторы выбора</h3>
+      <p>При выборе ипотечной программы важно учитывать несколько ключевых факторов:</p>
+      <ul>
+        <li><strong>Семейное положение:</strong> Наличие детей открывает доступ к семейной ипотеке со ставкой 6%</li>
+        <li><strong>Профессия:</strong> IT-специалисты и военнослужащие имеют доступ к специальным программам</li>
+        <li><strong>Регион покупки:</strong> В крупных городах и сельской местности условия различаются</li>
+        <li><strong>Размер первоначального взноса:</strong> Минимум 20% от стоимости жилья</li>
+      </ul>
+      <h3>Рекомендации эксперта</h3>
+      <p>Не торопитесь с выбором. Проконсультируйтесь со специалистом, чтобы подобрать оптимальную программу под вашу ситуацию. Учитывайте не только процентную ставку, но и максимальную сумму кредита, срок и дополнительные условия.</p>
+    `
+  },
+  {
+    id: 2,
+    title: 'Досрочное погашение ипотеки: стратегии и советы',
+    excerpt: 'Узнайте, как эффективно досрочно погасить ипотеку и сэкономить на процентах. Два способа погашения и их преимущества.',
+    category: 'Финансы',
+    icon: 'TrendingDown',
+    color: 'bg-green-500',
+    date: '10 декабря 2024',
+    readTime: '7 мин',
+    content: `
+      <h3>Два способа досрочного погашения</h3>
+      <p>Существует два основных способа досрочного погашения ипотеки:</p>
+      <ol>
+        <li><strong>Уменьшение срока кредита:</strong> Ежемесячный платёж остаётся прежним, но срок выплаты сокращается. Экономия на процентах максимальна.</li>
+        <li><strong>Уменьшение платежа:</strong> Срок остаётся прежним, но ежемесячный платёж снижается. Подходит для снижения финансовой нагрузки.</li>
+      </ol>
+      <h3>Когда выгоднее досрочно погашать</h3>
+      <p>Наиболее выгодно вносить досрочные платежи в первой половине срока кредита, когда основная часть платежа идёт на погашение процентов. В льготных программах 2025 года нет штрафов за досрочное погашение.</p>
+      <h3>Практический совет</h3>
+      <p>Создайте график досрочных платежей. Даже небольшие дополнительные взносы 1-2 раза в год могут сократить срок ипотеки на несколько лет.</p>
+    `
+  },
+  {
+    id: 3,
+    title: 'Топ-5 ошибок при оформлении ипотеки',
+    excerpt: 'Изучите типичные ошибки заёмщиков и узнайте, как их избежать при оформлении ипотечного кредита.',
+    category: 'Советы',
+    icon: 'AlertTriangle',
+    color: 'bg-red-500',
+    date: '5 декабря 2024',
+    readTime: '6 мин',
+    content: `
+      <h3>Ошибка №1: Неправильная оценка своих возможностей</h3>
+      <p>Многие заёмщики берут максимальную сумму, которую одобряет банк, не учитывая свои реальные доходы и расходы. Правило: ежемесячный платёж не должен превышать 40% дохода семьи.</p>
+      <h3>Ошибка №2: Игнорирование скрытых расходов</h3>
+      <p>Помимо ежемесячного платежа учитывайте: страхование, оценку недвижимости, госпошлину, услуги риелтора. Это может составить 3-5% от стоимости жилья.</p>
+      <h3>Ошибка №3: Выбор первого предложения</h3>
+      <p>Сравните условия в 3-5 банках. Разница в ставке даже 0,5% может сэкономить сотни тысяч рублей.</p>
+      <h3>Ошибка №4: Недооценка важности первоначального взноса</h3>
+      <p>Чем больше первый взнос, тем меньше переплата по кредиту. Стремитесь к 30-40% вместо минимальных 20%.</p>
+      <h3>Ошибка №5: Пренебрежение чтением договора</h3>
+      <p>Внимательно изучите все пункты договора. Обратите внимание на условия изменения процентной ставки, штрафы и комиссии.</p>
+    `
+  },
+  {
+    id: 4,
+    title: 'Семейная ипотека 2025: что изменилось',
+    excerpt: 'Обзор последних изменений в программе семейной ипотеки. Новые лимиты, условия и перспективы до 2030 года.',
+    category: 'Программы',
+    icon: 'Users',
+    color: 'bg-blue-500',
+    date: '1 декабря 2024',
+    readTime: '4 мин',
+    content: `
+      <h3>Продление программы до 2030 года</h3>
+      <p>Правительство РФ продлило программу семейной ипотеки до конца 2030 года с сохранением льготной ставки 6%.</p>
+      <h3>Актуальные условия</h3>
+      <ul>
+        <li><strong>Ставка:</strong> 6% годовых на весь срок кредита</li>
+        <li><strong>Максимальная сумма:</strong> 12 млн ₽ в Москве, МО, СПб, ЛО; 6 млн ₽ в регионах</li>
+        <li><strong>Срок:</strong> до 30 лет</li>
+        <li><strong>Первый взнос:</strong> от 20%</li>
+      </ul>
+      <h3>Кто может участвовать</h3>
+      <p>Программа доступна семьям с детьми, рождёнными с 2018 года. Также можно использовать материнский капитал как часть первоначального взноса.</p>
+      <h3>Важные нюансы</h3>
+      <p>Программа распространяется как на новостройки, так и на вторичное жильё (при определённых условиях). Проконсультируйтесь со специалистом для уточнения деталей.</p>
+    `
+  },
+  {
+    id: 5,
+    title: 'IT-ипотека: гид для специалистов',
+    excerpt: 'Подробное руководство по IT-ипотеке для специалистов технологической отрасли. Требования, документы, лайфхаки.',
+    category: 'Программы',
+    icon: 'Laptop',
+    color: 'bg-purple-500',
+    date: '25 ноября 2024',
+    readTime: '8 мин',
+    content: `
+      <h3>Кто может получить IT-ипотеку</h3>
+      <p>Программа доступна специалистам, работающим в аккредитованных IT-компаниях. Ваша компания должна быть включена в специальный реестр Минцифры РФ.</p>
+      <h3>Условия программы</h3>
+      <ul>
+        <li><strong>Ставка:</strong> 6% годовых</li>
+        <li><strong>Максимальная сумма:</strong> 9 млн рублей</li>
+        <li><strong>Регионы:</strong> вся Россия кроме Москвы и Санкт-Петербурга</li>
+        <li><strong>Срок:</strong> до 30 лет</li>
+      </ul>
+      <h3>Необходимые документы</h3>
+      <p>Стандартный пакет документов + справка от работодателя о занятости в аккредитованной IT-компании. Стаж работы в IT-сфере должен быть не менее 3 месяцев.</p>
+      <h3>Лайфхак для IT-специалистов</h3>
+      <p>Если вы работаете удалённо из Москвы или СПб, но ваша компания зарегистрирована в регионе, вы можете претендовать на IT-ипотеку. Уточните возможность покупки жилья в вашем регионе.</p>
+    `
+  },
+  {
+    id: 6,
+    title: 'Рефинансирование ипотеки: когда это выгодно',
+    excerpt: 'Разбираемся, в каких случаях стоит рефинансировать действующую ипотеку и как это правильно сделать в 2025 году.',
+    category: 'Финансы',
+    icon: 'RefreshCw',
+    color: 'bg-indigo-500',
+    date: '20 ноября 2024',
+    readTime: '6 мин',
+    content: `
+      <h3>Что такое рефинансирование</h3>
+      <p>Рефинансирование — это оформление нового кредита для погашения действующей ипотеки. Цель: получить более выгодные условия (ставку, срок, размер платежа).</p>
+      <h3>Когда рефинансирование выгодно</h3>
+      <ul>
+        <li>Разница в ставках составляет минимум 2%</li>
+        <li>До окончания выплат осталось более 5 лет</li>
+        <li>Вы выплатили менее 50% суммы кредита</li>
+        <li>Ваша кредитная история улучшилась</li>
+      </ul>
+      <h3>Особенности в 2025 году</h3>
+      <p>С появлением льготных программ многие заёмщики с рыночными ставками 10-15% могут перейти на 6%. Экономия может достигать миллионов рублей.</p>
+      <h3>Процесс рефинансирования</h3>
+      <ol>
+        <li>Оцените текущие условия и рассчитайте потенциальную выгоду</li>
+        <li>Подберите банк с подходящим предложением</li>
+        <li>Подготовьте документы (паспорт, справка 2-НДФЛ, договор ипотеки)</li>
+        <li>Дождитесь одобрения (3-7 дней)</li>
+        <li>Оформите новый кредит и погасите старый</li>
+      </ol>
+    `
+  }
+];
+
 export default function Index() {
   const [activeTab, setActiveTab] = useState('programs');
   const [quizStep, setQuizStep] = useState(0);
@@ -106,6 +256,8 @@ export default function Index() {
     comment: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState<number | null>(null);
+  const [blogCategory, setBlogCategory] = useState('all');
 
   const quizQuestions = [
     {
@@ -389,7 +541,7 @@ export default function Index() {
         </section>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 h-auto gap-2 bg-white p-2 rounded-xl shadow-sm">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 h-auto gap-2 bg-white p-2 rounded-xl shadow-sm">
             <TabsTrigger value="programs" className="flex items-center gap-2 py-3">
               <Icon name="Home" size={18} />
               <span className="hidden sm:inline">Программы</span>
@@ -405,6 +557,10 @@ export default function Index() {
             <TabsTrigger value="faq" className="flex items-center gap-2 py-3">
               <Icon name="HelpCircle" size={18} />
               <span className="hidden sm:inline">FAQ</span>
+            </TabsTrigger>
+            <TabsTrigger value="blog" className="flex items-center gap-2 py-3">
+              <Icon name="BookOpen" size={18} />
+              <span className="hidden sm:inline">Блог</span>
             </TabsTrigger>
             <TabsTrigger value="contact" className="flex items-center gap-2 py-3">
               <Icon name="Phone" size={18} />
@@ -743,6 +899,142 @@ export default function Index() {
                 </Accordion>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="blog" className="space-y-6">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-3xl font-bold">Блог об ипотеке</h2>
+                <p className="text-gray-600 mt-2">Полезные статьи и советы от экспертов</p>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  variant={blogCategory === 'all' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setBlogCategory('all')}
+                >
+                  Все
+                </Button>
+                <Button
+                  variant={blogCategory === 'Советы' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setBlogCategory('Советы')}
+                >
+                  Советы
+                </Button>
+                <Button
+                  variant={blogCategory === 'Финансы' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setBlogCategory('Финансы')}
+                >
+                  Финансы
+                </Button>
+                <Button
+                  variant={blogCategory === 'Программы' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setBlogCategory('Программы')}
+                >
+                  Программы
+                </Button>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {blogArticles
+                .filter(article => blogCategory === 'all' || article.category === blogCategory)
+                .map((article) => (
+                <Card key={article.id} className="hover:shadow-xl transition-all cursor-pointer group">
+                  <CardHeader>
+                    <div className="flex items-start justify-between mb-3">
+                      <Badge variant="secondary">{article.category}</Badge>
+                      <div className={`w-12 h-12 ${article.color} rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                        <Icon name={article.icon} className="text-white" size={24} />
+                      </div>
+                    </div>
+                    <CardTitle className="text-xl group-hover:text-primary transition-colors">{article.title}</CardTitle>
+                    <CardDescription className="text-base mt-2">{article.excerpt}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                      <div className="flex items-center gap-2">
+                        <Icon name="Calendar" size={14} />
+                        <span>{article.date}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Icon name="Clock" size={14} />
+                        <span>{article.readTime}</span>
+                      </div>
+                    </div>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full"
+                          onClick={() => setSelectedArticle(article.id)}
+                        >
+                          Читать полностью
+                          <Icon name="ArrowRight" className="ml-2" size={16} />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+                        <DialogHeader>
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className={`w-14 h-14 ${article.color} rounded-lg flex items-center justify-center`}>
+                              <Icon name={article.icon} className="text-white" size={28} />
+                            </div>
+                            <div>
+                              <Badge variant="secondary" className="mb-2">{article.category}</Badge>
+                              <DialogTitle className="text-2xl">{article.title}</DialogTitle>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-4 text-sm text-gray-500">
+                            <div className="flex items-center gap-2">
+                              <Icon name="Calendar" size={14} />
+                              <span>{article.date}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Icon name="Clock" size={14} />
+                              <span>{article.readTime}</span>
+                            </div>
+                          </div>
+                        </DialogHeader>
+                        <div
+                          className="prose prose-lg max-w-none mt-6"
+                          dangerouslySetInnerHTML={{ __html: article.content }}
+                          style={{
+                            color: '#374151',
+                            lineHeight: '1.75'
+                          }}
+                        />
+                        <div className="border-t pt-6 mt-6">
+                          <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg">
+                            <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                              <Icon name="Phone" className="text-primary" size={20} />
+                              Нужна консультация?
+                            </h4>
+                            <p className="text-gray-700 mb-4">Свяжитесь с нашим экспертом для получения персональной консультации</p>
+                            <div className="flex gap-3">
+                              <Button asChild>
+                                <a href="tel:+79781281850">
+                                  <Icon name="Phone" className="mr-2" size={16} />
+                                  Позвонить
+                                </a>
+                              </Button>
+                              <Button variant="outline" asChild>
+                                <a href="mailto:ipoteka_krym@mail.ru">
+                                  <Icon name="Mail" className="mr-2" size={16} />
+                                  Написать
+                                </a>
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </TabsContent>
 
           <TabsContent value="contact" className="space-y-6">
