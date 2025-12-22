@@ -505,7 +505,8 @@ export default function Index() {
         { value: 'family', label: 'У меня есть дети', icon: 'Users' },
         { value: 'it', label: 'Я IT-специалист', icon: 'Laptop' },
         { value: 'military', label: 'Я военнослужащий', icon: 'Shield' },
-        { value: 'rural', label: 'Хочу купить жильё в селе', icon: 'Home' }
+        { value: 'rural', label: 'Хочу купить жильё в селе', icon: 'Home' },
+        { value: 'basic', label: 'Не подхожу под льготы', icon: 'Building2' }
       ]
     },
     {
