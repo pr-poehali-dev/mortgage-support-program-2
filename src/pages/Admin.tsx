@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
 import * as XLSX from 'xlsx';
 import {
@@ -61,6 +62,9 @@ export default function Admin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [period, setPeriod] = useState(30);
+  const [emailModalOpen, setEmailModalOpen] = useState(false);
+  const [reportEmail, setReportEmail] = useState('');
+  const [sendingEmail, setSendingEmail] = useState(false);
 
   const fetchAnalytics = async (adminPassword: string) => {
     setLoading(true);
@@ -180,6 +184,42 @@ export default function Admin() {
     
     // Download file
     XLSX.writeFile(wb, filename);
+  };
+
+  const sendEmailReport = async () => {
+    if (!reportEmail) {
+      alert('Укажите email');
+      return;
+    }
+
+    setSendingEmail(true);
+    
+    try {
+      const response = await fetch('https://functions.poehali.dev/2e6103d5-386e-4440-bed1-61b66d7e25f9', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': password
+        },
+        body: JSON.stringify({
+          email: reportEmail,
+          days: period
+        })
+      });
+
+      if (response.ok) {
+        alert(`Отчет успешно отправлен на ${reportEmail}`);
+        setEmailModalOpen(false);
+        setReportEmail('');
+      } else {
+        const data = await response.json();
+        alert(`Ошибка: ${data.error || 'Не удалось отправить отчет'}`);
+      }
+    } catch (err) {
+      alert('Не удалось отправить отчет. Проверьте настройки SMTP.');
+    } finally {
+      setSendingEmail(false);
+    }
   };
 
   if (!isAuthenticated) {
@@ -320,6 +360,13 @@ export default function Admin() {
             >
               <Icon name="Download" className="mr-2" size={18} />
               Скачать Excel
+            </Button>
+            <Button
+              onClick={() => setEmailModalOpen(true)}
+              className="h-10 bg-blue-600 hover:bg-blue-700"
+            >
+              <Icon name="Mail" className="mr-2" size={18} />
+              Отправить на Email
             </Button>
             <Button
               onClick={() => window.location.href = '/'}
@@ -483,6 +530,82 @@ export default function Admin() {
           </Card>
         </div>
       </div>
+
+      {/* Email Report Dialog */}
+      <Dialog open={emailModalOpen} onOpenChange={setEmailModalOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+                <Icon name="Mail" className="text-white" size={24} />
+              </div>
+              <div>
+                <DialogTitle className="text-2xl">Отправить отчет</DialogTitle>
+                <DialogDescription className="mt-1">
+                  Excel-файл с аналитикой будет отправлен на указанный email
+                </DialogDescription>
+              </div>
+            </div>
+          </DialogHeader>
+
+          <div className="space-y-4 mt-4">
+            <div className="space-y-2">
+              <Label htmlFor="report-email">Email получателя *</Label>
+              <Input
+                id="report-email"
+                type="email"
+                placeholder="example@mail.com"
+                value={reportEmail}
+                onChange={(e) => setReportEmail(e.target.value)}
+                className="h-12"
+                autoFocus
+              />
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
+              <p className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                <Icon name="FileSpreadsheet" size={16} className="text-blue-600" />
+                Что будет в отчете:
+              </p>
+              <ul className="text-sm text-gray-700 space-y-1 ml-6 list-disc">
+                <li>Сводка за {period} дней</li>
+                <li>Динамика просмотров и заявок</li>
+                <li>Источники трафика</li>
+                <li>Популярные программы</li>
+              </ul>
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setEmailModalOpen(false)}
+                className="flex-1 h-12"
+                disabled={sendingEmail}
+              >
+                Отмена
+              </Button>
+              <Button
+                onClick={sendEmailReport}
+                className="flex-1 h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+                disabled={sendingEmail || !reportEmail}
+              >
+                {sendingEmail ? (
+                  <>
+                    <Icon name="Loader2" className="mr-2 animate-spin" size={18} />
+                    Отправка...
+                  </>
+                ) : (
+                  <>
+                    <Icon name="Send" className="mr-2" size={18} />
+                    Отправить
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
