@@ -965,7 +965,15 @@ export default function MortgageTabsContent() {
                             </h4>
                             <p className="text-gray-700 mb-4">Свяжитесь с нами для получения дополнительной информации и организации просмотра</p>
                             <div className="flex flex-wrap gap-2">
-                              <Button asChild>
+                              {obj.domclickUrl && (
+                                <Button asChild size="lg" className="w-full sm:w-auto">
+                                  <a href={obj.domclickUrl} target="_blank" rel="noopener noreferrer">
+                                    <Icon name="ShoppingCart" className="mr-2" size={16} />
+                                    Купить в ипотеку в Сбере
+                                  </a>
+                                </Button>
+                              )}
+                              <Button asChild variant={obj.domclickUrl ? 'outline' : 'default'}>
                                 <a href="https://t.me/ipoteka_krym_rf" target="_blank" rel="noopener noreferrer">
                                   <Icon name="MessageCircle" className="mr-2" size={16} />
                                   Telegram
@@ -977,12 +985,14 @@ export default function MortgageTabsContent() {
                                   Позвонить
                                 </a>
                               </Button>
-                              <Button variant="outline" asChild>
-                                <a href="https://agencies.domclick.ru/agent/5621837?utm_source=partnerhub&utm_content=profile" target="_blank" rel="noopener noreferrer">
-                                  <Icon name="ExternalLink" className="mr-2" size={16} />
-                                  Домклик
-                                </a>
-                              </Button>
+                              {!obj.domclickUrl && (
+                                <Button variant="outline" asChild>
+                                  <a href="https://agencies.domclick.ru/agent/5621837?utm_source=partnerhub&utm_content=profile" target="_blank" rel="noopener noreferrer">
+                                    <Icon name="ExternalLink" className="mr-2" size={16} />
+                                    Домклик
+                                  </a>
+                                </Button>
+                              )}
                             </div>
                           </div>
                         </div>
