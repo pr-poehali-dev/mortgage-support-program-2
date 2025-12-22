@@ -51,6 +51,31 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 'url': 'https://ria.ru/export/rss2/archive/index.xml',
                 'source': 'РИА Новости',
                 'keywords': ['ипотек', 'недвижим', 'жиль']
+            },
+            {
+                'url': 'https://www.rbc.ru/v10/rss/news/30/full.rss',
+                'source': 'РБК',
+                'keywords': ['ипотек', 'недвижим', 'жиль', 'кредит', 'ставк']
+            },
+            {
+                'url': 'https://www.banki.ru/xml/news.rss',
+                'source': 'Banki.ru',
+                'keywords': ['ипотек', 'кредит', 'жиль', 'недвижим', 'ставк']
+            },
+            {
+                'url': 'https://www.kommersant.ru/RSS/main.xml',
+                'source': 'Коммерсантъ',
+                'keywords': ['ипотек', 'недвижим', 'жиль', 'кредит']
+            },
+            {
+                'url': 'https://tass.ru/rss/v2.xml',
+                'source': 'ТАСС',
+                'keywords': ['ипотек', 'недвижим', 'жиль']
+            },
+            {
+                'url': 'https://lenta.ru/rss/news',
+                'source': 'Lenta.ru',
+                'keywords': ['ипотек', 'недвижим', 'жиль', 'кредит']
             }
         ]
         
