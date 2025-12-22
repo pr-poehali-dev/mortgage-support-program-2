@@ -4,6 +4,7 @@ import Icon from '@/components/ui/icon';
 import { Toaster } from '@/components/ui/toaster';
 import MortgageQuiz from '@/components/MortgageQuiz';
 import MortgageTabsContent from '@/components/MortgageTabsContent';
+import FloatingApplicationButton from '@/components/FloatingApplicationButton';
 
 export default function Index() {
   const [activeTab, setActiveTab] = useState('programs');
@@ -103,6 +104,7 @@ export default function Index() {
         </div>
       </footer>
 
+      <FloatingApplicationButton />
       <Toaster />
     </div>
   );
