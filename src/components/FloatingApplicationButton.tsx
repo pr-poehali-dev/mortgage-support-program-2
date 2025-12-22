@@ -33,6 +33,19 @@ export default function FloatingApplicationButton() {
       const data = await response.json();
 
       if (response.ok) {
+        // Increment application counter
+        try {
+          await fetch('https://functions.poehali.dev/9c63ab81-cbed-4119-87cf-8ad688fe4856', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ metric: 'applications_sent' })
+          });
+        } catch (err) {
+          console.error('Failed to track application:', err);
+        }
+
         toast({
           title: '✅ Заявка отправлена!',
           description: 'Мы свяжемся с вами в ближайшее время',
