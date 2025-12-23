@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
 import { toast } from '@/hooks/use-toast';
 import { programs } from '@/data/mortgageData';
+import { trackCalculatorUsed } from '@/services/metrika-goals';
 
 export default function MortgageCalculator() {
   const [calcAmount, setCalcAmount] = useState([3000000]);
@@ -23,6 +24,12 @@ export default function MortgageCalculator() {
     comment: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const program = programs.find(p => p.id === selectedProgramCalc);
+    const rate = program?.rate || 6;
+    trackCalculatorUsed(calcAmount[0], calcTerm[0], rate);
+  }, [calcAmount, calcTerm, selectedProgramCalc]);
 
   const calculateMonthlyPayment = () => {
     const amount = calcAmount[0];

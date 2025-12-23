@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
 import { toast } from '@/hooks/use-toast';
+import { trackApplicationSent } from '@/services/metrika-goals';
 
 export default function FloatingApplicationButton() {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,6 +55,9 @@ export default function FloatingApplicationButton() {
             },
             body: JSON.stringify({ metric: 'applications_sent' })
           });
+
+          // Track in Yandex Metrika
+          trackApplicationSent(formData.program);
         } catch (err) {
           console.error('Failed to track application:', err);
         }

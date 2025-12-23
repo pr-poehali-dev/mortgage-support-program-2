@@ -22,6 +22,7 @@ import AdminEmailDialog from '@/components/admin/AdminEmailDialog';
 import IndexNowNotifier from '@/components/IndexNowNotifier';
 import SitemapInfo from '@/components/SitemapInfo';
 import AnalyticsInfo from '@/components/AnalyticsInfo';
+import { trackExcelDownload, trackEmailReport } from '@/services/metrika-goals';
 
 ChartJS.register(
   CategoryScale,
@@ -179,6 +180,7 @@ export default function Admin() {
     const filename = `Аналитика_${period}дней_${new Date().toISOString().split('T')[0]}.xlsx`;
     
     XLSX.writeFile(wb, filename);
+    trackExcelDownload('analytics_report');
   };
 
   const sendEmailReport = async () => {
@@ -204,6 +206,7 @@ export default function Admin() {
 
       if (response.ok) {
         alert(`Отчет успешно отправлен на ${reportEmail}`);
+        trackEmailReport(reportEmail);
         setEmailModalOpen(false);
         setReportEmail('');
       } else {

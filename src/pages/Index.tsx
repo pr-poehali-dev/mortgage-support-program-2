@@ -10,10 +10,16 @@ import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
 import TelegramButton from '@/components/TelegramButton';
 import { useAutoIndexNow } from '@/hooks/useAutoIndexNow';
+import { trackPhoneClick, trackTabChanged } from '@/services/metrika-goals';
 
 export default function Index() {
   const [activeTab, setActiveTab] = useState('home');
   useAutoIndexNow();
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    trackTabChanged(tab);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -31,7 +37,11 @@ export default function Index() {
                 <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Льготные программы с господдержкой</p>
               </div>
             </div>
-            <a href="tel:+79781281850" className="flex items-center gap-1.5 sm:gap-2 text-primary hover:text-primary/80 transition-colors">
+            <a 
+              href="tel:+79781281850" 
+              onClick={() => trackPhoneClick('header')}
+              className="flex items-center gap-1.5 sm:gap-2 text-primary hover:text-primary/80 transition-colors"
+            >
               <Icon name="Phone" size={18} className="sm:w-5 sm:h-5" />
               <span className="font-semibold text-sm sm:text-base hidden sm:inline">+7 978 128-18-50</span>
             </a>
@@ -40,9 +50,12 @@ export default function Index() {
       </header>
 
       <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
-        <MortgageQuiz onNavigateToCalculator={() => setActiveTab('calculator')} />
+        <MortgageQuiz onNavigateToCalculator={() => {
+          setActiveTab('calculator');
+          trackTabChanged('calculator');
+        }} />
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-8">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4 sm:space-y-8">
           <TabsList className="grid w-full grid-cols-5 md:grid-cols-9 h-auto gap-1 sm:gap-2 bg-white p-1.5 sm:p-2 rounded-xl shadow-sm overflow-x-auto">
             <TabsTrigger value="home" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm">
               <Icon name="Home" size={16} className="sm:w-[18px] sm:h-[18px]" />

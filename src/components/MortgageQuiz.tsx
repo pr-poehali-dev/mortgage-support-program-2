@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
 import { programs } from '@/data/mortgageData';
+import { trackQuizCompleted } from '@/services/metrika-goals';
 
 interface MortgageQuizProps {
   onNavigateToCalculator: () => void;
@@ -56,11 +57,14 @@ export default function MortgageQuiz({ onNavigateToCalculator }: MortgageQuizPro
       const category = newAnswers.category;
       const region = newAnswers.region;
       
+      let result = category;
       if (category === 'it' && (region === 'moscow' || region === 'spb')) {
+        result = 'family';
         setRecommendedProgram('family');
       } else {
         setRecommendedProgram(category);
       }
+      trackQuizCompleted(result);
     }
   };
 

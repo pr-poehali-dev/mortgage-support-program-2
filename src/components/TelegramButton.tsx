@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
+import { trackTelegramClick } from '@/services/metrika-goals';
 
 export default function TelegramButton() {
   const [showTooltip, setShowTooltip] = useState(false);
@@ -27,6 +28,7 @@ export default function TelegramButton() {
   const handleClick = () => {
     setShowTooltip(false);
     localStorage.setItem('telegram-tooltip-seen', 'true');
+    trackTelegramClick();
   };
 
   return (
