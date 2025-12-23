@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import { Toaster } from '@/components/ui/toaster';
 import MortgageQuiz from '@/components/MortgageQuiz';
@@ -14,6 +16,7 @@ import { trackPhoneClick, trackTabChanged } from '@/services/metrika-goals';
 
 export default function Index() {
   const [activeTab, setActiveTab] = useState('home');
+  const navigate = useNavigate();
   useAutoIndexNow();
 
   const handleTabChange = (tab: string) => {
@@ -37,14 +40,23 @@ export default function Index() {
                 <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Льготные программы с господдержкой</p>
               </div>
             </div>
-            <a 
-              href="tel:+79781281850" 
-              onClick={() => trackPhoneClick('header')}
-              className="flex items-center gap-1.5 sm:gap-2 text-primary hover:text-primary/80 transition-colors"
-            >
-              <Icon name="Phone" size={18} className="sm:w-5 sm:h-5" />
-              <span className="font-semibold text-sm sm:text-base hidden sm:inline">+7 978 128-18-50</span>
-            </a>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Button
+                onClick={() => navigate('/register')}
+                className="h-8 sm:h-10 px-3 sm:px-6 text-xs sm:text-sm"
+              >
+                <Icon name="UserPlus" className="mr-1.5" size={16} />
+                Регистрация
+              </Button>
+              <a 
+                href="tel:+79781281850" 
+                onClick={() => trackPhoneClick('header')}
+                className="flex items-center gap-1.5 sm:gap-2 text-primary hover:text-primary/80 transition-colors"
+              >
+                <Icon name="Phone" size={18} className="sm:w-5 sm:h-5" />
+                <span className="font-semibold text-sm sm:text-base hidden sm:inline">+7 978 128-18-50</span>
+              </a>
+            </div>
           </div>
         </div>
       </header>
