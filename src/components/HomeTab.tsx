@@ -1,8 +1,11 @@
 import Icon from '@/components/ui/icon';
 import { Card } from '@/components/ui/card';
 import RSSFeed from '@/components/RSSFeed';
+import { useLatestRutubeVideo } from '@/hooks/useLatestRutubeVideo';
 
 export default function HomeTab() {
+  const { video } = useLatestRutubeVideo();
+
   return (
     <div className="space-y-8">
       {/* Hero секция с видео */}
@@ -44,8 +47,8 @@ export default function HomeTab() {
                 <iframe
                   width="100%"
                   height="100%"
-                  src="https://rutube.ru/play/embed/cf5c2c281fbbc416c45ee25d552f702c"
-                  title="Видео об ипотеке"
+                  src={video.embed_url}
+                  title={video.title}
                   frameBorder="0"
                   allow="clipboard-write; autoplay"
                   allowFullScreen

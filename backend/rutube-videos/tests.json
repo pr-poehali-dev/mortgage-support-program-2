@@ -1,0 +1,22 @@
+{
+  "tests": [
+    {
+      "name": "Get latest video",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "video_id": "string",
+        "title": "string",
+        "embed_url": "string"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "OPTIONS request for CORS",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    }
+  ]
+}
