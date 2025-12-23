@@ -23,6 +23,7 @@ import IndexNowNotifier from '@/components/IndexNowNotifier';
 import SitemapInfo from '@/components/SitemapInfo';
 import AnalyticsInfo from '@/components/AnalyticsInfo';
 import MetrikaGoalsSetup from '@/components/MetrikaGoalsSetup';
+import MetrikaGoalsDashboard from '@/components/MetrikaGoalsDashboard';
 import { trackExcelDownload, trackEmailReport } from '@/services/metrika-goals';
 
 ChartJS.register(
@@ -302,6 +303,8 @@ export default function Admin() {
           <AnalyticsInfo />
           <MetrikaGoalsSetup />
         </div>
+
+        <MetrikaGoalsDashboard />
 
         <AdminCharts analytics={analytics} />
       </div>
