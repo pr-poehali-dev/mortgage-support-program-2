@@ -25,6 +25,8 @@ import AnalyticsInfo from '@/components/AnalyticsInfo';
 import MetrikaGoalsSetup from '@/components/MetrikaGoalsSetup';
 import MetrikaGoalsDashboard from '@/components/MetrikaGoalsDashboard';
 import MetrikaTrendsChart from '@/components/MetrikaTrendsChart';
+import AdminClock from '@/components/AdminClock';
+import AdminCalendar from '@/components/AdminCalendar';
 import { trackExcelDownload, trackEmailReport } from '@/services/metrika-goals';
 
 ChartJS.register(
@@ -295,9 +297,14 @@ export default function Admin() {
 
         <AdminStatsCards totals={analytics.totals} conversionRate={conversionRate} />
 
+        <AdminClock />
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <IndexNowNotifier />
-          <SitemapInfo />
+          <AdminCalendar />
+          <div className="space-y-6">
+            <IndexNowNotifier />
+            <SitemapInfo />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
