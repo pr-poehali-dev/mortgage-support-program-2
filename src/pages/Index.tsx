@@ -7,7 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import MortgageQuiz from '@/components/MortgageQuiz';
 import MortgageTabsContent from '@/components/MortgageTabsContent';
 import FloatingApplicationButton from '@/components/FloatingApplicationButton';
-import StatisticsCounter from '@/components/StatisticsCounter';
+
 import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
 import TelegramButton from '@/components/TelegramButton';
@@ -176,7 +176,6 @@ export default function Index() {
         </div>
       </footer>
 
-      <StatisticsCounter />
       <FloatingApplicationButton />
       <TelegramButton />
       <ThemeIndicator />
