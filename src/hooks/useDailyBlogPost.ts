@@ -15,7 +15,25 @@ export function useDailyBlogPost() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const availableArticles = blogArticles.filter(article => {
+    const storedOverrides = localStorage.getItem('article_publish_overrides');
+    const overrides = storedOverrides ? JSON.parse(storedOverrides) : {};
+    const storedContent = localStorage.getItem('article_content_overrides');
+    const contentOverrides = storedContent ? JSON.parse(storedContent) : {};
+
+    const articlesWithOverrides = blogArticles.map(article => ({
+      ...article,
+      publishDate: overrides[article.id]?.publishDate || article.publishDate,
+      published: overrides[article.id]?.published !== undefined 
+        ? overrides[article.id].published 
+        : article.published,
+      title: contentOverrides[article.id]?.title || article.title,
+      excerpt: contentOverrides[article.id]?.excerpt || article.excerpt,
+      content: contentOverrides[article.id]?.content || article.content,
+      category: contentOverrides[article.id]?.category || article.category,
+      readTime: contentOverrides[article.id]?.readTime || article.readTime
+    }));
+
+    const availableArticles = articlesWithOverrides.filter(article => {
       if (article.published) {
         return true;
       }

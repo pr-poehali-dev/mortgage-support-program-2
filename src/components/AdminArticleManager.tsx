@@ -3,6 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Textarea } from '@/components/ui/textarea';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 import { blogArticles } from '@/data/mortgageData';
@@ -15,6 +17,12 @@ interface Article {
   published?: boolean;
   category: string;
   excerpt: string;
+  content?: string;
+  date?: string;
+  readTime?: string;
+  icon?: string;
+  color?: string;
+  image?: string;
 }
 
 const ADMIN_PASSWORD = 'ipoteka2025';
@@ -25,6 +33,14 @@ export default function AdminArticleManager() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [newDate, setNewDate] = useState('');
+  const [editingContentId, setEditingContentId] = useState<number | null>(null);
+  const [editForm, setEditForm] = useState({
+    title: '',
+    excerpt: '',
+    content: '',
+    category: '',
+    readTime: ''
+  });
   const { toast } = useToast();
 
   useEffect(() => {
@@ -38,13 +54,20 @@ export default function AdminArticleManager() {
   const loadArticles = () => {
     const storedOverrides = localStorage.getItem('article_publish_overrides');
     const overrides = storedOverrides ? JSON.parse(storedOverrides) : {};
+    const storedContent = localStorage.getItem('article_content_overrides');
+    const contentOverrides = storedContent ? JSON.parse(storedContent) : {};
 
     const articlesWithOverrides = blogArticles.map(article => ({
       ...article,
       publishDate: overrides[article.id]?.publishDate || article.publishDate,
       published: overrides[article.id]?.published !== undefined 
         ? overrides[article.id].published 
-        : article.published
+        : article.published,
+      title: contentOverrides[article.id]?.title || article.title,
+      excerpt: contentOverrides[article.id]?.excerpt || article.excerpt,
+      content: contentOverrides[article.id]?.content || article.content,
+      category: contentOverrides[article.id]?.category || article.category,
+      readTime: contentOverrides[article.id]?.readTime || article.readTime
     }));
 
     setArticles(articlesWithOverrides);
@@ -142,6 +165,62 @@ export default function AdminArticleManager() {
         variant: 'destructive'
       });
     }
+  };
+
+  const handleOpenContentEditor = (article: Article) => {
+    setEditingContentId(article.id);
+    setEditForm({
+      title: article.title,
+      excerpt: article.excerpt,
+      content: article.content || '',
+      category: article.category,
+      readTime: article.readTime || ''
+    });
+  };
+
+  const handleSaveContent = () => {
+    if (!editingContentId) return;
+
+    if (!editForm.title.trim() || !editForm.excerpt.trim()) {
+      toast({
+        title: 'Ошибка',
+        description: 'Заголовок и описание обязательны',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    const storedContent = localStorage.getItem('article_content_overrides');
+    const contentOverrides = storedContent ? JSON.parse(storedContent) : {};
+
+    contentOverrides[editingContentId] = {
+      title: editForm.title,
+      excerpt: editForm.excerpt,
+      content: editForm.content,
+      category: editForm.category,
+      readTime: editForm.readTime
+    };
+
+    localStorage.setItem('article_content_overrides', JSON.stringify(contentOverrides));
+    
+    setEditingContentId(null);
+    loadArticles();
+
+    toast({
+      title: '✅ Контент обновлён',
+      description: 'Изменения сохранены и видны на сайте'
+    });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingContentId(null);
+    setEditForm({
+      title: '',
+      excerpt: '',
+      content: '',
+      category: '',
+      readTime: ''
+    });
   };
 
   const formatDate = (dateString?: string) => {
@@ -305,6 +384,16 @@ export default function AdminArticleManager() {
                       <Button
                         variant="outline"
                         size="sm"
+                        onClick={() => handleOpenContentEditor(article)}
+                        className="flex-1"
+                      >
+                        <Icon name="Edit" size={16} className="mr-1" />
+                        Редактировать текст
+                      </Button>
+
+                      <Button
+                        variant="outline"
+                        size="sm"
                         onClick={() => handleSendNewsletter(article)}
                         className="flex-1"
                       >
@@ -329,10 +418,117 @@ export default function AdminArticleManager() {
           <CardContent className="space-y-2 text-sm">
             <p><strong>Дата публикации:</strong> Статья автоматически появится в блоге, когда наступит указанная дата</p>
             <p><strong>Опубликовать сейчас:</strong> Статья станет видна немедленно, независимо от даты</p>
+            <p><strong>Редактировать текст:</strong> Изменить заголовок, описание и содержимое статьи</p>
             <p><strong>Отправить рассылку:</strong> Отправить email всем подписчикам о новой статье</p>
             <p><strong>Автоматическая рассылка:</strong> Email отправляется автоматически при первом показе новой статьи</p>
           </CardContent>
         </Card>
+
+        <Dialog open={editingContentId !== null} onOpenChange={(open) => !open && handleCancelEdit()}>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-2xl">Редактирование статьи</DialogTitle>
+              <DialogDescription>
+                Изменения сохраняются в localStorage и не затрагивают исходный код
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-6 mt-6">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold flex items-center gap-2">
+                  <Icon name="FileText" size={16} />
+                  Заголовок статьи
+                </label>
+                <Input
+                  value={editForm.title}
+                  onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
+                  placeholder="Введите заголовок"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold flex items-center gap-2">
+                    <Icon name="Tag" size={16} />
+                    Категория
+                  </label>
+                  <Input
+                    value={editForm.category}
+                    onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
+                    placeholder="Советы, Финансы, Программы..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold flex items-center gap-2">
+                    <Icon name="Clock" size={16} />
+                    Время чтения
+                  </label>
+                  <Input
+                    value={editForm.readTime}
+                    onChange={(e) => setEditForm({ ...editForm, readTime: e.target.value })}
+                    placeholder="5 мин"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold flex items-center gap-2">
+                  <Icon name="AlignLeft" size={16} />
+                  Краткое описание (excerpt)
+                </label>
+                <Textarea
+                  value={editForm.excerpt}
+                  onChange={(e) => setEditForm({ ...editForm, excerpt: e.target.value })}
+                  placeholder="Краткое описание статьи для карточки"
+                  rows={3}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-semibold flex items-center gap-2">
+                    <Icon name="Code" size={16} />
+                    Полный текст (HTML)
+                  </label>
+                  <Badge variant="secondary" className="text-xs">
+                    Поддерживается HTML: h3, p, ul, ol, li, strong
+                  </Badge>
+                </div>
+                <Textarea
+                  value={editForm.content}
+                  onChange={(e) => setEditForm({ ...editForm, content: e.target.value })}
+                  placeholder="Полный HTML-контент статьи"
+                  rows={15}
+                  className="font-mono text-sm"
+                />
+              </div>
+
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                  <Icon name="Info" size={16} className="text-blue-600" />
+                  Подсказки по HTML
+                </h4>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>• <code className="bg-white px-1 rounded">&lt;h3&gt;Заголовок&lt;/h3&gt;</code> — заголовок раздела</li>
+                  <li>• <code className="bg-white px-1 rounded">&lt;p&gt;Текст&lt;/p&gt;</code> — абзац текста</li>
+                  <li>• <code className="bg-white px-1 rounded">&lt;strong&gt;Важно&lt;/strong&gt;</code> — жирный текст</li>
+                  <li>• <code className="bg-white px-1 rounded">&lt;ul&gt;&lt;li&gt;Пункт&lt;/li&gt;&lt;/ul&gt;</code> — маркированный список</li>
+                  <li>• <code className="bg-white px-1 rounded">&lt;ol&gt;&lt;li&gt;Пункт&lt;/li&gt;&lt;/ol&gt;</code> — нумерованный список</li>
+                </ul>
+              </div>
+
+              <div className="flex gap-3 pt-4 border-t">
+                <Button onClick={handleSaveContent} className="flex-1">
+                  <Icon name="Save" className="mr-2" size={18} />
+                  Сохранить изменения
+                </Button>
+                <Button variant="outline" onClick={handleCancelEdit}>
+                  <Icon name="X" className="mr-2" size={18} />
+                  Отменить
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
