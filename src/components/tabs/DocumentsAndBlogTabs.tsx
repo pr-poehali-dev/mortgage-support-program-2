@@ -9,6 +9,7 @@ import { toast } from '@/hooks/use-toast';
 import { jsPDF } from 'jspdf';
 import { programs, documentsData } from '@/data/mortgageData';
 import { useDailyBlogPost } from '@/hooks/useDailyBlogPost';
+import { useArticlePublisher } from '@/hooks/useArticlePublisher';
 import NewsletterSubscription from '@/components/NewsletterSubscription';
 import ArticleComments from '@/components/ArticleComments';
 import FullscreenArticle from '@/components/FullscreenArticle';
@@ -16,6 +17,7 @@ import ArticleStatsDisplay from '@/components/ArticleStatsDisplay';
 
 export default function DocumentsAndBlogTabs() {
   const blogArticles = useDailyBlogPost();
+  useArticlePublisher(blogArticles);
   const [selectedArticle, setSelectedArticle] = useState<number | null>(null);
   const [fullscreenArticle, setFullscreenArticle] = useState<number | null>(null);
   const [blogCategory, setBlogCategory] = useState('all');
