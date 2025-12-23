@@ -313,7 +313,11 @@ export default function DocumentsAndBlogTabs() {
           {blogArticles
             .filter(article => blogCategory === 'all' || article.category === blogCategory)
             .map((article) => (
-            <Card key={article.id} className="hover:shadow-xl transition-all cursor-pointer group overflow-hidden">
+            <Card 
+              key={article.id} 
+              className="hover:shadow-xl transition-all cursor-pointer group overflow-hidden"
+              onClick={() => setFullscreenArticle(article.id)}
+            >
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={article.image} 
@@ -349,7 +353,10 @@ export default function DocumentsAndBlogTabs() {
                   <Button
                     variant="outline"
                     className="flex-1"
-                    onClick={() => setFullscreenArticle(article.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setFullscreenArticle(article.id);
+                    }}
                   >
                     <Icon name="Maximize2" className="mr-2" size={16} />
                     Открыть
@@ -359,7 +366,10 @@ export default function DocumentsAndBlogTabs() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => setSelectedArticle(article.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedArticle(article.id);
+                        }}
                       >
                         <Icon name="Eye" size={18} />
                       </Button>
