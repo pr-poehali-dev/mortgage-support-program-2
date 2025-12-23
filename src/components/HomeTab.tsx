@@ -143,14 +143,14 @@ export default function HomeTab() {
       </div>
 
       {/* Межрегиональные сделки */}
-      <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-6 sm:p-8">
+      <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-6 sm:p-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 text-center">
           Межрегиональные сделки
         </h2>
         <p className="text-center text-gray-600 mb-6">Готовое решение</p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="p-6 hover:shadow-xl transition-shadow border-2 border-indigo-100">
+          <Card className="p-6 hover:shadow-xl transition-all border-2 border-indigo-100 animate-in fade-in slide-in-from-left duration-500" style={{animationDelay: '100ms'}}>
             <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
               <Icon name="MapPin" size={24} className="text-indigo-600" />
             </div>
@@ -160,7 +160,7 @@ export default function HomeTab() {
             </p>
           </Card>
 
-          <Card className="p-6 hover:shadow-xl transition-shadow border-2 border-blue-100">
+          <Card className="p-6 hover:shadow-xl transition-all border-2 border-blue-100 animate-in fade-in slide-in-from-bottom duration-500" style={{animationDelay: '200ms'}}>
             <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
               <Icon name="Monitor" size={24} className="text-blue-600" />
             </div>
@@ -170,7 +170,7 @@ export default function HomeTab() {
             </p>
           </Card>
 
-          <Card className="p-6 hover:shadow-xl transition-shadow border-2 border-green-100">
+          <Card className="p-6 hover:shadow-xl transition-all border-2 border-green-100 animate-in fade-in slide-in-from-right duration-500" style={{animationDelay: '300ms'}}>
             <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
               <Icon name="ShieldCheck" size={24} className="text-green-600" />
             </div>
