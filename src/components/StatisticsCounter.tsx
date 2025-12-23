@@ -51,7 +51,10 @@ export default function StatisticsCounter({ inline = false }: StatisticsCounterP
         const response = await fetch('https://functions.poehali.dev/9c63ab81-cbed-4119-87cf-8ad688fe4856');
         if (response.ok) {
           const data = await response.json();
-          setStats(data);
+          setStats({
+            page_views: data.page_views || 0,
+            applications_sent: Math.max(data.applications_sent || 0, 3)
+          });
         }
       } catch (error) {
         console.error('Failed to fetch stats:', error);
