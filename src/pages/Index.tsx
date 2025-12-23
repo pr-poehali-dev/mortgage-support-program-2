@@ -155,9 +155,13 @@ export default function Index() {
             <p>© 2025 Все права защищены. Информация носит справочный характер.</p>
             <button
               onClick={() => navigate('/admin')}
-              className="mt-2 text-gray-600 hover:text-gray-400 transition-colors text-xs opacity-50 hover:opacity-100"
+              className="mt-3 text-gray-500 hover:text-gray-300 transition-all text-sm px-3 py-1 rounded hover:bg-gray-800 group relative"
+              title="Панель администратора"
             >
-              •
+              <Icon name="Settings" size={16} className="inline" />
+              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                Панель администратора
+              </span>
             </button>
           </div>
         </div>
