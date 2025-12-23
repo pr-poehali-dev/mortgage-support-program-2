@@ -153,6 +153,12 @@ export default function Index() {
           </div>
           <div className="border-t border-gray-800 mt-4 sm:mt-6 pt-4 sm:pt-6 text-center text-gray-400 text-xs sm:text-sm">
             <p>© 2025 Все права защищены. Информация носит справочный характер.</p>
+            <button
+              onClick={() => navigate('/admin')}
+              className="mt-2 text-gray-600 hover:text-gray-400 transition-colors text-xs opacity-50 hover:opacity-100"
+            >
+              •
+            </button>
           </div>
         </div>
       </footer>
