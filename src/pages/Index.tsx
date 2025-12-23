@@ -17,6 +17,7 @@ import BlogPublicationIndicator from '@/components/BlogPublicationIndicator';
 import CookieConsent from '@/components/CookieConsent';
 import { useAutoIndexNow } from '@/hooks/useAutoIndexNow';
 import { useDailyTheme } from '@/hooks/useDailyTheme';
+import { useSitemapGenerator } from '@/hooks/useSitemapGenerator';
 import { trackPhoneClick, trackTabChanged } from '@/services/metrika-goals';
 
 export default function Index() {
@@ -24,6 +25,7 @@ export default function Index() {
   const navigate = useNavigate();
   const theme = useDailyTheme();
   useAutoIndexNow();
+  useSitemapGenerator();
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
