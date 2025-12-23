@@ -1,0 +1,27 @@
+{
+  "tests": [
+    {
+      "name": "GET request returns API info",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "service": "IndexNow API",
+        "version": "1.0"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "POST without required fields returns error",
+      "method": "POST",
+      "path": "/",
+      "body": {},
+      "expectedStatus": 400,
+      "expectedBody": {
+        "success": false,
+        "error": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
