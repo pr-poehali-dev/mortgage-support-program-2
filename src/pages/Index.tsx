@@ -32,9 +32,11 @@ export default function Index() {
         <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-lg flex items-center justify-center">
-                <Icon name="Home" className="text-white" size={20} />
-              </div>
+              <img 
+                src="https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/051d12af-c2b7-4c0b-82a5-7862b2ec8eb3.jpg" 
+                alt="Ипотека РФ 2025" 
+                className="w-8 h-8 sm:w-12 sm:h-12 rounded-lg object-cover"
+              />
               <div>
                 <h1 className="text-lg sm:text-2xl font-bold text-gray-900">Ипотека РФ 2025</h1>
                 <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Льготные программы с господдержкой</p>
@@ -121,9 +123,11 @@ export default function Index() {
         <div className="container mx-auto px-3 sm:px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-lg flex items-center justify-center">
-                <Icon name="Home" className="text-white" size={20} />
-              </div>
+              <img 
+                src="https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/051d12af-c2b7-4c0b-82a5-7862b2ec8eb3.jpg" 
+                alt="Ипотека РФ 2025" 
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-cover"
+              />
               <div>
                 <p className="font-bold text-sm sm:text-base">Ипотека РФ 2025</p>
                 <p className="text-xs sm:text-sm text-gray-400">Льготные программы с господдержкой</p>
