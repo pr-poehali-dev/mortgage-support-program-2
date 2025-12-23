@@ -12,6 +12,7 @@ import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
 import TelegramButton from '@/components/TelegramButton';
 import ThemeIndicator from '@/components/ThemeIndicator';
+import DailyHeroImage from '@/components/DailyHeroImage';
 import { useAutoIndexNow } from '@/hooks/useAutoIndexNow';
 import { useDailyTheme } from '@/hooks/useDailyTheme';
 import { trackPhoneClick, trackTabChanged } from '@/services/metrika-goals';
@@ -73,6 +74,7 @@ export default function Index() {
       </header>
 
       <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
+        <DailyHeroImage />
         <MortgageQuiz onNavigateToCalculator={() => {
           setActiveTab('calculator');
           trackTabChanged('calculator');
