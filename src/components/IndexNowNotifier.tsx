@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
-import { notifySitemap, notifyCurrentPage } from '@/services/indexnow';
+import { notifySitemap, notifyCurrentPage, notifySitemapXml } from '@/services/indexnow';
 import { toast } from 'sonner';
 
 export default function IndexNowNotifier() {
@@ -41,11 +41,15 @@ export default function IndexNowNotifier() {
   const handleNotifyAllPages = async () => {
     setIsLoading(true);
     try {
-      const result = await notifySitemap();
-      const successCount = result.results.filter(r => r.status === 'success').length;
+      const [sitemapResult, pagesResult] = await Promise.all([
+        notifySitemapXml(),
+        notifySitemap()
+      ]);
+      
+      const successCount = pagesResult.results.filter(r => r.status === 'success').length;
       
       if (successCount > 0) {
-        toast.success(`${result.urls_submitted} страниц отправлено в ${successCount} поисковых систем`);
+        toast.success(`${pagesResult.urls_submitted} страниц + sitemap.xml отправлено в ${successCount} поисковых систем`);
         const now = new Date().toISOString();
         localStorage.setItem('indexnow_last_notification', now);
         setLastNotification(now);

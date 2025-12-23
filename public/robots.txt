@@ -1,8 +1,12 @@
 User-agent: *
 Allow: /
+Disallow: /admin
 
 # Sitemap
 Sitemap: https://ипотекакрым.рф/sitemap.xml
+
+# IndexNow Key
+Host: https://ипотекакрым.рф
 
 # Yandex
 User-agent: Yandex

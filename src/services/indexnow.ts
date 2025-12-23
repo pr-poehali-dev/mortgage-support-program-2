@@ -53,8 +53,21 @@ export async function notifyMultiplePages(paths: string[]): Promise<IndexNowResp
 export async function notifySitemap(): Promise<IndexNowResponse> {
   const commonPages = [
     '/',
+    '/#programs',
+    '/#comparison',
+    '/#calculator',
+    '/#catalog',
+    '/#documents',
+    '/#faq',
+    '/#blog',
+    '/#contact',
     '/admin',
   ];
   
   return notifyIndexNow(commonPages);
+}
+
+export async function notifySitemapXml(): Promise<IndexNowResponse> {
+  const baseUrl = `${window.location.protocol}//${SITE_HOST}`;
+  return notifyIndexNow([`${baseUrl}/sitemap.xml`]);
 }
