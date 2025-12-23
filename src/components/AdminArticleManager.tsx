@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Textarea } from '@/components/ui/textarea';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 import { blogArticles } from '@/data/mortgageData';
 import { sendNewsletter } from '@/utils/sendNewsletter';
+import AdminLoginForm from '@/components/admin/AdminLoginForm';
+import AdminArticleCard from '@/components/admin/AdminArticleCard';
+import AdminArticleEditor from '@/components/admin/AdminArticleEditor';
 
 interface Article {
   id: number;
@@ -29,7 +28,6 @@ const ADMIN_PASSWORD = 'ipoteka2025';
 
 export default function AdminArticleManager() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState('');
   const [articles, setArticles] = useState<Article[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [newDate, setNewDate] = useState('');
@@ -73,29 +71,14 @@ export default function AdminArticleManager() {
     setArticles(articlesWithOverrides);
   };
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('admin_authenticated', 'true');
-      loadArticles();
-      toast({
-        title: '✅ Доступ разрешён',
-        description: 'Добро пожаловать в панель управления'
-      });
-    } else {
-      toast({
-        title: '❌ Неверный пароль',
-        description: 'Попробуйте снова',
-        variant: 'destructive'
-      });
-    }
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+    loadArticles();
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
     sessionStorage.removeItem('admin_authenticated');
-    setPassword('');
   };
 
   const handleSaveDate = (articleId: number) => {
@@ -239,36 +222,7 @@ export default function AdminArticleManager() {
   };
 
   if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Icon name="Lock" className="text-white" size={32} />
-            </div>
-            <CardTitle className="text-center text-2xl">Панель администратора</CardTitle>
-            <CardDescription className="text-center">
-              Управление публикацией статей блога
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <Input
-                type="password"
-                placeholder="Введите пароль"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="text-center"
-              />
-              <Button type="submit" className="w-full">
-                <Icon name="LogIn" className="mr-2" size={18} />
-                Войти
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    );
+    return <AdminLoginForm onLogin={handleLogin} adminPassword={ADMIN_PASSWORD} />;
   }
 
   return (
@@ -286,126 +240,29 @@ export default function AdminArticleManager() {
         </div>
 
         <div className="grid gap-4">
-          {articles.map((article) => {
-            const isEditing = editingId === article.id;
-            const isPassed = isPublishDatePassed(article.publishDate);
-            
-            return (
-              <Card key={article.id} className="bg-white">
-                <CardContent className="p-6">
-                  <div className="flex flex-col lg:flex-row gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-start gap-3 mb-3">
-                        <Badge variant="secondary" className="mt-1">
-                          ID {article.id}
-                        </Badge>
-                        <div className="flex-1">
-                          <h3 className="font-bold text-lg mb-1">{article.title}</h3>
-                          <p className="text-sm text-gray-600 mb-2">{article.excerpt}</p>
-                          <div className="flex flex-wrap gap-2">
-                            <Badge className="bg-blue-100 text-blue-700">
-                              {article.category}
-                            </Badge>
-                            {article.published ? (
-                              <Badge className="bg-green-100 text-green-700">
-                                <Icon name="CheckCircle" size={14} className="mr-1" />
-                                Опубликовано
-                              </Badge>
-                            ) : (
-                              <Badge className="bg-orange-100 text-orange-700">
-                                <Icon name="Clock" size={14} className="mr-1" />
-                                Ожидает
-                              </Badge>
-                            )}
-                            {isPassed && !article.published && (
-                              <Badge className="bg-yellow-100 text-yellow-700">
-                                <Icon name="AlertTriangle" size={14} className="mr-1" />
-                                Дата прошла
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      {isEditing ? (
-                        <div className="flex gap-2 mt-4">
-                          <Input
-                            type="date"
-                            value={newDate}
-                            onChange={(e) => setNewDate(e.target.value)}
-                            className="flex-1"
-                          />
-                          <Button onClick={() => handleSaveDate(article.id)} size="sm">
-                            <Icon name="Save" size={16} className="mr-1" />
-                            Сохранить
-                          </Button>
-                          <Button 
-                            variant="outline" 
-                            onClick={() => {
-                              setEditingId(null);
-                              setNewDate('');
-                            }}
-                            size="sm"
-                          >
-                            Отмена
-                          </Button>
-                        </div>
-                      ) : (
-                        <div className="text-sm text-gray-600 mt-2">
-                          <span className="font-semibold">Дата публикации:</span> {formatDate(article.publishDate)}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex lg:flex-col gap-2 lg:min-w-[200px]">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          setEditingId(article.id);
-                          setNewDate(article.publishDate || '');
-                        }}
-                        className="flex-1"
-                      >
-                        <Icon name="Calendar" size={16} className="mr-1" />
-                        Изменить дату
-                      </Button>
-                      
-                      <Button
-                        variant={article.published ? "secondary" : "default"}
-                        size="sm"
-                        onClick={() => handleTogglePublished(article.id, article.published || false)}
-                        className="flex-1"
-                      >
-                        <Icon name={article.published ? "EyeOff" : "Eye"} size={16} className="mr-1" />
-                        {article.published ? 'Скрыть' : 'Опубликовать'}
-                      </Button>
-
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleOpenContentEditor(article)}
-                        className="flex-1"
-                      >
-                        <Icon name="Edit" size={16} className="mr-1" />
-                        Редактировать текст
-                      </Button>
-
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleSendNewsletter(article)}
-                        className="flex-1"
-                      >
-                        <Icon name="Send" size={16} className="mr-1" />
-                        Отправить рассылку
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+          {articles.map((article) => (
+            <AdminArticleCard
+              key={article.id}
+              article={article}
+              isEditing={editingId === article.id}
+              newDate={newDate}
+              onSetNewDate={setNewDate}
+              onStartEditDate={(articleId, currentDate) => {
+                setEditingId(articleId);
+                setNewDate(currentDate || '');
+              }}
+              onSaveDate={handleSaveDate}
+              onCancelEditDate={() => {
+                setEditingId(null);
+                setNewDate('');
+              }}
+              onTogglePublished={handleTogglePublished}
+              onOpenContentEditor={handleOpenContentEditor}
+              onSendNewsletter={handleSendNewsletter}
+              formatDate={formatDate}
+              isPublishDatePassed={isPublishDatePassed}
+            />
+          ))}
         </div>
 
         <Card className="mt-8 bg-blue-50 border-blue-200">
@@ -424,111 +281,13 @@ export default function AdminArticleManager() {
           </CardContent>
         </Card>
 
-        <Dialog open={editingContentId !== null} onOpenChange={(open) => !open && handleCancelEdit()}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="text-2xl">Редактирование статьи</DialogTitle>
-              <DialogDescription>
-                Изменения сохраняются в localStorage и не затрагивают исходный код
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-6 mt-6">
-              <div className="space-y-2">
-                <label className="text-sm font-semibold flex items-center gap-2">
-                  <Icon name="FileText" size={16} />
-                  Заголовок статьи
-                </label>
-                <Input
-                  value={editForm.title}
-                  onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                  placeholder="Введите заголовок"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold flex items-center gap-2">
-                    <Icon name="Tag" size={16} />
-                    Категория
-                  </label>
-                  <Input
-                    value={editForm.category}
-                    onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
-                    placeholder="Советы, Финансы, Программы..."
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold flex items-center gap-2">
-                    <Icon name="Clock" size={16} />
-                    Время чтения
-                  </label>
-                  <Input
-                    value={editForm.readTime}
-                    onChange={(e) => setEditForm({ ...editForm, readTime: e.target.value })}
-                    placeholder="5 мин"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-semibold flex items-center gap-2">
-                  <Icon name="AlignLeft" size={16} />
-                  Краткое описание (excerpt)
-                </label>
-                <Textarea
-                  value={editForm.excerpt}
-                  onChange={(e) => setEditForm({ ...editForm, excerpt: e.target.value })}
-                  placeholder="Краткое описание статьи для карточки"
-                  rows={3}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-semibold flex items-center gap-2">
-                    <Icon name="Code" size={16} />
-                    Полный текст (HTML)
-                  </label>
-                  <Badge variant="secondary" className="text-xs">
-                    Поддерживается HTML: h3, p, ul, ol, li, strong
-                  </Badge>
-                </div>
-                <Textarea
-                  value={editForm.content}
-                  onChange={(e) => setEditForm({ ...editForm, content: e.target.value })}
-                  placeholder="Полный HTML-контент статьи"
-                  rows={15}
-                  className="font-mono text-sm"
-                />
-              </div>
-
-              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
-                  <Icon name="Info" size={16} className="text-blue-600" />
-                  Подсказки по HTML
-                </h4>
-                <ul className="text-sm text-gray-700 space-y-1">
-                  <li>• <code className="bg-white px-1 rounded">&lt;h3&gt;Заголовок&lt;/h3&gt;</code> — заголовок раздела</li>
-                  <li>• <code className="bg-white px-1 rounded">&lt;p&gt;Текст&lt;/p&gt;</code> — абзац текста</li>
-                  <li>• <code className="bg-white px-1 rounded">&lt;strong&gt;Важно&lt;/strong&gt;</code> — жирный текст</li>
-                  <li>• <code className="bg-white px-1 rounded">&lt;ul&gt;&lt;li&gt;Пункт&lt;/li&gt;&lt;/ul&gt;</code> — маркированный список</li>
-                  <li>• <code className="bg-white px-1 rounded">&lt;ol&gt;&lt;li&gt;Пункт&lt;/li&gt;&lt;/ol&gt;</code> — нумерованный список</li>
-                </ul>
-              </div>
-
-              <div className="flex gap-3 pt-4 border-t">
-                <Button onClick={handleSaveContent} className="flex-1">
-                  <Icon name="Save" className="mr-2" size={18} />
-                  Сохранить изменения
-                </Button>
-                <Button variant="outline" onClick={handleCancelEdit}>
-                  <Icon name="X" className="mr-2" size={18} />
-                  Отменить
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <AdminArticleEditor
+          isOpen={editingContentId !== null}
+          editForm={editForm}
+          onFormChange={setEditForm}
+          onSave={handleSaveContent}
+          onCancel={handleCancelEdit}
+        />
       </div>
     </div>
   );
