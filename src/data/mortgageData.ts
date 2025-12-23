@@ -373,6 +373,7 @@ export const blogArticles = [
     date: '15 декабря 2024',
     readTime: '5 мин',
     image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/20025dfe-1f44-41eb-a385-1608fff74e87.jpg',
+    publishDate: '2024-12-15',
     published: true,
     content: `
       <h3>Основные факторы выбора</h3>
@@ -397,6 +398,7 @@ export const blogArticles = [
     date: '10 декабря 2024',
     readTime: '7 мин',
     image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/879d05bd-6491-4437-8d94-e249289f41ea.jpg',
+    publishDate: '2024-12-10',
     published: true,
     content: `
       <h3>Два способа досрочного погашения</h3>
@@ -421,6 +423,7 @@ export const blogArticles = [
     date: '5 декабря 2024',
     readTime: '6 мин',
     image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/aa09ac4c-21e0-4575-9d69-2bc0c2bd0dac.jpg',
+    publishDate: '2024-12-05',
     published: true,
     content: `
       <h3>Ошибка №1: Неправильная оценка своих возможностей</h3>
@@ -445,6 +448,7 @@ export const blogArticles = [
     date: '1 декабря 2024',
     readTime: '4 мин',
     image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/ae3d0474-5f9c-49b5-8b59-e57db5249755.jpg',
+    publishDate: '2024-12-01',
     published: true,
     content: `
       <h3>Продление программы до 2030 года</h3>
@@ -474,6 +478,7 @@ export const blogArticles = [
     date: '25 ноября 2024',
     readTime: '8 мин',
     image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/5824eb72-d33a-4202-aeb1-63706a5820bc.jpg',
+    publishDate: '2024-11-25',
     published: true,
     content: `
       <h3>Кто может получить IT-ипотеку</h3>
@@ -501,6 +506,7 @@ export const blogArticles = [
     date: '20 ноября 2024',
     readTime: '6 мин',
     image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/6746b038-9397-42db-b9d1-50b1c3a8ba73.jpg',
+    publishDate: '2024-11-20',
     published: true,
     content: `
       <h3>Что такое рефинансирование</h3>
@@ -534,6 +540,7 @@ export const blogArticles = [
     date: '20 декабря 2024',
     readTime: '10 мин',
     image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/d68a07ec-c2b4-4524-8dad-d592aed75dc2.jpg',
+    publishDate: '2024-12-24',
     published: false,
     content: `
       <h3>Ипотека в Крыму: актуальная ситуация</h3>
@@ -564,6 +571,7 @@ export const blogArticles = [
     date: '18 декабря 2024',
     readTime: '7 мин',
     image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/c55d1796-3c30-438e-aad7-837e11a20337.jpg',
+    publishDate: '2024-12-26',
     published: false,
     content: `
       <h3>Размер материнского капитала в 2025 году</h3>
@@ -602,6 +610,7 @@ export const blogArticles = [
     date: '15 декабря 2024',
     readTime: '9 мин',
     image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/0755a527-ba56-4135-94fd-31cea0fa1ce1.jpg',
+    publishDate: '2024-12-28',
     published: false,
     content: `
       <h3>Что такое НИС и военная ипотека</h3>
@@ -640,6 +649,7 @@ export const blogArticles = [
     date: '12 декабря 2024',
     readTime: '8 мин',
     image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/6ed9286e-b522-4888-b730-a2479458f6f6.jpg',
+    publishDate: '2024-12-30',
     published: false,
     content: `
       <h3>Сельская ипотека: две ставки</h3>
@@ -679,6 +689,7 @@ export const blogArticles = [
     date: '10 декабря 2024',
     readTime: '6 мин',
     image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/5947cfb3-5d44-4767-82f2-19ae163d8e0e.jpg',
+    publishDate: '2025-01-01',
     published: false,
     content: `
       <h3>Виды страхования при ипотеке</h3>
@@ -719,6 +730,7 @@ export const blogArticles = [
     date: '8 декабря 2024',
     readTime: '7 мин',
     image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/2adfbbc1-8dad-4d24-8e8a-f7f6f409e059.jpg',
+    publishDate: '2025-01-03',
     published: false,
     content: `
       <h3>Новостройка: преимущества</h3>

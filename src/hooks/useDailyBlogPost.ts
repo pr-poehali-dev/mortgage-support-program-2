@@ -1,27 +1,41 @@
 import { useEffect, useState } from 'react';
 import { blogArticles } from '@/data/mortgageData';
 
+interface Article {
+  id: number;
+  publishDate?: string;
+  published?: boolean;
+  [key: string]: any;
+}
+
 export function useDailyBlogPost() {
-  const [visibleArticles, setVisibleArticles] = useState(blogArticles.filter(a => a.published));
+  const [visibleArticles, setVisibleArticles] = useState<Article[]>([]);
 
   useEffect(() => {
     const today = new Date();
-    const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000);
-    
-    const unpublishedArticles = blogArticles.filter(a => !a.published);
-    
-    if (unpublishedArticles.length === 0) {
-      setVisibleArticles(blogArticles);
-      return;
-    }
-    
-    const articlesToPublish = Math.min(
-      Math.floor(dayOfYear / 1) + 6,
-      blogArticles.length
-    );
-    
-    const articlesForToday = blogArticles.slice(0, articlesToPublish);
-    setVisibleArticles(articlesForToday);
+    today.setHours(0, 0, 0, 0);
+
+    const availableArticles = blogArticles.filter(article => {
+      if (article.published) {
+        return true;
+      }
+
+      if (article.publishDate) {
+        const publishDate = new Date(article.publishDate);
+        publishDate.setHours(0, 0, 0, 0);
+        return publishDate <= today;
+      }
+
+      return false;
+    });
+
+    availableArticles.sort((a, b) => {
+      const dateA = a.publishDate ? new Date(a.publishDate) : new Date(0);
+      const dateB = b.publishDate ? new Date(b.publishDate) : new Date(0);
+      return dateB.getTime() - dateA.getTime();
+    });
+
+    setVisibleArticles(availableArticles);
   }, []);
 
   return visibleArticles;
