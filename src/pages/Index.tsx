@@ -31,7 +31,13 @@ export default function Index() {
       <header className="border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div 
+              className="flex items-center gap-2 sm:gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => {
+                navigate('/');
+                setActiveTab('home');
+              }}
+            >
               <img 
                 src="https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/97dcf769-3099-433c-93a7-982d4b12e27d.jpg" 
                 alt="Ипотека РФ" 
