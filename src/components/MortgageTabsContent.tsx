@@ -4,6 +4,7 @@ import ProgramsAndComparisonTabs from './tabs/ProgramsAndComparisonTabs';
 import DocumentsAndBlogTabs from './tabs/DocumentsAndBlogTabs';
 import CatalogTab from './tabs/CatalogTab';
 import ContactAndFaqTabs from './tabs/ContactAndFaqTabs';
+import VideosTab from './tabs/VideosTab';
 import HomeTab from './HomeTab';
 
 export default function MortgageTabsContent() {
@@ -24,6 +25,8 @@ export default function MortgageTabsContent() {
       <ContactAndFaqTabs />
 
       <CatalogTab />
+
+      <VideosTab />
     </>
   );
 }
