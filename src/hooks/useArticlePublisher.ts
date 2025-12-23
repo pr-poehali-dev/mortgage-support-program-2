@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { sendNewsletter } from '@/utils/sendNewsletter';
+import { notifyCurrentPage } from '@/services/indexnow';
 
 interface Article {
   id: number;
@@ -47,6 +48,13 @@ export function useArticlePublisher(articles: Article[]) {
               
               publishedIds.push(article.id);
               localStorage.setItem(PUBLISHED_ARTICLES_KEY, JSON.stringify(publishedIds));
+
+              try {
+                await notifyCurrentPage();
+                console.log(`IndexNow: Статья "${article.title}" отправлена в поисковые системы`);
+              } catch (indexError) {
+                console.error(`Ошибка отправки в IndexNow для статьи "${article.title}":`, indexError);
+              }
             } else {
               console.error(`Ошибка отправки рассылки для статьи "${article.title}":`, result.error);
             }
