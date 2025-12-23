@@ -11,10 +11,12 @@ import { programs, documentsData } from '@/data/mortgageData';
 import { useDailyBlogPost } from '@/hooks/useDailyBlogPost';
 import NewsletterSubscription from '@/components/NewsletterSubscription';
 import ArticleComments from '@/components/ArticleComments';
+import FullscreenArticle from '@/components/FullscreenArticle';
 
 export default function DocumentsAndBlogTabs() {
   const blogArticles = useDailyBlogPost();
   const [selectedArticle, setSelectedArticle] = useState<number | null>(null);
+  const [fullscreenArticle, setFullscreenArticle] = useState<number | null>(null);
   const [blogCategory, setBlogCategory] = useState('all');
   const [selectedDocProgram, setSelectedDocProgram] = useState('family');
 
@@ -337,17 +339,25 @@ export default function DocumentsAndBlogTabs() {
                     <span>{article.readTime}</span>
                   </div>
                 </div>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      onClick={() => setSelectedArticle(article.id)}
-                    >
-                      Читать полностью
-                      <Icon name="ArrowRight" className="ml-2" size={16} />
-                    </Button>
-                  </DialogTrigger>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => setFullscreenArticle(article.id)}
+                  >
+                    <Icon name="Maximize2" className="mr-2" size={16} />
+                    Открыть
+                  </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setSelectedArticle(article.id)}
+                      >
+                        <Icon name="Eye" size={18} />
+                      </Button>
+                    </DialogTrigger>
                   <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
                     <DialogHeader>
                       <div className="relative h-64 -mx-6 -mt-6 mb-6 overflow-hidden">
@@ -413,10 +423,18 @@ export default function DocumentsAndBlogTabs() {
                     </div>
                   </DialogContent>
                 </Dialog>
+                </div>
               </CardContent>
             </Card>
           ))}
         </div>
+
+        {fullscreenArticle && (
+          <FullscreenArticle
+            article={blogArticles.find(a => a.id === fullscreenArticle)!}
+            onClose={() => setFullscreenArticle(null)}
+          />
+        )}
       </TabsContent>
     </>
   );
