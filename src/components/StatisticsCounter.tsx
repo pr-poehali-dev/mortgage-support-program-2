@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 
-export default function StatisticsCounter() {
+interface StatisticsCounterProps {
+  inline?: boolean;
+}
+
+export default function StatisticsCounter({ inline = false }: StatisticsCounterProps) {
   const [stats, setStats] = useState({
     page_views: 0,
     applications_sent: 0
@@ -66,6 +70,21 @@ export default function StatisticsCounter() {
 
   if (isLoading) {
     return null;
+  }
+
+  if (inline) {
+    return (
+      <div className="flex items-center gap-4 text-gray-300">
+        <div className="flex items-center gap-2">
+          <Icon name="Eye" size={16} />
+          <span className="text-sm">Просмотров: <span className="font-semibold">{stats.page_views.toLocaleString('ru-RU')}</span></span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Icon name="FileCheck" size={16} />
+          <span className="text-sm">Заявок: <span className="font-semibold">{stats.applications_sent.toLocaleString('ru-RU')}</span></span>
+        </div>
+      </div>
+    );
   }
 
   return (

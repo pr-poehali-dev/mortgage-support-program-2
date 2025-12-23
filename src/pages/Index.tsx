@@ -7,7 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import MortgageQuiz from '@/components/MortgageQuiz';
 import MortgageTabsContent from '@/components/MortgageTabsContent';
 import FloatingApplicationButton from '@/components/FloatingApplicationButton';
-
+import StatisticsCounter from '@/components/StatisticsCounter';
 import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
 import TelegramButton from '@/components/TelegramButton';
@@ -160,25 +160,30 @@ export default function Index() {
               <p className="text-sm text-gray-400">ipoteka_krym@mail.ru</p>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-4 sm:mt-6 pt-4 sm:pt-6 text-center text-gray-400 text-xs sm:text-sm">
-            <p>© 2025 Все права защищены. Информация носит справочный характер.</p>
-            <button
-              onClick={() => navigate('/admin')}
-              className="mt-3 text-gray-500 hover:text-gray-300 transition-all text-sm px-3 py-1 rounded hover:bg-gray-800 group relative"
-              title="Панель администратора"
-            >
-              <Icon name="Settings" size={16} className="inline" />
-              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                Панель администратора
-              </span>
-            </button>
+          <div className="border-t border-gray-800 mt-4 sm:mt-6 pt-4 sm:pt-6">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4">
+              <StatisticsCounter inline />
+              <ThemeIndicator inline />
+            </div>
+            <div className="text-center text-gray-400 text-xs sm:text-sm">
+              <p>© 2025 Все права защищены. Информация носит справочный характер.</p>
+              <button
+                onClick={() => navigate('/admin')}
+                className="mt-3 text-gray-500 hover:text-gray-300 transition-all text-sm px-3 py-1 rounded hover:bg-gray-800 group relative"
+                title="Панель администратора"
+              >
+                <Icon name="Settings" size={16} className="inline" />
+                <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                  Панель администратора
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </footer>
 
       <FloatingApplicationButton />
       <TelegramButton />
-      <ThemeIndicator />
       <BlogPublicationIndicator />
       <Toaster />
     </div>

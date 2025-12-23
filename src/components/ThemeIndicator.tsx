@@ -1,8 +1,21 @@
 import { useDailyTheme } from '@/hooks/useDailyTheme';
 import Icon from '@/components/ui/icon';
 
-export default function ThemeIndicator() {
+interface ThemeIndicatorProps {
+  inline?: boolean;
+}
+
+export default function ThemeIndicator({ inline = false }: ThemeIndicatorProps) {
   const theme = useDailyTheme();
+
+  if (inline) {
+    return (
+      <div className="flex items-center gap-2 text-gray-300">
+        <Icon name="Palette" size={16} />
+        <span className="text-sm">Дизайн дня: <span className="font-semibold">{theme.name}</span></span>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed bottom-20 left-4 z-40 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-gray-200 flex items-center gap-2">
