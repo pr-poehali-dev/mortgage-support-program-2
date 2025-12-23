@@ -36,10 +36,12 @@ export default function YandexMetrika({ counterId }: YandexMetrikaProps) {
       })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
       ym(${id}, "init", {
-        clickmap: true,
-        trackLinks: true,
-        accurateTrackBounce: true,
+        ssr: true,
         webvisor: true,
+        clickmap: true,
+        ecommerce: "dataLayer",
+        accurateTrackBounce: true,
+        trackLinks: true,
         trackHash: true
       });
     `;

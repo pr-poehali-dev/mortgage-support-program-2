@@ -18,7 +18,7 @@ function AppContent() {
   return (
     <AnalyticsProvider
       googleAnalyticsId={analytics.google_analytics_id || undefined}
-      yandexMetrikaId={analytics.yandex_metrika_id || undefined}
+      yandexMetrikaId={analytics.yandex_metrika_id || "105974763"}
     >
       <BrowserRouter>
         <Routes>
