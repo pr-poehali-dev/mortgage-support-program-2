@@ -12,6 +12,7 @@ import { useDailyBlogPost } from '@/hooks/useDailyBlogPost';
 import NewsletterSubscription from '@/components/NewsletterSubscription';
 import ArticleComments from '@/components/ArticleComments';
 import FullscreenArticle from '@/components/FullscreenArticle';
+import ArticleStatsDisplay from '@/components/ArticleStatsDisplay';
 
 export default function DocumentsAndBlogTabs() {
   const blogArticles = useDailyBlogPost();
@@ -329,7 +330,7 @@ export default function DocumentsAndBlogTabs() {
                 <CardDescription className="text-base mt-2">{article.excerpt}</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
                   <div className="flex items-center gap-2">
                     <Icon name="Calendar" size={14} />
                     <span>{article.date}</span>
@@ -338,6 +339,9 @@ export default function DocumentsAndBlogTabs() {
                     <Icon name="Clock" size={14} />
                     <span>{article.readTime}</span>
                   </div>
+                </div>
+                <div className="mb-4">
+                  <ArticleStatsDisplay articleId={article.id} />
                 </div>
                 <div className="flex gap-2">
                   <Button
