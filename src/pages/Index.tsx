@@ -11,12 +11,15 @@ import StatisticsCounter from '@/components/StatisticsCounter';
 import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
 import TelegramButton from '@/components/TelegramButton';
+import ThemeIndicator from '@/components/ThemeIndicator';
 import { useAutoIndexNow } from '@/hooks/useAutoIndexNow';
+import { useDailyTheme } from '@/hooks/useDailyTheme';
 import { trackPhoneClick, trackTabChanged } from '@/services/metrika-goals';
 
 export default function Index() {
   const [activeTab, setActiveTab] = useState('home');
   const navigate = useNavigate();
+  const theme = useDailyTheme();
   useAutoIndexNow();
 
   const handleTabChange = (tab: string) => {
@@ -25,10 +28,10 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className={`min-h-screen ${theme.gradient}`}>
       <SEO />
       <StructuredData />
-      <header className="border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
+      <header className={`border-b ${theme.headerBg} backdrop-blur-md sticky top-0 z-50`}>
         <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <div 
@@ -154,6 +157,7 @@ export default function Index() {
       <StatisticsCounter />
       <FloatingApplicationButton />
       <TelegramButton />
+      <ThemeIndicator />
       <Toaster />
     </div>
   );
