@@ -9,6 +9,8 @@ import { toast } from '@/hooks/use-toast';
 import { jsPDF } from 'jspdf';
 import { programs, documentsData } from '@/data/mortgageData';
 import { useDailyBlogPost } from '@/hooks/useDailyBlogPost';
+import NewsletterSubscription from '@/components/NewsletterSubscription';
+import ArticleComments from '@/components/ArticleComments';
 
 export default function DocumentsAndBlogTabs() {
   const blogArticles = useDailyBlogPost();
@@ -298,6 +300,10 @@ export default function DocumentsAndBlogTabs() {
           </div>
         </div>
 
+        <div className="mb-6">
+          <NewsletterSubscription />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {blogArticles
             .filter(article => blogCategory === 'all' || article.category === blogCategory)
@@ -374,7 +380,9 @@ export default function DocumentsAndBlogTabs() {
                         lineHeight: '1.75'
                       }}
                     />
-                    <div className="border-t pt-6 mt-6">
+                    <div className="border-t pt-6 mt-6 space-y-6">
+                      <ArticleComments articleId={article.id} />
+                      
                       <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg">
                         <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
                           <Icon name="Phone" className="text-primary" size={20} />
