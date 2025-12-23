@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
+import AdminArticles from "./pages/AdminArticles";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import AnalyticsProvider from "./components/analytics/AnalyticsProvider";
@@ -25,6 +26,7 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/articles" element={<AdminArticles />} />
           <Route path="/register" element={<Register />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

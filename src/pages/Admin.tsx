@@ -285,6 +285,13 @@ export default function Admin() {
               Отправить на Email
             </Button>
             <Button
+              onClick={() => window.location.href = '/admin/articles'}
+              className="h-10 bg-purple-600 hover:bg-purple-700"
+            >
+              <Icon name="BookOpen" className="mr-2" size={18} />
+              Управление статьями
+            </Button>
+            <Button
               onClick={() => window.location.href = '/'}
               variant="outline"
               className="h-10"
