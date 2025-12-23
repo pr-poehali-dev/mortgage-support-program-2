@@ -2,11 +2,13 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import { toast } from 'sonner';
+import { saveSitemap, getSitemapStats } from '@/utils/generateSitemap';
 
 export default function SitemapInfo() {
   const sitemapUrl = `${window.location.origin}/sitemap.xml`;
   const robotsUrl = `${window.location.origin}/robots.txt`;
   const indexnowKeyUrl = `${window.location.origin}/8f3e9d2a1c5b4e6f7a8d9c1b2e3f4a5b.txt`;
+  const stats = getSitemapStats();
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -17,6 +19,15 @@ export default function SitemapInfo() {
     window.open(url, '_blank');
   };
 
+  const handleDownloadSitemap = async () => {
+    const success = await saveSitemap();
+    if (success) {
+      toast.success('Актуальный sitemap.xml скачан');
+    } else {
+      toast.error('Ошибка при создании sitemap');
+    }
+  };
+
   return (
     <Card className="p-6 border-2 border-green-100 bg-gradient-to-br from-green-50 to-white">
       <div className="flex items-start gap-4">
@@ -25,10 +36,38 @@ export default function SitemapInfo() {
         </div>
         
         <div className="flex-1">
-          <h3 className="font-bold text-lg mb-2">Карта сайта и SEO файлы</h3>
-          <p className="text-sm text-gray-600 mb-4">
-            Все необходимые файлы для индексации поисковыми системами
-          </p>
+          <div className="flex items-center justify-between mb-2">
+            <div>
+              <h3 className="font-bold text-lg">Карта сайта и SEO файлы</h3>
+              <p className="text-sm text-gray-600 mt-1">
+                Все необходимые файлы для индексации поисковыми системами
+              </p>
+            </div>
+            <Button
+              onClick={handleDownloadSitemap}
+              className="bg-green-600 hover:bg-green-700"
+            >
+              <Icon name="Download" size={18} className="mr-2" />
+              Скачать актуальный sitemap.xml
+            </Button>
+          </div>
+          
+          <div className="mb-4 p-3 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg border border-green-200">
+            <div className="flex items-center gap-4 text-sm">
+              <div className="flex items-center gap-2">
+                <Icon name="Globe" size={16} className="text-green-600" />
+                <span className="text-gray-700">Всего URL: <strong>{stats.totalUrls}</strong></span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Icon name="FileText" size={16} className="text-blue-600" />
+                <span className="text-gray-700">Статей: <strong>{stats.blogArticles}</strong></span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Icon name="Layout" size={16} className="text-purple-600" />
+                <span className="text-gray-700">Страниц: <strong>{stats.staticPages}</strong></span>
+              </div>
+            </div>
+          </div>
           
           <div className="space-y-3">
             <div className="bg-white p-4 rounded-lg border border-gray-200">
