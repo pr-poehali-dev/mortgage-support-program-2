@@ -44,7 +44,7 @@ export default function HomeTab() {
                 <iframe
                   width="100%"
                   height="100%"
-                  src="https://rutube.ru/play/embed/c6cc4d620b1d4338901c71f337d679fd"
+                  src="https://rutube.ru/play/embed/cf5c2c281fbbc416c45ee25d552f702c"
                   title="Видео об ипотеке"
                   frameBorder="0"
                   allow="clipboard-write; autoplay"
