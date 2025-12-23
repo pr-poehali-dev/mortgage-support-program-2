@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "name": "GET request returns analytics config",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "configured": true
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

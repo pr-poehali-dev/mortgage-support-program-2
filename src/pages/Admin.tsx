@@ -21,6 +21,7 @@ import AdminCharts from '@/components/admin/AdminCharts';
 import AdminEmailDialog from '@/components/admin/AdminEmailDialog';
 import IndexNowNotifier from '@/components/IndexNowNotifier';
 import SitemapInfo from '@/components/SitemapInfo';
+import AnalyticsInfo from '@/components/AnalyticsInfo';
 
 ChartJS.register(
   CategoryScale,
@@ -292,6 +293,8 @@ export default function Admin() {
           <IndexNowNotifier />
           <SitemapInfo />
         </div>
+
+        <AnalyticsInfo />
 
         <AdminCharts analytics={analytics} />
       </div>

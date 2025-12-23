@@ -7,14 +7,19 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import AnalyticsProvider from "./components/analytics/AnalyticsProvider";
+import { useAnalytics } from "./hooks/useAnalytics";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
+function AppContent() {
+  const analytics = useAnalytics();
+
+  return (
+    <AnalyticsProvider
+      googleAnalyticsId={analytics.google_analytics_id || undefined}
+      yandexMetrikaId={analytics.yandex_metrika_id || undefined}
+    >
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
@@ -23,6 +28,16 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+    </AnalyticsProvider>
+  );
+}
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <AppContent />
     </TooltipProvider>
   </QueryClientProvider>
 );
