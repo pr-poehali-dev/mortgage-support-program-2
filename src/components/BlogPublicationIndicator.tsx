@@ -12,7 +12,7 @@ export default function BlogPublicationIndicator() {
   }
 
   return (
-    <div className="fixed bottom-36 left-4 z-40 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full shadow-lg border border-white/20 flex items-center gap-2 animate-pulse">
+    <div className="fixed bottom-36 left-4 z-40 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full shadow-lg border border-white/20 flex items-center gap-2">
       <Icon name="Sparkles" size={18} />
       <div className="text-sm font-medium">
         <span>Новые статьи через {nextPublicationDays} {nextPublicationDays === 1 ? 'день' : 'дня'}</span>

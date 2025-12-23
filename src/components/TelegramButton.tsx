@@ -54,13 +54,6 @@ export default function TelegramButton() {
         </div>
       )}
 
-      {/* Пульсирующие круги */}
-      <div className="absolute inset-0 animate-ping">
-        <div className="w-full h-full bg-[#0088cc] rounded-full opacity-75"></div>
-      </div>
-      <div className="absolute inset-0 animate-pulse">
-        <div className="w-full h-full bg-[#0088cc] rounded-full opacity-50"></div>
-      </div>
       
       {/* Основная кнопка */}
       <a
