@@ -19,6 +19,7 @@ import AdminLogin from '@/components/admin/AdminLogin';
 import AdminStatsCards from '@/components/admin/AdminStatsCards';
 import AdminCharts from '@/components/admin/AdminCharts';
 import AdminEmailDialog from '@/components/admin/AdminEmailDialog';
+import IndexNowNotifier from '@/components/IndexNowNotifier';
 
 ChartJS.register(
   CategoryScale,
@@ -285,6 +286,8 @@ export default function Admin() {
         </div>
 
         <AdminStatsCards totals={analytics.totals} conversionRate={conversionRate} />
+
+        <IndexNowNotifier />
 
         <AdminCharts analytics={analytics} />
       </div>

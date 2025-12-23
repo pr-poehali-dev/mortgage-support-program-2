@@ -9,9 +9,11 @@ import StatisticsCounter from '@/components/StatisticsCounter';
 import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
 import TelegramButton from '@/components/TelegramButton';
+import { useAutoIndexNow } from '@/hooks/useAutoIndexNow';
 
 export default function Index() {
   const [activeTab, setActiveTab] = useState('home');
+  useAutoIndexNow();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
