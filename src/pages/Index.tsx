@@ -51,6 +51,15 @@ export default function Index() {
               <div>
                 <h1 className="text-lg sm:text-2xl font-bold text-gray-900">Ипотека РФ</h1>
                 <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Льготные программы с господдержкой</p>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  {new Date().toLocaleDateString('ru-RU', { 
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-2 sm:gap-3">
