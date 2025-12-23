@@ -142,6 +142,46 @@ export default function HomeTab() {
         </div>
       </div>
 
+      {/* Межрегиональные сделки */}
+      <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-6 sm:p-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 text-center">
+          Межрегиональные сделки
+        </h2>
+        <p className="text-center text-gray-600 mb-6">Готовое решение</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card className="p-6 hover:shadow-xl transition-shadow border-2 border-indigo-100">
+            <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+              <Icon name="MapPin" size={24} className="text-indigo-600" />
+            </div>
+            <h3 className="font-bold text-lg mb-3">Ипотека в любом городе</h3>
+            <p className="text-gray-600 text-sm">
+              Поможем одобрить ипотеку в нужном городе с учетом специфики региона и требований банков к объекту недвижимости.
+            </p>
+          </Card>
+
+          <Card className="p-6 hover:shadow-xl transition-shadow border-2 border-blue-100">
+            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+              <Icon name="Monitor" size={24} className="text-blue-600" />
+            </div>
+            <h3 className="font-bold text-lg mb-3">Электронные сделки</h3>
+            <p className="text-gray-600 text-sm">
+              Дистанционная покупка жилья. Приобретайте недвижимость в любом городе РФ, а сделку зарегистрируем электронно.
+            </p>
+          </Card>
+
+          <Card className="p-6 hover:shadow-xl transition-shadow border-2 border-green-100">
+            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+              <Icon name="ShieldCheck" size={24} className="text-green-600" />
+            </div>
+            <h3 className="font-bold text-lg mb-3">Безопасность и надежность</h3>
+            <p className="text-gray-600 text-sm">
+              Официальные партнеры ведущих банков и крупных застройщиков. Сопроводим сделку до конца. Проверим объект на юридическую чистоту.
+            </p>
+          </Card>
+        </div>
+      </div>
+
       {/* Как работаю */}
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
