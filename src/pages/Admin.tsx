@@ -24,6 +24,7 @@ import SitemapInfo from '@/components/SitemapInfo';
 import AnalyticsInfo from '@/components/AnalyticsInfo';
 import MetrikaGoalsSetup from '@/components/MetrikaGoalsSetup';
 import MetrikaGoalsDashboard from '@/components/MetrikaGoalsDashboard';
+import MetrikaTrendsChart from '@/components/MetrikaTrendsChart';
 import { trackExcelDownload, trackEmailReport } from '@/services/metrika-goals';
 
 ChartJS.register(
@@ -305,6 +306,8 @@ export default function Admin() {
         </div>
 
         <MetrikaGoalsDashboard />
+
+        <MetrikaTrendsChart />
 
         <AdminCharts analytics={analytics} />
       </div>
