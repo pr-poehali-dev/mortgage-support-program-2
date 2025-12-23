@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "name": "GET request returns goals info",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "counter_id": 105974763
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

@@ -22,6 +22,7 @@ import AdminEmailDialog from '@/components/admin/AdminEmailDialog';
 import IndexNowNotifier from '@/components/IndexNowNotifier';
 import SitemapInfo from '@/components/SitemapInfo';
 import AnalyticsInfo from '@/components/AnalyticsInfo';
+import MetrikaGoalsSetup from '@/components/MetrikaGoalsSetup';
 import { trackExcelDownload, trackEmailReport } from '@/services/metrika-goals';
 
 ChartJS.register(
@@ -297,7 +298,10 @@ export default function Admin() {
           <SitemapInfo />
         </div>
 
-        <AnalyticsInfo />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <AnalyticsInfo />
+          <MetrikaGoalsSetup />
+        </div>
 
         <AdminCharts analytics={analytics} />
       </div>
