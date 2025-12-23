@@ -13,6 +13,7 @@ import StructuredData from '@/components/StructuredData';
 import TelegramButton from '@/components/TelegramButton';
 import ThemeIndicator from '@/components/ThemeIndicator';
 import DailyHeroImage from '@/components/DailyHeroImage';
+import BlogPublicationIndicator from '@/components/BlogPublicationIndicator';
 import { useAutoIndexNow } from '@/hooks/useAutoIndexNow';
 import { useDailyTheme } from '@/hooks/useDailyTheme';
 import { trackPhoneClick, trackTabChanged } from '@/services/metrika-goals';
@@ -160,6 +161,7 @@ export default function Index() {
       <FloatingApplicationButton />
       <TelegramButton />
       <ThemeIndicator />
+      <BlogPublicationIndicator />
       <Toaster />
     </div>
   );

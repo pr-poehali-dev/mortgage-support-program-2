@@ -372,6 +372,8 @@ export const blogArticles = [
     color: 'bg-yellow-500',
     date: '15 декабря 2024',
     readTime: '5 мин',
+    image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/20025dfe-1f44-41eb-a385-1608fff74e87.jpg',
+    published: true,
     content: `
       <h3>Основные факторы выбора</h3>
       <p>При выборе ипотечной программы важно учитывать несколько ключевых факторов:</p>
@@ -394,6 +396,8 @@ export const blogArticles = [
     color: 'bg-green-500',
     date: '10 декабря 2024',
     readTime: '7 мин',
+    image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/879d05bd-6491-4437-8d94-e249289f41ea.jpg',
+    published: true,
     content: `
       <h3>Два способа досрочного погашения</h3>
       <p>Существует два основных способа досрочного погашения ипотеки:</p>
@@ -416,6 +420,8 @@ export const blogArticles = [
     color: 'bg-red-500',
     date: '5 декабря 2024',
     readTime: '6 мин',
+    image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/aa09ac4c-21e0-4575-9d69-2bc0c2bd0dac.jpg',
+    published: true,
     content: `
       <h3>Ошибка №1: Неправильная оценка своих возможностей</h3>
       <p>Многие заёмщики берут максимальную сумму, которую одобряет банк, не учитывая свои реальные доходы и расходы. Правило: ежемесячный платёж не должен превышать 40% дохода семьи.</p>
@@ -438,6 +444,8 @@ export const blogArticles = [
     color: 'bg-blue-500',
     date: '1 декабря 2024',
     readTime: '4 мин',
+    image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/ae3d0474-5f9c-49b5-8b59-e57db5249755.jpg',
+    published: true,
     content: `
       <h3>Продление программы до 2030 года</h3>
       <p>Правительство РФ продлило программу семейной ипотеки до конца 2030 года с сохранением льготной ставки 6%.</p>
@@ -463,6 +471,8 @@ export const blogArticles = [
     color: 'bg-purple-500',
     date: '25 ноября 2024',
     readTime: '8 мин',
+    image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/5824eb72-d33a-4202-aeb1-63706a5820bc.jpg',
+    published: true,
     content: `
       <h3>Кто может получить IT-ипотеку</h3>
       <p>Программа доступна специалистам, работающим в аккредитованных IT-компаниях. Ваша компания должна быть включена в специальный реестр Минцифры РФ.</p>
@@ -488,6 +498,8 @@ export const blogArticles = [
     color: 'bg-indigo-500',
     date: '20 ноября 2024',
     readTime: '6 мин',
+    image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/6746b038-9397-42db-b9d1-50b1c3a8ba73.jpg',
+    published: true,
     content: `
       <h3>Что такое рефинансирование</h3>
       <p>Рефинансирование — это оформление нового кредита для погашения действующей ипотеки. Цель: получить более выгодные условия (ставку, срок, размер платежа).</p>
@@ -519,6 +531,8 @@ export const blogArticles = [
     color: 'bg-teal-500',
     date: '20 декабря 2024',
     readTime: '10 мин',
+    image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/d68a07ec-c2b4-4524-8dad-d592aed75dc2.jpg',
+    published: false,
     content: `
       <h3>Ипотека в Крыму: актуальная ситуация</h3>
       <p>С 2014 года ипотечный рынок Крыма активно развивается. Все федеральные программы льготной ипотеки работают в регионе. Крым — привлекательный регион для покупки недвижимости благодаря климату, природе и развитой инфраструктуре.</p>
@@ -547,6 +561,8 @@ export const blogArticles = [
     color: 'bg-pink-500',
     date: '18 декабря 2024',
     readTime: '7 мин',
+    image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/c55d1796-3c30-438e-aad7-837e11a20337.jpg',
+    published: false,
     content: `
       <h3>Размер материнского капитала в 2025 году</h3>
       <ul>
@@ -583,6 +599,8 @@ export const blogArticles = [
     color: 'bg-green-500',
     date: '15 декабря 2024',
     readTime: '9 мин',
+    image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/0755a527-ba56-4135-94fd-31cea0fa1ce1.jpg',
+    published: false,
     content: `
       <h3>Что такое НИС и военная ипотека</h3>
       <p>НИС (накопительно-ипотечная система) — государственная программа для военнослужащих. Государство ежегодно переводит на именной счет участника около 400 000 рублей для накопления на жильё.</p>
@@ -619,6 +637,8 @@ export const blogArticles = [
     color: 'bg-emerald-500',
     date: '12 декабря 2024',
     readTime: '8 мин',
+    image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/6ed9286e-b522-4888-b730-a2479458f6f6.jpg',
+    published: false,
     content: `
       <h3>Сельская ипотека: две ставки</h3>
       <ul>
@@ -656,6 +676,8 @@ export const blogArticles = [
     color: 'bg-blue-500',
     date: '10 декабря 2024',
     readTime: '6 мин',
+    image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/5947cfb3-5d44-4767-82f2-19ae163d8e0e.jpg',
+    published: false,
     content: `
       <h3>Виды страхования при ипотеке</h3>
       <ol>
@@ -694,6 +716,8 @@ export const blogArticles = [
     color: 'bg-orange-500',
     date: '8 декабря 2024',
     readTime: '7 мин',
+    image: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/2adfbbc1-8dad-4d24-8e8a-f7f6f409e059.jpg',
+    published: false,
     content: `
       <h3>Новостройка: преимущества</h3>
       <ul>

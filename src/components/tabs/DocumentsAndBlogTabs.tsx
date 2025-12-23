@@ -7,9 +7,11 @@ import Icon from '@/components/ui/icon';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from '@/hooks/use-toast';
 import { jsPDF } from 'jspdf';
-import { programs, documentsData, blogArticles } from '@/data/mortgageData';
+import { programs, documentsData } from '@/data/mortgageData';
+import { useDailyBlogPost } from '@/hooks/useDailyBlogPost';
 
 export default function DocumentsAndBlogTabs() {
+  const blogArticles = useDailyBlogPost();
   const [selectedArticle, setSelectedArticle] = useState<number | null>(null);
   const [blogCategory, setBlogCategory] = useState('all');
   const [selectedDocProgram, setSelectedDocProgram] = useState('family');
@@ -286,6 +288,13 @@ export default function DocumentsAndBlogTabs() {
             >
               Программы
             </Button>
+            <Button
+              variant={blogCategory === 'Регион' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setBlogCategory('Регион')}
+            >
+              Регион
+            </Button>
           </div>
         </div>
 
@@ -293,14 +302,21 @@ export default function DocumentsAndBlogTabs() {
           {blogArticles
             .filter(article => blogCategory === 'all' || article.category === blogCategory)
             .map((article) => (
-            <Card key={article.id} className="hover:shadow-xl transition-all cursor-pointer group">
-              <CardHeader>
-                <div className="flex items-start justify-between mb-3">
+            <Card key={article.id} className="hover:shadow-xl transition-all cursor-pointer group overflow-hidden">
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={article.image} 
+                  alt={article.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute top-3 left-3">
                   <Badge variant="secondary">{article.category}</Badge>
-                  <div className={`w-12 h-12 ${article.color} rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                    <Icon name={article.icon} className="text-white" size={24} />
-                  </div>
                 </div>
+                <div className={`absolute top-3 right-3 w-12 h-12 ${article.color} rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                  <Icon name={article.icon} className="text-white" size={24} />
+                </div>
+              </div>
+              <CardHeader>
                 <CardTitle className="text-xl group-hover:text-primary transition-colors">{article.title}</CardTitle>
                 <CardDescription className="text-base mt-2">{article.excerpt}</CardDescription>
               </CardHeader>
@@ -328,15 +344,17 @@ export default function DocumentsAndBlogTabs() {
                   </DialogTrigger>
                   <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
                     <DialogHeader>
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className={`w-14 h-14 ${article.color} rounded-lg flex items-center justify-center`}>
-                          <Icon name={article.icon} className="text-white" size={28} />
-                        </div>
-                        <div>
-                          <Badge variant="secondary" className="mb-2">{article.category}</Badge>
-                          <DialogTitle className="text-2xl">{article.title}</DialogTitle>
+                      <div className="relative h-64 -mx-6 -mt-6 mb-6 overflow-hidden">
+                        <img 
+                          src={article.image} 
+                          alt={article.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                          <Badge variant="secondary" className="bg-white/90">{article.category}</Badge>
                         </div>
                       </div>
+                      <DialogTitle className="text-2xl mb-4">{article.title}</DialogTitle>
                       <div className="flex items-center gap-4 text-sm text-gray-500">
                         <div className="flex items-center gap-2">
                           <Icon name="Calendar" size={14} />
