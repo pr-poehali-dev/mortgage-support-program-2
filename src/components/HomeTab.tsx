@@ -44,10 +44,10 @@ export default function HomeTab() {
                 <iframe
                   width="100%"
                   height="100%"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                  src="https://rutube.ru/play/embed/c6cc4d620b1d4338901c71f337d679fd"
                   title="Видео об ипотеке"
                   frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allow="clipboard-write; autoplay"
                   allowFullScreen
                   className="rounded-xl"
                 ></iframe>
