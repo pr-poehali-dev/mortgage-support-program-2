@@ -92,44 +92,44 @@ export default function Index() {
 
         <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4 sm:space-y-8">
           <TabsList className="grid w-full grid-cols-5 md:grid-cols-9 h-auto gap-1 sm:gap-2 bg-white p-1.5 sm:p-2 rounded-xl shadow-sm overflow-x-auto">
-            <TabsTrigger value="home" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95">
+            <TabsTrigger value="home" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95 animate-in fade-in slide-in-from-bottom-4 duration-300" style={{animationDelay: '0ms'}}>
               <Icon name="Home" size={16} className="sm:w-[18px] sm:h-[18px] transition-transform group-hover:rotate-12" />
               <span>Главная</span>
             </TabsTrigger>
-            <TabsTrigger value="programs" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95">
+            <TabsTrigger value="programs" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95 animate-in fade-in slide-in-from-bottom-4 duration-300" style={{animationDelay: '50ms'}}>
               <Icon name="ClipboardList" size={16} className="sm:w-[18px] sm:h-[18px] transition-transform group-hover:rotate-12" />
               <span className="hidden md:inline">Программы</span>
               <span className="md:hidden">Прогр.</span>
             </TabsTrigger>
-            <TabsTrigger value="comparison" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95">
+            <TabsTrigger value="comparison" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95 animate-in fade-in slide-in-from-bottom-4 duration-300" style={{animationDelay: '100ms'}}>
               <Icon name="GitCompare" size={16} className="sm:w-[18px] sm:h-[18px] transition-transform group-hover:rotate-12" />
               <span className="hidden md:inline">Сравнение</span>
               <span className="md:hidden">Сравн.</span>
             </TabsTrigger>
-            <TabsTrigger value="calculator" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95">
+            <TabsTrigger value="calculator" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95 animate-in fade-in slide-in-from-bottom-4 duration-300" style={{animationDelay: '150ms'}}>
               <Icon name="Calculator" size={16} className="sm:w-[18px] sm:h-[18px] transition-transform group-hover:rotate-12" />
               <span className="hidden md:inline">Калькулятор</span>
               <span className="md:hidden">Калькул.</span>
             </TabsTrigger>
-            <TabsTrigger value="catalog" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95">
+            <TabsTrigger value="catalog" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95 animate-in fade-in slide-in-from-bottom-4 duration-300" style={{animationDelay: '200ms'}}>
               <Icon name="Building2" size={16} className="sm:w-[18px] sm:h-[18px] transition-transform group-hover:rotate-12" />
               <span className="hidden md:inline">Каталог</span>
               <span className="md:hidden">Катал.</span>
             </TabsTrigger>
-            <TabsTrigger value="documents" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95">
+            <TabsTrigger value="documents" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95 animate-in fade-in slide-in-from-bottom-4 duration-300" style={{animationDelay: '250ms'}}>
               <Icon name="FileText" size={16} className="sm:w-[18px] sm:h-[18px] transition-transform group-hover:rotate-12" />
               <span className="hidden md:inline">Документы</span>
               <span className="md:hidden">Докум.</span>
             </TabsTrigger>
-            <TabsTrigger value="faq" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95">
+            <TabsTrigger value="faq" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95 animate-in fade-in slide-in-from-bottom-4 duration-300" style={{animationDelay: '300ms'}}>
               <Icon name="HelpCircle" size={16} className="sm:w-[18px] sm:h-[18px] transition-transform group-hover:rotate-12" />
               <span>FAQ</span>
             </TabsTrigger>
-            <TabsTrigger value="blog" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95">
+            <TabsTrigger value="blog" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95 animate-in fade-in slide-in-from-bottom-4 duration-300" style={{animationDelay: '350ms'}}>
               <Icon name="BookOpen" size={16} className="sm:w-[18px] sm:h-[18px] transition-transform group-hover:rotate-12" />
               <span>Блог</span>
             </TabsTrigger>
-            <TabsTrigger value="contact" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95">
+            <TabsTrigger value="contact" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95 animate-in fade-in slide-in-from-bottom-4 duration-300" style={{animationDelay: '400ms'}}>
               <Icon name="Phone" size={16} className="sm:w-[18px] sm:h-[18px] transition-transform group-hover:rotate-12" />
               <span className="hidden md:inline">Контакты</span>
               <span className="md:hidden">Конт.</span>
