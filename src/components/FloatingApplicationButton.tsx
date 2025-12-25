@@ -23,7 +23,7 @@ export default function FloatingApplicationButton() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('https://faas.poehali.dev/1379efae-15a5-489f-bda0-505b22ad3d6a/send-application', {
+      const response = await fetch('https://functions.poehali.dev/2ea2118e-5b11-45d1-8e9d-bd90ba41a588', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
