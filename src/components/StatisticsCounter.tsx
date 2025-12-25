@@ -14,72 +14,13 @@ export default function StatisticsCounter({ inline = false }: StatisticsCounterP
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Track page view with referrer source
-    const trackPageView = async () => {
-      try {
-        const source = document.referrer 
-          ? new URL(document.referrer).hostname 
-          : 'direct';
-        
-        await fetch('https://functions.poehali.dev/66427508-92e1-41bc-837c-dfc3f217d6c3', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ 
-            event_type: 'page_view',
-            source: source 
-          })
-        });
-
-        // Also update old counter for backward compatibility
-        await fetch('https://functions.poehali.dev/9c63ab81-cbed-4119-87cf-8ad688fe4856', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ metric: 'page_views' })
-        });
-      } catch (error) {
-        console.error('Failed to track page view:', error);
-      }
-    };
-
-    // Get current statistics
-    const fetchStats = async () => {
-      try {
-        const response = await fetch('https://functions.poehali.dev/9c63ab81-cbed-4119-87cf-8ad688fe4856');
-        if (response.ok) {
-          const data = await response.json();
-          setStats({
-            page_views: data.page_views || 0,
-            applications_sent: Math.max(data.applications_sent || 0, 3)
-          });
-        } else if (response.status === 401) {
-          // Функция требует авторизации - показываем минимальные значения
-          setStats({
-            page_views: 0,
-            applications_sent: 3
-          });
-        }
-      } catch (error) {
-        console.error('Failed to fetch stats:', error);
-        // При ошибке показываем минимальные значения
-        setStats({
-          page_views: 0,
-          applications_sent: 3
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    trackPageView();
-    fetchStats();
-
-    // Refresh stats every 30 seconds
-    const interval = setInterval(fetchStats, 30000);
-    return () => clearInterval(interval);
+    // Отключено до открытия публичного доступа к функциям
+    // Показываем минимальные значения
+    setStats({
+      page_views: 0,
+      applications_sent: 3
+    });
+    setIsLoading(false);
   }, []);
 
   if (isLoading) {

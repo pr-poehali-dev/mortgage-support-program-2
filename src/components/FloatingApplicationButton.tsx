@@ -34,29 +34,8 @@ export default function FloatingApplicationButton() {
       const data = await response.json();
 
       if (response.ok) {
-        // Track application with program info
+        // Track application only in Yandex Metrika (analytics functions disabled)
         try {
-          await fetch('https://functions.poehali.dev/66427508-92e1-41bc-837c-dfc3f217d6c3', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-              event_type: 'application_sent',
-              program: formData.program
-            })
-          });
-
-          // Also update old counter for backward compatibility
-          await fetch('https://functions.poehali.dev/9c63ab81-cbed-4119-87cf-8ad688fe4856', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ metric: 'applications_sent' })
-          });
-
-          // Track in Yandex Metrika
           trackApplicationSent(formData.program);
         } catch (err) {
           console.error('Failed to track application:', err);

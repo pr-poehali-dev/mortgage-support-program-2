@@ -79,29 +79,10 @@ export default function Admin() {
     setError('');
     
     try {
-      const response = await fetch(`https://functions.poehali.dev/66427508-92e1-41bc-837c-dfc3f217d6c3?days=${period}`, {
-        method: 'GET',
-        headers: {
-          'X-Admin-Password': adminPassword
-        }
-      });
-
-      if (response.status === 401) {
-        setIsAuthenticated(false);
-        setError('Неверный пароль');
-        return;
-      }
-
-      if (!response.ok) {
-        throw new Error('Ошибка загрузки данных');
-      }
-
-      const data = await response.json();
-      setAnalytics(data);
-      setIsAuthenticated(true);
-    } catch (err) {
-      setError('Не удалось загрузить аналитику');
-      console.error(err);
+      // Функция analytics недоступна (приватный доступ)
+      // Отображаем заглушку
+      setError('Аналитика временно недоступна. Ожидаем открытия публичного доступа к функциям.');
+      setIsAuthenticated(false);
     } finally {
       setLoading(false);
     }
