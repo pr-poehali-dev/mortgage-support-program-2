@@ -118,12 +118,10 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         </html>
         """
         
-        recipient_email = os.environ.get('RECIPIENT_EMAIL', 'business@xn--80ajijbmjhop8h.xn--p1ai')
-        
         msg = MIMEMultipart('alternative')
         msg['Subject'] = f'Новая заявка: {program_name} - {app_data.name}'
         msg['From'] = 'noreply@poehali.dev'
-        msg['To'] = recipient_email
+        msg['To'] = 'business@xn--80ajijbmjhop8h.xn--p1ai'
         
         html_part = MIMEText(email_body, 'html', 'utf-8')
         msg.attach(html_part)
@@ -179,7 +177,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'message': 'Заявка принята! Позвоните нам: +7 978 128-18-50',
                     'contact': {
                         'phone': '+7 978 128-18-50',
-                        'email': recipient_email
+                        'email': 'business@xn--80ajijbmjhop8h.xn--p1ai'
                     }
                 }),
                 'isBase64Encoded': False
