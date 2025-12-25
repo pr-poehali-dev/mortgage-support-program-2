@@ -55,9 +55,20 @@ export default function StatisticsCounter({ inline = false }: StatisticsCounterP
             page_views: data.page_views || 0,
             applications_sent: Math.max(data.applications_sent || 0, 3)
           });
+        } else if (response.status === 401) {
+          // Функция требует авторизации - показываем минимальные значения
+          setStats({
+            page_views: 0,
+            applications_sent: 3
+          });
         }
       } catch (error) {
         console.error('Failed to fetch stats:', error);
+        // При ошибке показываем минимальные значения
+        setStats({
+          page_views: 0,
+          applications_sent: 3
+        });
       } finally {
         setIsLoading(false);
       }
