@@ -121,7 +121,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         msg = MIMEMultipart('alternative')
         msg['Subject'] = f'Новая заявка: {program_name} - {app_data.name}'
         msg['From'] = 'noreply@poehali.dev'
-        msg['To'] = 'ipoteka_krym@mail.ru'
+        msg['To'] = 'business@xn--80ajijbmjhop8h.xn--p1ai'
         
         html_part = MIMEText(email_body, 'html', 'utf-8')
         msg.attach(html_part)
@@ -177,7 +177,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     'message': 'Заявка принята! Позвоните нам: +7 978 128-18-50',
                     'contact': {
                         'phone': '+7 978 128-18-50',
-                        'email': 'ipoteka_krym@mail.ru'
+                        'email': 'business@xn--80ajijbmjhop8h.xn--p1ai'
                     }
                 }),
                 'isBase64Encoded': False
