@@ -6,12 +6,12 @@ import Icon from '@/components/ui/icon';
 import { Toaster } from '@/components/ui/toaster';
 import MortgageQuiz from '@/components/MortgageQuiz';
 import MortgageTabsContent from '@/components/MortgageTabsContent';
-import FloatingApplicationButton from '@/components/FloatingApplicationButton';
+
 import StatisticsCounter from '@/components/StatisticsCounter';
 import ViewsCounter from '@/components/ViewsCounter';
 import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
-import TelegramButton from '@/components/TelegramButton';
+
 import ThemeIndicator from '@/components/ThemeIndicator';
 import DailyHeroImage from '@/components/DailyHeroImage';
 import BlogPublicationIndicator from '@/components/BlogPublicationIndicator';
@@ -198,8 +198,7 @@ export default function Index() {
         </div>
       </footer>
 
-      <FloatingApplicationButton />
-      <TelegramButton />
+
       <BlogPublicationIndicator />
       <CookieConsent />
       <Toaster />
