@@ -8,6 +8,7 @@ import MortgageQuiz from '@/components/MortgageQuiz';
 import MortgageTabsContent from '@/components/MortgageTabsContent';
 import FloatingApplicationButton from '@/components/FloatingApplicationButton';
 import StatisticsCounter from '@/components/StatisticsCounter';
+import ViewsCounter from '@/components/ViewsCounter';
 import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
 import TelegramButton from '@/components/TelegramButton';
@@ -169,6 +170,7 @@ export default function Index() {
           </div>
           <div className="border-t border-gray-800 mt-4 sm:mt-6 pt-4 sm:pt-6">
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4">
+              <ViewsCounter />
               <StatisticsCounter inline />
               <ThemeIndicator inline />
             </div>
