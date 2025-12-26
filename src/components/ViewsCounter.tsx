@@ -15,13 +15,13 @@ export default function ViewsCounter() {
     
     // Значения просмотров по дням цикла
     const viewsByDay = [
-      99,   // День 0
-      198,  // День 1 (99 * 2)
-      297,  // День 2 (99 * 3)
-      396,  // День 3 (99 * 4)
-      495,  // День 4 (99 * 5, почти 500)
-      297,  // День 5 (снижение)
-      198   // День 6 (еще снижение, перед возвратом к 99)
+      199,  // День 0
+      299,  // День 1
+      398,  // День 2
+      497,  // День 3
+      596,  // День 4
+      695,  // День 5 (пик)
+      797   // День 6
     ];
     
     const targetViews = viewsByDay[dayInCycle];
@@ -50,7 +50,7 @@ export default function ViewsCounter() {
           {views.toLocaleString('ru-RU')}
         </span>
         <span className="text-xs text-gray-600">
-          просмотров за 7 дней
+          посетителей сегодня
         </span>
       </div>
     </div>

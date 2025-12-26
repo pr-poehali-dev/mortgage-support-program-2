@@ -171,7 +171,6 @@ export default function Index() {
           <div className="border-t border-gray-800 mt-4 sm:mt-6 pt-4 sm:pt-6">
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4">
               <ViewsCounter />
-              <StatisticsCounter inline />
               <ThemeIndicator inline />
             </div>
             <div className="text-center text-gray-400 text-xs sm:text-sm">
