@@ -173,7 +173,7 @@ export default function Index() {
               <ThemeIndicator inline />
             </div>
             <div className="text-center text-gray-400 text-xs sm:text-sm">
-              <p>© 2008 Все права защищены.</p>
+              <p>© 2008-2026 Все права защищены.</p>
               <div className="flex items-center justify-center gap-4 mt-3">
                 <button
                   onClick={() => navigate('/privacy-policy')}
