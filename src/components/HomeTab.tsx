@@ -235,6 +235,57 @@ export default function HomeTab() {
       {/* RSS Лента новостей */}
       <RSSFeed />
 
+      {/* Районы обслуживания */}
+      <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+          Работаю во всех районах
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+            <Icon name="MapPin" size={24} className="text-blue-600 mx-auto mb-2" />
+            <p className="font-semibold text-gray-900">Ленинский</p>
+            <p className="text-xs text-gray-500 mt-1">Севастополь</p>
+          </Card>
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+            <Icon name="MapPin" size={24} className="text-blue-600 mx-auto mb-2" />
+            <p className="font-semibold text-gray-900">Гагаринский</p>
+            <p className="text-xs text-gray-500 mt-1">Севастополь</p>
+          </Card>
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+            <Icon name="MapPin" size={24} className="text-blue-600 mx-auto mb-2" />
+            <p className="font-semibold text-gray-900">Нахимовский</p>
+            <p className="text-xs text-gray-500 mt-1">Севастополь</p>
+          </Card>
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+            <Icon name="MapPin" size={24} className="text-blue-600 mx-auto mb-2" />
+            <p className="font-semibold text-gray-900">Балаклавский</p>
+            <p className="text-xs text-gray-500 mt-1">Севастополь</p>
+          </Card>
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+            <Icon name="MapPin" size={24} className="text-purple-600 mx-auto mb-2" />
+            <p className="font-semibold text-gray-900">Симферополь</p>
+            <p className="text-xs text-gray-500 mt-1">Крым</p>
+          </Card>
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+            <Icon name="MapPin" size={24} className="text-purple-600 mx-auto mb-2" />
+            <p className="font-semibold text-gray-900">Ялта</p>
+            <p className="text-xs text-gray-500 mt-1">Крым</p>
+          </Card>
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+            <Icon name="MapPin" size={24} className="text-purple-600 mx-auto mb-2" />
+            <p className="font-semibold text-gray-900">Феодосия</p>
+            <p className="text-xs text-gray-500 mt-1">Крым</p>
+          </Card>
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+            <Icon name="MapPin" size={24} className="text-purple-600 mx-auto mb-2" />
+            <p className="font-semibold text-gray-900">Евпатория</p>
+            <p className="text-xs text-gray-500 mt-1">Крым</p>
+          </Card>
+        </div>
+        <p className="text-center text-gray-600 mt-6">
+          Помогаю с ипотекой в любом районе Крыма и Севастополя. Выезд на встречу или онлайн-консультация
+        </p>
+      </div>
 
     </div>
   );
