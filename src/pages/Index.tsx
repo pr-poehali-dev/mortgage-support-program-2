@@ -54,7 +54,7 @@ export default function Index() {
               />
               <div>
                 <h1 className="text-lg sm:text-2xl font-bold text-gray-900">Ипотека РФ</h1>
-                <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Льготные программы с господдержкой</p>
+                <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Крым • Льготные программы с господдержкой</p>
                 <p className="text-xs text-gray-500 mt-0.5">
                   {new Date().toLocaleDateString('ru-RU', { 
                     day: 'numeric', 
