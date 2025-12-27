@@ -23,14 +23,41 @@ export default function HomeTab() {
     }, 100);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: `Заявка из города ${formData.city}`,
-      description: `${formData.name}, мы свяжемся с вами по номеру ${formData.phone}`,
-    });
-    setShowForm(false);
-    setFormData({ name: '', phone: '', city: '' });
+    
+    try {
+      const response = await fetch('https://functions.poehali.dev/927c8f65-0024-4ded-8d22-24987e241c4e', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok && result.success) {
+        toast({
+          title: '✅ Заявка отправлена!',
+          description: `${formData.name}, мы свяжемся с вами по номеру ${formData.phone}`,
+        });
+        setShowForm(false);
+        setFormData({ name: '', phone: '', city: '' });
+      } else {
+        toast({
+          title: '❌ Ошибка',
+          description: 'Не удалось отправить заявку. Позвоните нам: +7 978 128-18-50',
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      toast({
+        title: '❌ Ошибка',
+        description: 'Не удалось отправить заявку. Позвоните нам: +7 978 128-18-50',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
