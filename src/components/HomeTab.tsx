@@ -1,10 +1,37 @@
+import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { Card } from '@/components/ui/card';
 import RSSFeed from '@/components/RSSFeed';
 import { useLatestRutubeVideo } from '@/hooks/useLatestRutubeVideo';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
 
 export default function HomeTab() {
   const { video } = useLatestRutubeVideo();
+  const { toast } = useToast();
+  const [selectedCity, setSelectedCity] = useState('');
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({ name: '', phone: '', city: '' });
+
+  const handleCityClick = (city: string) => {
+    setSelectedCity(city);
+    setFormData({ ...formData, city });
+    setShowForm(true);
+    setTimeout(() => {
+      document.getElementById('region-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: `Заявка из города ${formData.city}`,
+      description: `${formData.name}, мы свяжемся с вами по номеру ${formData.phone}`,
+    });
+    setShowForm(false);
+    setFormData({ name: '', phone: '', city: '' });
+  };
 
   return (
     <div className="space-y-8">
@@ -254,50 +281,50 @@ export default function HomeTab() {
             />
             
             {/* Севастополь */}
-            <g className="cursor-pointer group">
+            <g className="cursor-pointer group" onClick={() => handleCityClick('Севастополь')}>
               <circle cx="180" cy="280" r="25" fill="#3b82f6" className="group-hover:fill-blue-700 transition-colors" opacity="0.8" />
               <circle cx="180" cy="280" r="30" fill="none" stroke="#3b82f6" strokeWidth="2" className="animate-pulse" />
               <text x="180" y="285" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle">СВ</text>
             </g>
             
             {/* Симферополь */}
-            <g className="cursor-pointer group">
+            <g className="cursor-pointer group" onClick={() => handleCityClick('Симферополь')}>
               <circle cx="400" cy="220" r="20" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
               <text x="400" y="225" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">СФ</text>
             </g>
             
             {/* Ялта */}
-            <g className="cursor-pointer group">
+            <g className="cursor-pointer group" onClick={() => handleCityClick('Ялта')}>
               <circle cx="480" cy="300" r="18" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
               <text x="480" y="305" fontSize="11" fill="white" fontWeight="bold" textAnchor="middle">ЯЛ</text>
             </g>
             
             {/* Феодосия */}
-            <g className="cursor-pointer group">
+            <g className="cursor-pointer group" onClick={() => handleCityClick('Феодосия')}>
               <circle cx="630" cy="240" r="18" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
               <text x="630" y="245" fontSize="11" fill="white" fontWeight="bold" textAnchor="middle">ФД</text>
             </g>
             
             {/* Евпатория */}
-            <g className="cursor-pointer group">
+            <g className="cursor-pointer group" onClick={() => handleCityClick('Евпатория')}>
               <circle cx="250" cy="160" r="18" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
               <text x="250" y="165" fontSize="11" fill="white" fontWeight="bold" textAnchor="middle">ЕВ</text>
             </g>
             
             {/* Керчь */}
-            <g className="cursor-pointer group">
+            <g className="cursor-pointer group" onClick={() => handleCityClick('Керчь')}>
               <circle cx="700" cy="200" r="16" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
               <text x="700" y="205" fontSize="10" fill="white" fontWeight="bold" textAnchor="middle">КР</text>
             </g>
             
             {/* Алушта */}
-            <g className="cursor-pointer group">
+            <g className="cursor-pointer group" onClick={() => handleCityClick('Алушта')}>
               <circle cx="550" cy="270" r="14" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
               <text x="550" y="274" fontSize="9" fill="white" fontWeight="bold" textAnchor="middle">АЛ</text>
             </g>
             
             {/* Бахчисарай */}
-            <g className="cursor-pointer group">
+            <g className="cursor-pointer group" onClick={() => handleCityClick('Бахчисарай')}>
               <circle cx="320" cy="240" r="14" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
               <text x="320" y="244" fontSize="9" fill="white" fontWeight="bold" textAnchor="middle">БХ</text>
             </g>
@@ -317,50 +344,102 @@ export default function HomeTab() {
 
         {/* Список районов */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white cursor-pointer" onClick={() => handleCityClick('Севастополь (Ленинский)')}>
             <Icon name="MapPin" size={24} className="text-blue-600 mx-auto mb-2" />
             <p className="font-semibold text-gray-900">Ленинский</p>
             <p className="text-xs text-gray-500 mt-1">Севастополь</p>
           </Card>
-          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white cursor-pointer" onClick={() => handleCityClick('Севастополь (Гагаринский)')}>
             <Icon name="MapPin" size={24} className="text-blue-600 mx-auto mb-2" />
             <p className="font-semibold text-gray-900">Гагаринский</p>
             <p className="text-xs text-gray-500 mt-1">Севастополь</p>
           </Card>
-          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white cursor-pointer" onClick={() => handleCityClick('Севастополь (Нахимовский)')}>
             <Icon name="MapPin" size={24} className="text-blue-600 mx-auto mb-2" />
             <p className="font-semibold text-gray-900">Нахимовский</p>
             <p className="text-xs text-gray-500 mt-1">Севастополь</p>
           </Card>
-          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white cursor-pointer" onClick={() => handleCityClick('Севастополь (Балаклавский)')}>
             <Icon name="MapPin" size={24} className="text-blue-600 mx-auto mb-2" />
             <p className="font-semibold text-gray-900">Балаклавский</p>
             <p className="text-xs text-gray-500 mt-1">Севастополь</p>
           </Card>
-          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white cursor-pointer" onClick={() => handleCityClick('Симферополь')}>
             <Icon name="MapPin" size={24} className="text-purple-600 mx-auto mb-2" />
             <p className="font-semibold text-gray-900">Симферополь</p>
             <p className="text-xs text-gray-500 mt-1">Крым</p>
           </Card>
-          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white cursor-pointer" onClick={() => handleCityClick('Ялта')}>
             <Icon name="MapPin" size={24} className="text-purple-600 mx-auto mb-2" />
             <p className="font-semibold text-gray-900">Ялта</p>
             <p className="text-xs text-gray-500 mt-1">Крым</p>
           </Card>
-          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white cursor-pointer" onClick={() => handleCityClick('Феодосия')}>
             <Icon name="MapPin" size={24} className="text-purple-600 mx-auto mb-2" />
             <p className="font-semibold text-gray-900">Феодосия</p>
             <p className="text-xs text-gray-500 mt-1">Крым</p>
           </Card>
-          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
+          <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white cursor-pointer" onClick={() => handleCityClick('Евпатория')}>
             <Icon name="MapPin" size={24} className="text-purple-600 mx-auto mb-2" />
             <p className="font-semibold text-gray-900">Евпатория</p>
             <p className="text-xs text-gray-500 mt-1">Крым</p>
           </Card>
         </div>
         <p className="text-center text-gray-600 mt-6">
-          Помогаю с ипотекой в любом районе Крыма и Севастополя. Выезд на встречу или онлайн-консультация
+          💡 Нажмите на город на карте или в списке, чтобы оставить заявку
         </p>
+        
+        {/* Форма заявки */}
+        {showForm && (
+          <Card id="region-form" className="mt-8 p-6 bg-white shadow-xl border-2 border-blue-500 animate-in fade-in slide-in-from-bottom-4">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <Icon name="MapPin" size={24} className="text-blue-600" />
+                Заявка на ипотеку в городе {selectedCity}
+              </h3>
+              <button onClick={() => setShowForm(false)} className="text-gray-500 hover:text-gray-700">
+                <Icon name="X" size={24} />
+              </button>
+            </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Ваше имя</label>
+                <Input
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="Введите имя"
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Телефон</label>
+                <Input
+                  type="tel"
+                  required
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  placeholder="+7 (___) ___-__-__"
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Город</label>
+                <Input
+                  type="text"
+                  value={formData.city}
+                  readOnly
+                  className="w-full bg-gray-50"
+                />
+              </div>
+              <Button type="submit" className="w-full">
+                <Icon name="Send" size={18} className="mr-2" />
+                Отправить заявку
+              </Button>
+            </form>
+          </Card>
+        )}
       </div>
 
     </div>
