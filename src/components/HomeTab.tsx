@@ -15,13 +15,25 @@ export default function HomeTab() {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: '', phone: '', city: '' });
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterType, setFilterType] = useState<'all' | 'city' | 'town'>('all');
 
   const filteredCities = useMemo(() => {
-    if (!searchQuery) return crimeaCities;
-    return crimeaCities.filter(city => 
-      city.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [searchQuery]);
+    let cities = crimeaCities;
+    
+    // Фильтр по типу
+    if (filterType !== 'all') {
+      cities = cities.filter(city => city.type === filterType);
+    }
+    
+    // Фильтр по поиску
+    if (searchQuery) {
+      cities = cities.filter(city => 
+        city.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    return cities;
+  }, [searchQuery, filterType]);
 
   const handleCityClick = (city: string) => {
     setSelectedCity(city);
@@ -304,8 +316,40 @@ export default function HomeTab() {
           Работаю во всех районах Крыма
         </h2>
         
-        {/* Поиск населённого пункта */}
-        <div className="mb-6 max-w-2xl mx-auto">
+        {/* Фильтры */}
+        <div className="mb-6 max-w-2xl mx-auto space-y-4">
+          {/* Кнопки фильтров */}
+          <div className="flex gap-2 justify-center flex-wrap">
+            <Button
+              variant={filterType === 'all' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setFilterType('all')}
+              className="min-w-[100px]"
+            >
+              <Icon name="Map" size={16} className="mr-2" />
+              Все ({crimeaCities.length})
+            </Button>
+            <Button
+              variant={filterType === 'city' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setFilterType('city')}
+              className="min-w-[100px]"
+            >
+              <Icon name="Building2" size={16} className="mr-2" />
+              Города ({crimeaCities.filter(c => c.type === 'city').length})
+            </Button>
+            <Button
+              variant={filterType === 'town' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setFilterType('town')}
+              className="min-w-[100px]"
+            >
+              <Icon name="Home" size={16} className="mr-2" />
+              ПГТ ({crimeaCities.filter(c => c.type === 'town').length})
+            </Button>
+          </div>
+          
+          {/* Поиск */}
           <div className="relative">
             <Icon name="Search" size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <Input
@@ -470,9 +514,14 @@ export default function HomeTab() {
             <p className="text-xs text-gray-500 mt-1">Крым</p>
           </Card>
         </div>
-        <p className="text-center text-gray-600 mt-6">
-          💡 Нажмите на город на карте или в списке, чтобы оставить заявку
-        </p>
+        <div className="text-center mt-6">
+          <p className="text-gray-600 mb-2">
+            💡 Нажмите на город на карте или используйте поиск выше
+          </p>
+          <p className="text-sm text-gray-500">
+            Показано населённых пунктов: <span className="font-semibold text-blue-600">{filteredCities.length}</span>
+          </p>
+        </div>
         
         {/* Форма заявки */}
         {showForm && (
