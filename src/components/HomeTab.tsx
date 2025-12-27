@@ -235,11 +235,87 @@ export default function HomeTab() {
       {/* RSS Лента новостей */}
       <RSSFeed />
 
-      {/* Районы обслуживания */}
+      {/* Районы обслуживания с картой */}
       <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
-          Работаю во всех районах
+          Работаю во всех районах Крыма
         </h2>
+        
+        {/* Интерактивная карта */}
+        <div className="relative bg-white rounded-xl p-8 mb-8 shadow-lg">
+          <svg viewBox="0 0 800 400" className="w-full h-auto">
+            {/* Контур Крыма (упрощенный) */}
+            <path
+              d="M 100 200 Q 150 150 250 180 L 350 160 Q 450 140 550 170 L 650 190 Q 700 210 720 250 L 710 280 Q 680 320 620 330 L 500 340 Q 400 350 300 340 L 200 320 Q 130 300 100 260 Z"
+              fill="#e0f2fe"
+              stroke="#3b82f6"
+              strokeWidth="3"
+              className="transition-all hover:fill-blue-100"
+            />
+            
+            {/* Севастополь */}
+            <g className="cursor-pointer group">
+              <circle cx="180" cy="280" r="25" fill="#3b82f6" className="group-hover:fill-blue-700 transition-colors" opacity="0.8" />
+              <circle cx="180" cy="280" r="30" fill="none" stroke="#3b82f6" strokeWidth="2" className="animate-pulse" />
+              <text x="180" y="285" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle">СВ</text>
+            </g>
+            
+            {/* Симферополь */}
+            <g className="cursor-pointer group">
+              <circle cx="400" cy="220" r="20" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
+              <text x="400" y="225" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">СФ</text>
+            </g>
+            
+            {/* Ялта */}
+            <g className="cursor-pointer group">
+              <circle cx="480" cy="300" r="18" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
+              <text x="480" y="305" fontSize="11" fill="white" fontWeight="bold" textAnchor="middle">ЯЛ</text>
+            </g>
+            
+            {/* Феодосия */}
+            <g className="cursor-pointer group">
+              <circle cx="630" cy="240" r="18" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
+              <text x="630" y="245" fontSize="11" fill="white" fontWeight="bold" textAnchor="middle">ФД</text>
+            </g>
+            
+            {/* Евпатория */}
+            <g className="cursor-pointer group">
+              <circle cx="250" cy="160" r="18" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
+              <text x="250" y="165" fontSize="11" fill="white" fontWeight="bold" textAnchor="middle">ЕВ</text>
+            </g>
+            
+            {/* Керчь */}
+            <g className="cursor-pointer group">
+              <circle cx="700" cy="200" r="16" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
+              <text x="700" y="205" fontSize="10" fill="white" fontWeight="bold" textAnchor="middle">КР</text>
+            </g>
+            
+            {/* Алушта */}
+            <g className="cursor-pointer group">
+              <circle cx="550" cy="270" r="14" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
+              <text x="550" y="274" fontSize="9" fill="white" fontWeight="bold" textAnchor="middle">АЛ</text>
+            </g>
+            
+            {/* Бахчисарай */}
+            <g className="cursor-pointer group">
+              <circle cx="320" cy="240" r="14" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
+              <text x="320" y="244" fontSize="9" fill="white" fontWeight="bold" textAnchor="middle">БХ</text>
+            </g>
+          </svg>
+          
+          <div className="flex flex-wrap justify-center gap-4 mt-4 text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full bg-blue-600"></div>
+              <span className="text-gray-700">Севастополь</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full bg-purple-600"></div>
+              <span className="text-gray-700">Города Крыма</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Список районов */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <Card className="p-4 text-center hover:shadow-md transition-shadow bg-white">
             <Icon name="MapPin" size={24} className="text-blue-600 mx-auto mb-2" />
