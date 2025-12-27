@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Icon from '@/components/ui/icon';
 import { Card } from '@/components/ui/card';
 import RSSFeed from '@/components/RSSFeed';
@@ -6,6 +6,7 @@ import { useLatestRutubeVideo } from '@/hooks/useLatestRutubeVideo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { crimeaCities } from '@/data/crimea-cities';
 
 export default function HomeTab() {
   const { video } = useLatestRutubeVideo();
@@ -13,6 +14,14 @@ export default function HomeTab() {
   const [selectedCity, setSelectedCity] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: '', phone: '', city: '' });
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredCities = useMemo(() => {
+    if (!searchQuery) return crimeaCities;
+    return crimeaCities.filter(city => 
+      city.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [searchQuery]);
 
   const handleCityClick = (city: string) => {
     setSelectedCity(city);
@@ -295,66 +304,115 @@ export default function HomeTab() {
           Работаю во всех районах Крыма
         </h2>
         
+        {/* Поиск населённого пункта */}
+        <div className="mb-6 max-w-2xl mx-auto">
+          <div className="relative">
+            <Icon name="Search" size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <Input
+              type="text"
+              placeholder="Найти населённый пункт..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-12 pr-4 py-3 text-base"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <Icon name="X" size={20} />
+              </button>
+            )}
+          </div>
+          {searchQuery && filteredCities.length > 0 && (
+            <Card className="mt-2 p-2 max-h-60 overflow-y-auto">
+              {filteredCities.map((city) => (
+                <button
+                  key={city.name}
+                  onClick={() => {
+                    handleCityClick(city.name);
+                    setSearchQuery('');
+                  }}
+                  className="w-full text-left px-4 py-2 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-2"
+                >
+                  <Icon name="MapPin" size={16} className="text-blue-600" />
+                  <span className="font-medium">{city.name}</span>
+                  <span className="text-xs text-gray-500 ml-auto">
+                    {city.type === 'city' ? 'Город' : 'ПГТ'}
+                  </span>
+                </button>
+              ))}
+            </Card>
+          )}
+        </div>
+        
         {/* Интерактивная карта */}
         <div className="relative bg-white rounded-xl p-8 mb-8 shadow-lg">
           <svg viewBox="0 0 800 400" className="w-full h-auto">
-            {/* Контур Крыма (упрощенный) */}
+            {/* Детализированный контур Крыма */}
             <path
-              d="M 100 200 Q 150 150 250 180 L 350 160 Q 450 140 550 170 L 650 190 Q 700 210 720 250 L 710 280 Q 680 320 620 330 L 500 340 Q 400 350 300 340 L 200 320 Q 130 300 100 260 Z"
-              fill="#e0f2fe"
-              stroke="#3b82f6"
-              strokeWidth="3"
-              className="transition-all hover:fill-blue-100"
+              d="M 90 205 L 110 195 L 130 185 L 150 170 L 170 155 L 190 145 L 210 140 L 230 138 L 250 140 L 270 145 L 290 150 L 310 155 L 330 158 L 350 160 L 370 158 L 390 155 L 410 150 L 430 145 L 450 142 L 470 140 L 490 142 L 510 148 L 530 155 L 550 165 L 570 175 L 590 183 L 610 190 L 630 195 L 650 200 L 670 207 L 690 215 L 705 225 L 715 235 L 722 247 L 725 260 L 723 272 L 718 283 L 710 293 L 700 302 L 688 310 L 674 317 L 658 323 L 640 328 L 620 332 L 598 336 L 575 339 L 550 341 L 525 342 L 500 342 L 475 341 L 450 339 L 425 337 L 400 335 L 375 332 L 350 329 L 325 325 L 300 320 L 275 314 L 250 308 L 225 301 L 200 293 L 178 285 L 158 276 L 140 266 L 125 255 L 112 243 L 102 230 L 95 217 Z"
+              fill="url(#crimeaGradient)"
+              stroke="#2563eb"
+              strokeWidth="2"
+              className="transition-all"
             />
             
-            {/* Севастополь */}
-            <g className="cursor-pointer group" onClick={() => handleCityClick('Севастополь')}>
-              <circle cx="180" cy="280" r="25" fill="#3b82f6" className="group-hover:fill-blue-700 transition-colors" opacity="0.8" />
-              <circle cx="180" cy="280" r="30" fill="none" stroke="#3b82f6" strokeWidth="2" className="animate-pulse" />
-              <text x="180" y="285" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle">СВ</text>
-            </g>
+            {/* Градиент для карты */}
+            <defs>
+              <linearGradient id="crimeaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#dbeafe" />
+                <stop offset="50%" stopColor="#bfdbfe" />
+                <stop offset="100%" stopColor="#93c5fd" />
+              </linearGradient>
+            </defs>
             
-            {/* Симферополь */}
-            <g className="cursor-pointer group" onClick={() => handleCityClick('Симферополь')}>
-              <circle cx="400" cy="220" r="20" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
-              <text x="400" y="225" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">СФ</text>
-            </g>
-            
-            {/* Ялта */}
-            <g className="cursor-pointer group" onClick={() => handleCityClick('Ялта')}>
-              <circle cx="480" cy="300" r="18" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
-              <text x="480" y="305" fontSize="11" fill="white" fontWeight="bold" textAnchor="middle">ЯЛ</text>
-            </g>
-            
-            {/* Феодосия */}
-            <g className="cursor-pointer group" onClick={() => handleCityClick('Феодосия')}>
-              <circle cx="630" cy="240" r="18" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
-              <text x="630" y="245" fontSize="11" fill="white" fontWeight="bold" textAnchor="middle">ФД</text>
-            </g>
-            
-            {/* Евпатория */}
-            <g className="cursor-pointer group" onClick={() => handleCityClick('Евпатория')}>
-              <circle cx="250" cy="160" r="18" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
-              <text x="250" y="165" fontSize="11" fill="white" fontWeight="bold" textAnchor="middle">ЕВ</text>
-            </g>
-            
-            {/* Керчь */}
-            <g className="cursor-pointer group" onClick={() => handleCityClick('Керчь')}>
-              <circle cx="700" cy="200" r="16" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
-              <text x="700" y="205" fontSize="10" fill="white" fontWeight="bold" textAnchor="middle">КР</text>
-            </g>
-            
-            {/* Алушта */}
-            <g className="cursor-pointer group" onClick={() => handleCityClick('Алушта')}>
-              <circle cx="550" cy="270" r="14" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
-              <text x="550" y="274" fontSize="9" fill="white" fontWeight="bold" textAnchor="middle">АЛ</text>
-            </g>
-            
-            {/* Бахчисарай */}
-            <g className="cursor-pointer group" onClick={() => handleCityClick('Бахчисарай')}>
-              <circle cx="320" cy="240" r="14" fill="#8b5cf6" className="group-hover:fill-purple-700 transition-colors" opacity="0.8" />
-              <text x="320" y="244" fontSize="9" fill="white" fontWeight="bold" textAnchor="middle">БХ</text>
-            </g>
+            {/* Города на карте */}
+            {filteredCities.map((city) => {
+              const radius = city.size === 'large' ? 20 : city.size === 'medium' ? 12 : 8;
+              const fontSize = city.size === 'large' ? '11' : city.size === 'medium' ? '8' : '6';
+              const color = city.name === 'Севастополь' ? '#3b82f6' : '#8b5cf6';
+              
+              return (
+                <g 
+                  key={city.name} 
+                  className="cursor-pointer group" 
+                  onClick={() => handleCityClick(city.name)}
+                >
+                  <circle 
+                    cx={city.x} 
+                    cy={city.y} 
+                    r={radius} 
+                    fill={color} 
+                    className="group-hover:opacity-100 transition-all" 
+                    opacity="0.8" 
+                  />
+                  {city.size === 'large' && (
+                    <circle 
+                      cx={city.x} 
+                      cy={city.y} 
+                      r={radius + 5} 
+                      fill="none" 
+                      stroke={color} 
+                      strokeWidth="2" 
+                      className="animate-pulse" 
+                    />
+                  )}
+                  <text 
+                    x={city.x} 
+                    y={city.y + parseInt(fontSize)/3} 
+                    fontSize={fontSize} 
+                    fill="white" 
+                    fontWeight="bold" 
+                    textAnchor="middle"
+                    className="pointer-events-none"
+                  >
+                    {city.name.substring(0, city.size === 'large' ? 3 : 2).toUpperCase()}
+                  </text>
+                  <title>{city.name}</title>
+                </g>
+              );
+            })}
           </svg>
           
           <div className="flex flex-wrap justify-center gap-4 mt-4 text-sm">
