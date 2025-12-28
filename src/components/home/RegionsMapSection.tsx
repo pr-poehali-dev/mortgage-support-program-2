@@ -285,6 +285,27 @@ export default function RegionsMapSection() {
             opacity="0.4"
           />
           
+          <g opacity="0.3">
+            <path d="M 240 180 L 340 200 M 340 200 L 420 220 M 420 220 L 480 230" stroke="#047857" strokeWidth="0.8" strokeDasharray="3,3" fill="none"/>
+            <path d="M 280 240 L 380 260 M 380 260 L 460 280 M 460 280 L 540 290" stroke="#047857" strokeWidth="0.8" strokeDasharray="3,3" fill="none"/>
+            <path d="M 200 280 L 280 300 M 280 300 L 360 320 M 360 320 L 440 330 M 440 330 L 520 335" stroke="#047857" strokeWidth="0.8" strokeDasharray="3,3" fill="none"/>
+            <path d="M 300 180 L 300 300" stroke="#047857" strokeWidth="0.8" strokeDasharray="3,3" fill="none"/>
+            <path d="M 400 180 L 400 310" stroke="#047857" strokeWidth="0.8" strokeDasharray="3,3" fill="none"/>
+            <path d="M 500 190 L 500 330" stroke="#047857" strokeWidth="0.8" strokeDasharray="3,3" fill="none"/>
+            <path d="M 600 210 L 600 340" stroke="#047857" strokeWidth="0.8" strokeDasharray="3,3" fill="none"/>
+          </g>
+          
+          <text x="100" y="330" fontSize="18" fill="#0284c7" fontStyle="italic" opacity="0.6" fontWeight="600">
+            Чёрное море
+          </text>
+          
+          <text x="650" y="100" fontSize="16" fill="#0284c7" fontStyle="italic" opacity="0.6" fontWeight="600">
+            Азовское
+          </text>
+          <text x="660" y="118" fontSize="16" fill="#0284c7" fontStyle="italic" opacity="0.6" fontWeight="600">
+            море
+          </text>
+          
           {filteredCities.map((city) => {
             const radius = city.size === 'large' ? 20 : city.size === 'medium' ? 12 : 8;
             const fontSize = city.size === 'large' ? '11' : city.size === 'medium' ? '8' : '6';
