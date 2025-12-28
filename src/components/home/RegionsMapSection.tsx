@@ -353,15 +353,88 @@ export default function RegionsMapSection() {
           })}
         </svg>
         
-        <div className="flex flex-wrap justify-center gap-4 mt-4 text-sm">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-blue-600"></div>
-            <span className="text-gray-700">Севастополь</span>
+        <div className="space-y-4 mt-6">
+          <div className="flex flex-wrap justify-center gap-4 text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full bg-blue-600"></div>
+              <span className="text-gray-700">Севастополь</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full bg-purple-600"></div>
+              <span className="text-gray-700">Города Крыма</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-1 bg-green-700 opacity-30" style={{borderTop: '1px dashed #047857'}}></div>
+              <span className="text-gray-700">Границы районов</span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-purple-600"></div>
-            <span className="text-gray-700">Города Крыма</span>
-          </div>
+          
+          <Card className="p-4 bg-gradient-to-br from-green-50 to-blue-50">
+            <h4 className="font-semibold text-gray-900 mb-3 text-center">Административные районы Республики Крым</h4>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 text-xs">
+              <div className="flex items-center gap-1.5">
+                <Icon name="MapPin" size={12} className="text-green-600" />
+                <span>Бахчисарайский</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Icon name="MapPin" size={12} className="text-green-600" />
+                <span>Белогорский</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Icon name="MapPin" size={12} className="text-green-600" />
+                <span>Джанкойский</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Icon name="MapPin" size={12} className="text-green-600" />
+                <span>Кировский</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Icon name="MapPin" size={12} className="text-green-600" />
+                <span>Красногвардейский</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Icon name="MapPin" size={12} className="text-green-600" />
+                <span>Красноперекопский</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Icon name="MapPin" size={12} className="text-green-600" />
+                <span>Ленинский</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Icon name="MapPin" size={12} className="text-green-600" />
+                <span>Нижнегорский</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Icon name="MapPin" size={12} className="text-green-600" />
+                <span>Первомайский</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Icon name="MapPin" size={12} className="text-green-600" />
+                <span>Раздольненский</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Icon name="MapPin" size={12} className="text-green-600" />
+                <span>Сакский</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Icon name="MapPin" size={12} className="text-green-600" />
+                <span>Симферопольский</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Icon name="MapPin" size={12} className="text-green-600" />
+                <span>Советский</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Icon name="MapPin" size={12} className="text-green-600" />
+                <span>Черноморский</span>
+              </div>
+            </div>
+            <div className="mt-3 pt-3 border-t border-gray-200">
+              <p className="text-xs text-gray-600 text-center">
+                + города республиканского значения: Симферополь, Алушта, Армянск, Джанкой, Евпатория, Керчь, Красноперекопск, Саки, Судак, Феодосия, Ялта
+              </p>
+            </div>
+          </Card>
         </div>
       </div>
 
