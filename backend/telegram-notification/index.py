@@ -65,7 +65,7 @@ def handler(event: dict, context) -> dict:
                 'body': json.dumps({'error': 'Telegram credentials not configured', 'details': {'bot_token': bool(bot_token), 'chat_id': bool(chat_id)}})
             }
         
-        message = f"🏠 Новая заявка на ипотеку\n\n📍 Город: {city}\n👤 Имя: {name}\n📞 Телефон: {phone}"
+        message = f"🏠 <b>Новая заявка на ипотеку</b>\n\n📍 <b>Город:</b> {city}\n👤 <b>Имя:</b> {name}\n📞 <b>Телефон:</b> <code>{phone}</code>\n\n💡 Нажмите на номер телефона, чтобы скопировать"
         
         url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
         
@@ -76,7 +76,8 @@ def handler(event: dict, context) -> dict:
         
         payload = {
             'chat_id': chat_id_int,
-            'text': message
+            'text': message,
+            'parse_mode': 'HTML'
         }
         
         print(f"[DEBUG] Payload: {payload}")
