@@ -19,7 +19,7 @@ import CookieConsent from '@/components/CookieConsent';
 import { useAutoIndexNow } from '@/hooks/useAutoIndexNow';
 import { useDailyTheme } from '@/hooks/useDailyTheme';
 import { useSitemapGenerator } from '@/hooks/useSitemapGenerator';
-import { trackPhoneClick, trackTabChanged } from '@/services/metrika-goals';
+import { trackPhoneClick, trackTabChanged } from '@/services/analytics';
 
 export default function Index() {
   const [activeTab, setActiveTab] = useState('home');

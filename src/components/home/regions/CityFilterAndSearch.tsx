@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { crimeaCities } from '@/data/crimea-cities';
-import { trackFilterChanged, trackSearchUsed } from '@/services/metrika-goals';
+import { trackFilterChanged, trackSearchUsed } from '@/services/analytics';
 
 interface CityFilterAndSearchProps {
   filterType: 'all' | 'city' | 'town';

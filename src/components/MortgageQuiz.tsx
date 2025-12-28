@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
 import { programs } from '@/data/mortgageData';
-import { trackQuizCompleted } from '@/services/metrika-goals';
+import { trackQuizCompleted } from '@/services/analytics';
 
 interface MortgageQuizProps {
   onNavigateToCalculator: () => void;

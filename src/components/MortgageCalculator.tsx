@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
 import { toast } from '@/hooks/use-toast';
 import { programs } from '@/data/mortgageData';
-import { trackCalculatorUsed } from '@/services/metrika-goals';
+import { trackCalculatorUsed } from '@/services/analytics';
 
 export default function MortgageCalculator() {
   const [calcAmount, setCalcAmount] = useState([3000000]);

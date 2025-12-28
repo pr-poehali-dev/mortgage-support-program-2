@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
 import { toast } from '@/hooks/use-toast';
-import { trackApplicationSent } from '@/services/metrika-goals';
+import { trackApplicationSent } from '@/services/analytics';
 
 export default function FloatingApplicationButton() {
   const [isOpen, setIsOpen] = useState(false);

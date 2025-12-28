@@ -27,7 +27,7 @@ import MetrikaGoalsDashboard from '@/components/MetrikaGoalsDashboard';
 import MetrikaTrendsChart from '@/components/MetrikaTrendsChart';
 import AdminClock from '@/components/AdminClock';
 import AdminCalendar from '@/components/AdminCalendar';
-import { trackExcelDownload, trackEmailReport } from '@/services/metrika-goals';
+import { trackExcelDownload, trackEmailReport } from '@/services/analytics';
 
 ChartJS.register(
   CategoryScale,
