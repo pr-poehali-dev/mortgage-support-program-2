@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { crimeaCities } from '@/data/crimea-cities';
+import { trackFilterChanged, trackSearchUsed } from '@/services/metrika-goals';
 
 interface CityFilterAndSearchProps {
   filterType: 'all' | 'city' | 'town';
@@ -21,13 +22,28 @@ export default function CityFilterAndSearch({
   filteredCities,
   onCityClick,
 }: CityFilterAndSearchProps) {
+  const handleFilterChange = (type: 'all' | 'city' | 'town') => {
+    setFilterType(type);
+    const count = type === 'all' 
+      ? crimeaCities.length 
+      : crimeaCities.filter(c => c.type === type).length;
+    trackFilterChanged(type, count);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    if (value.length >= 2) {
+      trackSearchUsed(value);
+    }
+  };
+
   return (
     <div className="mb-6 max-w-2xl mx-auto space-y-4">
       <div className="flex gap-2 justify-center flex-wrap">
         <Button
           variant={filterType === 'all' ? 'default' : 'outline'}
           size="sm"
-          onClick={() => setFilterType('all')}
+          onClick={() => handleFilterChange('all')}
           className="min-w-[100px]"
         >
           <Icon name="Map" size={16} className="mr-2" />
@@ -36,7 +52,7 @@ export default function CityFilterAndSearch({
         <Button
           variant={filterType === 'city' ? 'default' : 'outline'}
           size="sm"
-          onClick={() => setFilterType('city')}
+          onClick={() => handleFilterChange('city')}
           className="min-w-[100px]"
         >
           <Icon name="Building2" size={16} className="mr-2" />
@@ -45,7 +61,7 @@ export default function CityFilterAndSearch({
         <Button
           variant={filterType === 'town' ? 'default' : 'outline'}
           size="sm"
-          onClick={() => setFilterType('town')}
+          onClick={() => handleFilterChange('town')}
           className="min-w-[100px]"
         >
           <Icon name="Home" size={16} className="mr-2" />
@@ -59,7 +75,7 @@ export default function CityFilterAndSearch({
           type="text"
           placeholder="Найти населённый пункт..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => handleSearchChange(e.target.value)}
           className="pl-12 pr-4 py-3 text-base"
         />
         {searchQuery && (

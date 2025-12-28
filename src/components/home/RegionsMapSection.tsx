@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { crimeaCities } from '@/data/crimea-cities';
+import { trackApplicationSent } from '@/services/metrika-goals';
 import CityFilterAndSearch from '@/components/home/regions/CityFilterAndSearch';
 import CrimeaMapSVG from '@/components/home/regions/CrimeaMapSVG';
 import DistrictsGrid from '@/components/home/regions/DistrictsGrid';
@@ -34,6 +35,11 @@ export default function RegionsMapSection() {
     setSelectedCity(city);
     setFormData({ ...formData, city });
     setShowForm(true);
+    
+    if (typeof window !== 'undefined' && window.ym) {
+      window.ym(105974763, 'reachGoal', 'city_selected', { city });
+    }
+    
     setTimeout(() => {
       document.getElementById('region-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 100);
@@ -54,6 +60,15 @@ export default function RegionsMapSection() {
       const result = await response.json();
       
       if (response.ok && result.success) {
+        trackApplicationSent('region_map', 0);
+        
+        if (typeof window !== 'undefined' && window.ym) {
+          window.ym(105974763, 'reachGoal', 'form_submitted', {
+            city: formData.city,
+            source: 'region_map'
+          });
+        }
+        
         toast({
           title: '✅ Заявка отправлена!',
           description: `${formData.name}, мы свяжемся с вами по номеру ${formData.phone}`,

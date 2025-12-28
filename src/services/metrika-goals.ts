@@ -16,6 +16,11 @@ export const MetrikaGoals = {
   EXCEL_DOWNLOAD: 'excel_download',
   EMAIL_REPORT: 'email_report',
   TAB_CHANGED: 'tab_changed',
+  CITY_SELECTED: 'city_selected',
+  FORM_SUBMITTED: 'form_submitted',
+  MAP_INTERACTION: 'map_interaction',
+  SEARCH_USED: 'search_used',
+  FILTER_CHANGED: 'filter_changed',
 } as const;
 
 export function reachGoal(goal: string, params?: Record<string, any>) {
@@ -81,5 +86,37 @@ export function trackEmailReport(email: string) {
 export function trackTabChanged(tabName: string) {
   reachGoal(MetrikaGoals.TAB_CHANGED, {
     tab: tabName,
+  });
+}
+
+export function trackCitySelected(cityName: string) {
+  reachGoal(MetrikaGoals.CITY_SELECTED, {
+    city: cityName,
+  });
+}
+
+export function trackFormSubmitted(city: string, source: string) {
+  reachGoal(MetrikaGoals.FORM_SUBMITTED, {
+    city: city,
+    source: source,
+  });
+}
+
+export function trackMapInteraction(action: string) {
+  reachGoal(MetrikaGoals.MAP_INTERACTION, {
+    action: action,
+  });
+}
+
+export function trackSearchUsed(query: string) {
+  reachGoal(MetrikaGoals.SEARCH_USED, {
+    query: query.substring(0, 50),
+  });
+}
+
+export function trackFilterChanged(filterType: string, count: number) {
+  reachGoal(MetrikaGoals.FILTER_CHANGED, {
+    filter: filterType,
+    results: count,
   });
 }
