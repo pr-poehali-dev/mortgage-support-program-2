@@ -10,7 +10,7 @@ interface CrimeaMapSVGProps {
 export default function CrimeaMapSVG({ filteredCities, onCityClick }: CrimeaMapSVGProps) {
   return (
     <div className="relative bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-8 mb-8 shadow-lg">
-      <svg viewBox="0 0 1000 500" className="w-full h-auto" style={{ maxHeight: '600px' }}>
+      <svg viewBox="0 0 1134 760" className="w-full h-auto" style={{ maxHeight: '700px' }}>
         <defs>
           <linearGradient id="landGradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#dcfce7" />
@@ -41,93 +41,62 @@ export default function CrimeaMapSVG({ filteredCities, onCityClick }: CrimeaMapS
           </filter>
         </defs>
         
-        <rect x="0" y="0" width="1000" height="500" fill="url(#seaGradient)"/>
+        <rect x="0" y="0" width="1134" height="760" fill="url(#seaGradient)"/>
+        
+        <image 
+          href="https://cdn.poehali.dev/files/Crimea_location_map.svg.png" 
+          x="0" 
+          y="0" 
+          width="1134" 
+          height="760"
+          opacity="0.85"
+          preserveAspectRatio="xMidYMid slice"
+        />
         
         <path
-          d="M 120 250
-             L 130 240 L 140 235 L 155 228 L 170 222 
-             L 190 217 L 210 214 L 230 212 L 250 211 
-             L 275 212 L 300 215 L 325 220 L 350 226 
-             L 375 232 L 400 237 L 425 241 L 450 244 
-             L 475 246 L 500 247 L 525 247 L 550 246 
-             L 575 244 L 600 242 L 625 240 L 650 239 
-             L 675 239 L 700 241 L 725 245 L 750 251 
-             L 775 259 L 800 268 L 820 278 L 835 288 
-             L 845 298 L 852 308 L 856 318 L 858 328 
-             L 857 338 L 853 348 L 846 357 L 836 365 
-             L 823 372 L 808 378 L 790 383 L 770 387 
-             L 748 390 L 725 392 L 700 393 L 675 393 
-             L 650 392 L 625 390 L 600 387 L 575 384 
-             L 550 381 L 525 378 L 500 375 L 475 372 
-             L 450 370 L 425 368 L 400 367 L 375 367 
-             L 350 368 L 325 370 L 300 373 L 275 377 
-             L 250 382 L 225 388 L 200 395 L 178 403 
-             L 158 412 L 140 420 L 125 427 L 113 433 
-             L 105 438 L 100 442 L 98 445 L 100 448 
-             L 105 450 L 112 450 L 120 447 L 127 443 
-             L 133 438 L 138 432 L 142 425 L 145 418 
-             L 147 410 L 148 402 L 148 394 L 147 386 
-             L 145 378 L 142 370 L 138 362 L 133 354 
-             L 127 346 L 120 338 L 112 330 L 103 323 
-             L 93 316 L 83 310 L 74 305 L 66 301 
-             L 60 298 L 55 295 L 52 293 L 50 291 
-             L 50 289 L 52 287 L 56 285 L 62 283 
-             L 70 281 L 80 279 L 92 277 L 106 275 
-             L 120 273 L 134 271 L 148 269 L 162 267 
-             L 175 265 L 187 263 L 198 261 L 208 259 
-             L 217 257 L 225 255 L 232 253 L 238 251 
-             L 243 249 L 247 247 L 250 245 L 252 243 
-             L 253 241 L 253 239 L 252 237 L 250 235 
-             L 247 233 L 243 231 L 238 229 L 232 227 
-             L 225 225 L 217 223 L 208 221 L 198 219 
-             L 187 217 L 175 215 L 162 213 L 148 211 
-             L 134 209 L 120 207 L 106 206 L 92 205 
-             L 80 205 L 70 206 L 62 207 L 56 209 
-             L 52 211 L 50 213 L 50 216 L 52 219 
-             L 55 222 L 60 226 L 66 230 L 74 235 
-             L 83 240 L 93 246 L 103 252 L 112 258 
-             L 120 264 L 127 270 L 133 276 L 138 282 
-             L 142 288 L 145 294 L 147 300 L 148 306 
-             L 148 312 L 147 318 L 145 324 L 142 330 
-             L 138 336 L 133 342 L 127 348 L 120 354 
-             Z"
-          fill="url(#landGradient)"
-          stroke="#22c55e"
-          strokeWidth="3"
+          d="M 30 380 L 40 370 L 55 360 L 75 350 L 100 340 L 130 330 
+             L 165 320 L 205 312 L 250 306 L 300 302 L 355 300 L 415 300 
+             L 480 302 L 550 306 L 625 312 L 705 320 L 790 330 L 875 342 
+             L 955 356 L 1025 372 L 1080 390 L 1115 408 L 1130 426 L 1132 444 
+             L 1125 462 L 1110 478 L 1087 492 L 1057 504 L 1020 514 L 978 522 
+             L 931 528 L 880 532 L 825 534 L 767 534 L 707 532 L 645 528 
+             L 582 522 L 518 514 L 455 504 L 393 492 L 333 478 L 276 462 
+             L 223 444 L 174 424 L 130 402 L 92 378 L 60 352 L 35 324 
+             L 18 294 L 10 262 L 12 228 L 24 194 L 46 162 L 78 134 
+             L 120 110 L 172 92 L 234 80 L 306 74 L 388 74 L 480 80 
+             L 582 92 L 694 110 L 816 134 L 948 164 L 1070 198 L 1115 220 
+             L 1130 238 L 1132 254 L 1125 268 L 1110 280 L 1087 290 L 1057 298 
+             L 1020 304 L 978 308 L 931 310 L 880 310 L 825 308 L 767 304 
+             L 707 298 L 645 290 L 582 280 L 518 268 L 455 254 L 393 238 
+             L 333 220 L 276 200 L 223 178 L 174 154 L 130 128 L 92 100 
+             L 60 70 L 35 38 L 18 4 Z"
+          fill="none"
+          stroke="#0284c7"
+          strokeWidth="4"
           filter="url(#dropShadow)"
         />
         
-        <path
-          d="M 450 340 Q 500 335, 550 340 Q 600 345, 650 342 Q 680 340, 700 338"
-          fill="url(#mountainGradient)"
-          opacity="0.5"
-          stroke="#78716c"
-          strokeWidth="1.5"
-        />
-        <path
-          d="M 460 345 Q 510 340, 560 345 Q 610 348, 650 346"
-          fill="url(#mountainGradient)"
-          opacity="0.3"
-          stroke="#a8a29e"
-          strokeWidth="1"
-        />
+
         
-        <text x="120" y="470" fontSize="20" fill="#0369a1" fontWeight="700" fontFamily="system-ui">
+        <text x="150" y="720" fontSize="24" fill="#0369a1" fontWeight="700" fontFamily="system-ui">
           Чёрное море
         </text>
         
-        <text x="780" y="180" fontSize="18" fill="#0369a1" fontWeight="700" fontFamily="system-ui">
-          Азовское море
+        <text x="950" y="150" fontSize="20" fill="#0369a1" fontWeight="700" fontFamily="system-ui">
+          Азовское
+        </text>
+        <text x="970" y="175" fontSize="20" fill="#0369a1" fontWeight="700" fontFamily="system-ui">
+          море
         </text>
         
         {filteredCities.map((city) => {
           const isLarge = city.size === 'large';
           const isMedium = city.size === 'medium';
-          const dotRadius = isLarge ? 8 : isMedium ? 6 : 4;
-          const fontSize = isLarge ? 14 : isMedium ? 12 : 10;
+          const dotRadius = isLarge ? 10 : isMedium ? 7 : 5;
+          const fontSize = isLarge ? 16 : isMedium ? 13 : 11;
           const color = city.name === 'Севастополь' ? '#2563eb' : city.name === 'Симферополь' ? '#dc2626' : '#7c3aed';
           
-          const labelOffsetY = isLarge ? -18 : isMedium ? -15 : -12;
+          const labelOffsetY = isLarge ? -22 : isMedium ? -18 : -14;
           
           return (
             <g 
@@ -138,10 +107,10 @@ export default function CrimeaMapSVG({ filteredCities, onCityClick }: CrimeaMapS
               <circle 
                 cx={city.x} 
                 cy={city.y} 
-                r={dotRadius + 3} 
+                r={dotRadius + 4} 
                 fill={color} 
-                opacity="0.15"
-                className="group-hover:opacity-30 transition-all"
+                opacity="0.2"
+                className="group-hover:opacity-40 transition-all"
               />
               
               <circle 
@@ -150,32 +119,32 @@ export default function CrimeaMapSVG({ filteredCities, onCityClick }: CrimeaMapS
                 r={dotRadius} 
                 fill={color} 
                 stroke="white"
-                strokeWidth="2"
-                className="group-hover:scale-125 transition-transform" 
+                strokeWidth="2.5"
+                className="group-hover:scale-125 transition-transform drop-shadow-lg" 
               />
               
               {isLarge && (
                 <circle 
                   cx={city.x} 
                   cy={city.y} 
-                  r={dotRadius + 8} 
+                  r={dotRadius + 10} 
                   fill="none" 
                   stroke={color} 
-                  strokeWidth="2" 
-                  opacity="0.4"
+                  strokeWidth="2.5" 
+                  opacity="0.5"
                   className="animate-pulse" 
                 />
               )}
               
               <rect
-                x={city.x - (city.name.length * (fontSize / 2.2)) / 2 - 4}
-                y={city.y + labelOffsetY - fontSize - 2}
-                width={city.name.length * (fontSize / 2.2) + 8}
-                height={fontSize + 6}
+                x={city.x - (city.name.length * (fontSize / 2.3)) / 2 - 6}
+                y={city.y + labelOffsetY - fontSize - 3}
+                width={city.name.length * (fontSize / 2.3) + 12}
+                height={fontSize + 8}
                 fill="white"
                 opacity="0.95"
-                rx="3"
-                className="group-hover:opacity-100 transition-all"
+                rx="4"
+                className="group-hover:opacity-100 transition-all drop-shadow-md"
               />
               
               <text 
