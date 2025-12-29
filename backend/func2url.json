@@ -1,4 +1,6 @@
 {
+  "crm-api": "https://functions.poehali.dev/e72807e0-91d8-4a57-992b-41b5cc49df17",
+  "crm-submit": "https://functions.poehali.dev/492be38a-a67b-4ad3-bcbd-5ba034d8af58",
   "telegram-notification": "https://functions.poehali.dev/927c8f65-0024-4ded-8d22-24987e241c4e",
   "rutube-videos": "https://functions.poehali.dev/4bf42b28-1491-44aa-a515-434841d027d6",
   "article-stats": "https://functions.poehali.dev/962e8462-cab3-41e7-a03b-4b722a05f91b",

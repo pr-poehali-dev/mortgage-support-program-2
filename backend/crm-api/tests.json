@@ -1,0 +1,16 @@
+{
+  "tests": [
+    {
+      "name": "Get all requests",
+      "method": "GET",
+      "path": "/?action=requests",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Get all clients",
+      "method": "GET",
+      "path": "/?action=clients",
+      "expectedStatus": 200
+    }
+  ]
+}

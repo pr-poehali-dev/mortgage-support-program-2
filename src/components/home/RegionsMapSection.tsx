@@ -46,12 +46,20 @@ export default function RegionsMapSection() {
     e.preventDefault();
     
     try {
-      const response = await fetch('https://functions.poehali.dev/927c8f65-0024-4ded-8d22-24987e241c4e', {
+      const response = await fetch('https://functions.poehali.dev/492be38a-a67b-4ad3-bcbd-5ba034d8af58', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: '',
+          city: formData.city,
+          serviceType: 'Ипотека',
+          message: 'Заявка из карты регионов',
+          source: 'region_map'
+        }),
       });
       
       const result = await response.json();

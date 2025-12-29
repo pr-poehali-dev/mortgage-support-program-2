@@ -66,7 +66,7 @@ export default function MortgageCalculator() {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('https://functions.poehali.dev/2ea2118e-5b11-45d1-8e9d-bd90ba41a588', {
+      const response = await fetch('https://functions.poehali.dev/492be38a-a67b-4ad3-bcbd-5ba034d8af58', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -75,9 +75,10 @@ export default function MortgageCalculator() {
           name: formData.name,
           phone: formData.phone,
           email: formData.email,
-          program: selectedProgramCalc,
-          amount: calcAmount[0],
-          comment: formData.comment
+          city: '',
+          serviceType: `Программа: ${selectedProgramCalc}`,
+          message: `Сумма: ${calcAmount[0].toLocaleString('ru')} ₽, Срок: ${calcTerm[0]} лет. ${formData.comment}`,
+          source: 'calculator'
         })
       });
 
@@ -86,7 +87,7 @@ export default function MortgageCalculator() {
       if (result.success) {
         toast({
           title: 'Заявка отправлена!',
-          description: result.message,
+          description: `${formData.name}, мы свяжемся с вами в ближайшее время`,
           className: 'bg-green-50 border-green-200'
         });
         setShowApplicationForm(false);

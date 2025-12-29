@@ -19,6 +19,7 @@ import AdminLogin from '@/components/admin/AdminLogin';
 import AdminStatsCards from '@/components/admin/AdminStatsCards';
 import AdminCharts from '@/components/admin/AdminCharts';
 import AdminEmailDialog from '@/components/admin/AdminEmailDialog';
+import CRMPanel from '@/components/admin/CRMPanel';
 import IndexNowNotifier from '@/components/IndexNowNotifier';
 import SitemapInfo from '@/components/SitemapInfo';
 import AnalyticsInfo from '@/components/AnalyticsInfo';
@@ -291,6 +292,8 @@ export default function Admin() {
         </div>
 
         <AdminStatsCards totals={analytics.totals} conversionRate={conversionRate} />
+
+        <CRMPanel />
 
         <AdminClock />
 
