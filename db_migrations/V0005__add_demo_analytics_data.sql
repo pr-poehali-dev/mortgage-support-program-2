@@ -1,0 +1,16 @@
+INSERT INTO t_p26758318_mortgage_support_pro.analytics_events (event_type, source, program, created_at) VALUES 
+('page_view', 'Google', NULL, NOW() - INTERVAL '1 day'),
+('page_view', 'Yandex', NULL, NOW() - INTERVAL '2 days'),
+('page_view', 'Direct', NULL, NOW() - INTERVAL '3 days'),
+('page_view', 'Google', NULL, NOW() - INTERVAL '5 days'),
+('application_sent', 'Google', 'family', NOW() - INTERVAL '1 day'),
+('application_sent', 'Yandex', 'it', NOW() - INTERVAL '2 days'),
+('application_sent', 'Direct', 'basic', NOW() - INTERVAL '4 days'),
+('page_view', 'Social', NULL, NOW() - INTERVAL '7 days'),
+('page_view', 'Google', NULL, NOW() - INTERVAL '10 days'),
+('application_sent', 'Google', 'military', NOW() - INTERVAL '12 days'),
+('page_view', 'Referral', NULL, NOW() - INTERVAL '15 days'),
+('page_view', 'Google', NULL, NOW() - INTERVAL '20 days'),
+('application_sent', 'Yandex', 'rural', NOW() - INTERVAL '18 days'),
+('page_view', 'Direct', NULL, NOW() - INTERVAL '25 days'),
+('application_sent', 'Social', 'family', NOW() - INTERVAL '28 days');
