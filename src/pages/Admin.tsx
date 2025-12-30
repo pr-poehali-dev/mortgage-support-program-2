@@ -80,9 +80,29 @@ export default function Admin() {
     setError('');
     
     try {
-      // Функция analytics недоступна (приватный доступ)
-      // Отображаем заглушку
-      setError('Аналитика временно недоступна. Ожидаем открытия публичного доступа к функциям.');
+      const response = await fetch('https://functions.poehali.dev/66427508-92e1-41bc-837c-dfc3f217d6c3', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          password: adminPassword,
+          period: period
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setAnalytics(data.data);
+        setIsAuthenticated(true);
+        setError('');
+      } else {
+        setError(data.error || 'Неверный пароль');
+        setIsAuthenticated(false);
+      }
+    } catch (err) {
+      setError('Ошибка подключения к серверу');
       setIsAuthenticated(false);
     } finally {
       setLoading(false);
