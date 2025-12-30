@@ -6,7 +6,7 @@ from psycopg2.extras import RealDictCursor
 
 
 def send_telegram_notification(name: str, phone: str, email: str, city: str, message: str, source: str):
-    """Отправляет уведомление о новой заявке в Telegram"""
+    """Отправляет уведомление о новой заявке в Telegram с кнопками быстрых действий"""
     bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
     chat_id = os.environ.get('TELEGRAM_CHAT_ID')
     
@@ -25,12 +25,31 @@ def send_telegram_notification(name: str, phone: str, email: str, city: str, mes
         text += f"📝 *Сообщение:*\n{message or 'Нет сообщения'}\n\n"
         text += f"🌐 *Источник:* {source}"
         
+        # Inline клавиатура с быстрыми действиями
+        inline_keyboard = {
+            'inline_keyboard': [
+                [
+                    {'text': '✅ Принять в работу', 'callback_data': f'accept_{phone}'},
+                    {'text': '📞 Позвонить', 'url': f'tel:{phone}'}
+                ],
+                [
+                    {'text': '✉️ Написать Email', 'url': f'mailto:{email}' if email else 'mailto:info@example.com'},
+                    {'text': '💬 WhatsApp', 'url': f'https://wa.me/{phone.replace("+", "").replace(" ", "").replace("-", "")}'}
+                ],
+                [
+                    {'text': '✔️ Завершить', 'callback_data': f'complete_{phone}'},
+                    {'text': '❌ Отклонить', 'callback_data': f'reject_{phone}'}
+                ]
+            ]
+        }
+        
         url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
         
         payload = {
             'chat_id': chat_id,
             'text': text,
-            'parse_mode': 'Markdown'
+            'parse_mode': 'Markdown',
+            'reply_markup': inline_keyboard
         }
         
         req = urllib.request.Request(

@@ -1,4 +1,5 @@
 {
+  "telegram-webhook": "https://functions.poehali.dev/016d45fb-9643-4b4c-a992-873c9e5ae76c",
   "telegram-notify": "https://functions.poehali.dev/78fe5389-e0b3-46f3-a82d-3629be223603",
   "crm-api": "https://functions.poehali.dev/e72807e0-91d8-4a57-992b-41b5cc49df17",
   "crm-submit": "https://functions.poehali.dev/492be38a-a67b-4ad3-bcbd-5ba034d8af58",
