@@ -1,7 +1,48 @@
 import json
 import os
 import psycopg2
+import urllib.request
 from psycopg2.extras import RealDictCursor
+
+
+def send_telegram_notification(name: str, phone: str, email: str, city: str, message: str, source: str):
+    """Отправляет уведомление о новой заявке в Telegram"""
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
+    
+    if not bot_token or not chat_id:
+        return
+    
+    try:
+        text = f"🔔 *Новая заявка с сайта*\n\n"
+        text += f"👤 *Имя:* {name}\n"
+        text += f"📱 *Телефон:* {phone}\n"
+        text += f"✉️ *Email:* {email or 'Не указан'}\n"
+        
+        if city:
+            text += f"📍 *Регион:* {city}\n"
+        
+        text += f"📝 *Сообщение:*\n{message or 'Нет сообщения'}\n\n"
+        text += f"🌐 *Источник:* {source}"
+        
+        url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+        
+        payload = {
+            'chat_id': chat_id,
+            'text': text,
+            'parse_mode': 'Markdown'
+        }
+        
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode('utf-8'),
+            headers={'Content-Type': 'application/json'}
+        )
+        
+        urllib.request.urlopen(req, timeout=5)
+    except:
+        pass
+
 
 def handler(event: dict, context) -> dict:
     '''Приём заявок с сайта и автоматическое добавление в CRM'''
@@ -92,6 +133,9 @@ def handler(event: dict, context) -> dict:
         request_id = cursor.fetchone()['id']
 
         conn.commit()
+
+        # Отправляем уведомление в Telegram
+        send_telegram_notification(name, phone, email, city, message, source)
 
         return {
             'statusCode': 200,

@@ -1,0 +1,22 @@
+{
+  "tests": [
+    {
+      "name": "Send Telegram notification",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "name": "Иван Петров",
+        "phone": "+7 900 123-45-67",
+        "email": "test@example.com",
+        "message": "Интересует ипотека на квартиру",
+        "region": "Севастополь",
+        "source": "Форма обратной связи"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
