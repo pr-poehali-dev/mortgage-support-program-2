@@ -12,7 +12,7 @@ def handler(event: dict, context) -> dict:
             'statusCode': 200,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, PUT, OPTIONS',
+                'Access-Control-Allow-Methods': 'GET, PUT, DELETE, OPTIONS',
                 'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token'
             },
             'body': '',
@@ -100,6 +100,37 @@ def handler(event: dict, context) -> dict:
                     'body': json.dumps([dict(row) for row in clients], default=str),
                     'isBase64Encoded': False
                 }
+
+        elif method == 'DELETE':
+            params = event.get('queryStringParameters', {}) or {}
+            request_id = params.get('request_id')
+            
+            if not request_id:
+                return {
+                    'statusCode': 400,
+                    'headers': {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                    'body': json.dumps({'error': 'request_id is required'}),
+                    'isBase64Encoded': False
+                }
+            
+            cursor.execute(
+                "DELETE FROM t_p26758318_mortgage_support_pro.requests WHERE id = %s",
+                (request_id,)
+            )
+            conn.commit()
+            
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': json.dumps({'success': True, 'message': 'Request deleted'}),
+                'isBase64Encoded': False
+            }
 
         elif method == 'PUT':
             # Обновление статуса заявки

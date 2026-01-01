@@ -10,6 +10,18 @@
       "name": "Get all clients",
       "method": "GET",
       "path": "/?action=clients",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "0": {
+          "id": "number"
+        }
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Get quiz statistics",
+      "method": "GET",
+      "path": "/?action=quiz_stats",
       "expectedStatus": 200
     }
   ]

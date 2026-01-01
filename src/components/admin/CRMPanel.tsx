@@ -32,9 +32,28 @@ interface Request {
   created_at: string;
   updated_at: string;
   name: string;
+  full_name?: string;
   phone: string;
   email: string;
   source: string;
+  property_type?: string;
+  property_address?: string;
+  property_cost?: number;
+  initial_payment?: number;
+  credit_term?: number;
+  birth_date?: string;
+  monthly_income?: number;
+  employment_type?: string;
+  registration_completed?: boolean;
+}
+
+interface QuizResult {
+  category: string;
+  region: string;
+  loan_amount_range: string;
+  recommended_program: string;
+  count: number;
+  last_taken: string;
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -66,6 +85,7 @@ const PRIORITY_LABELS: Record<string, string> = {
 export default function CRMPanel() {
   const [requests, setRequests] = useState<Request[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
+  const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
   const [editingStatus, setEditingStatus] = useState('');
@@ -77,6 +97,7 @@ export default function CRMPanel() {
   useEffect(() => {
     fetchRequests();
     fetchClients();
+    fetchQuizResults();
   }, []);
 
   const fetchRequests = async () => {
@@ -102,6 +123,42 @@ export default function CRMPanel() {
       setClients(data);
     } catch (error) {
       console.error('Error fetching clients:', error);
+    }
+  };
+
+  const fetchQuizResults = async () => {
+    try {
+      const response = await fetch('https://functions.poehali.dev/e72807e0-91d8-4a57-992b-41b5cc49df17?action=quiz_stats');
+      const data = await response.json();
+      setQuizResults(data);
+    } catch (error) {
+      console.error('Error fetching quiz results:', error);
+    }
+  };
+
+  const handleDeleteRequest = async (requestId: number) => {
+    if (!confirm('Вы уверены, что хотите удалить эту заявку?')) return;
+
+    try {
+      const response = await fetch(`https://functions.poehali.dev/e72807e0-91d8-4a57-992b-41b5cc49df17?request_id=${requestId}`, {
+        method: 'DELETE'
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast({
+          title: 'Успешно',
+          description: 'Заявка удалена'
+        });
+        fetchRequests();
+      }
+    } catch (error) {
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось удалить заявку',
+        variant: 'destructive'
+      });
     }
   };
 
@@ -220,6 +277,14 @@ export default function CRMPanel() {
             <Icon name="Users" size={16} className="mr-2" />
             Клиенты
           </TabsTrigger>
+          <TabsTrigger value="registrations">
+            <Icon name="UserCheck" size={16} className="mr-2" />
+            Регистрации
+          </TabsTrigger>
+          <TabsTrigger value="quiz">
+            <Icon name="BarChart3" size={16} className="mr-2" />
+            Результаты опросов
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="requests" className="space-y-4">
@@ -307,14 +372,23 @@ export default function CRMPanel() {
                               </div>
                             </div>
                           </div>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => openRequestDetails(request)}
-                          >
-                            <Icon name="Edit" size={16} className="mr-1" />
-                            Изменить
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => openRequestDetails(request)}
+                            >
+                              <Icon name="Edit" size={16} className="mr-1" />
+                              Изменить
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              onClick={() => handleDeleteRequest(request.id)}
+                            >
+                              <Icon name="Trash2" size={16} />
+                            </Button>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
@@ -375,6 +449,170 @@ export default function CRMPanel() {
                       </CardContent>
                     </Card>
                   ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="registrations" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Полные регистрации</CardTitle>
+              <CardDescription>Клиенты, прошедшие полную регистрацию ({requests.filter(r => r.registration_completed).length})</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {requests.filter(r => r.registration_completed).length === 0 ? (
+                  <p className="text-center text-gray-500 py-8">Регистраций пока нет</p>
+                ) : (
+                  requests.filter(r => r.registration_completed).map((request) => (
+                    <Card key={request.id} className="hover:shadow-md transition-shadow">
+                      <CardContent className="p-4">
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Icon name="UserCheck" size={18} className="text-green-600" />
+                              <span className="font-semibold text-lg">{request.full_name || request.name}</span>
+                            </div>
+                            <Badge className="bg-green-500">Полная регистрация</Badge>
+                          </div>
+                          
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <span className="font-medium text-gray-600">Телефон:</span>
+                              <div className="flex items-center gap-1">
+                                <Icon name="Phone" size={14} />
+                                {request.phone}
+                              </div>
+                            </div>
+                            <div>
+                              <span className="font-medium text-gray-600">Email:</span>
+                              <div className="flex items-center gap-1">
+                                <Icon name="Mail" size={14} />
+                                {request.email}
+                              </div>
+                            </div>
+                            {request.birth_date && (
+                              <div>
+                                <span className="font-medium text-gray-600">Дата рождения:</span>
+                                <div>{new Date(request.birth_date).toLocaleDateString('ru')}</div>
+                              </div>
+                            )}
+                            {request.employment_type && (
+                              <div>
+                                <span className="font-medium text-gray-600">Занятость:</span>
+                                <div>{request.employment_type}</div>
+                              </div>
+                            )}
+                            {request.monthly_income && (
+                              <div>
+                                <span className="font-medium text-gray-600">Доход:</span>
+                                <div>{request.monthly_income.toLocaleString('ru')} ₽/мес</div>
+                              </div>
+                            )}
+                            {request.property_type && (
+                              <div>
+                                <span className="font-medium text-gray-600">Тип недвижимости:</span>
+                                <div>{request.property_type}</div>
+                              </div>
+                            )}
+                            {request.property_cost && (
+                              <div>
+                                <span className="font-medium text-gray-600">Стоимость:</span>
+                                <div>{request.property_cost.toLocaleString('ru')} ₽</div>
+                              </div>
+                            )}
+                            {request.initial_payment && (
+                              <div>
+                                <span className="font-medium text-gray-600">Первый взнос:</span>
+                                <div>{request.initial_payment.toLocaleString('ru')} ₽</div>
+                              </div>
+                            )}
+                          </div>
+
+                          {request.property_address && (
+                            <div className="text-sm">
+                              <span className="font-medium text-gray-600">Адрес недвижимости:</span>
+                              <div className="flex items-center gap-1 mt-1">
+                                <Icon name="MapPin" size={14} />
+                                {request.property_address}
+                              </div>
+                            </div>
+                          )}
+
+                          <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t">
+                            <div>Зарегистрирован: {new Date(request.created_at).toLocaleString('ru')}</div>
+                            <div className="flex gap-2">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => openRequestDetails(request)}
+                              >
+                                <Icon name="Edit" size={14} className="mr-1" />
+                                Изменить
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => handleDeleteRequest(request.id)}
+                              >
+                                <Icon name="Trash2" size={14} />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="quiz" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Статистика опросов</CardTitle>
+              <CardDescription>Результаты прохождения опроса по подбору ипотеки</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {quizResults.length === 0 ? (
+                  <p className="text-center text-gray-500 py-8">Данных по опросам пока нет</p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {quizResults.map((result, idx) => (
+                      <Card key={idx} className="hover:shadow-md transition-shadow">
+                        <CardContent className="p-4">
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="font-semibold text-lg">{result.recommended_program}</span>
+                              <Badge className="bg-blue-500">{result.count} прохождений</Badge>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
+                              <div>
+                                <span className="font-medium">Категория:</span>
+                                <div>{result.category}</div>
+                              </div>
+                              <div>
+                                <span className="font-medium">Регион:</span>
+                                <div>{result.region}</div>
+                              </div>
+                              <div className="col-span-2">
+                                <span className="font-medium">Сумма кредита:</span>
+                                <div>{result.loan_amount_range}</div>
+                              </div>
+                            </div>
+                            <div className="text-xs text-gray-500 pt-2 border-t">
+                              Последнее прохождение: {new Date(result.last_taken).toLocaleString('ru')}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 )}
               </div>
             </CardContent>
