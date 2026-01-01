@@ -1,4 +1,6 @@
 {
+  "quiz-submit": "https://functions.poehali.dev/a629770f-6198-42f3-b832-972cdcbcdf61",
+  "register-submit": "https://functions.poehali.dev/5ce9a672-9918-45c3-bbfe-9689604ecec5",
   "telegram-webhook": "https://functions.poehali.dev/016d45fb-9643-4b4c-a992-873c9e5ae76c",
   "telegram-notify": "https://functions.poehali.dev/78fe5389-e0b3-46f3-a82d-3629be223603",
   "crm-api": "https://functions.poehali.dev/e72807e0-91d8-4a57-992b-41b5cc49df17",

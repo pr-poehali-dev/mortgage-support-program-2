@@ -1,0 +1,56 @@
+{
+  "tests": [
+    {
+      "name": "Test registration submission with full data",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "fullName": "Иванов Иван Иванович",
+        "phone": "+79001234567",
+        "email": "test@example.com",
+        "birthDate": "1990-01-01",
+        "birthPlace": "Москва",
+        "passportSeries": "1234",
+        "passportNumber": "567890",
+        "passportIssueDate": "2010-01-01",
+        "passportIssuer": "УФМС России",
+        "registrationAddress": "г. Москва, ул. Тестовая, д. 1",
+        "inn": "123456789012",
+        "snils": "123-456-789 00",
+        "maritalStatus": "married",
+        "childrenCount": 2,
+        "employmentType": "permanent",
+        "employer": "ООО Тест",
+        "position": "Менеджер",
+        "workExperience": "5 лет",
+        "monthlyIncome": 100000,
+        "propertyType": "apartment",
+        "propertyAddress": "г. Москва, ул. Новая, д. 10",
+        "propertyCost": 5000000,
+        "initialPayment": 1000000,
+        "creditTerm": 20,
+        "additionalInfo": "Тестовая заявка"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "client_id": "number",
+        "request_id": "number"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test registration without required fields",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "email": "test@example.com"
+      },
+      "expectedStatus": 400,
+      "expectedBody": {
+        "error": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

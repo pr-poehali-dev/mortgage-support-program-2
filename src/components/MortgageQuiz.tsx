@@ -47,7 +47,7 @@ export default function MortgageQuiz({ onNavigateToCalculator }: MortgageQuizPro
     }
   ];
 
-  const handleQuizAnswer = (questionId: string, value: string) => {
+  const handleQuizAnswer = async (questionId: string, value: string) => {
     const newAnswers = { ...quizAnswers, [questionId]: value };
     setQuizAnswers(newAnswers);
     
@@ -56,6 +56,7 @@ export default function MortgageQuiz({ onNavigateToCalculator }: MortgageQuizPro
     } else {
       const category = newAnswers.category;
       const region = newAnswers.region;
+      const amount = newAnswers.amount;
       
       let result = category;
       if (category === 'it' && (region === 'moscow' || region === 'spb')) {
@@ -65,6 +66,24 @@ export default function MortgageQuiz({ onNavigateToCalculator }: MortgageQuizPro
         setRecommendedProgram(category);
       }
       trackQuizCompleted(result);
+      
+      try {
+        await fetch('https://functions.poehali.dev/a629770f-6198-42f3-b832-972cdcbcdf61', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            category,
+            region,
+            loanAmountRange: amount,
+            recommendedProgram: programs.find(p => p.id === result)?.title || result,
+            sessionId: `quiz-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+          })
+        });
+      } catch (error) {
+        console.error('Failed to save quiz result:', error);
+      }
     }
   };
 

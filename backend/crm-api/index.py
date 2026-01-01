@@ -34,9 +34,12 @@ def handler(event: dict, context) -> dict:
                     SELECT 
                         r.id, r.city, r.service_type, r.message, 
                         r.status, r.priority, r.created_at, r.updated_at,
-                        c.id as client_id, c.name, c.phone, c.email, c.source
-                    FROM requests r
-                    LEFT JOIN clients c ON r.client_id = c.id
+                        r.property_type, r.property_address, r.property_cost, 
+                        r.initial_payment, r.credit_term, r.additional_info,
+                        c.id as client_id, c.name, c.full_name, c.phone, c.email, c.source,
+                        c.birth_date, c.monthly_income, c.employment_type, c.registration_completed
+                    FROM t_p26758318_mortgage_support_pro.requests r
+                    LEFT JOIN t_p26758318_mortgage_support_pro.clients c ON r.client_id = c.id
                     ORDER BY r.created_at DESC
                 """)
                 requests = cursor.fetchall()
@@ -55,12 +58,38 @@ def handler(event: dict, context) -> dict:
                 # Получаем список всех клиентов
                 cursor.execute("""
                     SELECT c.*, COUNT(r.id) as requests_count
-                    FROM clients c
-                    LEFT JOIN requests r ON c.id = r.client_id
+                    FROM t_p26758318_mortgage_support_pro.clients c
+                    LEFT JOIN t_p26758318_mortgage_support_pro.requests r ON c.id = r.client_id
                     GROUP BY c.id
                     ORDER BY c.created_at DESC
                 """)
                 clients = cursor.fetchall()
+            
+            elif action == 'quiz_stats':
+                # Статистика по опросам
+                cursor.execute("""
+                    SELECT 
+                        category,
+                        region,
+                        loan_amount_range,
+                        recommended_program,
+                        COUNT(*) as count,
+                        MAX(created_at) as last_taken
+                    FROM t_p26758318_mortgage_support_pro.quiz_results
+                    GROUP BY category, region, loan_amount_range, recommended_program
+                    ORDER BY count DESC
+                """)
+                quiz_stats = cursor.fetchall()
+                
+                return {
+                    'statusCode': 200,
+                    'headers': {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                    'body': json.dumps([dict(row) for row in quiz_stats], default=str),
+                    'isBase64Encoded': False
+                }
                 
                 return {
                     'statusCode': 200,
@@ -105,13 +134,13 @@ def handler(event: dict, context) -> dict:
             values.append(request_id)
 
             cursor.execute(
-                f"UPDATE requests SET {', '.join(updates)} WHERE id = %s",
+                f"UPDATE t_p26758318_mortgage_support_pro.requests SET {', '.join(updates)} WHERE id = %s",
                 values
             )
 
             if notes:
                 cursor.execute(
-                    "UPDATE clients SET notes = %s WHERE id = (SELECT client_id FROM requests WHERE id = %s)",
+                    "UPDATE t_p26758318_mortgage_support_pro.clients SET notes = %s WHERE id = (SELECT client_id FROM t_p26758318_mortgage_support_pro.requests WHERE id = %s)",
                     (notes, request_id)
                 )
 

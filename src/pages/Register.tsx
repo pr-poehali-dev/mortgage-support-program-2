@@ -50,15 +50,37 @@ export default function Register() {
     setSubmitting(true);
     
     try {
-      const response = await fetch('https://functions.poehali.dev/c46f25f9-dba9-4ecb-8f37-e3de41f8da8c', {
+      const response = await fetch('https://functions.poehali.dev/5ce9a672-9918-45c3-bbfe-9689604ecec5', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          type: 'registration',
-          ...formData,
-          timestamp: new Date().toISOString()
+          fullName: formData.fullName,
+          phone: formData.phone,
+          email: formData.email,
+          birthDate: formData.birthDate,
+          birthPlace: formData.birthPlace,
+          passportSeries: formData.passportSeries,
+          passportNumber: formData.passportNumber,
+          passportIssueDate: formData.passportDate,
+          passportIssuer: formData.passportIssuer,
+          registrationAddress: formData.registrationAddress,
+          inn: formData.inn,
+          snils: formData.snils,
+          maritalStatus: formData.maritalStatus,
+          childrenCount: parseInt(formData.children) || 0,
+          employmentType: formData.employment,
+          employer: formData.employer,
+          position: formData.position,
+          workExperience: formData.workExperience,
+          monthlyIncome: parseFloat(formData.monthlyIncome) || 0,
+          propertyType: formData.propertyType,
+          propertyAddress: formData.propertyAddress,
+          propertyCost: parseFloat(formData.propertyCost) || 0,
+          initialPayment: parseFloat(formData.initialPayment) || 0,
+          creditTerm: parseInt(formData.creditTerm) || 20,
+          additionalInfo: formData.additionalInfo
         })
       });
 
