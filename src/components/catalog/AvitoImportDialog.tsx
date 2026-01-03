@@ -29,12 +29,12 @@ export default function AvitoImportDialog({
         <div className="space-y-4">
           <div>
             <p className="text-sm text-gray-600 mb-3">
-              Вставьте ссылку на любое ваше объявление на Avito.
+              Вставьте ссылку на ваш профиль Avito или любое ваше объявление.
               <br />
               Система автоматически найдет все объявления из вашего профиля.
             </p>
             <Input
-              placeholder="https://www.avito.ru/sevastopol/..."
+              placeholder="https://www.avito.ru/brands/i92755531"
               value={importUrl}
               onChange={(e) => setImportUrl(e.target.value)}
               disabled={importing}

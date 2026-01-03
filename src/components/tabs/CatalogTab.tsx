@@ -278,16 +278,22 @@ export default function CatalogTab() {
     try {
       const avitoParserUrl = 'https://functions.poehali.dev/875e7adb-da86-4b4a-a12b-a83b4312e5df';
       
-      const urlPattern = /avito\.ru\/[^/]+\/(\d+)_/;
-      const match = importUrl.match(urlPattern);
+      let profileUrl = importUrl;
       
-      if (!match) {
-        alert('Некорректная ссылка Avito. Вставьте ссылку на профиль.');
-        return;
+      // Если это ссылка на объявление, извлекаем ID профиля
+      const itemPattern = /avito\.ru\/[^/]+\/(\d+)_/;
+      const itemMatch = importUrl.match(itemPattern);
+      
+      if (itemMatch) {
+        const profileId = itemMatch[1];
+        profileUrl = `https://www.avito.ru/brands/i${profileId}`;
       }
       
-      const profileId = match[1];
-      const profileUrl = `https://www.avito.ru/user/${profileId}/profile`;
+      // Если это уже ссылка на профиль/brands - используем как есть
+      if (!profileUrl.includes('avito.ru')) {
+        alert('Некорректная ссылка Avito. Вставьте ссылку на объявление или профиль.');
+        return;
+      }
       
       const response = await fetch(profileUrl);
       const html = await response.text();
