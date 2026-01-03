@@ -176,6 +176,29 @@ export default function AdminProperties() {
     }
   };
 
+  const handleDeleteAll = async () => {
+    if (!confirm(`Вы уверены, что хотите удалить ВСЕ объекты (${properties.length} шт.)?`)) return;
+    if (!confirm('Это действие нельзя отменить! Удалить все объекты?')) return;
+
+    try {
+      const response = await fetch(`${PROPERTIES_URL}?all=true`, {
+        method: 'DELETE'
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('Все объекты успешно удалены!');
+        fetchProperties();
+      } else {
+        alert('Ошибка удаления: ' + data.error);
+      }
+    } catch (err) {
+      console.error('Delete all error:', err);
+      alert('Ошибка удаления');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10">
       <div className="container mx-auto p-4 sm:p-6 space-y-6">
@@ -199,24 +222,37 @@ export default function AdminProperties() {
 
 
         <>
-            <div className="flex flex-wrap gap-3">
-              <Button
-                onClick={openCreateDialog}
-                className="gap-2"
-                size="lg"
-              >
-                <Icon name="Plus" size={18} />
-                Добавить объект
-              </Button>
-              <Button
-                onClick={() => setBulkImportOpen(true)}
-                variant="outline"
-                className="gap-2"
-                size="lg"
-              >
-                <Icon name="FileSpreadsheet" size={18} />
-                Массовая загрузка Excel
-              </Button>
+            <div className="flex flex-wrap gap-3 items-center justify-between">
+              <div className="flex flex-wrap gap-3">
+                <Button
+                  onClick={openCreateDialog}
+                  className="gap-2"
+                  size="lg"
+                >
+                  <Icon name="Plus" size={18} />
+                  Добавить объект
+                </Button>
+                <Button
+                  onClick={() => setBulkImportOpen(true)}
+                  variant="outline"
+                  className="gap-2"
+                  size="lg"
+                >
+                  <Icon name="FileSpreadsheet" size={18} />
+                  Массовая загрузка Excel
+                </Button>
+              </div>
+              {properties.length > 0 && (
+                <Button
+                  onClick={handleDeleteAll}
+                  variant="destructive"
+                  className="gap-2"
+                  size="lg"
+                >
+                  <Icon name="Trash2" size={18} />
+                  Удалить все ({properties.length})
+                </Button>
+              )}
             </div>
 
             {loading ? (
