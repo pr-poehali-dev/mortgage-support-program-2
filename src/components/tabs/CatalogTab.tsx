@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const MANUAL_PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d';
+const UPLOAD_PHOTO_URL = 'https://functions.poehali.dev/94c626eb-409a-4a18-836f-f3750239d1b4';
 
 interface Property {
   id: number;
@@ -37,6 +38,8 @@ export default function CatalogTab() {
   const [error, setError] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editProperty, setEditProperty] = useState<Property | null>(null);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState<string>('');
   
   const [formData, setFormData] = useState({
     title: '',
@@ -84,6 +87,39 @@ export default function CatalogTab() {
       land: realEstateObjects.filter(obj => obj.type === 'land').length,
       commercial: realEstateObjects.filter(obj => obj.type === 'commercial').length
     };
+  };
+
+  const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64 = reader.result as string;
+      setPhotoPreview(base64);
+      
+      try {
+        setUploadingPhoto(true);
+        const response = await fetch(UPLOAD_PHOTO_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image_data: base64 })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          setFormData({ ...formData, photo_url: data.url });
+        } else {
+          alert('Ошибка загрузки: ' + data.error);
+        }
+      } catch (err) {
+        console.error('Upload error:', err);
+        alert('Ошибка загрузки фото');
+      } finally {
+        setUploadingPhoto(false);
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -152,6 +188,7 @@ export default function CatalogTab() {
   const openCreateDialog = () => {
     setEditProperty(null);
     resetForm();
+    setPhotoPreview('');
     setDialogOpen(true);
   };
 
@@ -171,6 +208,7 @@ export default function CatalogTab() {
       description: property.description || '',
       property_link: property.property_link || ''
     });
+    setPhotoPreview(property.photo_url);
     setDialogOpen(true);
   };
 
@@ -482,13 +520,25 @@ export default function CatalogTab() {
               </div>
 
               <div className="col-span-2">
-                <Label htmlFor="photo_url">URL фотографии</Label>
+                <Label htmlFor="photo">Фотография</Label>
                 <Input
-                  id="photo_url"
-                  value={formData.photo_url}
-                  onChange={(e) => setFormData({...formData, photo_url: e.target.value})}
-                  placeholder="https://example.com/photo.jpg"
+                  id="photo"
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoSelect}
+                  disabled={uploadingPhoto}
                 />
+                {uploadingPhoto && (
+                  <p className="text-sm text-gray-500 mt-2 flex items-center gap-2">
+                    <Icon name="Loader2" size={14} className="animate-spin" />
+                    Загрузка фото...
+                  </p>
+                )}
+                {photoPreview && (
+                  <div className="mt-3">
+                    <img src={photoPreview} alt="Preview" className="w-full h-48 object-cover rounded-lg" />
+                  </div>
+                )}
               </div>
 
               <div className="col-span-2">
