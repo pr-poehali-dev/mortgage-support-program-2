@@ -293,6 +293,13 @@ export default function Admin() {
               Управление статьями
             </Button>
             <Button
+              onClick={() => window.location.href = '/admin/properties'}
+              className="h-10 bg-orange-600 hover:bg-orange-700"
+            >
+              <Icon name="Building2" className="mr-2" size={18} />
+              Недвижимость
+            </Button>
+            <Button
               onClick={() => window.open('https://metrika.yandex.ru/dashboard?id=105974763', '_blank')}
               className="h-10 bg-red-600 hover:bg-red-700"
             >

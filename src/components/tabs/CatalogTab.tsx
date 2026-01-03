@@ -7,6 +7,7 @@ import Icon from '@/components/ui/icon';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 const AVITO_API_URL = 'https://functions.poehali.dev/0363e1df-5e38-47b1-83ba-6d01b09d4e99';
+const PROPERTIES_URL = 'https://functions.poehali.dev/d286a6ac-5f97-4343-9332-1ee6a1e9ad53';
 
 export default function CatalogTab() {
   const [catalogFilter, setCatalogFilter] = useState('all');
@@ -16,28 +17,38 @@ export default function CatalogTab() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchAvitoListings = async () => {
+    const fetchAllProperties = async () => {
       try {
         setLoading(true);
         setError(null);
         
-        const response = await fetch(AVITO_API_URL);
-        const data = await response.json();
+        // Загружаем ручные объекты
+        const manualResponse = await fetch(PROPERTIES_URL);
+        const manualData = await manualResponse.json();
         
-        if (data.success) {
-          setRealEstateObjects(data.listings || []);
-        } else {
-          setError(data.error || 'Не удалось загрузить объявления');
-        }
+        // Загружаем объекты с Avito
+        const avitoResponse = await fetch(AVITO_API_URL);
+        const avitoData = await avitoResponse.json();
+        
+        const manualProperties = manualData.success ? manualData.data : [];
+        const avitoProperties = avitoData.success ? avitoData.listings : [];
+        
+        // Объединяем все объекты
+        const allProperties = [
+          ...manualProperties.map((p: any) => ({ ...p, source: 'manual' })),
+          ...avitoProperties.map((p: any) => ({ ...p, source: 'avito' }))
+        ];
+        
+        setRealEstateObjects(allProperties);
       } catch (err) {
-        setError('Ошибка подключения к Avito API');
-        console.error('Avito API error:', err);
+        setError('Ошибка загрузки объектов');
+        console.error('Fetch error:', err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAvitoListings();
+    fetchAllProperties();
   }, []);
 
   const getCatalogCounts = () => {
