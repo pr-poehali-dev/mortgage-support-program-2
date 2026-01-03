@@ -97,6 +97,14 @@ function getTimeAgo(dateString: string): string {
   return past.toLocaleDateString('ru', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
+function isNewRequest(dateString: string): boolean {
+  const now = new Date();
+  const past = new Date(dateString);
+  const diffMs = now.getTime() - past.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  return diffMins < 5; // Заявки младше 5 минут считаются новыми
+}
+
 export default function CRMPanel() {
   const [requests, setRequests] = useState<Request[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
@@ -109,6 +117,9 @@ export default function CRMPanel() {
   const [editingNotes, setEditingNotes] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [lastRequestCount, setLastRequestCount] = useState(0);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -124,7 +135,48 @@ export default function CRMPanel() {
       }
     };
     loadData();
+
+    // Автообновление каждые 30 секунд
+    const interval = setInterval(async () => {
+      setIsRefreshing(true);
+      await Promise.all([
+        fetchRequests(),
+        fetchClients(),
+        fetchQuizResults()
+      ]);
+      setTimeout(() => setIsRefreshing(false), 500);
+    }, 30000);
+
+    return () => clearInterval(interval);
   }, []);
+
+  // Отслеживание новых заявок и воспроизведение звука
+  useEffect(() => {
+    if (lastRequestCount > 0 && requests.length > lastRequestCount) {
+      const newRequestsCount = requests.length - lastRequestCount;
+      if (soundEnabled) {
+        playNotificationSound();
+      }
+      toast({
+        title: '🔔 Новая заявка!',
+        description: `Получено новых заявок: ${newRequestsCount}`,
+        duration: 5000
+      });
+    }
+    setLastRequestCount(requests.length);
+  }, [requests.length, soundEnabled, lastRequestCount]);
+
+  const playNotificationSound = () => {
+    try {
+      const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIGGm58OScTgwOUKnn77RgGwU7k9XvyHkpBSh+zO/ekkALEmCy6OSjVhINSKHh8r5rIQUsgs/y2Ik3CBdquvDjnE4MDlGp5++zYRsEOpLU8Md5KAUnfczt3pJACxNhsunko1YRDUqg4fK+aSEFKoHN8tmJNggWa7rw45xODA5RqefvsmEbBDmR1PDGeScFKHzM7t+SUQsUYrLp46NVEAxKoOHyvmkhBSuCzvLZiTYIFmy68OKbTgwMUKnn77JhGwU7k9TvxngnBSd7zO7fklALFWGy6eOiVREMSaDh8r5pIQUrgc7y2Yk2CBVruvDjnE4NDVCq5++yYRsFOpLT8MZ4JgUndMzt3pJQChZhsefjo1YRDEqg4fK+aiEEK4DN8tmJNQgVa7rx4ptODA5QqufvsmEbBTmR0+/HeCYEKHvM7t+SUAUVY7Hp46NWEAxKoOLyvmkhBSuCzvLYijUIFWq68OKdTgwOUKnm77JhGgU5kdPvxnkmBSh8yu/fklELFGKy6eKjVhAMSqDi8r1pIAQsgM3y2Ik1CBRquvDjm04MDlCp5++yYRoFOpLU78V4JwUofMrv35JRCxRisunioldREAtJoOLyvWogBSyAzvLYiTUIFWu68OOdTgwNUKrm77JhGgU6ktXvxXcmBCh7yu/fklALFWKx6eKjVhAMSqDi8r1qIAUshM3y14k1CBZquvDjm04MDVCq5u+yYRoEO5LT78V4JgQoe8rv35JRC');
+      audio.volume = 0.5;
+      audio.play().catch(() => {
+        // Игнорируем ошибки автовоспроизведения
+      });
+    } catch (error) {
+      console.log('Notification sound disabled');
+    }
+  };
 
   const fetchRequests = async () => {
     try {
@@ -249,7 +301,8 @@ export default function CRMPanel() {
     total: requests.length,
     new: requests.filter(r => r.status === 'new').length,
     in_progress: requests.filter(r => r.status === 'in_progress').length,
-    completed: requests.filter(r => r.status === 'completed').length
+    completed: requests.filter(r => r.status === 'completed').length,
+    fresh: requests.filter(r => isNewRequest(r.created_at)).length
   };
 
   if (error) {
@@ -278,6 +331,30 @@ export default function CRMPanel() {
 
   return (
     <div className="space-y-6">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-bold">CRM Система</h2>
+        <div className="flex items-center gap-3">
+          {isRefreshing && (
+            <div className="flex items-center gap-2 text-blue-600 text-sm">
+              <Icon name="RefreshCw" size={16} className="animate-spin" />
+              Обновление...
+            </div>
+          )}
+          <Button
+            variant={soundEnabled ? "default" : "outline"}
+            size="sm"
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className="gap-2"
+          >
+            <Icon name={soundEnabled ? "Volume2" : "VolumeX"} size={16} />
+            {soundEnabled ? "Звук вкл" : "Звук выкл"}
+          </Button>
+          <div className="text-sm text-gray-500">
+            Автообновление: 30 сек
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="pb-3">
@@ -292,7 +369,14 @@ export default function CRMPanel() {
             <CardTitle className="text-sm font-medium">Новые</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-blue-600">{stats.new}</div>
+            <div className="flex items-center gap-2">
+              <div className="text-3xl font-bold text-blue-600">{stats.new}</div>
+              {stats.fresh > 0 && (
+                <Badge className="bg-green-500 animate-pulse">
+                  +{stats.fresh} свежих
+                </Badge>
+              )}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -365,13 +449,25 @@ export default function CRMPanel() {
                   <p className="text-center text-gray-500 py-8">Заявок не найдено</p>
                 ) : (
                   filteredRequests.map((request) => (
-                    <Card key={request.id} className="hover:shadow-md transition-shadow">
+                    <Card 
+                      key={request.id} 
+                      className={`hover:shadow-md transition-all ${
+                        isNewRequest(request.created_at) 
+                          ? 'ring-2 ring-green-500 shadow-lg animate-pulse bg-green-50' 
+                          : ''
+                      }`}
+                    >
                       <CardContent className="p-4">
                         <div className="flex items-start justify-between">
                           <div className="space-y-2 flex-1">
                             <div className="flex items-center gap-2">
                               <Icon name="User" size={16} className="text-gray-500" />
                               <span className="font-semibold">{request.name}</span>
+                              {isNewRequest(request.created_at) && (
+                                <Badge className="bg-green-500 animate-pulse">
+                                  🔥 НОВАЯ
+                                </Badge>
+                              )}
                               <Badge className={STATUS_COLORS[request.status]}>
                                 {STATUS_LABELS[request.status]}
                               </Badge>
@@ -516,13 +612,25 @@ export default function CRMPanel() {
                   <p className="text-center text-gray-500 py-8">Регистраций пока нет</p>
                 ) : (
                   requests.filter(r => r.registration_completed).map((request) => (
-                    <Card key={request.id} className="hover:shadow-md transition-shadow">
+                    <Card 
+                      key={request.id} 
+                      className={`hover:shadow-md transition-all ${
+                        isNewRequest(request.created_at) 
+                          ? 'ring-2 ring-green-500 shadow-lg animate-pulse bg-green-50' 
+                          : ''
+                      }`}
+                    >
                       <CardContent className="p-4">
                         <div className="space-y-3">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <Icon name="UserCheck" size={18} className="text-green-600" />
                               <span className="font-semibold text-lg">{request.full_name || request.name}</span>
+                              {isNewRequest(request.created_at) && (
+                                <Badge className="bg-green-500 animate-pulse">
+                                  🔥 НОВАЯ
+                                </Badge>
+                              )}
                             </div>
                             <Badge className="bg-green-500">Полная регистрация</Badge>
                           </div>
