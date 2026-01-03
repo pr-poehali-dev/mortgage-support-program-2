@@ -6,8 +6,10 @@ from typing import Dict, Any, List
 
 def get_avito_token() -> str:
     """Получает access token для Avito API"""
-    client_id = os.environ['AVITO_CLIENT_ID']
-    client_secret = os.environ['AVITO_CLIENT_SECRET']
+    client_id = os.environ.get('AVITO_CLIENT_ID', '')
+    client_secret = os.environ.get('AVITO_CLIENT_SECRET', '')
+    
+    print(f"[DEBUG] Client ID начинается с: {client_id[:10]}...")
     
     response = requests.post(
         'https://api.avito.ru/token/',
@@ -17,50 +19,80 @@ def get_avito_token() -> str:
             'client_secret': client_secret
         }
     )
+    
+    print(f"[DEBUG] Статус ответа токена: {response.status_code}")
+    
+    if response.status_code != 200:
+        print(f"[DEBUG] Ошибка получения токена: {response.text}")
+    
     response.raise_for_status()
     return response.json()['access_token']
 
 
 def get_user_items(access_token: str, user_id: str = '92755531') -> List[Dict[str, Any]]:
-    """Получает список объявлений пользователя через публичный API"""
+    """Получает список объявлений пользователя через API Avito"""
     headers = {
         'Authorization': f'Bearer {access_token}'
     }
     
-    # Используем правильный endpoint для получения объявлений
-    # Сначала пробуем получить через items API
-    response = requests.get(
-        f'https://api.avito.ru/core/v1/items?user_id={user_id}',
-        headers=headers
-    )
+    # Пробуем разные endpoints Avito API
+    endpoints = [
+        '/autoload/v1/items',  # Autoload API - управление объявлениями
+        '/core/v1/items',       # Core API - чтение объявлений
+        f'/core/v1/accounts/{user_id}/items',  # По ID пользователя
+    ]
     
-    if response.status_code == 404 or response.status_code == 403:
-        # Если не работает, используем альтернативный метод через парсинг профиля
-        # Возвращаем пустой список, так как для парсинга нужны дополнительные права
-        return []
+    for endpoint in endpoints:
+        print(f"[DEBUG] Пробую endpoint: {endpoint}")
+        
+        response = requests.get(
+            f'https://api.avito.ru{endpoint}',
+            headers=headers
+        )
+        
+        print(f"[DEBUG] Статус ответа: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"[DEBUG] Структура ответа: {list(data.keys())}")
+            
+            # API может возвращать разную структуру
+            if 'resources' in data:
+                items = data['resources']
+                print(f"[DEBUG] Найдено объявлений: {len(items)}")
+                return items
+            elif 'items' in data:
+                items = data['items']
+                print(f"[DEBUG] Найдено объявлений: {len(items)}")
+                return items
+            elif 'result' in data and isinstance(data['result'], list):
+                items = data['result']
+                print(f"[DEBUG] Найдено объявлений: {len(items)}")
+                return items
+            else:
+                print(f"[DEBUG] Неизвестная структура ответа: {data}")
+        else:
+            print(f"[DEBUG] Ошибка {response.status_code}: {response.text[:200]}")
     
-    response.raise_for_status()
-    data = response.json()
-    
-    # API может возвращать разную структуру
-    if 'resources' in data:
-        return data['resources']
-    elif 'items' in data:
-        return data['items']
-    else:
-        return []
+    print(f"[DEBUG] Ни один endpoint не вернул объявления")
+    return []
 
 
 def transform_avito_item(item: Dict[str, Any]) -> Dict[str, Any]:
     """Преобразует объявление Avito в формат для сайта"""
-    category = item.get('category', {}).get('name', '').lower()
+    # Извлекаем категорию (может быть строкой или объектом)
+    category_obj = item.get('category', {})
+    if isinstance(category_obj, dict):
+        category = category_obj.get('name', '').lower()
+    else:
+        category = str(category_obj).lower()
     
     # Определяем тип недвижимости
     if 'квартир' in category:
         obj_type = 'apartment'
     elif 'дом' in category or 'коттедж' in category or 'таунхаус' in category:
         obj_type = 'house'
-    elif 'участок' in category or 'земля' in category:
+    elif 'участок' in category or 'земельн' in category:
         obj_type = 'land'
     elif 'коммерч' in category:
         obj_type = 'commercial'
@@ -70,11 +102,25 @@ def transform_avito_item(item: Dict[str, Any]) -> Dict[str, Any]:
     # Извлекаем характеристики
     props = {p['name']: p['value'] for p in item.get('properties', [])}
     
+    # Извлекаем адрес (может быть строкой или объектом)
+    address = item.get('address', 'Крым')
+    if isinstance(address, dict):
+        location = address.get('name', 'Крым')
+    else:
+        location = str(address)
+    
+    # Генерируем URL на Avito
+    avito_url = item.get('url', '')
+    if avito_url and not avito_url.startswith('http'):
+        avito_url = f"https://www.avito.ru{avito_url}"
+    elif not avito_url:
+        avito_url = f"https://www.avito.ru/items/{item.get('id', '')}"
+    
     return {
         'type': obj_type,
-        'title': item.get('title', ''),
+        'title': item.get('title', 'Объявление'),
         'price': int(item.get('price', 0)),
-        'location': item.get('address', {}).get('name', 'Крым'),
+        'location': location,
         'area': int(props.get('Площадь, м²', 0)) if 'Площадь, м²' in props else None,
         'rooms': int(props.get('Количество комнат', 0)) if 'Количество комнат' in props else None,
         'floor': int(props.get('Этаж', 0)) if 'Этаж' in props else None,
@@ -83,7 +129,7 @@ def transform_avito_item(item: Dict[str, Any]) -> Dict[str, Any]:
         'image': item.get('images', [{}])[0].get('640x480') if item.get('images') else 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80',
         'description': item.get('description', ''),
         'features': [props.get(k) for k in ['Тип дома', 'Ремонт', 'Вид из окон'] if k in props and props[k]],
-        'avitoLink': f"https://www.avito.ru{item.get('url', '')}",
+        'avitoLink': avito_url,
         'priceType': 'total'
     }
 
@@ -118,46 +164,77 @@ def handler(event: Dict[str, Any], context) -> Dict[str, Any]:
         }
     
     try:
-        # ВРЕМЕННОЕ РЕШЕНИЕ: Возвращаем демо-данные
-        # API Avito требует дополнительных прав для чтения объявлений
-        # Клиентские credentials подходят только для публикации
+        print(f"[DEBUG] Получаю токен Avito API...")
+        access_token = get_avito_token()
+        print(f"[DEBUG] Токен получен успешно")
         
-        demo_listings = [
-            {
-                'type': 'apartment',
-                'title': 'Объявление будет загружено после настройки прав доступа',
-                'price': 0,
-                'location': 'Крым, Севастополь',
-                'area': None,
-                'rooms': None,
-                'floor': None,
-                'totalFloors': None,
-                'landArea': None,
-                'image': 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80',
-                'description': 'Для автоматической загрузки объявлений с Avito требуются дополнительные права доступа API. Обратитесь в поддержку Avito для получения токена с правами на чтение объявлений.',
-                'features': [],
-                'avitoLink': 'https://www.avito.ru/brands/i92755531',
-                'priceType': 'total'
+        print(f"[DEBUG] Запрашиваю объявления пользователя...")
+        items = get_user_items(access_token)
+        print(f"[DEBUG] Получено объявлений: {len(items)}")
+        
+        if not items:
+            print(f"[DEBUG] Объявления не найдены, возвращаем пустой список")
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Cache-Control': 'max-age=60'
+                },
+                'body': json.dumps({
+                    'success': True,
+                    'count': 0,
+                    'listings': [],
+                    'message': 'Объявления не найдены. Проверьте права доступа API или ID пользователя.'
+                })
             }
-        ]
+        
+        print(f"[DEBUG] Преобразую объявления в формат сайта...")
+        
+        # Выводим структуру первого объявления для отладки
+        if items:
+            first_item = items[0]
+            print(f"[DEBUG] Тип первого элемента: {type(first_item)}")
+            print(f"[DEBUG] Первый элемент (JSON): {json.dumps(first_item, ensure_ascii=False)[:300]}")
+        
+        listings = []
+        for i, item in enumerate(items):
+            try:
+                if not isinstance(item, dict):
+                    print(f"[DEBUG] Пропуск item #{i}: не является словарем (тип: {type(item)})")
+                    continue
+                listing = transform_avito_item(item)
+                listings.append(listing)
+            except Exception as e:
+                print(f"[ERROR] Ошибка преобразования item #{i}: {str(e)}")
+                print(f"[ERROR] Ключи item: {list(item.keys()) if isinstance(item, dict) else 'N/A'}")
+                continue
+        print(f"[DEBUG] Преобразование завершено: {len(listings)} из {len(items)}")
         
         return {
             'statusCode': 200,
             'headers': {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Cache-Control': 'max-age=60'
+                'Cache-Control': 'max-age=300'
             },
             'body': json.dumps({
                 'success': True,
-                'count': len(demo_listings),
-                'listings': demo_listings,
-                'message': 'Для автоматической интеграции требуется токен с правами на чтение объявлений'
+                'count': len(listings),
+                'listings': listings
             })
         }
     
     except requests.HTTPError as e:
-        error_detail = e.response.json() if e.response.text else str(e)
+        print(f"[ERROR] HTTPError: {str(e)}")
+        error_detail = e.response.text if hasattr(e, 'response') and e.response.text else str(e)
+        print(f"[ERROR] Детали ошибки: {error_detail}")
+        
+        try:
+            error_json = e.response.json() if hasattr(e, 'response') else {}
+        except:
+            error_json = {'message': error_detail}
+        
         return {
             'statusCode': e.response.status_code if hasattr(e, 'response') else 500,
             'headers': {
@@ -167,11 +244,15 @@ def handler(event: Dict[str, Any], context) -> Dict[str, Any]:
             'body': json.dumps({
                 'success': False,
                 'error': 'Avito API error',
-                'detail': error_detail
+                'detail': error_json
             })
         }
     
     except Exception as e:
+        print(f"[ERROR] Общая ошибка: {str(e)}")
+        import traceback
+        print(f"[ERROR] Traceback: {traceback.format_exc()}")
+        
         return {
             'statusCode': 500,
             'headers': {
