@@ -87,6 +87,7 @@ export default function CRMPanel() {
   const [clients, setClients] = useState<Client[]>([]);
   const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
   const [editingStatus, setEditingStatus] = useState('');
   const [editingPriority, setEditingPriority] = useState('');
@@ -95,17 +96,29 @@ export default function CRMPanel() {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    fetchRequests();
-    fetchClients();
-    fetchQuizResults();
+    const loadData = async () => {
+      try {
+        await Promise.all([
+          fetchRequests(),
+          fetchClients(),
+          fetchQuizResults()
+        ]);
+      } catch (err) {
+        setError('Ошибка загрузки данных CRM');
+        console.error('CRM Panel error:', err);
+      }
+    };
+    loadData();
   }, []);
 
   const fetchRequests = async () => {
     try {
       const response = await fetch('https://functions.poehali.dev/e72807e0-91d8-4a57-992b-41b5cc49df17?action=requests');
       const data = await response.json();
-      setRequests(data);
+      setRequests(Array.isArray(data) ? data : []);
     } catch (error) {
+      console.error('Error fetching requests:', error);
+      setRequests([]);
       toast({
         title: 'Ошибка',
         description: 'Не удалось загрузить заявки',
@@ -120,9 +133,10 @@ export default function CRMPanel() {
     try {
       const response = await fetch('https://functions.poehali.dev/e72807e0-91d8-4a57-992b-41b5cc49df17?action=clients');
       const data = await response.json();
-      setClients(data);
+      setClients(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching clients:', error);
+      setClients([]);
     }
   };
 
@@ -130,9 +144,10 @@ export default function CRMPanel() {
     try {
       const response = await fetch('https://functions.poehali.dev/e72807e0-91d8-4a57-992b-41b5cc49df17?action=quiz_stats');
       const data = await response.json();
-      setQuizResults(data);
+      setQuizResults(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching quiz results:', error);
+      setQuizResults([]);
     }
   };
 
@@ -221,6 +236,22 @@ export default function CRMPanel() {
     in_progress: requests.filter(r => r.status === 'in_progress').length,
     completed: requests.filter(r => r.status === 'completed').length
   };
+
+  if (error) {
+    return (
+      <Card className="mt-6">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-3 text-red-600">
+            <Icon name="AlertCircle" size={24} />
+            <div>
+              <p className="font-semibold">Ошибка загрузки CRM</p>
+              <p className="text-sm text-gray-600">{error}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   if (loading) {
     return (
@@ -508,7 +539,7 @@ export default function CRMPanel() {
                             {request.monthly_income && (
                               <div>
                                 <span className="font-medium text-gray-600">Доход:</span>
-                                <div>{request.monthly_income.toLocaleString('ru')} ₽/мес</div>
+                                <div>{Number(request.monthly_income).toLocaleString('ru')} ₽/мес</div>
                               </div>
                             )}
                             {request.property_type && (
@@ -520,13 +551,13 @@ export default function CRMPanel() {
                             {request.property_cost && (
                               <div>
                                 <span className="font-medium text-gray-600">Стоимость:</span>
-                                <div>{request.property_cost.toLocaleString('ru')} ₽</div>
+                                <div>{Number(request.property_cost).toLocaleString('ru')} ₽</div>
                               </div>
                             )}
                             {request.initial_payment && (
                               <div>
                                 <span className="font-medium text-gray-600">Первый взнос:</span>
-                                <div>{request.initial_payment.toLocaleString('ru')} ₽</div>
+                                <div>{Number(request.initial_payment).toLocaleString('ru')} ₽</div>
                               </div>
                             )}
                           </div>
