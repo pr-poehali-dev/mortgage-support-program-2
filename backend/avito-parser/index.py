@@ -1,6 +1,7 @@
 import json
 import re
 import os
+import sys
 from typing import Dict, Any, Optional
 
 def handler(event: dict, context) -> dict:
@@ -35,6 +36,9 @@ def handler(event: dict, context) -> dict:
     avito_url = params.get('url', '')
     parse_profile = params.get('profile', 'false').lower() == 'true'
     
+    print(f'[ENTRY] URL: {avito_url}, profile: {parse_profile}', flush=True)
+    sys.stdout.flush()
+    
     if not avito_url:
         return {
             'statusCode': 400,
@@ -56,8 +60,14 @@ def handler(event: dict, context) -> dict:
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
             }
             
+            print('[PROFILE] Fetching page...', flush=True)
+            sys.stdout.flush()
+            
             response = requests.get(avito_url, headers=headers, timeout=15)
             response.raise_for_status()
+            
+            print(f'[PROFILE] Status: {response.status_code}, Content length: {len(response.text)}', flush=True)
+            sys.stdout.flush()
             
             soup = BeautifulSoup(response.text, 'html.parser')
             
@@ -68,7 +78,8 @@ def handler(event: dict, context) -> dict:
                 # Альтернативный селектор
                 items = soup.select('[data-marker="item"]')
             
-            print(f'[DEBUG] Found {len(items)} items on page')
+            print(f'[PROFILE] Found {len(items)} items on page', flush=True)
+            sys.stdout.flush()
             
             profile_items = []
             for idx, item in enumerate(items[:20]):
@@ -79,7 +90,8 @@ def handler(event: dict, context) -> dict:
                         link_elem = item.find('a', href=re.compile(r'/(dom|zemelnye|kvartiry|kommerchesk)'))
                     
                     if not link_elem:
-                        print(f'[DEBUG] Item {idx}: no link found')
+                        print(f'[PROFILE] Item {idx}: no link found', flush=True)
+                        sys.stdout.flush()
                         continue
                     
                     item_href = link_elem.get('href', '')
@@ -108,7 +120,8 @@ def handler(event: dict, context) -> dict:
                     img_elem = item.find('img')
                     photo = img_elem.get('src', '') or img_elem.get('data-src', '') if img_elem else ''
                     
-                    print(f'[DEBUG] Item {idx}: title={title[:30]}, price={price}, url={item_url[:50]}')
+                    print(f'[PROFILE] Item {idx}: title={title[:30]}, price={price}, url={item_url[:50]}', flush=True)
+                    sys.stdout.flush()
                     
                     if title and item_url and '_' in item_url:
                         profile_items.append({
@@ -120,8 +133,12 @@ def handler(event: dict, context) -> dict:
                             'type': 'land'
                         })
                 except Exception as e:
-                    print(f'[DEBUG] Item {idx} error: {str(e)}')
+                    print(f'[PROFILE] Item {idx} error: {str(e)}', flush=True)
+                    sys.stdout.flush()
                     continue
+            
+            print(f'[PROFILE] Returning {len(profile_items)} items', flush=True)
+            sys.stdout.flush()
             
             return {
                 'statusCode': 200,
@@ -138,6 +155,9 @@ def handler(event: dict, context) -> dict:
             }
             
         except Exception as e:
+            error_msg = f'Profile parsing error: {str(e)}'
+            print(f'[PROFILE ERROR] {error_msg}', flush=True)
+            sys.stdout.flush()
             return {
                 'statusCode': 500,
                 'headers': {
@@ -146,7 +166,7 @@ def handler(event: dict, context) -> dict:
                 },
                 'body': json.dumps({
                     'success': False,
-                    'error': f'Profile parsing error: {str(e)}'
+                    'error': error_msg
                 }),
                 'isBase64Encoded': False
             }
