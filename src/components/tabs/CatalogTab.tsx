@@ -295,33 +295,35 @@ export default function CatalogTab() {
         return;
       }
       
-      const response = await fetch(profileUrl);
-      const html = await response.text();
+      // Получаем список объявлений через бэкенд
+      const profileResponse = await fetch(`${avitoParserUrl}?url=${encodeURIComponent(profileUrl)}&profile=true`);
+      const profileData = await profileResponse.json();
       
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const items = doc.querySelectorAll('[data-marker="item"]');
+      if (!profileData.success || !profileData.items || profileData.items.length === 0) {
+        alert('Не найдено объявлений для импорта');
+        return;
+      }
       
       const avitoItems = [];
       
-      for (const item of Array.from(items)) {
-        const linkEl = item.querySelector('[itemprop="url"]') as HTMLAnchorElement;
-        if (!linkEl) continue;
-        
-        const itemUrl = 'https://www.avito.ru' + linkEl.getAttribute('href');
-        
-        const itemResponse = await fetch(`${avitoParserUrl}?url=${encodeURIComponent(itemUrl)}`);
-        const itemData = await itemResponse.json();
-        
-        if (itemData.success) {
-          avitoItems.push(itemData.data);
+      // Парсим детали каждого объявления
+      for (const item of profileData.items.slice(0, 20)) {
+        try {
+          const itemResponse = await fetch(`${avitoParserUrl}?url=${encodeURIComponent(item.property_link)}`);
+          const itemData = await itemResponse.json();
+          
+          if (itemData.success) {
+            avitoItems.push(itemData.data);
+          }
+          
+          await new Promise(resolve => setTimeout(resolve, 500));
+        } catch (err) {
+          console.error('Item parse error:', err);
         }
-        
-        await new Promise(resolve => setTimeout(resolve, 500));
       }
       
       if (avitoItems.length === 0) {
-        alert('Не найдено объявлений для импорта');
+        alert('Не удалось загрузить детали объявлений');
         return;
       }
       

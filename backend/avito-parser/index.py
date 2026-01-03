@@ -4,7 +4,7 @@ import os
 from typing import Dict, Any, Optional
 
 def handler(event: dict, context) -> dict:
-    '''Парсер данных с Avito для интеграции объявлений в каталог'''
+    '''Парсер данных с Avito для интеграции объявлений в каталог. Поддерживает парсинг одного объявления или всего профиля.'''
     
     method = event.get('httpMethod', 'GET')
     
@@ -33,6 +33,7 @@ def handler(event: dict, context) -> dict:
     
     params = event.get('queryStringParameters', {}) or {}
     avito_url = params.get('url', '')
+    parse_profile = params.get('profile', 'false').lower() == 'true'
     
     if not avito_url:
         return {
@@ -45,7 +46,84 @@ def handler(event: dict, context) -> dict:
             'isBase64Encoded': False
         }
     
-    # Extract listing ID from URL
+    # Если нужен парсинг профиля
+    if parse_profile:
+        import requests
+        from bs4 import BeautifulSoup
+        
+        try:
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+            
+            response = requests.get(avito_url, headers=headers, timeout=15)
+            response.raise_for_status()
+            
+            soup = BeautifulSoup(response.text, 'html.parser')
+            items = soup.find_all('div', {'data-marker': 'item'})
+            
+            profile_items = []
+            for item in items[:20]:
+                try:
+                    link_elem = item.find('a', {'itemprop': 'url'})
+                    if not link_elem:
+                        continue
+                    
+                    item_url = 'https://www.avito.ru' + link_elem.get('href', '')
+                    
+                    title_elem = link_elem
+                    title = title_elem.get('title', '').strip()
+                    
+                    price_elem = item.find('meta', {'itemprop': 'price'})
+                    price = int(price_elem.get('content', 0)) if price_elem else 0
+                    
+                    location_elem = item.find('div', {'data-marker': 'item-address'})
+                    location = location_elem.get_text(strip=True) if location_elem else 'Крым'
+                    
+                    img_elem = item.find('img')
+                    photo = img_elem.get('src', '') if img_elem else ''
+                    
+                    if title and item_url:
+                        profile_items.append({
+                            'title': title,
+                            'price': price,
+                            'location': location,
+                            'photo_url': photo,
+                            'property_link': item_url,
+                            'type': 'land'
+                        })
+                except Exception:
+                    continue
+            
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': json.dumps({
+                    'success': True,
+                    'items': profile_items,
+                    'count': len(profile_items)
+                }, ensure_ascii=False),
+                'isBase64Encoded': False
+            }
+            
+        except Exception as e:
+            return {
+                'statusCode': 500,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': json.dumps({
+                    'success': False,
+                    'error': f'Profile parsing error: {str(e)}'
+                }),
+                'isBase64Encoded': False
+            }
+    
+    # Парсинг одного объявления
     listing_id_match = re.search(r'_(\d+)$', avito_url)
     if not listing_id_match:
         return {
