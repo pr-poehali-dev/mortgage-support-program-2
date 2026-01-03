@@ -88,12 +88,6 @@ export default function Index() {
       </header>
 
       <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
-        <DailyHeroImage />
-        <MortgageQuiz onNavigateToCalculator={() => {
-          setActiveTab('calculator');
-          trackTabChanged('calculator');
-        }} />
-
         <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4 sm:space-y-8">
           <TabsList className="grid w-full grid-cols-5 md:grid-cols-10 h-auto gap-1 sm:gap-2 bg-white p-1.5 sm:p-2 rounded-xl shadow-sm overflow-x-auto">
             <TabsTrigger value="home" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95 animate-in fade-in slide-in-from-bottom-4 duration-300" style={{animationDelay: '0ms'}}>
@@ -144,7 +138,10 @@ export default function Index() {
             </TabsTrigger>
           </TabsList>
 
-          <MortgageTabsContent />
+          <MortgageTabsContent onNavigateToCalculator={() => {
+            setActiveTab('calculator');
+            trackTabChanged('calculator');
+          }} />
         </Tabs>
       </main>
 

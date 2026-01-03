@@ -774,7 +774,27 @@ export const blogArticles = [
   }
 ];
 
-export const realEstateObjects = [
+import { avitoListings } from './avitoListings';
+
+export const realEstateObjects = avitoListings.map((item, index) => ({
+  id: index + 1,
+  type: item.type,
+  title: item.title,
+  price: item.price,
+  location: item.location,
+  area: item.area,
+  rooms: item.rooms,
+  floor: item.floor,
+  totalFloors: item.totalFloors,
+  landArea: item.landArea,
+  image: item.image,
+  description: item.description,
+  features: item.features,
+  domclickUrl: item.avitoLink,
+  priceType: item.priceType
+}));
+
+export const realEstateObjectsOLD = [
   {
     id: 1,
     type: 'apartment',
