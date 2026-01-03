@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { TabsContent } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
 import PropertyCard from '@/components/catalog/PropertyCard';
-import PropertyFilters from '@/components/catalog/PropertyFilters';
 import PropertyFormDialog from '@/components/catalog/PropertyFormDialog';
 import PropertyViewDialog from '@/components/catalog/PropertyViewDialog';
+import CatalogHeader from '@/components/catalog/CatalogHeader';
+import CatalogSortControls from '@/components/catalog/CatalogSortControls';
+import AvitoImportDialog from '@/components/catalog/AvitoImportDialog';
 
 const MANUAL_PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d';
 const UPLOAD_PHOTO_URL = 'https://functions.poehali.dev/94c626eb-409a-4a18-836f-f3750239d1b4';
@@ -346,69 +346,21 @@ export default function CatalogTab() {
   return (
     <TabsContent value="catalog" className="space-y-4 sm:space-y-6">
       <div className="mb-4 sm:mb-6">
-        <div className="mb-3 sm:mb-4 flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-bold">Объекты</h2>
-            {!loading && !error && (
-              <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">
-                Найдено объектов: {realEstateObjects.length}
-              </p>
-            )}
-          </div>
-          <Button onClick={() => setImportDialogOpen(true)} className="gap-2">
-            <Icon name="Download" size={18} />
-            Импорт с Avito
-          </Button>
-        </div>
+        <CatalogHeader 
+          loading={loading}
+          error={error}
+          objectsCount={realEstateObjects.length}
+          onImportClick={() => setImportDialogOpen(true)}
+        />
 
         {!loading && !error && realEstateObjects.length > 0 && (
-          <>
-            <PropertyFilters
-              catalogFilter={catalogFilter}
-              setCatalogFilter={setCatalogFilter}
-              catalogCounts={catalogCounts}
-            />
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-sm text-gray-600">Сортировка:</span>
-              <Button
-                variant={catalogSort === 'default' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setCatalogSort('default')}
-              >
-                По умолчанию
-              </Button>
-              <Button
-                variant={catalogSort === 'price-asc' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setCatalogSort('price-asc')}
-                className="gap-1"
-              >
-                Цена <Icon name="ArrowUp" size={14} />
-              </Button>
-              <Button
-                variant={catalogSort === 'price-desc' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setCatalogSort('price-desc')}
-                className="gap-1"
-              >
-                Цена <Icon name="ArrowDown" size={14} />
-              </Button>
-              <Button
-                variant={catalogSort === 'date-new' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setCatalogSort('date-new')}
-              >
-                Сначала новые
-              </Button>
-              <Button
-                variant={catalogSort === 'date-old' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setCatalogSort('date-old')}
-              >
-                Сначала старые
-              </Button>
-            </div>
-          </>
+          <CatalogSortControls
+            catalogFilter={catalogFilter}
+            setCatalogFilter={setCatalogFilter}
+            catalogSort={catalogSort}
+            setCatalogSort={setCatalogSort}
+            catalogCounts={catalogCounts}
+          />
         )}
       </div>
 
@@ -426,25 +378,25 @@ export default function CatalogTab() {
           </div>
           <h3 className="text-xl font-semibold text-gray-600 mb-2">Ошибка загрузки</h3>
           <p className="text-gray-500 mb-6">{error}</p>
-          <Button onClick={fetchProperties} variant="outline" className="gap-2">
-            <Icon name="RefreshCw" size={18} />
+          <Button onClick={fetchProperties}>
+            <Icon name="RefreshCw" size={18} className="mr-2" />
             Попробовать снова
           </Button>
         </div>
       ) : realEstateObjects.length === 0 ? (
         <div className="text-center py-12">
           <div className="mb-4">
-            <Icon name="Building2" size={64} className="mx-auto text-gray-300" />
+            <Icon name="Home" size={64} className="mx-auto text-gray-300" />
           </div>
-          <h3 className="text-xl font-semibold text-gray-600 mb-2">Нет объектов</h3>
+          <h3 className="text-xl font-semibold text-gray-600 mb-2">Пока нет объектов</h3>
           <p className="text-gray-500 mb-6">Добавьте первый объект недвижимости</p>
-          <Button onClick={openCreateDialog} className="gap-2">
-            <Icon name="Plus" size={18} />
+          <Button onClick={openCreateDialog}>
+            <Icon name="Plus" size={18} className="mr-2" />
             Добавить объект
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {realEstateObjects
             .filter(obj => catalogFilter === 'all' || obj.type === catalogFilter)
             .sort((a, b) => {
@@ -503,54 +455,14 @@ export default function CatalogTab() {
         property={viewProperty}
       />
 
-      <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Импорт объявлений с Avito</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <p className="text-sm text-gray-600 mb-3">
-                Вставьте ссылку на любое ваше объявление на Avito.
-                <br />
-                Система автоматически найдет все объявления из вашего профиля.
-              </p>
-              <Input
-                placeholder="https://www.avito.ru/sevastopol/..."
-                value={importUrl}
-                onChange={(e) => setImportUrl(e.target.value)}
-                disabled={importing}
-              />
-            </div>
-            <div className="flex gap-2">
-              <Button 
-                onClick={handleAvitoImport} 
-                disabled={!importUrl || importing}
-                className="flex-1 gap-2"
-              >
-                {importing ? (
-                  <>
-                    <Icon name="Loader2" size={18} className="animate-spin" />
-                    Импортирую...
-                  </>
-                ) : (
-                  <>
-                    <Icon name="Download" size={18} />
-                    Импортировать
-                  </>
-                )}
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => setImportDialogOpen(false)}
-                disabled={importing}
-              >
-                Отмена
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <AvitoImportDialog
+        open={importDialogOpen}
+        onOpenChange={setImportDialogOpen}
+        importUrl={importUrl}
+        setImportUrl={setImportUrl}
+        importing={importing}
+        onImport={handleAvitoImport}
+      />
     </TabsContent>
   );
 }
