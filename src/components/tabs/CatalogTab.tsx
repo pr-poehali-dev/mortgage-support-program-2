@@ -89,12 +89,21 @@ export default function CatalogTab() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 bg-blue-50 rounded-lg">
           <p className="text-sm text-gray-700">
             Найдено объектов: <span className="font-bold text-primary">
               {realEstateObjects.filter(obj => catalogFilter === 'all' || obj.type === catalogFilter).length}
             </span>
           </p>
+          <Button
+            variant="default"
+            size="sm"
+            onClick={() => window.open('https://www.avito.ru/brands/i92755531', '_blank')}
+            className="gap-2"
+          >
+            <Icon name="ExternalLink" size={16} />
+            Смотреть все объекты на Авито
+          </Button>
         </div>
       </div>
 
