@@ -107,7 +107,41 @@ def handler(event: dict, context) -> dict:
                     if item.name == 'a':
                         link_elem = item
                         item_href = link_elem.get('href', '')
+                        # Убираем параметры ?context=...
+                        item_href = item_href.split('?')[0] if '?' in item_href else item_href
                         item_url = 'https://www.avito.ru' + item_href if item_href.startswith('/') else item_href
+                        
+                        # Для ссылок извлекаем данные из атрибутов и текста
+                        title = link_elem.get('title', '').strip() or link_elem.get_text(strip=True)
+                        
+                        # Ищем родительский контейнер для цены/локации
+                        parent = link_elem.parent
+                        while parent and parent.name not in ['div', 'article', None]:
+                            parent = parent.parent
+                        
+                        price = 0
+                        location = 'Крым'
+                        photo = ''
+                        
+                        if parent:
+                            # Ищем цену в родителе
+                            price_elem = parent.find('meta', {'itemprop': 'price'})
+                            if not price_elem:
+                                price_elem = parent.find(string=re.compile(r'[\d\s]+₽'))
+                            if price_elem:
+                                price_text = price_elem.get('content', '') if hasattr(price_elem, 'get') else str(price_elem)
+                                price_text = re.sub(r'[^\d]', '', price_text)
+                                price = int(price_text) if price_text else 0
+                            
+                            # Ищем локацию
+                            location_elem = parent.find(string=re.compile(r'(Севастополь|Крым|Красноперекопск|Ялта|Симферополь)'))
+                            if location_elem:
+                                location = str(location_elem).strip()
+                            
+                            # Ищем фото
+                            img_elem = parent.find('img')
+                            if img_elem:
+                                photo = img_elem.get('src', '') or img_elem.get('data-src', '')
                     else:
                         # Ищем ссылку на объявление внутри item
                         link_elem = item.find('a', {'itemprop': 'url'})
@@ -120,30 +154,31 @@ def handler(event: dict, context) -> dict:
                             continue
                         
                         item_href = link_elem.get('href', '')
+                        item_href = item_href.split('?')[0] if '?' in item_href else item_href
                         item_url = 'https://www.avito.ru' + item_href if item_href.startswith('/') else item_href
-                    
-                    title = link_elem.get('title', '').strip()
-                    if not title:
-                        title_elem = item.find(['h3', 'h2'])
-                        title = title_elem.get_text(strip=True) if title_elem else 'Объявление'
-                    
-                    price_elem = item.find('meta', {'itemprop': 'price'})
-                    if not price_elem:
-                        price_elem = item.find('span', {'data-marker': 'item-price'})
-                    
-                    price = 0
-                    if price_elem:
-                        price_text = price_elem.get('content', '') or price_elem.get_text(strip=True)
-                        price_text = re.sub(r'[^\d]', '', price_text)
-                        price = int(price_text) if price_text else 0
-                    
-                    location_elem = item.find('div', {'data-marker': 'item-address'})
-                    if not location_elem:
-                        location_elem = item.find('span', string=re.compile(r'Севастополь|Крым'))
-                    location = location_elem.get_text(strip=True) if location_elem else 'Крым'
-                    
-                    img_elem = item.find('img')
-                    photo = img_elem.get('src', '') or img_elem.get('data-src', '') if img_elem else ''
+                        
+                        title = link_elem.get('title', '').strip()
+                        if not title:
+                            title_elem = item.find(['h3', 'h2'])
+                            title = title_elem.get_text(strip=True) if title_elem else 'Объявление'
+                        
+                        price_elem = item.find('meta', {'itemprop': 'price'})
+                        if not price_elem:
+                            price_elem = item.find('span', {'data-marker': 'item-price'})
+                        
+                        price = 0
+                        if price_elem:
+                            price_text = price_elem.get('content', '') or price_elem.get_text(strip=True)
+                            price_text = re.sub(r'[^\d]', '', price_text)
+                            price = int(price_text) if price_text else 0
+                        
+                        location_elem = item.find('div', {'data-marker': 'item-address'})
+                        if not location_elem:
+                            location_elem = item.find('span', string=re.compile(r'Севастополь|Крым'))
+                        location = location_elem.get_text(strip=True) if location_elem else 'Крым'
+                        
+                        img_elem = item.find('img')
+                        photo = img_elem.get('src', '') or img_elem.get('data-src', '') if img_elem else ''
                     
                     print(f'[PROFILE] Item {idx}: title={title[:30]}, price={price}, url={item_url[:50]}', flush=True)
                     sys.stdout.flush()
@@ -155,7 +190,7 @@ def handler(event: dict, context) -> dict:
                             'location': location,
                             'photo_url': photo,
                             'property_link': item_url,
-                            'type': 'land'
+                            'type': 'house'
                         })
                 except Exception as e:
                     print(f'[PROFILE] Item {idx} error: {str(e)}', flush=True)
