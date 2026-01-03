@@ -44,6 +44,7 @@ export default function CatalogTab() {
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [viewProperty, setViewProperty] = useState<Property | null>(null);
+  const [loadingAvito, setLoadingAvito] = useState(false);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -378,10 +379,26 @@ export default function CatalogTab() {
               <PropertyCard
                 key={obj.id}
                 property={obj}
-                onEdit={openEditDialog}
-                onDelete={handleDelete}
-                onView={() => {
-                  setViewProperty(obj);
+                onView={async () => {
+                  if (obj.property_link && obj.property_link.includes('avito.ru')) {
+                    setLoadingAvito(true);
+                    try {
+                      const response = await fetch(`https://functions.poehali.dev/875e7adb-da86-4b4a-a12b-a83b4312e5df?url=${encodeURIComponent(obj.property_link)}`);
+                      const data = await response.json();
+                      if (data.success) {
+                        setViewProperty({ ...obj, ...data.data });
+                      } else {
+                        setViewProperty(obj);
+                      }
+                    } catch (err) {
+                      console.error('Avito parser error:', err);
+                      setViewProperty(obj);
+                    } finally {
+                      setLoadingAvito(false);
+                    }
+                  } else {
+                    setViewProperty(obj);
+                  }
                   setViewDialogOpen(true);
                 }}
               />

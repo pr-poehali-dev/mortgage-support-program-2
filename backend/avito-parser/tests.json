@@ -1,0 +1,29 @@
+{
+  "tests": [
+    {
+      "name": "Parse Sevastopol land plot listing",
+      "method": "GET",
+      "path": "/?url=https://www.avito.ru/sevastopol/zemelnye_uchastki/uchastok_146_sot._snt_dnp_7688856095",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Missing URL parameter",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 400,
+      "expectedBody": {
+        "error": "Missing url parameter"
+      }
+    },
+    {
+      "name": "CORS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    }
+  ]
+}

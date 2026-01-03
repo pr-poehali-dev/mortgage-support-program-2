@@ -24,12 +24,11 @@ interface Property {
 
 interface PropertyCardProps {
   property: Property;
-  onEdit: (property: Property) => void;
-  onDelete: (id: number) => void;
   onView?: () => void;
+  isAdmin?: boolean;
 }
 
-export default function PropertyCard({ property, onEdit, onDelete, onView }: PropertyCardProps) {
+export default function PropertyCard({ property, onView, isAdmin = false }: PropertyCardProps) {
   const photos = property.photos && property.photos.length > 0 ? property.photos : [property.photo_url];
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
@@ -110,16 +109,6 @@ export default function PropertyCard({ property, onEdit, onDelete, onView }: Pro
         {property.description && (
           <p className="text-sm text-gray-600 line-clamp-3">{property.description}</p>
         )}
-
-        <div className="flex gap-2 pt-2">
-          <Button onClick={(e) => { e.stopPropagation(); onEdit(property); }} variant="outline" size="sm" className="flex-1 gap-2">
-            <Icon name="Edit" size={14} />
-            Редактировать
-          </Button>
-          <Button onClick={(e) => { e.stopPropagation(); onDelete(property.id); }} variant="destructive" size="sm" className="gap-2">
-            <Icon name="Trash2" size={14} />
-          </Button>
-        </div>
       </CardContent>
     </Card>
   );
