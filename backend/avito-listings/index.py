@@ -29,6 +29,33 @@ def get_avito_token() -> str:
     return response.json()['access_token']
 
 
+def get_item_details(access_token: str, item_id: int, client_id: str) -> Dict[str, Any]:
+    """Получает детальную информацию об объявлении (с фото и описанием) через Messenger API"""
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+    
+    # Пробуем разные варианты endpointов
+    endpoints = [
+        f'https://api.avito.ru/messenger/v1/accounts/{client_id}/items/{item_id}',
+        f'https://api.avito.ru/autoload/v1/items/{item_id}',
+    ]
+    
+    for endpoint in endpoints:
+        try:
+            response = requests.get(endpoint, headers=headers)
+            
+            if response.status_code == 200:
+                print(f"[DEBUG] Детали для {item_id} загружены с {endpoint}")
+                return response.json()
+        except Exception as e:
+            print(f"[DEBUG] Ошибка для {endpoint}: {e}")
+            continue
+    
+    print(f"[DEBUG] Не удалось загрузить детали для {item_id}")
+    return {}
+
+
 def get_user_items(access_token: str, user_id: str = '92755531') -> List[Dict[str, Any]]:
     """Получает список объявлений пользователя через API Avito"""
     headers = {
@@ -60,6 +87,12 @@ def get_user_items(access_token: str, user_id: str = '92755531') -> List[Dict[st
             if 'resources' in data:
                 items = data['resources']
                 print(f"[DEBUG] Найдено объявлений: {len(items)}")
+                
+                # Фото и описания недоступны через Autoload API
+                # Avito API не предоставляет публичный доступ к фото и описаниям
+                # Используем URL объявления на Avito вместо этого
+                print(f"[DEBUG] Пропускаю загрузку деталей - Avito API не предоставляет фото/описания через Autoload")
+                
                 return items
             elif 'items' in data:
                 items = data['items']
@@ -80,6 +113,9 @@ def get_user_items(access_token: str, user_id: str = '92755531') -> List[Dict[st
 
 def transform_avito_item(item: Dict[str, Any]) -> Dict[str, Any]:
     """Преобразует объявление Avito в формат для сайта"""
+    print(f"[DEBUG] Обрабатываю объявление: {item.get('title', 'Без названия')}")
+    print(f"[DEBUG] Ключи объявления: {list(item.keys())}")
+    
     # Извлекаем категорию (может быть строкой или объектом)
     category_obj = item.get('category', {})
     if isinstance(category_obj, dict):
@@ -116,6 +152,35 @@ def transform_avito_item(item: Dict[str, Any]) -> Dict[str, Any]:
     elif not avito_url:
         avito_url = f"https://www.avito.ru/items/{item.get('id', '')}"
     
+    # Обрабатываем изображения (пробуем разные варианты структуры)
+    image_url = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80'
+    images = item.get('images', [])
+    if images:
+        print(f"[DEBUG] Найдено изображений: {len(images)}")
+        print(f"[DEBUG] Структура первого изображения: {images[0] if images else 'нет'}")
+        
+        first_img = images[0] if isinstance(images, list) else images
+        if isinstance(first_img, dict):
+            # Пробуем разные ключи для URL
+            image_url = (first_img.get('640x480') or 
+                        first_img.get('url') or 
+                        first_img.get('main') or
+                        first_img.get('original') or
+                        image_url)
+        elif isinstance(first_img, str):
+            image_url = first_img
+    else:
+        print(f"[DEBUG] Изображения не найдены для {item.get('title', 'Без названия')}")
+    
+    # Обрабатываем описание
+    description = item.get('description', '')
+    if not description:
+        # Пробуем альтернативные ключи
+        description = item.get('text', '') or item.get('body', '') or ''
+    
+    print(f"[DEBUG] Описание: {description[:100] if description else 'пустое'}...")
+    print(f"[DEBUG] Изображение: {image_url}")
+    
     return {
         'type': obj_type,
         'title': item.get('title', 'Объявление'),
@@ -126,8 +191,8 @@ def transform_avito_item(item: Dict[str, Any]) -> Dict[str, Any]:
         'floor': int(props.get('Этаж', 0)) if 'Этаж' in props else None,
         'totalFloors': int(props.get('Этажей в доме', 0)) if 'Этажей в доме' in props else None,
         'landArea': float(props.get('Площадь участка, сот.', 0)) if 'Площадь участка, сот.' in props else None,
-        'image': item.get('images', [{}])[0].get('640x480') if item.get('images') else 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80',
-        'description': item.get('description', ''),
+        'image': image_url,
+        'description': description,
         'features': [props.get(k) for k in ['Тип дома', 'Ремонт', 'Вид из окон'] if k in props and props[k]],
         'avitoLink': avito_url,
         'priceType': 'total'
