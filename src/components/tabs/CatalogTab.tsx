@@ -5,9 +5,7 @@ import Icon from '@/components/ui/icon';
 import PropertyCard from '@/components/catalog/PropertyCard';
 import PropertyFormDialog from '@/components/catalog/PropertyFormDialog';
 import PropertyViewDialog from '@/components/catalog/PropertyViewDialog';
-import CatalogHeader from '@/components/catalog/CatalogHeader';
 import CatalogSortControls from '@/components/catalog/CatalogSortControls';
-import AvitoImportDialog from '@/components/catalog/AvitoImportDialog';
 
 const MANUAL_PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d';
 const UPLOAD_PHOTO_URL = 'https://functions.poehali.dev/94c626eb-409a-4a18-836f-f3750239d1b4';
@@ -46,10 +44,6 @@ export default function CatalogTab() {
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [viewProperty, setViewProperty] = useState<Property | null>(null);
-  const [loadingAvito, setLoadingAvito] = useState(false);
-  const [importDialogOpen, setImportDialogOpen] = useState(false);
-  const [importUrl, setImportUrl] = useState('');
-  const [importing, setImporting] = useState(false);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -271,95 +265,21 @@ export default function CatalogTab() {
     setFormData({ ...formData, photos: newPhotos, photo_url: newPhotos[0] || '' });
   };
 
-  const handleAvitoImport = async () => {
-    if (!importUrl) return;
-    
-    setImporting(true);
-    try {
-      const avitoParserUrl = 'https://functions.poehali.dev/875e7adb-da86-4b4a-a12b-a83b4312e5df';
-      
-      let profileUrl = importUrl;
-      
-      // Если это ссылка на объявление, извлекаем ID профиля
-      const itemPattern = /avito\.ru\/[^/]+\/(\d+)_/;
-      const itemMatch = importUrl.match(itemPattern);
-      
-      if (itemMatch) {
-        const profileId = itemMatch[1];
-        profileUrl = `https://www.avito.ru/brands/i${profileId}`;
-      }
-      
-      // Если это уже ссылка на профиль/brands - используем как есть
-      if (!profileUrl.includes('avito.ru')) {
-        alert('Некорректная ссылка Avito. Вставьте ссылку на объявление или профиль.');
-        return;
-      }
-      
-      // Получаем список объявлений через бэкенд
-      const profileResponse = await fetch(`${avitoParserUrl}?url=${encodeURIComponent(profileUrl)}&profile=true`);
-      const profileData = await profileResponse.json();
-      
-      if (!profileData.success || !profileData.items || profileData.items.length === 0) {
-        alert('Не найдено объявлений для импорта');
-        return;
-      }
-      
-      const avitoItems = [];
-      
-      // Парсим детали каждого объявления
-      for (const item of profileData.items.slice(0, 20)) {
-        try {
-          const itemResponse = await fetch(`${avitoParserUrl}?url=${encodeURIComponent(item.property_link)}`);
-          const itemData = await itemResponse.json();
-          
-          if (itemData.success) {
-            avitoItems.push(itemData.data);
-          }
-          
-          await new Promise(resolve => setTimeout(resolve, 500));
-        } catch (err) {
-          console.error('Item parse error:', err);
-        }
-      }
-      
-      if (avitoItems.length === 0) {
-        alert('Не удалось загрузить детали объявлений');
-        return;
-      }
-      
-      const importResponse = await fetch(MANUAL_PROPERTIES_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: avitoItems })
-      });
-      
-      const result = await importResponse.json();
-      
-      if (result.success) {
-        alert(`Успешно импортировано: ${result.imported} объектов`);
-        setImportDialogOpen(false);
-        setImportUrl('');
-        fetchProperties();
-      }
-    } catch (err) {
-      console.error('Import error:', err);
-      alert('Ошибка импорта. Проверьте ссылку.');
-    } finally {
-      setImporting(false);
-    }
-  };
+
 
   const catalogCounts = getCatalogCounts();
 
   return (
     <TabsContent value="catalog" className="space-y-4 sm:space-y-6">
       <div className="mb-4 sm:mb-6">
-        <CatalogHeader 
-          loading={loading}
-          error={error}
-          objectsCount={realEstateObjects.length}
-          onImportClick={() => setImportDialogOpen(true)}
-        />
+        <div className="mb-3 sm:mb-4">
+          <h2 className="text-2xl sm:text-3xl font-bold">Объекты</h2>
+          {!loading && !error && (
+            <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">
+              Найдено объектов: {realEstateObjects.length}
+            </p>
+          )}
+        </div>
 
         {!loading && !error && realEstateObjects.length > 0 && (
           <CatalogSortControls
@@ -418,26 +338,8 @@ export default function CatalogTab() {
               <PropertyCard
                 key={obj.id}
                 property={obj}
-                onView={async () => {
-                  if (obj.property_link && obj.property_link.includes('avito.ru')) {
-                    setLoadingAvito(true);
-                    try {
-                      const response = await fetch(`https://functions.poehali.dev/875e7adb-da86-4b4a-a12b-a83b4312e5df?url=${encodeURIComponent(obj.property_link)}`);
-                      const data = await response.json();
-                      if (data.success) {
-                        setViewProperty({ ...obj, ...data.data });
-                      } else {
-                        setViewProperty(obj);
-                      }
-                    } catch (err) {
-                      console.error('Avito parser error:', err);
-                      setViewProperty(obj);
-                    } finally {
-                      setLoadingAvito(false);
-                    }
-                  } else {
-                    setViewProperty(obj);
-                  }
+                onView={() => {
+                  setViewProperty(obj);
                   setViewDialogOpen(true);
                 }}
               />
@@ -461,15 +363,6 @@ export default function CatalogTab() {
         open={viewDialogOpen}
         onOpenChange={setViewDialogOpen}
         property={viewProperty}
-      />
-
-      <AvitoImportDialog
-        open={importDialogOpen}
-        onOpenChange={setImportDialogOpen}
-        importUrl={importUrl}
-        setImportUrl={setImportUrl}
-        importing={importing}
-        onImport={handleAvitoImport}
       />
     </TabsContent>
   );
