@@ -4,52 +4,77 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-const AVITO_API_URL = 'https://functions.poehali.dev/0363e1df-5e38-47b1-83ba-6d01b09d4e99';
-const PROPERTIES_URL = 'https://functions.poehali.dev/d286a6ac-5f97-4343-9332-1ee6a1e9ad53';
+const MANUAL_PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d';
+
+interface Property {
+  id: number;
+  title: string;
+  type: string;
+  price: number;
+  location: string;
+  area?: number;
+  rooms?: number;
+  floor?: number;
+  total_floors?: number;
+  land_area?: number;
+  photo_url: string;
+  description?: string;
+  features?: string[];
+  property_link?: string;
+  price_type?: string;
+}
 
 export default function CatalogTab() {
   const [catalogFilter, setCatalogFilter] = useState('all');
-  const [catalogSort, setCatalogSort] = useState<'default' | 'price-asc' | 'price-desc'>('default');
-  const [realEstateObjects, setRealEstateObjects] = useState<any[]>([]);
+  const [realEstateObjects, setRealEstateObjects] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editProperty, setEditProperty] = useState<Property | null>(null);
+  
+  const [formData, setFormData] = useState({
+    title: '',
+    type: 'apartment',
+    price: '',
+    location: '',
+    area: '',
+    rooms: '',
+    floor: '',
+    total_floors: '',
+    land_area: '',
+    photo_url: '',
+    description: '',
+    property_link: ''
+  });
 
   useEffect(() => {
-    const fetchAllProperties = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        // Загружаем ручные объекты
-        const manualResponse = await fetch(PROPERTIES_URL);
-        const manualData = await manualResponse.json();
-        
-        // Загружаем объекты с Avito
-        const avitoResponse = await fetch(AVITO_API_URL);
-        const avitoData = await avitoResponse.json();
-        
-        const manualProperties = manualData.success ? manualData.data : [];
-        const avitoProperties = avitoData.success ? avitoData.listings : [];
-        
-        // Объединяем все объекты
-        const allProperties = [
-          ...manualProperties.map((p: any) => ({ ...p, source: 'manual' })),
-          ...avitoProperties.map((p: any) => ({ ...p, source: 'avito' }))
-        ];
-        
-        setRealEstateObjects(allProperties);
-      } catch (err) {
-        setError('Ошибка загрузки объектов');
-        console.error('Fetch error:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAllProperties();
+    fetchProperties();
   }, []);
+
+  const fetchProperties = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await fetch(MANUAL_PROPERTIES_URL);
+      const data = await response.json();
+      
+      if (data.success) {
+        setRealEstateObjects(data.properties || []);
+      }
+    } catch (err) {
+      setError('Ошибка загрузки объектов');
+      console.error('Fetch error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getCatalogCounts = () => {
     return {
@@ -59,6 +84,112 @@ export default function CatalogTab() {
       land: realEstateObjects.filter(obj => obj.type === 'land').length,
       commercial: realEstateObjects.filter(obj => obj.type === 'commercial').length
     };
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      const payload = {
+        ...(editProperty ? { id: editProperty.id } : {}),
+        title: formData.title,
+        type: formData.type,
+        price: parseInt(formData.price),
+        location: formData.location,
+        area: formData.area ? parseFloat(formData.area) : null,
+        rooms: formData.rooms ? parseInt(formData.rooms) : null,
+        floor: formData.floor ? parseInt(formData.floor) : null,
+        total_floors: formData.total_floors ? parseInt(formData.total_floors) : null,
+        land_area: formData.land_area ? parseFloat(formData.land_area) : null,
+        photo_url: formData.photo_url || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800',
+        description: formData.description,
+        property_link: formData.property_link,
+        price_type: 'total'
+      };
+
+      const response = await fetch(MANUAL_PROPERTIES_URL, {
+        method: editProperty ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setDialogOpen(false);
+        resetForm();
+        fetchProperties();
+      } else {
+        alert('Ошибка: ' + data.error);
+      }
+    } catch (err) {
+      console.error('Submit error:', err);
+      alert('Ошибка сохранения объекта');
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!confirm('Удалить объект?')) return;
+
+    try {
+      const response = await fetch(`${MANUAL_PROPERTIES_URL}?id=${id}`, {
+        method: 'DELETE'
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        fetchProperties();
+      } else {
+        alert('Ошибка удаления: ' + data.error);
+      }
+    } catch (err) {
+      console.error('Delete error:', err);
+      alert('Ошибка удаления объекта');
+    }
+  };
+
+  const openCreateDialog = () => {
+    setEditProperty(null);
+    resetForm();
+    setDialogOpen(true);
+  };
+
+  const openEditDialog = (property: Property) => {
+    setEditProperty(property);
+    setFormData({
+      title: property.title,
+      type: property.type,
+      price: property.price.toString(),
+      location: property.location,
+      area: property.area?.toString() || '',
+      rooms: property.rooms?.toString() || '',
+      floor: property.floor?.toString() || '',
+      total_floors: property.total_floors?.toString() || '',
+      land_area: property.land_area?.toString() || '',
+      photo_url: property.photo_url,
+      description: property.description || '',
+      property_link: property.property_link || ''
+    });
+    setDialogOpen(true);
+  };
+
+  const resetForm = () => {
+    setFormData({
+      title: '',
+      type: 'apartment',
+      price: '',
+      location: '',
+      area: '',
+      rooms: '',
+      floor: '',
+      total_floors: '',
+      land_area: '',
+      photo_url: '',
+      description: '',
+      property_link: ''
+    });
+    setEditProperty(null);
   };
 
   const catalogCounts = getCatalogCounts();
@@ -75,14 +206,9 @@ export default function CatalogTab() {
               </p>
             )}
           </div>
-          <Button
-            variant="outline"
-            size="default"
-            onClick={() => window.open('https://www.avito.ru/brands/i92755531', '_blank')}
-            className="gap-2"
-          >
-            <Icon name="ExternalLink" size={18} />
-            <span className="hidden sm:inline">Открыть профиль</span>
+          <Button onClick={openCreateDialog} className="gap-2">
+            <Icon name="Plus" size={18} />
+            <span className="hidden sm:inline">Добавить объект</span>
           </Button>
         </div>
 
@@ -146,7 +272,6 @@ export default function CatalogTab() {
             <Icon name="Loader2" size={64} className="mx-auto text-primary" />
           </div>
           <h3 className="text-xl font-semibold text-gray-600 mb-2">Загружаю объявления...</h3>
-          <p className="text-gray-500">Подключаюсь к Avito API</p>
         </div>
       ) : error ? (
         <div className="text-center py-12">
@@ -155,11 +280,7 @@ export default function CatalogTab() {
           </div>
           <h3 className="text-xl font-semibold text-gray-600 mb-2">Ошибка загрузки</h3>
           <p className="text-gray-500 mb-6">{error}</p>
-          <Button
-            variant="outline"
-            onClick={() => window.location.reload()}
-            className="gap-2"
-          >
+          <Button onClick={fetchProperties} variant="outline" className="gap-2">
             <Icon name="RefreshCw" size={18} />
             Попробовать снова
           </Button>
@@ -169,32 +290,31 @@ export default function CatalogTab() {
           <div className="mb-4">
             <Icon name="Building2" size={64} className="mx-auto text-gray-300" />
           </div>
-          <h3 className="text-xl font-semibold text-gray-600 mb-2">Нет активных объявлений</h3>
-          <p className="text-gray-500 mb-6">Добавьте объявления на Avito, и они появятся здесь</p>
+          <h3 className="text-xl font-semibold text-gray-600 mb-2">Нет объектов</h3>
+          <p className="text-gray-500 mb-6">Добавьте первый объект недвижимости</p>
+          <Button onClick={openCreateDialog} className="gap-2">
+            <Icon name="Plus" size={18} />
+            Добавить объект
+          </Button>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {realEstateObjects
             .filter(obj => catalogFilter === 'all' || obj.type === catalogFilter)
-            .sort((a, b) => {
-              if (catalogSort === 'price-asc') return a.price - b.price;
-              if (catalogSort === 'price-desc') return b.price - a.price;
-              return 0;
-            })
             .map((obj) => (
-            <Card key={obj.id} className="hover:shadow-xl transition-all cursor-pointer group overflow-hidden">
+            <Card key={obj.id} className="hover:shadow-xl transition-all overflow-hidden">
               <div className="relative h-48 overflow-hidden">
                 <img 
-                  src={obj.image} 
+                  src={obj.photo_url} 
                   alt={obj.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  className="w-full h-full object-cover"
                 />
                 <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg">
                   <p className="font-bold text-primary text-lg">{obj.price.toLocaleString('ru-RU')} ₽</p>
                 </div>
               </div>
               <CardHeader>
-                <CardTitle className="text-xl group-hover:text-primary transition-colors">{obj.title}</CardTitle>
+                <CardTitle className="text-xl">{obj.title}</CardTitle>
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Icon name="MapPin" size={14} />
                   <span>{obj.location}</span>
@@ -204,188 +324,206 @@ export default function CatalogTab() {
                 <div className="flex flex-wrap gap-3 text-sm">
                   {obj.area && (
                     <div className="flex items-center gap-1.5">
-                      <Icon name="Home" size={16} className="text-gray-500" />
-                      <span className="font-medium">{obj.area} м²</span>
+                      <Icon name="Maximize" size={14} className="text-gray-400" />
+                      <span>{obj.area} м²</span>
                     </div>
                   )}
                   {obj.rooms && (
                     <div className="flex items-center gap-1.5">
-                      <Icon name="DoorOpen" size={16} className="text-gray-500" />
-                      <span className="font-medium">{obj.rooms} комн.</span>
+                      <Icon name="DoorOpen" size={14} className="text-gray-400" />
+                      <span>{obj.rooms} комн.</span>
                     </div>
                   )}
                   {obj.floor && (
                     <div className="flex items-center gap-1.5">
-                      <Icon name="Layers" size={16} className="text-gray-500" />
-                      <span className="font-medium">{obj.floor}/{obj.totalFloors} этаж</span>
+                      <Icon name="Layers" size={14} className="text-gray-400" />
+                      <span>{obj.floor}/{obj.total_floors} эт.</span>
                     </div>
                   )}
-                  {obj.landArea && (
+                  {obj.land_area && (
                     <div className="flex items-center gap-1.5">
-                      <Icon name="TreePine" size={16} className="text-gray-500" />
-                      <span className="font-medium">{obj.landArea} сот.</span>
-                    </div>
-                  )}
-                  {obj.floors && !obj.floor && (
-                    <div className="flex items-center gap-1.5">
-                      <Icon name="Layers" size={16} className="text-gray-500" />
-                      <span className="font-medium">{obj.floors} этажа</span>
+                      <Icon name="TreePine" size={14} className="text-gray-400" />
+                      <span>{obj.land_area} сот.</span>
                     </div>
                   )}
                 </div>
 
-                <p className="text-sm text-gray-600 line-clamp-2">{obj.description}</p>
+                {obj.description && (
+                  <p className="text-sm text-gray-600 line-clamp-3">{obj.description}</p>
+                )}
 
-                <div className="flex flex-wrap gap-2">
-                  {obj.features.slice(0, 3).map((feature, idx) => (
-                    <Badge key={idx} variant="secondary" className="text-xs">
-                      {feature}
-                    </Badge>
-                  ))}
-                  {obj.features.length > 3 && (
-                    <Badge variant="outline" className="text-xs">
-                      +{obj.features.length - 3}
-                    </Badge>
-                  )}
+                <div className="flex gap-2 pt-2">
+                  <Button onClick={() => openEditDialog(obj)} variant="outline" size="sm" className="flex-1 gap-2">
+                    <Icon name="Edit" size={14} />
+                    Редактировать
+                  </Button>
+                  <Button onClick={() => handleDelete(obj.id)} variant="destructive" size="sm" className="gap-2">
+                    <Icon name="Trash2" size={14} />
+                  </Button>
                 </div>
-
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" className="w-full">
-                      Подробнее
-                      <Icon name="ArrowRight" className="ml-2" size={16} />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-3xl">
-                    <DialogHeader>
-                      <DialogTitle className="text-2xl">{obj.title}</DialogTitle>
-                      <DialogDescription className="flex items-center gap-2">
-                        <Icon name="MapPin" size={16} />
-                        {obj.location}
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-6">
-                      <div className="relative h-64 rounded-lg overflow-hidden">
-                        <img 
-                          src={obj.image} 
-                          alt={obj.title}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-
-                      <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
-                        <div>
-                          <p className="text-sm text-gray-600">Цена</p>
-                          <p className="text-3xl font-bold text-primary">{obj.price.toLocaleString('ru-RU')} ₽</p>
-                        </div>
-                        <Button size="lg" asChild>
-                          <a href="tel:+79781281850">
-                            <Icon name="Phone" className="mr-2" />
-                            Позвонить
-                          </a>
-                        </Button>
-                      </div>
-
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {obj.area && (
-                          <div className="p-3 bg-gray-50 rounded-lg text-center">
-                            <Icon name="Home" className="mx-auto mb-2 text-primary" size={24} />
-                            <p className="text-sm text-gray-600">Площадь</p>
-                            <p className="font-bold">{obj.area} м²</p>
-                          </div>
-                        )}
-                        {obj.rooms && (
-                          <div className="p-3 bg-gray-50 rounded-lg text-center">
-                            <Icon name="DoorOpen" className="mx-auto mb-2 text-primary" size={24} />
-                            <p className="text-sm text-gray-600">Комнат</p>
-                            <p className="font-bold">{obj.rooms}</p>
-                          </div>
-                        )}
-                        {obj.floor && (
-                          <div className="p-3 bg-gray-50 rounded-lg text-center">
-                            <Icon name="Layers" className="mx-auto mb-2 text-primary" size={24} />
-                            <p className="text-sm text-gray-600">Этаж</p>
-                            <p className="font-bold">{obj.floor}/{obj.totalFloors}</p>
-                          </div>
-                        )}
-                        {obj.landArea && (
-                          <div className="p-3 bg-gray-50 rounded-lg text-center">
-                            <Icon name="TreePine" className="mx-auto mb-2 text-primary" size={24} />
-                            <p className="text-sm text-gray-600">Участок</p>
-                            <p className="font-bold">{obj.landArea} сот.</p>
-                          </div>
-                        )}
-                        {obj.floors && !obj.floor && (
-                          <div className="p-3 bg-gray-50 rounded-lg text-center">
-                            <Icon name="Layers" className="mx-auto mb-2 text-primary" size={24} />
-                            <p className="text-sm text-gray-600">Этажность</p>
-                            <p className="font-bold">{obj.floors}</p>
-                          </div>
-                        )}
-                      </div>
-
-                      <div>
-                        <h4 className="font-semibold mb-3">Описание</h4>
-                        <p className="text-gray-700">{obj.description}</p>
-                      </div>
-
-                      <div>
-                        <h4 className="font-semibold mb-3">Особенности</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {obj.features.map((feature, idx) => (
-                            <Badge key={idx} variant="secondary">
-                              <Icon name="Check" className="mr-1" size={14} />
-                              {feature}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="border-t pt-4">
-                        <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg">
-                          <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                            <Icon name="MessageCircle" className="text-primary" size={20} />
-                            Интересует этот объект?
-                          </h4>
-                          <p className="text-gray-700 mb-4">Свяжитесь с нами для получения дополнительной информации и организации просмотра</p>
-                          <div className="flex flex-wrap gap-2">
-                            {obj.avitoLink && (
-                              <Button asChild size="lg" className="w-full sm:w-auto">
-                                <a href={obj.avitoLink} target="_blank" rel="noopener noreferrer">
-                                  <Icon name="ExternalLink" className="mr-2" size={16} />
-                                  Смотреть на Avito
-                                </a>
-                              </Button>
-                            )}
-                            <Button asChild variant={obj.avitoLink ? 'outline' : 'default'}>
-                              <a href="https://t.me/ipoteka_krym_rf" target="_blank" rel="noopener noreferrer">
-                                <Icon name="MessageCircle" className="mr-2" size={16} />
-                                Telegram
-                              </a>
-                            </Button>
-                            <Button variant="outline" asChild>
-                              <a href="tel:+79781281850">
-                                <Icon name="Phone" className="mr-2" size={16} />
-                                Позвонить
-                              </a>
-                            </Button>
-                            <Button variant="outline" asChild>
-                              <a href="https://agencies.domclick.ru/agent/5621837?utm_source=partnerhub&utm_content=profile" target="_blank" rel="noopener noreferrer">
-                                <Icon name="Home" className="mr-2" size={16} />
-                                Домклик
-                              </a>
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
               </CardContent>
             </Card>
-            ))}
+          ))}
         </div>
       )}
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{editProperty ? 'Редактировать объект' : 'Добавить объект'}</DialogTitle>
+          </DialogHeader>
+          
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="col-span-2">
+                <Label htmlFor="title">Название *</Label>
+                <Input
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) => setFormData({...formData, title: e.target.value})}
+                  required
+                  placeholder="Например: 2-комн. квартира, 65 м²"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="type">Тип *</Label>
+                <Select value={formData.type} onValueChange={(value) => setFormData({...formData, type: value})}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="apartment">Квартира</SelectItem>
+                    <SelectItem value="house">Дом</SelectItem>
+                    <SelectItem value="land">Участок</SelectItem>
+                    <SelectItem value="commercial">Коммерция</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label htmlFor="price">Цена, ₽ *</Label>
+                <Input
+                  id="price"
+                  type="number"
+                  value={formData.price}
+                  onChange={(e) => setFormData({...formData, price: e.target.value})}
+                  required
+                  placeholder="5000000"
+                />
+              </div>
+
+              <div className="col-span-2">
+                <Label htmlFor="location">Адрес *</Label>
+                <Input
+                  id="location"
+                  value={formData.location}
+                  onChange={(e) => setFormData({...formData, location: e.target.value})}
+                  required
+                  placeholder="Севастополь, ул. Ленина, 1"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="area">Площадь, м²</Label>
+                <Input
+                  id="area"
+                  type="number"
+                  step="0.1"
+                  value={formData.area}
+                  onChange={(e) => setFormData({...formData, area: e.target.value})}
+                  placeholder="65"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="rooms">Комнат</Label>
+                <Input
+                  id="rooms"
+                  type="number"
+                  value={formData.rooms}
+                  onChange={(e) => setFormData({...formData, rooms: e.target.value})}
+                  placeholder="2"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="floor">Этаж</Label>
+                <Input
+                  id="floor"
+                  type="number"
+                  value={formData.floor}
+                  onChange={(e) => setFormData({...formData, floor: e.target.value})}
+                  placeholder="5"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="total_floors">Всего этажей</Label>
+                <Input
+                  id="total_floors"
+                  type="number"
+                  value={formData.total_floors}
+                  onChange={(e) => setFormData({...formData, total_floors: e.target.value})}
+                  placeholder="10"
+                />
+              </div>
+
+              <div className="col-span-2">
+                <Label htmlFor="land_area">Площадь участка, сот.</Label>
+                <Input
+                  id="land_area"
+                  type="number"
+                  step="0.01"
+                  value={formData.land_area}
+                  onChange={(e) => setFormData({...formData, land_area: e.target.value})}
+                  placeholder="6"
+                />
+              </div>
+
+              <div className="col-span-2">
+                <Label htmlFor="photo_url">URL фотографии</Label>
+                <Input
+                  id="photo_url"
+                  value={formData.photo_url}
+                  onChange={(e) => setFormData({...formData, photo_url: e.target.value})}
+                  placeholder="https://example.com/photo.jpg"
+                />
+              </div>
+
+              <div className="col-span-2">
+                <Label htmlFor="description">Описание</Label>
+                <Textarea
+                  id="description"
+                  value={formData.description}
+                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  placeholder="Подробное описание объекта..."
+                  rows={4}
+                />
+              </div>
+
+              <div className="col-span-2">
+                <Label htmlFor="property_link">Ссылка на объявление</Label>
+                <Input
+                  id="property_link"
+                  value={formData.property_link}
+                  onChange={(e) => setFormData({...formData, property_link: e.target.value})}
+                  placeholder="https://avito.ru/..."
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <Button type="submit" className="flex-1">
+                {editProperty ? 'Сохранить' : 'Добавить'}
+              </Button>
+              <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
+                Отмена
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </TabsContent>
   );
 }
