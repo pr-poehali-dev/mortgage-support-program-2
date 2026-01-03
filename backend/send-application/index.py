@@ -1,5 +1,6 @@
 import json
 import smtplib
+import urllib.request
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from typing import Dict, Any
@@ -26,6 +27,52 @@ class ApplicationRequest(BaseModel):
         if len(digits) < 10:
             raise ValueError('Некорректный номер телефона')
         return v
+
+def send_telegram_notification(app_data: ApplicationRequest, program_name: str):
+    """Отправляет уведомление о новой заявке в Telegram"""
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
+    
+    if not bot_token or not chat_id:
+        return
+    
+    try:
+        text = f"🏠 *Новая заявка на ипотеку*\n\n"
+        text += f"👤 *Имя:* {app_data.name}\n"
+        text += f"📱 *Телефон:* {app_data.phone}\n"
+        text += f"✉️ *Email:* {app_data.email}\n"
+        text += f"📋 *Программа:* {program_name}\n"
+        text += f"💰 *Сумма:* {app_data.amount:,} ₽\n"
+        if app_data.comment:
+            text += f"💬 *Комментарий:* {app_data.comment}\n"
+        
+        phone_clean = app_data.phone.replace("+", "").replace(" ", "").replace("-", "")
+        inline_keyboard = {
+            'inline_keyboard': [[
+                {'text': '✅ Принять в работу', 'callback_data': f'accept_{app_data.phone}'},
+                {'text': '📞 Позвонить', 'url': f'tel:{app_data.phone}'}
+            ], [
+                {'text': '✉️ Email', 'url': f'mailto:{app_data.email}'},
+                {'text': '💬 WhatsApp', 'url': f'https://wa.me/{phone_clean}'}
+            ]]
+        }
+        
+        url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+        payload = {
+            'chat_id': chat_id,
+            'text': text,
+            'parse_mode': 'Markdown',
+            'reply_markup': inline_keyboard
+        }
+        
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode('utf-8'),
+            headers={'Content-Type': 'application/json'}
+        )
+        urllib.request.urlopen(req, timeout=5)
+    except:
+        pass
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     '''
@@ -127,6 +174,9 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         msg.attach(html_part)
         
         try:
+            # Отправляем уведомление в Telegram
+            send_telegram_notification(app_data, program_name)
+            
             smtp_server = smtplib.SMTP('smtp.mail.ru', 587)
             smtp_server.starttls()
             

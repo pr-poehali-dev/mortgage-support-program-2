@@ -251,6 +251,8 @@ export default function Admin() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10">
       <div className="container mx-auto p-6 space-y-6">
+        <AdminClock />
+        
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
@@ -311,8 +313,6 @@ export default function Admin() {
         <AdminStatsCards totals={analytics.totals} conversionRate={conversionRate} />
 
         <CRMPanel />
-
-        <AdminClock />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <AdminCalendar />

@@ -82,6 +82,21 @@ const PRIORITY_LABELS: Record<string, string> = {
   high: 'Высокий'
 };
 
+function getTimeAgo(dateString: string): string {
+  const now = new Date();
+  const past = new Date(dateString);
+  const diffMs = now.getTime() - past.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+
+  if (diffMins < 1) return 'только что';
+  if (diffMins < 60) return `${diffMins} мин. назад`;
+  if (diffHours < 24) return `${diffHours} ч. назад`;
+  if (diffDays < 7) return `${diffDays} дн. назад`;
+  return past.toLocaleDateString('ru', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
 export default function CRMPanel() {
   const [requests, setRequests] = useState<Request[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
@@ -394,8 +409,9 @@ export default function CRMPanel() {
                             )}
                             <div className="flex items-center gap-4 text-xs text-gray-500">
                               <div className="flex items-center gap-1">
-                                <Icon name="Calendar" size={12} />
-                                {new Date(request.created_at).toLocaleString('ru')}
+                                <Icon name="Clock" size={12} />
+                                <span className="font-medium">{getTimeAgo(request.created_at)}</span>
+                                <span className="text-gray-400">({new Date(request.created_at).toLocaleString('ru', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })})</span>
                               </div>
                               <div className="flex items-center gap-1">
                                 <Icon name="Tag" size={12} />
@@ -473,8 +489,10 @@ export default function CRMPanel() {
                               <span className="font-medium">Заметки:</span> {client.notes}
                             </div>
                           )}
-                          <div className="text-xs text-gray-500">
-                            Создан: {new Date(client.created_at).toLocaleString('ru')}
+                          <div className="flex items-center gap-2 text-xs text-gray-500">
+                            <Icon name="Clock" size={12} />
+                            <span className="font-medium">{getTimeAgo(client.created_at)}</span>
+                            <span className="text-gray-400">({new Date(client.created_at).toLocaleString('ru', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })})</span>
                           </div>
                         </div>
                       </CardContent>
@@ -573,7 +591,11 @@ export default function CRMPanel() {
                           )}
 
                           <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t">
-                            <div>Зарегистрирован: {new Date(request.created_at).toLocaleString('ru')}</div>
+                            <div className="flex items-center gap-2">
+                              <Icon name="Clock" size={12} />
+                              <span className="font-medium">{getTimeAgo(request.created_at)}</span>
+                              <span className="text-gray-400">({new Date(request.created_at).toLocaleString('ru', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })})</span>
+                            </div>
                             <div className="flex gap-2">
                               <Button
                                 size="sm"
@@ -636,8 +658,11 @@ export default function CRMPanel() {
                                 <div>{result.loan_amount_range}</div>
                               </div>
                             </div>
-                            <div className="text-xs text-gray-500 pt-2 border-t">
-                              Последнее прохождение: {new Date(result.last_taken).toLocaleString('ru')}
+                            <div className="flex items-center gap-2 text-xs text-gray-500 pt-2 border-t">
+                              <Icon name="Clock" size={12} />
+                              <span>Последнее:</span>
+                              <span className="font-medium">{getTimeAgo(result.last_taken)}</span>
+                              <span className="text-gray-400">({new Date(result.last_taken).toLocaleString('ru', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })})</span>
                             </div>
                           </div>
                         </CardContent>
