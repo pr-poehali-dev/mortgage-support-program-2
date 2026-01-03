@@ -240,7 +240,23 @@ def handler(event: dict, context) -> dict:
             }
 
         elif method == 'DELETE':
-            property_id = event.get('queryStringParameters', {}).get('id')
+            params = event.get('queryStringParameters', {})
+            property_id = params.get('id')
+            delete_all = params.get('all')
+            
+            if delete_all == 'true':
+                cur.execute('''
+                    UPDATE t_p26758318_mortgage_support_pro.manual_properties 
+                    SET is_active = false, updated_at = NOW()
+                    WHERE is_active = true
+                ''')
+                conn.commit()
+                
+                return {
+                    'statusCode': 200,
+                    'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                    'body': json.dumps({'success': True}, ensure_ascii=False)
+                }
             
             if not property_id:
                 return {

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление всех объектов</title>
+</head>
+<body>
+    <h1>Удаление всех объектов</h1>
+    <button id="deleteBtn">Удалить все объекты</button>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('deleteBtn').addEventListener('click', async () => {
+            if (!confirm('Вы уверены, что хотите удалить ВСЕ объекты?')) return;
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = 'Удаление...';
+            
+            try {
+                const response = await fetch('https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d?all=true', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.textContent = '✅ Все объекты успешно удалены!';
+                    resultDiv.style.color = 'green';
+                } else {
+                    resultDiv.textContent = '❌ Ошибка: ' + data.error;
+                    resultDiv.style.color = 'red';
+                }
+            } catch (err) {
+                resultDiv.textContent = '❌ Ошибка запроса: ' + err.message;
+                resultDiv.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>
