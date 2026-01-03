@@ -1,14 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TabsContent } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import PropertyCard from '@/components/catalog/PropertyCard';
+import PropertyFilters from '@/components/catalog/PropertyFilters';
+import PropertyFormDialog from '@/components/catalog/PropertyFormDialog';
 
 const MANUAL_PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d';
 const UPLOAD_PHOTO_URL = 'https://functions.poehali.dev/94c626eb-409a-4a18-836f-f3750239d1b4';
@@ -251,56 +247,11 @@ export default function CatalogTab() {
         </div>
 
         {!loading && !error && realEstateObjects.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            <Button 
-              variant={catalogFilter === 'all' ? 'default' : 'outline'}
-              onClick={() => setCatalogFilter('all')}
-              className="gap-2"
-            >
-              <Icon name="LayoutGrid" size={16} />
-              Все ({catalogCounts.all})
-            </Button>
-            {catalogCounts.apartment > 0 && (
-              <Button 
-                variant={catalogFilter === 'apartment' ? 'default' : 'outline'}
-                onClick={() => setCatalogFilter('apartment')}
-                className="gap-2"
-              >
-                <Icon name="Building2" size={16} />
-                Квартиры ({catalogCounts.apartment})
-              </Button>
-            )}
-            {catalogCounts.house > 0 && (
-              <Button 
-                variant={catalogFilter === 'house' ? 'default' : 'outline'}
-                onClick={() => setCatalogFilter('house')}
-                className="gap-2"
-              >
-                <Icon name="Home" size={16} />
-                Дома ({catalogCounts.house})
-              </Button>
-            )}
-            {catalogCounts.land > 0 && (
-              <Button 
-                variant={catalogFilter === 'land' ? 'default' : 'outline'}
-                onClick={() => setCatalogFilter('land')}
-                className="gap-2"
-              >
-                <Icon name="TreePine" size={16} />
-                Участки ({catalogCounts.land})
-              </Button>
-            )}
-            {catalogCounts.commercial > 0 && (
-              <Button 
-                variant={catalogFilter === 'commercial' ? 'default' : 'outline'}
-                onClick={() => setCatalogFilter('commercial')}
-                className="gap-2"
-              >
-                <Icon name="Building" size={16} />
-                Коммерция ({catalogCounts.commercial})
-              </Button>
-            )}
-          </div>
+          <PropertyFilters
+            catalogFilter={catalogFilter}
+            setCatalogFilter={setCatalogFilter}
+            catalogCounts={catalogCounts}
+          />
         )}
       </div>
 
@@ -340,240 +291,27 @@ export default function CatalogTab() {
           {realEstateObjects
             .filter(obj => catalogFilter === 'all' || obj.type === catalogFilter)
             .map((obj) => (
-            <Card key={obj.id} className="hover:shadow-xl transition-all overflow-hidden">
-              <div className="relative h-48 overflow-hidden">
-                <img 
-                  src={obj.photo_url} 
-                  alt={obj.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg">
-                  <p className="font-bold text-primary text-lg">{obj.price.toLocaleString('ru-RU')} ₽</p>
-                </div>
-              </div>
-              <CardHeader>
-                <CardTitle className="text-xl">{obj.title}</CardTitle>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Icon name="MapPin" size={14} />
-                  <span>{obj.location}</span>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex flex-wrap gap-3 text-sm">
-                  {obj.area && (
-                    <div className="flex items-center gap-1.5">
-                      <Icon name="Maximize" size={14} className="text-gray-400" />
-                      <span>{obj.area} м²</span>
-                    </div>
-                  )}
-                  {obj.rooms && (
-                    <div className="flex items-center gap-1.5">
-                      <Icon name="DoorOpen" size={14} className="text-gray-400" />
-                      <span>{obj.rooms} комн.</span>
-                    </div>
-                  )}
-                  {obj.floor && (
-                    <div className="flex items-center gap-1.5">
-                      <Icon name="Layers" size={14} className="text-gray-400" />
-                      <span>{obj.floor}/{obj.total_floors} эт.</span>
-                    </div>
-                  )}
-                  {obj.land_area && (
-                    <div className="flex items-center gap-1.5">
-                      <Icon name="TreePine" size={14} className="text-gray-400" />
-                      <span>{obj.land_area} сот.</span>
-                    </div>
-                  )}
-                </div>
-
-                {obj.description && (
-                  <p className="text-sm text-gray-600 line-clamp-3">{obj.description}</p>
-                )}
-
-                <div className="flex gap-2 pt-2">
-                  <Button onClick={() => openEditDialog(obj)} variant="outline" size="sm" className="flex-1 gap-2">
-                    <Icon name="Edit" size={14} />
-                    Редактировать
-                  </Button>
-                  <Button onClick={() => handleDelete(obj.id)} variant="destructive" size="sm" className="gap-2">
-                    <Icon name="Trash2" size={14} />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+              <PropertyCard
+                key={obj.id}
+                property={obj}
+                onEdit={openEditDialog}
+                onDelete={handleDelete}
+              />
+            ))}
         </div>
       )}
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{editProperty ? 'Редактировать объект' : 'Добавить объект'}</DialogTitle>
-          </DialogHeader>
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
-                <Label htmlFor="title">Название *</Label>
-                <Input
-                  id="title"
-                  value={formData.title}
-                  onChange={(e) => setFormData({...formData, title: e.target.value})}
-                  required
-                  placeholder="Например: 2-комн. квартира, 65 м²"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="type">Тип *</Label>
-                <Select value={formData.type} onValueChange={(value) => setFormData({...formData, type: value})}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="apartment">Квартира</SelectItem>
-                    <SelectItem value="house">Дом</SelectItem>
-                    <SelectItem value="land">Участок</SelectItem>
-                    <SelectItem value="commercial">Коммерция</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Label htmlFor="price">Цена, ₽ *</Label>
-                <Input
-                  id="price"
-                  type="number"
-                  value={formData.price}
-                  onChange={(e) => setFormData({...formData, price: e.target.value})}
-                  required
-                  placeholder="5000000"
-                />
-              </div>
-
-              <div className="col-span-2">
-                <Label htmlFor="location">Адрес *</Label>
-                <Input
-                  id="location"
-                  value={formData.location}
-                  onChange={(e) => setFormData({...formData, location: e.target.value})}
-                  required
-                  placeholder="Севастополь, ул. Ленина, 1"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="area">Площадь, м²</Label>
-                <Input
-                  id="area"
-                  type="number"
-                  step="0.1"
-                  value={formData.area}
-                  onChange={(e) => setFormData({...formData, area: e.target.value})}
-                  placeholder="65"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="rooms">Комнат</Label>
-                <Input
-                  id="rooms"
-                  type="number"
-                  value={formData.rooms}
-                  onChange={(e) => setFormData({...formData, rooms: e.target.value})}
-                  placeholder="2"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="floor">Этаж</Label>
-                <Input
-                  id="floor"
-                  type="number"
-                  value={formData.floor}
-                  onChange={(e) => setFormData({...formData, floor: e.target.value})}
-                  placeholder="5"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="total_floors">Всего этажей</Label>
-                <Input
-                  id="total_floors"
-                  type="number"
-                  value={formData.total_floors}
-                  onChange={(e) => setFormData({...formData, total_floors: e.target.value})}
-                  placeholder="10"
-                />
-              </div>
-
-              <div className="col-span-2">
-                <Label htmlFor="land_area">Площадь участка, сот.</Label>
-                <Input
-                  id="land_area"
-                  type="number"
-                  step="0.01"
-                  value={formData.land_area}
-                  onChange={(e) => setFormData({...formData, land_area: e.target.value})}
-                  placeholder="6"
-                />
-              </div>
-
-              <div className="col-span-2">
-                <Label htmlFor="photo">Фотография</Label>
-                <Input
-                  id="photo"
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoSelect}
-                  disabled={uploadingPhoto}
-                />
-                {uploadingPhoto && (
-                  <p className="text-sm text-gray-500 mt-2 flex items-center gap-2">
-                    <Icon name="Loader2" size={14} className="animate-spin" />
-                    Загрузка фото...
-                  </p>
-                )}
-                {photoPreview && (
-                  <div className="mt-3">
-                    <img src={photoPreview} alt="Preview" className="w-full h-48 object-cover rounded-lg" />
-                  </div>
-                )}
-              </div>
-
-              <div className="col-span-2">
-                <Label htmlFor="description">Описание</Label>
-                <Textarea
-                  id="description"
-                  value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  placeholder="Подробное описание объекта..."
-                  rows={4}
-                />
-              </div>
-
-              <div className="col-span-2">
-                <Label htmlFor="property_link">Ссылка на объявление</Label>
-                <Input
-                  id="property_link"
-                  value={formData.property_link}
-                  onChange={(e) => setFormData({...formData, property_link: e.target.value})}
-                  placeholder="https://avito.ru/..."
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-3 pt-4">
-              <Button type="submit" className="flex-1">
-                {editProperty ? 'Сохранить' : 'Добавить'}
-              </Button>
-              <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
-                Отмена
-              </Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
+      <PropertyFormDialog
+        dialogOpen={dialogOpen}
+        setDialogOpen={setDialogOpen}
+        editProperty={editProperty}
+        formData={formData}
+        setFormData={setFormData}
+        handleSubmit={handleSubmit}
+        handlePhotoSelect={handlePhotoSelect}
+        uploadingPhoto={uploadingPhoto}
+        photoPreview={photoPreview}
+      />
     </TabsContent>
   );
 }
