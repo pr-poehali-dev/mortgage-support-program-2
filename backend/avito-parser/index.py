@@ -71,6 +71,12 @@ def handler(event: dict, context) -> dict:
             
             soup = BeautifulSoup(response.text, 'html.parser')
             
+            # Debug: смотрим, какие data-marker есть на странице
+            all_markers = soup.find_all(attrs={'data-marker': True})
+            marker_types = set([elem.get('data-marker', '') for elem in all_markers[:50]])
+            print(f'[PROFILE] Found data-markers: {list(marker_types)[:10]}', flush=True)
+            sys.stdout.flush()
+            
             # Пробуем разные селекторы для поиска объявлений
             items = soup.find_all('div', {'data-marker': 'item'})
             
@@ -78,24 +84,43 @@ def handler(event: dict, context) -> dict:
                 # Альтернативный селектор
                 items = soup.select('[data-marker="item"]')
             
+            # Если всё ещё не нашли - ищем по другим паттернам
+            if not items:
+                # Ищем карточки объявлений по классам
+                items = soup.find_all('div', class_=re.compile(r'item-.*card'))
+                print(f'[PROFILE] Trying class pattern, found: {len(items)}', flush=True)
+            
+            if not items:
+                # Ищем ссылки на объявления напрямую
+                links = soup.find_all('a', href=re.compile(r'/(dom|zemelnye|kvartiry|kommerchesk)_\d+'))
+                print(f'[PROFILE] Trying direct links, found: {len(links)}', flush=True)
+                # Оборачиваем ссылки в фейковые items для единообразной обработки
+                items = links
+            
             print(f'[PROFILE] Found {len(items)} items on page', flush=True)
             sys.stdout.flush()
             
             profile_items = []
             for idx, item in enumerate(items[:20]):
                 try:
-                    # Ищем ссылку на объявление
-                    link_elem = item.find('a', {'itemprop': 'url'})
-                    if not link_elem:
-                        link_elem = item.find('a', href=re.compile(r'/(dom|zemelnye|kvartiry|kommerchesk)'))
-                    
-                    if not link_elem:
-                        print(f'[PROFILE] Item {idx}: no link found', flush=True)
-                        sys.stdout.flush()
-                        continue
-                    
-                    item_href = link_elem.get('href', '')
-                    item_url = 'https://www.avito.ru' + item_href if item_href.startswith('/') else item_href
+                    # Если item - это уже ссылка (из третьего метода поиска)
+                    if item.name == 'a':
+                        link_elem = item
+                        item_href = link_elem.get('href', '')
+                        item_url = 'https://www.avito.ru' + item_href if item_href.startswith('/') else item_href
+                    else:
+                        # Ищем ссылку на объявление внутри item
+                        link_elem = item.find('a', {'itemprop': 'url'})
+                        if not link_elem:
+                            link_elem = item.find('a', href=re.compile(r'/(dom|zemelnye|kvartiry|kommerchesk)'))
+                        
+                        if not link_elem:
+                            print(f'[PROFILE] Item {idx}: no link found', flush=True)
+                            sys.stdout.flush()
+                            continue
+                        
+                        item_href = link_elem.get('href', '')
+                        item_url = 'https://www.avito.ru' + item_href if item_href.startswith('/') else item_href
                     
                     title = link_elem.get('title', '').strip()
                     if not title:
