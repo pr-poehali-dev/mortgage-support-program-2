@@ -8,7 +8,6 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
-import AdminPhotosTab from '@/components/tabs/AdminPhotosTab';
 import BulkPropertyImport from '@/components/BulkPropertyImport';
 
 const PROPERTIES_URL = 'https://functions.poehali.dev/d286a6ac-5f97-4343-9332-1ee6a1e9ad53';
@@ -36,7 +35,7 @@ interface Property {
 
 export default function AdminProperties() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'manual' | 'avito'>('manual');
+
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -185,7 +184,7 @@ export default function AdminProperties() {
             <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
               Управление объектами
             </h1>
-            <p className="text-gray-600 mt-1">Недвижимость на сайте и Avito</p>
+            <p className="text-gray-600 mt-1">Недвижимость на сайте</p>
           </div>
           <Button
             onClick={() => navigate('/admin')}
@@ -197,27 +196,9 @@ export default function AdminProperties() {
           </Button>
         </div>
 
-        <div className="flex gap-3 border-b pb-4">
-          <Button
-            variant={activeTab === 'manual' ? 'default' : 'outline'}
-            onClick={() => setActiveTab('manual')}
-            className="gap-2"
-          >
-            <Icon name="Home" size={16} />
-            Мои объекты ({properties.length})
-          </Button>
-          <Button
-            variant={activeTab === 'avito' ? 'default' : 'outline'}
-            onClick={() => setActiveTab('avito')}
-            className="gap-2"
-          >
-            <Icon name="ImagePlus" size={16} />
-            Фото для Avito
-          </Button>
-        </div>
 
-        {activeTab === 'manual' ? (
-          <>
+
+        <>
             <div className="flex flex-wrap gap-3">
               <Button
                 onClick={openCreateDialog}
@@ -320,10 +301,7 @@ export default function AdminProperties() {
                 ))}
               </div>
             )}
-          </>
-        ) : (
-          <AdminPhotosTab />
-        )}
+        </>
 
         <BulkPropertyImport
           open={bulkImportOpen}
