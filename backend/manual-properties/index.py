@@ -129,13 +129,17 @@ def handler(event: dict, context) -> dict:
             
             cur.execute('''
                 INSERT INTO t_p26758318_mortgage_support_pro.manual_properties 
-                (title, type, price, location, area, rooms, floor, total_floors, land_area, 
-                 photo_url, photos, description, features, property_link, price_type, phone, is_active, created_at, updated_at)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, true, NOW(), NOW())
+                (title, type, property_category, operation, price, location, area, rooms, floor, total_floors, land_area, 
+                 photo_url, photos, description, features, property_link, price_type, phone, 
+                 building_type, renovation, bathroom, balcony, furniture, pets_allowed, children_allowed, 
+                 utilities_included, wall_material, contact_method, is_active, created_at, updated_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, true, NOW(), NOW())
                 RETURNING id
             ''', (
                 data.get('title'),
                 data.get('type'),
+                data.get('property_category', data.get('type')),
+                data.get('operation', 'sale'),
                 data.get('price'),
                 data.get('location'),
                 data.get('area'),
@@ -149,7 +153,17 @@ def handler(event: dict, context) -> dict:
                 data.get('features', []),
                 data.get('property_link'),
                 data.get('price_type', 'total'),
-                data.get('phone')
+                data.get('phone'),
+                data.get('building_type'),
+                data.get('renovation'),
+                data.get('bathroom'),
+                data.get('balcony'),
+                data.get('furniture', False),
+                data.get('pets_allowed', False),
+                data.get('children_allowed', True),
+                data.get('utilities_included', False),
+                data.get('wall_material'),
+                data.get('contact_method', 'phone')
             ))
             
             property_id = cur.fetchone()['id']
@@ -178,14 +192,19 @@ def handler(event: dict, context) -> dict:
             
             cur.execute('''
                 UPDATE t_p26758318_mortgage_support_pro.manual_properties 
-                SET title = %s, type = %s, price = %s, location = %s, area = %s, 
+                SET title = %s, type = %s, property_category = %s, operation = %s, price = %s, location = %s, area = %s, 
                     rooms = %s, floor = %s, total_floors = %s, land_area = %s, 
                     photo_url = %s, photos = %s, description = %s, features = %s, property_link = %s, 
-                    price_type = %s, updated_at = NOW()
+                    price_type = %s, phone = %s,
+                    building_type = %s, renovation = %s, bathroom = %s, balcony = %s,
+                    furniture = %s, pets_allowed = %s, children_allowed = %s, utilities_included = %s,
+                    wall_material = %s, contact_method = %s, updated_at = NOW()
                 WHERE id = %s
             ''', (
                 data.get('title'),
                 data.get('type'),
+                data.get('property_category', data.get('type')),
+                data.get('operation', 'sale'),
                 data.get('price'),
                 data.get('location'),
                 data.get('area'),
@@ -199,6 +218,17 @@ def handler(event: dict, context) -> dict:
                 data.get('features', []),
                 data.get('property_link'),
                 data.get('price_type', 'total'),
+                data.get('phone'),
+                data.get('building_type'),
+                data.get('renovation'),
+                data.get('bathroom'),
+                data.get('balcony'),
+                data.get('furniture', False),
+                data.get('pets_allowed', False),
+                data.get('children_allowed', True),
+                data.get('utilities_included', False),
+                data.get('wall_material'),
+                data.get('contact_method', 'phone'),
                 property_id
             ))
             conn.commit()

@@ -48,6 +48,8 @@ export default function CatalogTab() {
   const [formData, setFormData] = useState({
     title: '',
     type: 'apartment',
+    property_category: 'apartment',
+    operation: 'sale',
     price: '',
     location: '',
     area: '',
@@ -59,7 +61,17 @@ export default function CatalogTab() {
     photos: [] as string[],
     description: '',
     property_link: '',
-    phone: ''
+    phone: '',
+    building_type: '',
+    renovation: '',
+    bathroom: '',
+    balcony: '',
+    furniture: false,
+    pets_allowed: false,
+    children_allowed: true,
+    utilities_included: false,
+    wall_material: '',
+    contact_method: 'phone'
   });
 
   useEffect(() => {
@@ -148,7 +160,9 @@ export default function CatalogTab() {
       const payload = {
         ...(editProperty ? { id: editProperty.id } : {}),
         title: formData.title,
-        type: formData.type,
+        type: formData.property_category,
+        property_category: formData.property_category,
+        operation: formData.operation,
         price: parseInt(formData.price),
         location: formData.location,
         area: formData.area ? parseFloat(formData.area) : null,
@@ -161,7 +175,17 @@ export default function CatalogTab() {
         description: formData.description,
         property_link: formData.property_link,
         phone: formData.phone,
-        price_type: 'total'
+        price_type: 'total',
+        building_type: formData.building_type || null,
+        renovation: formData.renovation || null,
+        bathroom: formData.bathroom || null,
+        balcony: formData.balcony || null,
+        furniture: formData.furniture,
+        pets_allowed: formData.pets_allowed,
+        children_allowed: formData.children_allowed,
+        utilities_included: formData.utilities_included,
+        wall_material: formData.wall_material || null,
+        contact_method: formData.contact_method
       };
 
       const response = await fetch(MANUAL_PROPERTIES_URL, {
@@ -242,6 +266,8 @@ export default function CatalogTab() {
     setFormData({
       title: '',
       type: 'apartment',
+      property_category: 'apartment',
+      operation: 'sale',
       price: '',
       location: '',
       area: '',
@@ -253,7 +279,17 @@ export default function CatalogTab() {
       photos: [],
       description: '',
       property_link: '',
-      phone: ''
+      phone: '',
+      building_type: '',
+      renovation: '',
+      bathroom: '',
+      balcony: '',
+      furniture: false,
+      pets_allowed: false,
+      children_allowed: true,
+      utilities_included: false,
+      wall_material: '',
+      contact_method: 'phone'
     });
     setUploadedPhotos([]);
     setEditProperty(null);

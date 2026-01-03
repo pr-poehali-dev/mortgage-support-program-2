@@ -12,12 +12,14 @@
       "bodyMatcher": "partial"
     },
     {
-      "name": "Create new property",
+      "name": "Create new property with extended fields",
       "method": "POST",
       "path": "/",
       "body": {
-        "title": "Тестовая квартира",
+        "title": "Тестовая квартира с евроремонтом",
         "type": "apartment",
+        "property_category": "apartment",
+        "operation": "sale",
         "price": 5000000,
         "location": "Севастополь, ул. Тестовая, 1",
         "area": 65,
@@ -25,7 +27,13 @@
         "floor": 5,
         "total_floors": 10,
         "photo_url": "https://example.com/photo.jpg",
-        "description": "Уютная двухкомнатная квартира"
+        "description": "Уютная двухкомнатная квартира",
+        "building_type": "secondary",
+        "renovation": "euro",
+        "bathroom": "separate",
+        "balcony": "loggia",
+        "furniture": false,
+        "contact_method": "phone"
       },
       "expectedStatus": 201,
       "expectedBody": {
