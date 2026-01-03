@@ -1,15 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { realEstateObjects } from '@/data/mortgageData';
+
+const AVITO_API_URL = 'https://functions.poehali.dev/0363e1df-5e38-47b1-83ba-6d01b09d4e99';
 
 export default function CatalogTab() {
   const [catalogFilter, setCatalogFilter] = useState('all');
   const [catalogSort, setCatalogSort] = useState<'default' | 'price-asc' | 'price-desc'>('default');
+  const [realEstateObjects, setRealEstateObjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAvitoListings = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const response = await fetch(AVITO_API_URL);
+        const data = await response.json();
+        
+        if (data.success) {
+          setRealEstateObjects(data.listings || []);
+        } else {
+          setError(data.error || 'Не удалось загрузить объявления');
+        }
+      } catch (err) {
+        setError('Ошибка подключения к Avito API');
+        console.error('Avito API error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAvitoListings();
+  }, []);
 
   const getCatalogCounts = () => {
     return {
@@ -26,31 +55,58 @@ export default function CatalogTab() {
   return (
     <TabsContent value="catalog" className="space-y-4 sm:space-y-6">
       <div className="mb-4 sm:mb-6">
-        <div className="mb-3 sm:mb-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold">Мои объекты на Авито</h2>
-          <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">Здесь пока нет объектов</p>
-        </div>
-        
-        <div className="flex justify-center">
+        <div className="mb-3 sm:mb-4 flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold">Мои объекты на Авито</h2>
+            {!loading && !error && (
+              <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">
+                Найдено объектов: {realEstateObjects.length}
+              </p>
+            )}
+          </div>
           <Button
-            variant="default"
-            size="lg"
+            variant="outline"
+            size="default"
             onClick={() => window.open('https://www.avito.ru/brands/i92755531', '_blank')}
             className="gap-2"
           >
-            <Icon name="ExternalLink" size={20} />
-            Смотреть все объекты на Авито
+            <Icon name="ExternalLink" size={18} />
+            <span className="hidden sm:inline">Открыть профиль</span>
           </Button>
         </div>
       </div>
 
-      {realEstateObjects.length === 0 ? (
+      {loading ? (
+        <div className="text-center py-12">
+          <div className="mb-4 animate-spin">
+            <Icon name="Loader2" size={64} className="mx-auto text-primary" />
+          </div>
+          <h3 className="text-xl font-semibold text-gray-600 mb-2">Загружаю объявления...</h3>
+          <p className="text-gray-500">Подключаюсь к Avito API</p>
+        </div>
+      ) : error ? (
+        <div className="text-center py-12">
+          <div className="mb-4">
+            <Icon name="AlertCircle" size={64} className="mx-auto text-red-400" />
+          </div>
+          <h3 className="text-xl font-semibold text-gray-600 mb-2">Ошибка загрузки</h3>
+          <p className="text-gray-500 mb-6">{error}</p>
+          <Button
+            variant="outline"
+            onClick={() => window.location.reload()}
+            className="gap-2"
+          >
+            <Icon name="RefreshCw" size={18} />
+            Попробовать снова
+          </Button>
+        </div>
+      ) : realEstateObjects.length === 0 ? (
         <div className="text-center py-12">
           <div className="mb-4">
             <Icon name="Building2" size={64} className="mx-auto text-gray-300" />
           </div>
-          <h3 className="text-xl font-semibold text-gray-600 mb-2">Объекты временно недоступны</h3>
-          <p className="text-gray-500 mb-6">Посмотрите актуальные предложения на Авито</p>
+          <h3 className="text-xl font-semibold text-gray-600 mb-2">Нет активных объявлений</h3>
+          <p className="text-gray-500 mb-6">Добавьте объявления на Avito, и они появятся здесь</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -229,15 +285,15 @@ export default function CatalogTab() {
                           </h4>
                           <p className="text-gray-700 mb-4">Свяжитесь с нами для получения дополнительной информации и организации просмотра</p>
                           <div className="flex flex-wrap gap-2">
-                            {obj.domclickUrl && (
+                            {obj.avitoLink && (
                               <Button asChild size="lg" className="w-full sm:w-auto">
-                                <a href={obj.domclickUrl} target="_blank" rel="noopener noreferrer">
-                                  <Icon name="ShoppingCart" className="mr-2" size={16} />
-                                  Купить в ипотеку в Сбере
+                                <a href={obj.avitoLink} target="_blank" rel="noopener noreferrer">
+                                  <Icon name="ExternalLink" className="mr-2" size={16} />
+                                  Смотреть на Avito
                                 </a>
                               </Button>
                             )}
-                            <Button asChild variant={obj.domclickUrl ? 'outline' : 'default'}>
+                            <Button asChild variant={obj.avitoLink ? 'outline' : 'default'}>
                               <a href="https://t.me/ipoteka_krym_rf" target="_blank" rel="noopener noreferrer">
                                 <Icon name="MessageCircle" className="mr-2" size={16} />
                                 Telegram
@@ -249,14 +305,12 @@ export default function CatalogTab() {
                                 Позвонить
                               </a>
                             </Button>
-                            {!obj.domclickUrl && (
-                              <Button variant="outline" asChild>
-                                <a href="https://agencies.domclick.ru/agent/5621837?utm_source=partnerhub&utm_content=profile" target="_blank" rel="noopener noreferrer">
-                                  <Icon name="ExternalLink" className="mr-2" size={16} />
-                                  Домклик
-                                </a>
-                              </Button>
-                            )}
+                            <Button variant="outline" asChild>
+                              <a href="https://agencies.domclick.ru/agent/5621837?utm_source=partnerhub&utm_content=profile" target="_blank" rel="noopener noreferrer">
+                                <Icon name="Home" className="mr-2" size={16} />
+                                Домклик
+                              </a>
+                            </Button>
                           </div>
                         </div>
                       </div>
