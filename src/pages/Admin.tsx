@@ -29,6 +29,7 @@ import MetrikaTrendsChart from '@/components/MetrikaTrendsChart';
 import AdminClock from '@/components/AdminClock';
 import AdminCalendar from '@/components/AdminCalendar';
 import { trackExcelDownload, trackEmailReport } from '@/services/analytics';
+import PropertyFormDialog from '@/components/catalog/PropertyFormDialog';
 
 ChartJS.register(
   CategoryScale,
@@ -90,6 +91,19 @@ export default function Admin() {
   const [sendingEmail, setSendingEmail] = useState(false);
   const [properties, setProperties] = useState<Property[]>([]);
   const [propertiesLoading, setPropertiesLoading] = useState(false);
+  const [propertyDialogOpen, setPropertyDialogOpen] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [editProperty, setEditProperty] = useState<Property | null>(null);
+  const [formData, setFormData] = useState({
+    title: '', type: 'apartment', property_category: 'apartment',
+    operation: 'sale', price: '', location: '', area: '', rooms: '',
+    floor: '', total_floors: '', land_area: '', photo_url: '',
+    photos: [] as string[], description: '', property_link: '',
+    phone: '', building_type: '', renovation: '', bathroom: '',
+    balcony: '', furniture: false, pets_allowed: false,
+    children_allowed: true, utilities_included: false,
+    wall_material: '', contact_method: 'phone'
+  });
 
 
   const fetchAnalytics = async (adminPassword: string) => {
@@ -148,6 +162,119 @@ export default function Admin() {
       console.error('Error fetching properties:', err);
     } finally {
       setPropertiesLoading(false);
+    }
+  };
+
+  const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploadingPhoto(true);
+    const uploadedUrls: string[] = [];
+
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+        
+        const base64 = await new Promise<string>((resolve) => {
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.readAsDataURL(file);
+        });
+
+        const response = await fetch('https://functions.poehali.dev/f8e0cf3b-9d78-46e4-a8aa-6f6ff94f7c0b', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ photo_data: base64 })
+        });
+
+        const data = await response.json();
+        if (data.success && data.photo_url) {
+          uploadedUrls.push(data.photo_url);
+        }
+      }
+
+      const allPhotos = [...formData.photos, ...uploadedUrls];
+      setFormData({
+        ...formData,
+        photos: allPhotos,
+        photo_url: allPhotos[0] || ''
+      });
+    } catch (err) {
+      console.error('Photo upload error:', err);
+      alert('Ошибка загрузки фото');
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
+
+  const handlePropertySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      const payload: any = {
+        title: formData.title,
+        type: formData.type,
+        property_category: formData.property_category,
+        operation: formData.operation,
+        price: formData.price,
+        location: formData.location,
+        area: formData.area,
+        rooms: formData.rooms,
+        floor: formData.floor,
+        total_floors: formData.total_floors,
+        land_area: formData.land_area,
+        photo_url: formData.photo_url,
+        photos: formData.photos,
+        description: formData.description,
+        property_link: formData.property_link,
+        phone: formData.phone,
+        building_type: formData.building_type,
+        renovation: formData.renovation,
+        bathroom: formData.bathroom,
+        balcony: formData.balcony,
+        furniture: formData.furniture,
+        pets_allowed: formData.pets_allowed,
+        children_allowed: formData.children_allowed,
+        utilities_included: formData.utilities_included,
+        wall_material: formData.wall_material,
+        contact_method: formData.contact_method
+      };
+
+      const method = editProperty ? 'PUT' : 'POST';
+      if (editProperty) {
+        payload.id = editProperty.id;
+      }
+
+      const response = await fetch(PROPERTIES_URL, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        alert(editProperty ? 'Объект обновлен!' : 'Объект успешно добавлен!');
+        setPropertyDialogOpen(false);
+        setFormData({
+          title: '', type: 'apartment', property_category: 'apartment',
+          operation: 'sale', price: '', location: '', area: '', rooms: '',
+          floor: '', total_floors: '', land_area: '', photo_url: '',
+          photos: [], description: '', property_link: '',
+          phone: '', building_type: '', renovation: '', bathroom: '',
+          balcony: '', furniture: false, pets_allowed: false,
+          children_allowed: true, utilities_included: false,
+          wall_material: '', contact_method: 'phone'
+        });
+        setEditProperty(null);
+        fetchProperties();
+      } else {
+        alert('Ошибка: ' + data.error);
+      }
+    } catch (err) {
+      console.error('Submit error:', err);
+      alert('Ошибка при сохранении объекта');
     }
   };
 
@@ -332,11 +459,19 @@ export default function Admin() {
               Управление статьями
             </Button>
             <Button
-              onClick={() => window.location.href = '/admin/properties'}
+              onClick={() => setPropertyDialogOpen(true)}
               className="h-10 bg-orange-600 hover:bg-orange-700"
             >
+              <Icon name="Plus" className="mr-2" size={18} />
+              Добавить объект
+            </Button>
+            <Button
+              onClick={() => window.location.href = '/admin/properties'}
+              variant="outline"
+              className="h-10"
+            >
               <Icon name="Building2" className="mr-2" size={18} />
-              Управление объектами
+              Все объекты
             </Button>
             <Button
               onClick={() => window.open('https://metrika.yandex.ru/dashboard?id=105974763', '_blank')}
@@ -456,6 +591,18 @@ export default function Admin() {
         sendingEmail={sendingEmail}
         onSendEmail={sendEmailReport}
         period={period}
+      />
+
+      <PropertyFormDialog
+        dialogOpen={propertyDialogOpen}
+        setDialogOpen={setPropertyDialogOpen}
+        editProperty={editProperty}
+        formData={formData}
+        setFormData={setFormData}
+        handleSubmit={handlePropertySubmit}
+        handlePhotoSelect={handlePhotoSelect}
+        uploadingPhoto={uploadingPhoto}
+        photoPreview={formData.photos[0] || ''}
       />
     </div>
   );
