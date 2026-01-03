@@ -111,8 +111,8 @@ export default function Index() {
             </TabsTrigger>
             <TabsTrigger value="catalog" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '200ms'}}>
               <Icon name="Building2" size={16} className="sm:w-[18px] sm:h-[18px]" />
-              <span className="hidden md:inline">Мои объекты на Авито</span>
-              <span className="md:hidden">Авито</span>
+              <span className="hidden md:inline">Объекты</span>
+              <span className="md:hidden">Объекты</span>
             </TabsTrigger>
             <TabsTrigger value="documents" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '250ms'}}>
               <Icon name="FileText" size={16} className="sm:w-[18px] sm:h-[18px]" />
