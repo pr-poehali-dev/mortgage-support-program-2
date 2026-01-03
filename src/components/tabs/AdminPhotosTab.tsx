@@ -30,6 +30,7 @@ export default function AdminPhotosTab() {
   const [imagePreview, setImagePreview] = useState<string>('');
   const [description, setDescription] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [editMode, setEditMode] = useState<'photo' | 'edit' | 'delete' | null>(null);
 
   useEffect(() => {
     fetchListings();
@@ -113,7 +114,34 @@ export default function AdminPhotosTab() {
     setSelectedListing(listing);
     setDescription(listing.description || '');
     setImagePreview(listing.image);
+    setEditMode('photo');
     setDialogOpen(true);
+  };
+
+  const handleDeletePhoto = async () => {
+    if (!selectedListing) return;
+
+    if (!confirm('Удалить фото и описание для этого объявления?')) return;
+
+    try {
+      const response = await fetch(`${AVITO_PHOTOS_URL}?avito_id=${selectedListing.avitoId}`, {
+        method: 'DELETE'
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('Фото удалено!');
+        setDialogOpen(false);
+        setSelectedListing(null);
+        fetchListings();
+      } else {
+        alert('Ошибка удаления: ' + data.error);
+      }
+    } catch (err) {
+      console.error('Delete error:', err);
+      alert('Ошибка удаления фото');
+    }
   };
 
   return (
@@ -158,7 +186,7 @@ export default function AdminPhotosTab() {
                   {listing.price.toLocaleString('ru-RU')} ₽
                 </p>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-2">
                 <Button 
                   onClick={() => openUploadDialog(listing)}
                   className="w-full gap-2"
@@ -167,6 +195,20 @@ export default function AdminPhotosTab() {
                   <Icon name={listing.image.includes('unsplash.com') ? 'Upload' : 'Edit'} size={16} />
                   {listing.image.includes('unsplash.com') ? 'Загрузить фото' : 'Изменить фото'}
                 </Button>
+                {!listing.image.includes('unsplash.com') && (
+                  <Button 
+                    onClick={() => {
+                      setSelectedListing(listing);
+                      handleDeletePhoto();
+                    }}
+                    className="w-full gap-2"
+                    variant="destructive"
+                    size="sm"
+                  >
+                    <Icon name="Trash2" size={14} />
+                    Удалить фото
+                  </Button>
+                )}
               </CardContent>
             </Card>
           ))}
@@ -230,12 +272,15 @@ export default function AdminPhotosTab() {
                   ) : (
                     <>
                       <Icon name="Upload" size={16} />
-                      Загрузить
+                      {editMode === 'photo' ? 'Загрузить' : 'Сохранить'}
                     </>
                   )}
                 </Button>
                 <Button 
-                  onClick={() => setDialogOpen(false)}
+                  onClick={() => {
+                    setDialogOpen(false);
+                    setEditMode(null);
+                  }}
                   variant="outline"
                   disabled={uploadingPhoto}
                 >

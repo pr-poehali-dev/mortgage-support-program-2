@@ -68,7 +68,7 @@ export default function CatalogTab() {
       <div className="mb-4 sm:mb-6">
         <div className="mb-3 sm:mb-4 flex items-center justify-between">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold">Мои объекты на Авито</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold">Объекты</h2>
             {!loading && !error && (
               <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">
                 Найдено объектов: {realEstateObjects.length}
