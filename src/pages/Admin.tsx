@@ -91,7 +91,8 @@ export default function Admin() {
     photo_url: '',
     photos: [] as string[],
     description: '',
-    property_link: ''
+    property_link: '',
+    phone: ''
   });
 
   const fetchAnalytics = async (adminPassword: string) => {
@@ -270,7 +271,8 @@ export default function Admin() {
           photo_url: propertyFormData.photo_url,
           photos: propertyFormData.photos,
           description: propertyFormData.description,
-          property_link: propertyFormData.property_link
+          property_link: propertyFormData.property_link,
+          phone: propertyFormData.phone
         })
       });
 
@@ -292,7 +294,8 @@ export default function Admin() {
           photo_url: '',
           photos: [],
           description: '',
-          property_link: ''
+          property_link: '',
+          phone: ''
         });
         setPhotoPreview('');
       } else {

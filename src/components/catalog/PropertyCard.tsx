@@ -26,9 +26,10 @@ interface PropertyCardProps {
   property: Property;
   onEdit: (property: Property) => void;
   onDelete: (id: number) => void;
+  onView?: () => void;
 }
 
-export default function PropertyCard({ property, onEdit, onDelete }: PropertyCardProps) {
+export default function PropertyCard({ property, onEdit, onDelete, onView }: PropertyCardProps) {
   const photos = property.photos && property.photos.length > 0 ? property.photos : [property.photo_url];
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
@@ -41,7 +42,7 @@ export default function PropertyCard({ property, onEdit, onDelete }: PropertyCar
   };
 
   return (
-    <Card className="hover:shadow-xl transition-all overflow-hidden">
+    <Card className="hover:shadow-xl transition-all overflow-hidden cursor-pointer" onClick={onView}>
       <div className="relative h-48 overflow-hidden group">
         <img 
           src={photos[currentPhotoIndex]} 
@@ -51,13 +52,13 @@ export default function PropertyCard({ property, onEdit, onDelete }: PropertyCar
         {photos.length > 1 && (
           <>
             <button
-              onClick={prevPhoto}
+              onClick={(e) => { e.stopPropagation(); prevPhoto(); }}
               className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <Icon name="ChevronLeft" size={20} />
             </button>
             <button
-              onClick={nextPhoto}
+              onClick={(e) => { e.stopPropagation(); nextPhoto(); }}
               className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <Icon name="ChevronRight" size={20} />
@@ -111,11 +112,11 @@ export default function PropertyCard({ property, onEdit, onDelete }: PropertyCar
         )}
 
         <div className="flex gap-2 pt-2">
-          <Button onClick={() => onEdit(property)} variant="outline" size="sm" className="flex-1 gap-2">
+          <Button onClick={(e) => { e.stopPropagation(); onEdit(property); }} variant="outline" size="sm" className="flex-1 gap-2">
             <Icon name="Edit" size={14} />
             Редактировать
           </Button>
-          <Button onClick={() => onDelete(property.id)} variant="destructive" size="sm" className="gap-2">
+          <Button onClick={(e) => { e.stopPropagation(); onDelete(property.id); }} variant="destructive" size="sm" className="gap-2">
             <Icon name="Trash2" size={14} />
           </Button>
         </div>

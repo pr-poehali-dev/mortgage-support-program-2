@@ -22,6 +22,7 @@ interface Property {
   features?: string[];
   property_link?: string;
   price_type?: string;
+  phone?: string;
 }
 
 interface PropertyFormDialogProps {
@@ -42,6 +43,7 @@ interface PropertyFormDialogProps {
     photos: string[];
     description: string;
     property_link: string;
+    phone: string;
   };
   setFormData: (data: any) => void;
   handleSubmit: (e: React.FormEvent) => void;
@@ -237,6 +239,17 @@ export default function PropertyFormDialog({
                 value={formData.property_link}
                 onChange={(e) => setFormData({...formData, property_link: e.target.value})}
                 placeholder="https://avito.ru/..."
+              />
+            </div>
+
+            <div className="col-span-2">
+              <Label htmlFor="phone">Телефон для связи</Label>
+              <Input
+                id="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                placeholder="+7 (999) 123-45-67"
               />
             </div>
           </div>

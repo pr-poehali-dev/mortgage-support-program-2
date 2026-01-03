@@ -5,6 +5,7 @@ import Icon from '@/components/ui/icon';
 import PropertyCard from '@/components/catalog/PropertyCard';
 import PropertyFilters from '@/components/catalog/PropertyFilters';
 import PropertyFormDialog from '@/components/catalog/PropertyFormDialog';
+import PropertyViewDialog from '@/components/catalog/PropertyViewDialog';
 
 const MANUAL_PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d';
 const UPLOAD_PHOTO_URL = 'https://functions.poehali.dev/94c626eb-409a-4a18-836f-f3750239d1b4';
@@ -27,6 +28,7 @@ interface Property {
   property_link?: string;
   price_type?: string;
   created_at?: string;
+  phone?: string;
 }
 
 export default function CatalogTab() {
@@ -40,6 +42,8 @@ export default function CatalogTab() {
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string>('');
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
+  const [viewProperty, setViewProperty] = useState<Property | null>(null);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -54,7 +58,8 @@ export default function CatalogTab() {
     photo_url: '',
     photos: [] as string[],
     description: '',
-    property_link: ''
+    property_link: '',
+    phone: ''
   });
 
   useEffect(() => {
@@ -155,6 +160,7 @@ export default function CatalogTab() {
         photos: photos,
         description: formData.description,
         property_link: formData.property_link,
+        phone: formData.phone,
         price_type: 'total'
       };
 
@@ -224,7 +230,8 @@ export default function CatalogTab() {
       photo_url: property.photo_url,
       photos: photos,
       description: property.description || '',
-      property_link: property.property_link || ''
+      property_link: property.property_link || '',
+      phone: property.phone || ''
     });
     setUploadedPhotos(photos);
     setPhotoPreview(property.photo_url);
@@ -245,7 +252,8 @@ export default function CatalogTab() {
       photo_url: '',
       photos: [],
       description: '',
-      property_link: ''
+      property_link: '',
+      phone: ''
     });
     setUploadedPhotos([]);
     setEditProperty(null);
@@ -271,10 +279,6 @@ export default function CatalogTab() {
               </p>
             )}
           </div>
-          <Button onClick={openCreateDialog} className="gap-2">
-            <Icon name="Plus" size={18} />
-            <span className="hidden sm:inline">Добавить объект</span>
-          </Button>
         </div>
 
         {!loading && !error && realEstateObjects.length > 0 && (
@@ -376,6 +380,10 @@ export default function CatalogTab() {
                 property={obj}
                 onEdit={openEditDialog}
                 onDelete={handleDelete}
+                onView={() => {
+                  setViewProperty(obj);
+                  setViewDialogOpen(true);
+                }}
               />
             ))}
         </div>
@@ -391,6 +399,12 @@ export default function CatalogTab() {
         handlePhotoSelect={handlePhotoSelect}
         uploadingPhoto={uploadingPhoto}
         photoPreview={photoPreview}
+      />
+
+      <PropertyViewDialog
+        open={viewDialogOpen}
+        onOpenChange={setViewDialogOpen}
+        property={viewProperty}
       />
     </TabsContent>
   );
