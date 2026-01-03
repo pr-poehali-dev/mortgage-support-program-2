@@ -2,20 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
-import BulkPropertyImport from '@/components/BulkPropertyImport';
+import PropertyFormDialog from '@/components/catalog/PropertyFormDialog';
 
-const PROPERTIES_URL = 'https://functions.poehali.dev/d286a6ac-5f97-4343-9332-1ee6a1e9ad53';
-const AVITO_LISTINGS_URL = 'https://functions.poehali.dev/0363e1df-5e38-47b1-83ba-6d01b09d4e99';
+const PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d';
 
 interface Property {
-  id?: number;
-  avitoId?: number;
+  id: number;
   title: string;
   type: string;
   price: number;
@@ -23,14 +16,25 @@ interface Property {
   area?: number;
   rooms?: number;
   floor?: number;
-  totalFloors?: number;
-  landArea?: number;
-  image?: string;
-  description: string;
-  features: string[];
-  propertyLink?: string;
-  priceType: string;
-  isActive?: boolean;
+  total_floors?: number;
+  land_area?: number;
+  photo_url?: string;
+  photos?: string[];
+  description?: string;
+  property_link?: string;
+  phone?: string;
+  operation?: string;
+  property_category?: string;
+  building_type?: string;
+  renovation?: string;
+  bathroom?: string;
+  balcony?: string;
+  furniture?: boolean;
+  pets_allowed?: boolean;
+  children_allowed?: boolean;
+  utilities_included?: boolean;
+  wall_material?: string;
+  contact_method?: string;
 }
 
 export default function AdminProperties() {
@@ -38,20 +42,19 @@ export default function AdminProperties() {
 
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [bulkImportOpen, setBulkImportOpen] = useState(false);
-  const [editingProperty, setEditingProperty] = useState<Property | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>('');
+  const [propertyDialogOpen, setPropertyDialogOpen] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [editProperty, setEditProperty] = useState<Property | null>(null);
   
-  const [formData, setFormData] = useState<Property>({
-    title: '',
-    type: 'apartment',
-    price: 0,
-    location: '',
-    description: '',
-    features: [],
-    priceType: 'total'
+  const [formData, setFormData] = useState({
+    title: '', type: 'apartment', property_category: 'apartment',
+    operation: 'sale', price: '', location: '', area: '', rooms: '',
+    floor: '', total_floors: '', land_area: '', photo_url: '',
+    photos: [] as string[], description: '', property_link: '',
+    phone: '', building_type: '', renovation: '', bathroom: '',
+    balcony: '', furniture: false, pets_allowed: false,
+    children_allowed: true, utilities_included: false,
+    wall_material: '', contact_method: 'phone'
   });
 
   useEffect(() => {
@@ -64,8 +67,8 @@ export default function AdminProperties() {
       const response = await fetch(PROPERTIES_URL);
       const data = await response.json();
       
-      if (data.success) {
-        setProperties(data.data || []);
+      if (data.success && data.properties) {
+        setProperties(data.properties);
       }
     } catch (err) {
       console.error('Error fetching properties:', err);
@@ -74,83 +77,164 @@ export default function AdminProperties() {
     }
   };
 
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const openCreateDialog = () => {
-    setEditingProperty(null);
+    setEditProperty(null);
     setFormData({
-      title: '',
-      type: 'apartment',
-      price: 0,
-      location: '',
-      description: '',
-      features: [],
-      priceType: 'total'
+      title: '', type: 'apartment', property_category: 'apartment',
+      operation: 'sale', price: '', location: '', area: '', rooms: '',
+      floor: '', total_floors: '', land_area: '', photo_url: '',
+      photos: [], description: '', property_link: '',
+      phone: '', building_type: '', renovation: '', bathroom: '',
+      balcony: '', furniture: false, pets_allowed: false,
+      children_allowed: true, utilities_included: false,
+      wall_material: '', contact_method: 'phone'
     });
-    setImageFile(null);
-    setImagePreview('');
-    setDialogOpen(true);
+    setPropertyDialogOpen(true);
   };
 
   const openEditDialog = (property: Property) => {
-    setEditingProperty(property);
-    setFormData(property);
-    setImagePreview(property.image || '');
-    setImageFile(null);
-    setDialogOpen(true);
+    setEditProperty(property);
+    setFormData({
+      title: property.title || '',
+      type: property.type || 'apartment',
+      property_category: property.property_category || property.type || 'apartment',
+      operation: property.operation || 'sale',
+      price: property.price?.toString() || '',
+      location: property.location || '',
+      area: property.area?.toString() || '',
+      rooms: property.rooms?.toString() || '',
+      floor: property.floor?.toString() || '',
+      total_floors: property.total_floors?.toString() || '',
+      land_area: property.land_area?.toString() || '',
+      photo_url: property.photo_url || '',
+      photos: property.photos || [],
+      description: property.description || '',
+      property_link: property.property_link || '',
+      phone: property.phone || '',
+      building_type: property.building_type || '',
+      renovation: property.renovation || '',
+      bathroom: property.bathroom || '',
+      balcony: property.balcony || '',
+      furniture: property.furniture || false,
+      pets_allowed: property.pets_allowed || false,
+      children_allowed: property.children_allowed !== false,
+      utilities_included: property.utilities_included || false,
+      wall_material: property.wall_material || '',
+      contact_method: property.contact_method || 'phone'
+    });
+    setPropertyDialogOpen(true);
   };
 
-  const handleSave = async () => {
+  const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploadingPhoto(true);
+    const uploadedUrls: string[] = [];
+
     try {
-      const payload: any = { ...formData };
-      
-      if (imageFile) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
         const reader = new FileReader();
-        reader.onloadend = async () => {
-          payload.image_data = reader.result as string;
-          await submitProperty(payload);
-        };
-        reader.readAsDataURL(imageFile);
+        
+        const base64 = await new Promise<string>((resolve) => {
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.readAsDataURL(file);
+        });
+
+        const response = await fetch('https://functions.poehali.dev/f8e0cf3b-9d78-46e4-a8aa-6f6ff94f7c0b', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ photo_data: base64 })
+        });
+
+        const data = await response.json();
+        if (data.success && data.photo_url) {
+          uploadedUrls.push(data.photo_url);
+        }
+      }
+
+      const allPhotos = [...formData.photos, ...uploadedUrls];
+      setFormData({
+        ...formData,
+        photos: allPhotos,
+        photo_url: allPhotos[0] || ''
+      });
+    } catch (err) {
+      console.error('Photo upload error:', err);
+      alert('Ошибка загрузки фото');
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
+
+  const handlePropertySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      const payload: any = {
+        title: formData.title,
+        type: formData.type,
+        property_category: formData.property_category,
+        operation: formData.operation,
+        price: formData.price,
+        location: formData.location,
+        area: formData.area,
+        rooms: formData.rooms,
+        floor: formData.floor,
+        total_floors: formData.total_floors,
+        land_area: formData.land_area,
+        photo_url: formData.photo_url,
+        photos: formData.photos,
+        description: formData.description,
+        property_link: formData.property_link,
+        phone: formData.phone,
+        building_type: formData.building_type,
+        renovation: formData.renovation,
+        bathroom: formData.bathroom,
+        balcony: formData.balcony,
+        furniture: formData.furniture,
+        pets_allowed: formData.pets_allowed,
+        children_allowed: formData.children_allowed,
+        utilities_included: formData.utilities_included,
+        wall_material: formData.wall_material,
+        contact_method: formData.contact_method
+      };
+
+      const method = editProperty ? 'PUT' : 'POST';
+      if (editProperty) {
+        payload.id = editProperty.id;
+      }
+
+      const response = await fetch(PROPERTIES_URL, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        alert(editProperty ? 'Объект обновлен!' : 'Объект успешно добавлен!');
+        setPropertyDialogOpen(false);
+        setFormData({
+          title: '', type: 'apartment', property_category: 'apartment',
+          operation: 'sale', price: '', location: '', area: '', rooms: '',
+          floor: '', total_floors: '', land_area: '', photo_url: '',
+          photos: [], description: '', property_link: '',
+          phone: '', building_type: '', renovation: '', bathroom: '',
+          balcony: '', furniture: false, pets_allowed: false,
+          children_allowed: true, utilities_included: false,
+          wall_material: '', contact_method: 'phone'
+        });
+        setEditProperty(null);
+        fetchProperties();
       } else {
-        await submitProperty(payload);
+        alert('Ошибка: ' + data.error);
       }
     } catch (err) {
-      console.error('Save error:', err);
-      alert('Ошибка сохранения');
-    }
-  };
-
-  const submitProperty = async (payload: any) => {
-    const method = editingProperty ? 'PUT' : 'POST';
-    
-    if (editingProperty) {
-      payload.id = editingProperty.id;
-    }
-
-    const response = await fetch(PROPERTIES_URL, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      alert(editingProperty ? 'Объект обновлен!' : 'Объект создан!');
-      setDialogOpen(false);
-      fetchProperties();
-    } else {
-      alert('Ошибка: ' + data.error);
+      console.error('Submit error:', err);
+      alert('Ошибка при сохранении объекта');
     }
   };
 
@@ -207,7 +291,7 @@ export default function AdminProperties() {
             <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
               Управление объектами
             </h1>
-            <p className="text-gray-600 mt-1">Недвижимость на сайте</p>
+            <p className="text-gray-600 mt-1">Все объекты недвижимости на сайте</p>
           </div>
           <Button
             onClick={() => navigate('/admin')}
@@ -219,249 +303,130 @@ export default function AdminProperties() {
           </Button>
         </div>
 
+        <div className="flex flex-wrap gap-3 items-center justify-between">
+          <div className="flex flex-wrap gap-3">
+            <Button
+              onClick={openCreateDialog}
+              className="gap-2"
+              size="lg"
+            >
+              <Icon name="Plus" size={18} />
+              Добавить объект
+            </Button>
+          </div>
+          {properties.length > 0 && (
+            <Button
+              onClick={handleDeleteAll}
+              variant="destructive"
+              className="gap-2"
+              size="lg"
+            >
+              <Icon name="Trash2" size={18} />
+              Удалить все ({properties.length})
+            </Button>
+          )}
+        </div>
 
-
-        <>
-            <div className="flex flex-wrap gap-3 items-center justify-between">
-              <div className="flex flex-wrap gap-3">
-                <Button
-                  onClick={openCreateDialog}
-                  className="gap-2"
-                  size="lg"
-                >
-                  <Icon name="Plus" size={18} />
-                  Добавить объект
-                </Button>
-                <Button
-                  onClick={() => setBulkImportOpen(true)}
-                  variant="outline"
-                  className="gap-2"
-                  size="lg"
-                >
-                  <Icon name="FileSpreadsheet" size={18} />
-                  Массовая загрузка Excel
-                </Button>
-              </div>
-              {properties.length > 0 && (
-                <Button
-                  onClick={handleDeleteAll}
-                  variant="destructive"
-                  className="gap-2"
-                  size="lg"
-                >
-                  <Icon name="Trash2" size={18} />
-                  Удалить все ({properties.length})
-                </Button>
-              )}
-            </div>
-
-            {loading ? (
-              <div className="text-center py-12">
-                <Icon name="Loader2" size={64} className="mx-auto animate-spin text-primary" />
-              </div>
-            ) : properties.length === 0 ? (
-              <Card>
-                <CardContent className="text-center py-12">
-                  <Icon name="Building2" size={64} className="mx-auto text-gray-300 mb-4" />
-                  <p className="text-gray-600">Нет добавленных объектов</p>
-                  <Button onClick={openCreateDialog} className="mt-4 gap-2">
-                    <Icon name="Plus" size={16} />
-                    Добавить первый объект
-                  </Button>
+        {loading ? (
+          <div className="text-center py-12">
+            <Icon name="Loader2" size={64} className="mx-auto animate-spin text-primary" />
+          </div>
+        ) : properties.length === 0 ? (
+          <Card>
+            <CardContent className="text-center py-12">
+              <Icon name="Building2" size={64} className="mx-auto text-gray-300 mb-4" />
+              <p className="text-gray-600">Нет добавленных объектов</p>
+              <Button onClick={openCreateDialog} className="mt-4 gap-2">
+                <Icon name="Plus" size={16} />
+                Добавить первый объект
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {properties.map((property) => (
+              <Card key={property.id} className="hover:shadow-lg transition-shadow">
+                <div className="relative h-48 overflow-hidden">
+                  <img 
+                    src={property.photos?.[0] || property.photo_url || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80'} 
+                    alt={property.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg">
+                    <p className="font-bold text-primary">{property.price.toLocaleString('ru-RU')} ₽</p>
+                  </div>
+                  {property.operation && (
+                    <div className="absolute top-3 left-3 bg-primary/90 backdrop-blur-sm px-2 py-1 rounded text-white text-xs font-medium">
+                      {property.operation === 'sale' ? 'Продажа' : property.operation === 'rent' ? 'Аренда' : 'Посуточно'}
+                    </div>
+                  )}
+                </div>
+                <CardHeader>
+                  <CardTitle className="text-lg line-clamp-2">{property.title}</CardTitle>
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Icon name="MapPin" size={14} />
+                    <span className="line-clamp-1">{property.location}</span>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex flex-wrap gap-2 text-sm">
+                    {property.area && (
+                      <div className="flex items-center gap-1">
+                        <Icon name="Home" size={14} />
+                        <span>{property.area} м²</span>
+                      </div>
+                    )}
+                    {property.rooms && (
+                      <div className="flex items-center gap-1">
+                        <Icon name="DoorOpen" size={14} />
+                        <span>{property.rooms} комн.</span>
+                      </div>
+                    )}
+                    {property.land_area && (
+                      <div className="flex items-center gap-1">
+                        <Icon name="TreePine" size={14} />
+                        <span>{property.land_area} сот.</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => openEditDialog(property)}
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 gap-1"
+                    >
+                      <Icon name="Edit" size={14} />
+                      Изменить
+                    </Button>
+                    <Button
+                      onClick={() => handleDelete(property.id)}
+                      variant="destructive"
+                      size="sm"
+                      className="gap-1"
+                    >
+                      <Icon name="Trash2" size={14} />
+                      Удалить
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {properties.map((property) => (
-                  <Card key={property.id} className="hover:shadow-lg transition-shadow">
-                    <div className="relative h-48 overflow-hidden">
-                      <img 
-                        src={property.image || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80'} 
-                        alt={property.title}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg">
-                        <p className="font-bold text-primary">{property.price.toLocaleString('ru-RU')} ₽</p>
-                      </div>
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="text-lg line-clamp-2">{property.title}</CardTitle>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <Icon name="MapPin" size={14} />
-                        <span className="line-clamp-1">{property.location}</span>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <div className="flex flex-wrap gap-2 text-sm">
-                        {property.area && (
-                          <div className="flex items-center gap-1">
-                            <Icon name="Home" size={14} />
-                            <span>{property.area} м²</span>
-                          </div>
-                        )}
-                        {property.rooms && (
-                          <div className="flex items-center gap-1">
-                            <Icon name="DoorOpen" size={14} />
-                            <span>{property.rooms} комн.</span>
-                          </div>
-                        )}
-                        {property.landArea && (
-                          <div className="flex items-center gap-1">
-                            <Icon name="TreePine" size={14} />
-                            <span>{property.landArea} сот.</span>
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          onClick={() => openEditDialog(property)}
-                          variant="outline"
-                          size="sm"
-                          className="flex-1 gap-1"
-                        >
-                          <Icon name="Edit" size={14} />
-                          Изменить
-                        </Button>
-                        <Button
-                          onClick={() => handleDelete(property.id!)}
-                          variant="destructive"
-                          size="sm"
-                          className="gap-1"
-                        >
-                          <Icon name="Trash2" size={14} />
-                          Удалить
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-        </>
-
-        <BulkPropertyImport
-          open={bulkImportOpen}
-          onOpenChange={setBulkImportOpen}
-          onSuccess={fetchProperties}
-        />
-
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>{editingProperty ? 'Редактирование объекта' : 'Новый объект'}</DialogTitle>
-            </DialogHeader>
-            
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="title">Название</Label>
-                <Input
-                  id="title"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="Квартира 2 комнаты..."
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="type">Тип</Label>
-                  <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="apartment">Квартира</SelectItem>
-                      <SelectItem value="house">Дом</SelectItem>
-                      <SelectItem value="land">Участок</SelectItem>
-                      <SelectItem value="commercial">Коммерция</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="price">Цена (₽)</Label>
-                  <Input
-                    id="price"
-                    type="number"
-                    value={formData.price}
-                    onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="location">Адрес</Label>
-                <Input
-                  id="location"
-                  value={formData.location}
-                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                  placeholder="Севастополь, ул. Ленина 10"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="area">Площадь (м²)</Label>
-                  <Input
-                    id="area"
-                    type="number"
-                    value={formData.area || ''}
-                    onChange={(e) => setFormData({ ...formData, area: Number(e.target.value) || undefined })}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="rooms">Комнат</Label>
-                  <Input
-                    id="rooms"
-                    type="number"
-                    value={formData.rooms || ''}
-                    onChange={(e) => setFormData({ ...formData, rooms: Number(e.target.value) || undefined })}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="photo">Фотография</Label>
-                <Input
-                  id="photo"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageSelect}
-                />
-                {imagePreview && (
-                  <img 
-                    src={imagePreview} 
-                    alt="Preview" 
-                    className="w-full h-48 object-cover rounded-lg mt-2"
-                  />
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="description">Описание</Label>
-                <Textarea
-                  id="description"
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  rows={4}
-                  placeholder="Подробное описание объекта..."
-                />
-              </div>
-
-              <div className="flex gap-3">
-                <Button onClick={handleSave} className="flex-1 gap-2">
-                  <Icon name="Save" size={16} />
-                  Сохранить
-                </Button>
-                <Button onClick={() => setDialogOpen(false)} variant="outline">
-                  Отмена
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+            ))}
+          </div>
+        )}
       </div>
+
+      <PropertyFormDialog
+        dialogOpen={propertyDialogOpen}
+        setDialogOpen={setPropertyDialogOpen}
+        editProperty={editProperty}
+        formData={formData}
+        setFormData={setFormData}
+        handleSubmit={handlePropertySubmit}
+        handlePhotoSelect={handlePhotoSelect}
+        uploadingPhoto={uploadingPhoto}
+        photoPreview={formData.photos[0] || ''}
+      />
     </div>
   );
 }
