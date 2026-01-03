@@ -28,7 +28,6 @@ import MetrikaGoalsDashboard from '@/components/MetrikaGoalsDashboard';
 import MetrikaTrendsChart from '@/components/MetrikaTrendsChart';
 import AdminClock from '@/components/AdminClock';
 import AdminCalendar from '@/components/AdminCalendar';
-import PropertyFormDialog from '@/components/catalog/PropertyFormDialog';
 import { trackExcelDownload, trackEmailReport } from '@/services/analytics';
 
 ChartJS.register(
@@ -75,25 +74,7 @@ export default function Admin() {
   const [emailModalOpen, setEmailModalOpen] = useState(false);
   const [reportEmail, setReportEmail] = useState('');
   const [sendingEmail, setSendingEmail] = useState(false);
-  const [propertyDialogOpen, setPropertyDialogOpen] = useState(false);
-  const [uploadingPhoto, setUploadingPhoto] = useState(false);
-  const [photoPreview, setPhotoPreview] = useState('');
-  const [propertyFormData, setPropertyFormData] = useState({
-    title: '',
-    type: 'apartment',
-    price: '',
-    location: '',
-    area: '',
-    rooms: '',
-    floor: '',
-    total_floors: '',
-    land_area: '',
-    photo_url: '',
-    photos: [] as string[],
-    description: '',
-    property_link: '',
-    phone: ''
-  });
+
 
   const fetchAnalytics = async (adminPassword: string) => {
     setLoading(true);
@@ -207,105 +188,7 @@ export default function Admin() {
     trackExcelDownload('analytics_report');
   };
 
-  const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
 
-    setUploadingPhoto(true);
-    const uploadedUrls: string[] = [];
-
-    try {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const reader = new FileReader();
-        
-        const base64 = await new Promise<string>((resolve) => {
-          reader.onloadend = () => resolve(reader.result as string);
-          reader.readAsDataURL(file);
-        });
-
-        const response = await fetch('https://functions.poehali.dev/f8e0cf3b-9d78-46e4-a8aa-6f6ff94f7c0b', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ photo_data: base64 })
-        });
-
-        const data = await response.json();
-        if (data.success && data.photo_url) {
-          uploadedUrls.push(data.photo_url);
-        }
-      }
-
-      const allPhotos = [...propertyFormData.photos, ...uploadedUrls];
-      setPropertyFormData({
-        ...propertyFormData,
-        photos: allPhotos,
-        photo_url: allPhotos[0] || ''
-      });
-      setPhotoPreview(uploadedUrls[0] || '');
-    } catch (err) {
-      console.error('Photo upload error:', err);
-      alert('Ошибка загрузки фото');
-    } finally {
-      setUploadingPhoto(false);
-    }
-  };
-
-  const handlePropertySubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      const response = await fetch('https://functions.poehali.dev/f8e0cf3b-9d78-46e4-a8aa-6f6ff94f7c0b', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: propertyFormData.title,
-          type: propertyFormData.type,
-          price: Number(propertyFormData.price),
-          location: propertyFormData.location,
-          area: propertyFormData.area ? Number(propertyFormData.area) : null,
-          rooms: propertyFormData.rooms ? Number(propertyFormData.rooms) : null,
-          floor: propertyFormData.floor ? Number(propertyFormData.floor) : null,
-          total_floors: propertyFormData.total_floors ? Number(propertyFormData.total_floors) : null,
-          land_area: propertyFormData.land_area ? Number(propertyFormData.land_area) : null,
-          photo_url: propertyFormData.photo_url,
-          photos: propertyFormData.photos,
-          description: propertyFormData.description,
-          property_link: propertyFormData.property_link,
-          phone: propertyFormData.phone
-        })
-      });
-
-      const data = await response.json();
-      
-      if (data.success) {
-        alert('Объект успешно добавлен!');
-        setPropertyDialogOpen(false);
-        setPropertyFormData({
-          title: '',
-          type: 'apartment',
-          price: '',
-          location: '',
-          area: '',
-          rooms: '',
-          floor: '',
-          total_floors: '',
-          land_area: '',
-          photo_url: '',
-          photos: [],
-          description: '',
-          property_link: '',
-          phone: ''
-        });
-        setPhotoPreview('');
-      } else {
-        alert('Ошибка: ' + data.error);
-      }
-    } catch (err) {
-      console.error('Submit error:', err);
-      alert('Ошибка при добавлении объекта');
-    }
-  };
 
   const sendEmailReport = async () => {
     if (!reportEmail) {
@@ -373,14 +256,14 @@ export default function Admin() {
       <div className="container mx-auto p-6 space-y-6">
         <AdminClock />
         
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-              Аналитика сайта
-            </h1>
-            <p className="text-gray-600 mt-1">Детальная статистика за последние {period} дней</p>
-          </div>
-          <div className="flex items-center gap-3">
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                Аналитика сайта
+              </h1>
+              <p className="text-gray-600 mt-1">Детальная статистика за последние {period} дней</p>
+            </div>
             <select
               value={period}
               onChange={(e) => setPeriod(Number(e.target.value))}
@@ -391,6 +274,9 @@ export default function Admin() {
               <option value={90}>90 дней</option>
               <option value={365}>1 год</option>
             </select>
+          </div>
+          
+          <div className="flex flex-wrap gap-3">
             <Button
               onClick={exportToExcel}
               className="h-10 bg-green-600 hover:bg-green-700"
@@ -413,19 +299,11 @@ export default function Admin() {
               Управление статьями
             </Button>
             <Button
-              onClick={() => setPropertyDialogOpen(true)}
+              onClick={() => window.location.href = '/admin/properties'}
               className="h-10 bg-orange-600 hover:bg-orange-700"
             >
-              <Icon name="Plus" className="mr-2" size={18} />
-              Добавить объект
-            </Button>
-            <Button
-              onClick={() => window.location.href = '/admin/properties'}
-              variant="outline"
-              className="h-10"
-            >
               <Icon name="Building2" className="mr-2" size={18} />
-              Все объекты
+              Управление объектами
             </Button>
             <Button
               onClick={() => window.open('https://metrika.yandex.ru/dashboard?id=105974763', '_blank')}
@@ -477,18 +355,6 @@ export default function Admin() {
         sendingEmail={sendingEmail}
         onSendEmail={sendEmailReport}
         period={period}
-      />
-
-      <PropertyFormDialog
-        dialogOpen={propertyDialogOpen}
-        setDialogOpen={setPropertyDialogOpen}
-        editProperty={null}
-        formData={propertyFormData}
-        setFormData={setPropertyFormData}
-        handleSubmit={handlePropertySubmit}
-        handlePhotoSelect={handlePhotoSelect}
-        uploadingPhoto={uploadingPhoto}
-        photoPreview={photoPreview}
       />
     </div>
   );
