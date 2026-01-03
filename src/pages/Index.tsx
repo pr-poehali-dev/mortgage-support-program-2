@@ -6,6 +6,7 @@ import Icon from '@/components/ui/icon';
 import { Toaster } from '@/components/ui/toaster';
 import MortgageQuiz from '@/components/MortgageQuiz';
 import MortgageTabsContent from '@/components/MortgageTabsContent';
+import AdminPhotosTab from '@/components/tabs/AdminPhotosTab';
 
 import StatisticsCounter from '@/components/StatisticsCounter';
 import ViewsCounter from '@/components/ViewsCounter';
@@ -89,7 +90,7 @@ export default function Index() {
 
       <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
         <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4 sm:space-y-8">
-          <TabsList className="!grid grid-cols-5 gap-1 sm:gap-2 bg-white p-1.5 sm:p-2 rounded-xl shadow-sm h-auto w-full" style={{gridTemplateRows: 'auto auto'}}>
+          <TabsList className="!grid grid-cols-5 gap-1 sm:gap-2 bg-white p-1.5 sm:p-2 rounded-xl shadow-sm h-auto w-full" style={{gridTemplateRows: 'auto auto auto'}}>
             <TabsTrigger value="home" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '0ms'}}>
               <Icon name="Home" size={16} className="sm:w-[18px] sm:h-[18px]" />
               <span>Главная</span>
@@ -136,12 +137,19 @@ export default function Index() {
               <span className="hidden md:inline">Контакты</span>
               <span className="md:hidden">Конт.</span>
             </TabsTrigger>
+            <TabsTrigger value="admin-photos" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95 border-2 border-orange-400" style={{animationDelay: '500ms'}}>
+              <Icon name="ImagePlus" size={16} className="sm:w-[18px] sm:h-[18px] text-orange-500" />
+              <span className="hidden md:inline text-orange-600">Фото Авито</span>
+              <span className="md:hidden text-orange-600">Фото</span>
+            </TabsTrigger>
           </TabsList>
 
           <MortgageTabsContent onNavigateToCalculator={() => {
             setActiveTab('calculator');
             trackTabChanged('calculator');
           }} />
+          
+          <AdminPhotosTab />
         </Tabs>
       </main>
 

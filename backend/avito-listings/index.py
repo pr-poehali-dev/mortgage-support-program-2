@@ -1,6 +1,7 @@
 import json
 import os
 import requests
+import psycopg2
 from typing import Dict, Any, List
 
 
@@ -182,6 +183,8 @@ def transform_avito_item(item: Dict[str, Any]) -> Dict[str, Any]:
     print(f"[DEBUG] Изображение: {image_url}")
     
     return {
+        'id': item.get('id'),
+        'avitoId': item.get('id'),
         'type': obj_type,
         'title': item.get('title', 'Объявление'),
         'price': int(item.get('price', 0)),
@@ -197,6 +200,31 @@ def transform_avito_item(item: Dict[str, Any]) -> Dict[str, Any]:
         'avitoLink': avito_url,
         'priceType': 'total'
     }
+
+
+def get_custom_photos() -> Dict[int, Dict[str, str]]:
+    """Получает пользовательские фото из БД"""
+    try:
+        dsn = os.environ.get('DATABASE_URL')
+        conn = psycopg2.connect(dsn)
+        cursor = conn.cursor()
+        
+        cursor.execute(
+            "SELECT avito_id, photo_url, description FROM t_p26758318_mortgage_support_pro.avito_listing_photos"
+        )
+        rows = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+        
+        # Возвращаем словарь {avito_id: {photo_url, description}}
+        return {
+            row[0]: {'photo_url': row[1], 'description': row[2] or ''}
+            for row in rows
+        }
+    except Exception as e:
+        print(f"[DEBUG] Ошибка загрузки фото из БД: {e}")
+        return {}
 
 
 def handler(event: Dict[str, Any], context) -> Dict[str, Any]:
@@ -237,6 +265,11 @@ def handler(event: Dict[str, Any], context) -> Dict[str, Any]:
         items = get_user_items(access_token)
         print(f"[DEBUG] Получено объявлений: {len(items)}")
         
+        # Загружаем пользовательские фото из БД
+        print(f"[DEBUG] Загружаю пользовательские фото из БД...")
+        custom_photos = get_custom_photos()
+        print(f"[DEBUG] Найдено пользовательских фото: {len(custom_photos)}")
+        
         if not items:
             print(f"[DEBUG] Объявления не найдены, возвращаем пустой список")
             return {
@@ -269,6 +302,15 @@ def handler(event: Dict[str, Any], context) -> Dict[str, Any]:
                     print(f"[DEBUG] Пропуск item #{i}: не является словарем (тип: {type(item)})")
                     continue
                 listing = transform_avito_item(item)
+                
+                # Подставляем пользовательские фото и описания
+                avito_id = listing.get('avitoId') or listing.get('id')
+                if avito_id and avito_id in custom_photos:
+                    listing['image'] = custom_photos[avito_id]['photo_url']
+                    if custom_photos[avito_id]['description']:
+                        listing['description'] = custom_photos[avito_id]['description']
+                    print(f"[DEBUG] Применено пользовательское фото для объявления {avito_id}")
+                
                 listings.append(listing)
             except Exception as e:
                 print(f"[ERROR] Ошибка преобразования item #{i}: {str(e)}")
