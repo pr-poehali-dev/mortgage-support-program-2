@@ -3,6 +3,18 @@ import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from datetime import datetime
+from decimal import Decimal
+
+def convert_to_serializable(obj):
+    if isinstance(obj, Decimal):
+        return float(obj)
+    elif isinstance(obj, datetime):
+        return obj.isoformat()
+    elif isinstance(obj, dict):
+        return {k: convert_to_serializable(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_to_serializable(i) for i in obj]
+    return obj
 
 def handler(event: dict, context) -> dict:
     '''API для управления собственными объектами недвижимости'''
@@ -33,10 +45,11 @@ def handler(event: dict, context) -> dict:
                     WHERE id = %s AND is_active = true
                 ''', (property_id,))
                 prop = cur.fetchone()
+                prop_dict = convert_to_serializable(dict(prop)) if prop else None
                 return {
                     'statusCode': 200,
                     'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-                    'body': json.dumps({'success': True, 'property': dict(prop) if prop else None}, ensure_ascii=False)
+                    'body': json.dumps({'success': True, 'property': prop_dict}, ensure_ascii=False)
                 }
             else:
                 cur.execute('''
@@ -44,7 +57,7 @@ def handler(event: dict, context) -> dict:
                     WHERE is_active = true 
                     ORDER BY created_at DESC
                 ''')
-                properties = [dict(row) for row in cur.fetchall()]
+                properties = [convert_to_serializable(dict(row)) for row in cur.fetchall()]
                 return {
                     'statusCode': 200,
                     'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
@@ -54,11 +67,15 @@ def handler(event: dict, context) -> dict:
         elif method == 'POST':
             data = json.loads(event.get('body', '{}'))
             
+            photos = data.get('photos', [])
+            if not photos and data.get('photo_url'):
+                photos = [data.get('photo_url')]
+            
             cur.execute('''
                 INSERT INTO t_p26758318_mortgage_support_pro.manual_properties 
                 (title, type, price, location, area, rooms, floor, total_floors, land_area, 
-                 photo_url, description, features, property_link, price_type, is_active, created_at, updated_at)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, true, NOW(), NOW())
+                 photo_url, photos, description, features, property_link, price_type, is_active, created_at, updated_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, true, NOW(), NOW())
                 RETURNING id
             ''', (
                 data.get('title'),
@@ -70,7 +87,8 @@ def handler(event: dict, context) -> dict:
                 data.get('floor'),
                 data.get('total_floors'),
                 data.get('land_area'),
-                data.get('photo_url'),
+                photos[0] if photos else None,
+                photos,
                 data.get('description'),
                 data.get('features', []),
                 data.get('property_link'),
@@ -97,11 +115,15 @@ def handler(event: dict, context) -> dict:
                     'body': json.dumps({'success': False, 'error': 'Property ID required'})
                 }
             
+            photos = data.get('photos', [])
+            if not photos and data.get('photo_url'):
+                photos = [data.get('photo_url')]
+            
             cur.execute('''
                 UPDATE t_p26758318_mortgage_support_pro.manual_properties 
                 SET title = %s, type = %s, price = %s, location = %s, area = %s, 
                     rooms = %s, floor = %s, total_floors = %s, land_area = %s, 
-                    photo_url = %s, description = %s, features = %s, property_link = %s, 
+                    photo_url = %s, photos = %s, description = %s, features = %s, property_link = %s, 
                     price_type = %s, updated_at = NOW()
                 WHERE id = %s
             ''', (
@@ -114,7 +136,8 @@ def handler(event: dict, context) -> dict:
                 data.get('floor'),
                 data.get('total_floors'),
                 data.get('land_area'),
-                data.get('photo_url'),
+                photos[0] if photos else None,
+                photos,
                 data.get('description'),
                 data.get('features', []),
                 data.get('property_link'),

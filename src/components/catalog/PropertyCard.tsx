@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
@@ -14,6 +15,7 @@ interface Property {
   total_floors?: number;
   land_area?: number;
   photo_url: string;
+  photos?: string[];
   description?: string;
   features?: string[];
   property_link?: string;
@@ -27,14 +29,44 @@ interface PropertyCardProps {
 }
 
 export default function PropertyCard({ property, onEdit, onDelete }: PropertyCardProps) {
+  const photos = property.photos && property.photos.length > 0 ? property.photos : [property.photo_url];
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+
+  const nextPhoto = () => {
+    setCurrentPhotoIndex((prev) => (prev + 1) % photos.length);
+  };
+
+  const prevPhoto = () => {
+    setCurrentPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length);
+  };
+
   return (
     <Card className="hover:shadow-xl transition-all overflow-hidden">
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-48 overflow-hidden group">
         <img 
-          src={property.photo_url} 
+          src={photos[currentPhotoIndex]} 
           alt={property.title}
           className="w-full h-full object-cover"
         />
+        {photos.length > 1 && (
+          <>
+            <button
+              onClick={prevPhoto}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <Icon name="ChevronLeft" size={20} />
+            </button>
+            <button
+              onClick={nextPhoto}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <Icon name="ChevronRight" size={20} />
+            </button>
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+              {currentPhotoIndex + 1} / {photos.length}
+            </div>
+          </>
+        )}
         <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg">
           <p className="font-bold text-primary text-lg">{property.price.toLocaleString('ru-RU')} ₽</p>
         </div>

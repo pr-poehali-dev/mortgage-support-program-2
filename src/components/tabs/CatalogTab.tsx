@@ -21,14 +21,17 @@ interface Property {
   total_floors?: number;
   land_area?: number;
   photo_url: string;
+  photos?: string[];
   description?: string;
   features?: string[];
   property_link?: string;
   price_type?: string;
+  created_at?: string;
 }
 
 export default function CatalogTab() {
   const [catalogFilter, setCatalogFilter] = useState('all');
+  const [catalogSort, setCatalogSort] = useState<'default' | 'price-asc' | 'price-desc' | 'date-new' | 'date-old'>('default');
   const [realEstateObjects, setRealEstateObjects] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,6 +39,7 @@ export default function CatalogTab() {
   const [editProperty, setEditProperty] = useState<Property | null>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string>('');
+  const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -48,6 +52,7 @@ export default function CatalogTab() {
     total_floors: '',
     land_area: '',
     photo_url: '',
+    photos: [] as string[],
     description: '',
     property_link: ''
   });
@@ -86,42 +91,55 @@ export default function CatalogTab() {
   };
 
   const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64 = reader.result as string;
-      setPhotoPreview(base64);
+    setUploadingPhoto(true);
+    const newPhotos: string[] = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
       
-      try {
-        setUploadingPhoto(true);
-        const response = await fetch(UPLOAD_PHOTO_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ image_data: base64 })
-        });
+      await new Promise<void>((resolve) => {
+        reader.onloadend = async () => {
+          const base64 = reader.result as string;
+          
+          try {
+            const response = await fetch(UPLOAD_PHOTO_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ image_data: base64 })
+            });
 
-        const data = await response.json();
-        if (data.success) {
-          setFormData({ ...formData, photo_url: data.url });
-        } else {
-          alert('Ошибка загрузки: ' + data.error);
-        }
-      } catch (err) {
-        console.error('Upload error:', err);
-        alert('Ошибка загрузки фото');
-      } finally {
-        setUploadingPhoto(false);
-      }
-    };
-    reader.readAsDataURL(file);
+            const data = await response.json();
+            if (data.success) {
+              newPhotos.push(data.url);
+            } else {
+              alert('Ошибка загрузки: ' + data.error);
+            }
+          } catch (err) {
+            console.error('Upload error:', err);
+            alert('Ошибка загрузки фото');
+          }
+          resolve();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    const allPhotos = [...uploadedPhotos, ...newPhotos];
+    setUploadedPhotos(allPhotos);
+    setFormData({ ...formData, photos: allPhotos, photo_url: allPhotos[0] || '' });
+    setUploadingPhoto(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
+      const photos = formData.photos.length > 0 ? formData.photos : ['https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800'];
+      
       const payload = {
         ...(editProperty ? { id: editProperty.id } : {}),
         title: formData.title,
@@ -133,7 +151,8 @@ export default function CatalogTab() {
         floor: formData.floor ? parseInt(formData.floor) : null,
         total_floors: formData.total_floors ? parseInt(formData.total_floors) : null,
         land_area: formData.land_area ? parseFloat(formData.land_area) : null,
-        photo_url: formData.photo_url || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800',
+        photo_url: photos[0],
+        photos: photos,
         description: formData.description,
         property_link: formData.property_link,
         price_type: 'total'
@@ -185,11 +204,13 @@ export default function CatalogTab() {
     setEditProperty(null);
     resetForm();
     setPhotoPreview('');
+    setUploadedPhotos([]);
     setDialogOpen(true);
   };
 
   const openEditDialog = (property: Property) => {
     setEditProperty(property);
+    const photos = property.photos || [property.photo_url];
     setFormData({
       title: property.title,
       type: property.type,
@@ -201,9 +222,11 @@ export default function CatalogTab() {
       total_floors: property.total_floors?.toString() || '',
       land_area: property.land_area?.toString() || '',
       photo_url: property.photo_url,
+      photos: photos,
       description: property.description || '',
       property_link: property.property_link || ''
     });
+    setUploadedPhotos(photos);
     setPhotoPreview(property.photo_url);
     setDialogOpen(true);
   };
@@ -220,10 +243,18 @@ export default function CatalogTab() {
       total_floors: '',
       land_area: '',
       photo_url: '',
+      photos: [],
       description: '',
       property_link: ''
     });
+    setUploadedPhotos([]);
     setEditProperty(null);
+  };
+
+  const handleRemovePhoto = (photoUrl: string) => {
+    const newPhotos = uploadedPhotos.filter(p => p !== photoUrl);
+    setUploadedPhotos(newPhotos);
+    setFormData({ ...formData, photos: newPhotos, photo_url: newPhotos[0] || '' });
   };
 
   const catalogCounts = getCatalogCounts();
@@ -247,11 +278,53 @@ export default function CatalogTab() {
         </div>
 
         {!loading && !error && realEstateObjects.length > 0 && (
-          <PropertyFilters
-            catalogFilter={catalogFilter}
-            setCatalogFilter={setCatalogFilter}
-            catalogCounts={catalogCounts}
-          />
+          <>
+            <PropertyFilters
+              catalogFilter={catalogFilter}
+              setCatalogFilter={setCatalogFilter}
+              catalogCounts={catalogCounts}
+            />
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-sm text-gray-600">Сортировка:</span>
+              <Button
+                variant={catalogSort === 'default' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setCatalogSort('default')}
+              >
+                По умолчанию
+              </Button>
+              <Button
+                variant={catalogSort === 'price-asc' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setCatalogSort('price-asc')}
+                className="gap-1"
+              >
+                Цена <Icon name="ArrowUp" size={14} />
+              </Button>
+              <Button
+                variant={catalogSort === 'price-desc' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setCatalogSort('price-desc')}
+                className="gap-1"
+              >
+                Цена <Icon name="ArrowDown" size={14} />
+              </Button>
+              <Button
+                variant={catalogSort === 'date-new' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setCatalogSort('date-new')}
+              >
+                Сначала новые
+              </Button>
+              <Button
+                variant={catalogSort === 'date-old' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setCatalogSort('date-old')}
+              >
+                Сначала старые
+              </Button>
+            </div>
+          </>
         )}
       </div>
 
@@ -290,6 +363,13 @@ export default function CatalogTab() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {realEstateObjects
             .filter(obj => catalogFilter === 'all' || obj.type === catalogFilter)
+            .sort((a, b) => {
+              if (catalogSort === 'price-asc') return a.price - b.price;
+              if (catalogSort === 'price-desc') return b.price - a.price;
+              if (catalogSort === 'date-new') return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+              if (catalogSort === 'date-old') return new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime();
+              return 0;
+            })
             .map((obj) => (
               <PropertyCard
                 key={obj.id}

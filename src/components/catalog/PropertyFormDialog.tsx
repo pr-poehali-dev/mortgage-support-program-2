@@ -39,6 +39,7 @@ interface PropertyFormDialogProps {
     total_floors: string;
     land_area: string;
     photo_url: string;
+    photos: string[];
     description: string;
     property_link: string;
   };
@@ -60,6 +61,10 @@ export default function PropertyFormDialog({
   uploadingPhoto,
   photoPreview
 }: PropertyFormDialogProps) {
+  const handleRemovePhoto = (photoUrl: string) => {
+    const newPhotos = formData.photos.filter(p => p !== photoUrl);
+    setFormData({ ...formData, photos: newPhotos, photo_url: newPhotos[0] || '' });
+  };
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -176,11 +181,12 @@ export default function PropertyFormDialog({
             </div>
 
             <div className="col-span-2">
-              <Label htmlFor="photo">Фотография</Label>
+              <Label htmlFor="photo">Фотографии (можно выбрать несколько)</Label>
               <Input
                 id="photo"
                 type="file"
                 accept="image/*"
+                multiple
                 onChange={handlePhotoSelect}
                 disabled={uploadingPhoto}
               />
@@ -190,9 +196,25 @@ export default function PropertyFormDialog({
                   Загрузка фото...
                 </p>
               )}
-              {photoPreview && (
-                <div className="mt-3">
-                  <img src={photoPreview} alt="Preview" className="w-full h-48 object-cover rounded-lg" />
+              {formData.photos && formData.photos.length > 0 && (
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  {formData.photos.map((photo, index) => (
+                    <div key={index} className="relative group">
+                      <img src={photo} alt={`Photo ${index + 1}`} className="w-full h-32 object-cover rounded-lg" />
+                      <button
+                        type="button"
+                        onClick={() => handleRemovePhoto(photo)}
+                        className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <Icon name="X" size={14} />
+                      </button>
+                      {index === 0 && (
+                        <div className="absolute bottom-1 left-1 bg-primary text-white text-xs px-2 py-0.5 rounded">
+                          Главное
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
