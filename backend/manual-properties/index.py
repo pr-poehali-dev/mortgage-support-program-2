@@ -17,7 +17,7 @@ def convert_to_serializable(obj):
     return obj
 
 def handler(event: dict, context) -> dict:
-    '''API для управления собственными объектами недвижимости'''
+    '''API для управления собственными объектами недвижимости и массового импорта с Avito'''
     method = event.get('httpMethod', 'GET')
 
     if method == 'OPTIONS':
@@ -67,6 +67,62 @@ def handler(event: dict, context) -> dict:
         elif method == 'POST':
             data = json.loads(event.get('body', '{}'))
             
+            # Массовый импорт
+            if 'items' in data:
+                imported = 0
+                errors = []
+                
+                for item in data['items']:
+                    try:
+                        photos = item.get('photos', [])
+                        if not photos and item.get('photo_url'):
+                            photos = [item.get('photo_url')]
+                        
+                        # Проверяем, есть ли уже объект с такой ссылкой
+                        cur.execute('''
+                            SELECT id FROM t_p26758318_mortgage_support_pro.manual_properties 
+                            WHERE property_link = %s AND is_active = true
+                        ''', (item.get('property_link'),))
+                        
+                        if cur.fetchone():
+                            continue  # Пропускаем дубликаты
+                        
+                        cur.execute('''
+                            INSERT INTO t_p26758318_mortgage_support_pro.manual_properties 
+                            (title, type, price, location, area, rooms, floor, total_floors, land_area, 
+                             photo_url, photos, description, features, property_link, price_type, phone, is_active, created_at, updated_at)
+                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, true, NOW(), NOW())
+                        ''', (
+                            item.get('title'),
+                            item.get('type'),
+                            item.get('price'),
+                            item.get('location'),
+                            item.get('area'),
+                            item.get('rooms'),
+                            item.get('floor'),
+                            item.get('total_floors'),
+                            item.get('land_area'),
+                            photos[0] if photos else None,
+                            photos,
+                            item.get('description'),
+                            item.get('features', []),
+                            item.get('property_link'),
+                            item.get('price_type', 'total'),
+                            item.get('phone')
+                        ))
+                        imported += 1
+                    except Exception as e:
+                        errors.append(str(e))
+                
+                conn.commit()
+                
+                return {
+                    'statusCode': 201,
+                    'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                    'body': json.dumps({'success': True, 'imported': imported, 'errors': errors}, ensure_ascii=False)
+                }
+            
+            # Один объект
             photos = data.get('photos', [])
             if not photos and data.get('photo_url'):
                 photos = [data.get('photo_url')]
@@ -74,8 +130,8 @@ def handler(event: dict, context) -> dict:
             cur.execute('''
                 INSERT INTO t_p26758318_mortgage_support_pro.manual_properties 
                 (title, type, price, location, area, rooms, floor, total_floors, land_area, 
-                 photo_url, photos, description, features, property_link, price_type, is_active, created_at, updated_at)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, true, NOW(), NOW())
+                 photo_url, photos, description, features, property_link, price_type, phone, is_active, created_at, updated_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, true, NOW(), NOW())
                 RETURNING id
             ''', (
                 data.get('title'),
@@ -92,7 +148,8 @@ def handler(event: dict, context) -> dict:
                 data.get('description'),
                 data.get('features', []),
                 data.get('property_link'),
-                data.get('price_type', 'total')
+                data.get('price_type', 'total'),
+                data.get('phone')
             ))
             
             property_id = cur.fetchone()['id']

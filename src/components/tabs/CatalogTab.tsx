@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { TabsContent } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
 import PropertyCard from '@/components/catalog/PropertyCard';
 import PropertyFilters from '@/components/catalog/PropertyFilters';
@@ -45,6 +47,9 @@ export default function CatalogTab() {
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [viewProperty, setViewProperty] = useState<Property | null>(null);
   const [loadingAvito, setLoadingAvito] = useState(false);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
+  const [importUrl, setImportUrl] = useState('');
+  const [importing, setImporting] = useState(false);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -266,6 +271,76 @@ export default function CatalogTab() {
     setFormData({ ...formData, photos: newPhotos, photo_url: newPhotos[0] || '' });
   };
 
+  const handleAvitoImport = async () => {
+    if (!importUrl) return;
+    
+    setImporting(true);
+    try {
+      const avitoParserUrl = 'https://functions.poehali.dev/875e7adb-da86-4b4a-a12b-a83b4312e5df';
+      
+      const urlPattern = /avito\.ru\/[^/]+\/(\d+)_/;
+      const match = importUrl.match(urlPattern);
+      
+      if (!match) {
+        alert('Некорректная ссылка Avito. Вставьте ссылку на профиль.');
+        return;
+      }
+      
+      const profileId = match[1];
+      const profileUrl = `https://www.avito.ru/user/${profileId}/profile`;
+      
+      const response = await fetch(profileUrl);
+      const html = await response.text();
+      
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const items = doc.querySelectorAll('[data-marker="item"]');
+      
+      const avitoItems = [];
+      
+      for (const item of Array.from(items)) {
+        const linkEl = item.querySelector('[itemprop="url"]') as HTMLAnchorElement;
+        if (!linkEl) continue;
+        
+        const itemUrl = 'https://www.avito.ru' + linkEl.getAttribute('href');
+        
+        const itemResponse = await fetch(`${avitoParserUrl}?url=${encodeURIComponent(itemUrl)}`);
+        const itemData = await itemResponse.json();
+        
+        if (itemData.success) {
+          avitoItems.push(itemData.data);
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      
+      if (avitoItems.length === 0) {
+        alert('Не найдено объявлений для импорта');
+        return;
+      }
+      
+      const importResponse = await fetch(MANUAL_PROPERTIES_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: avitoItems })
+      });
+      
+      const result = await importResponse.json();
+      
+      if (result.success) {
+        alert(`Успешно импортировано: ${result.imported} объектов`);
+        setImportDialogOpen(false);
+        setImportUrl('');
+        fetchProperties();
+      }
+    } catch (err) {
+      console.error('Import error:', err);
+      alert('Ошибка импорта. Проверьте ссылку.');
+    } finally {
+      setImporting(false);
+    }
+  };
+
   const catalogCounts = getCatalogCounts();
 
   return (
@@ -280,6 +355,10 @@ export default function CatalogTab() {
               </p>
             )}
           </div>
+          <Button onClick={() => setImportDialogOpen(true)} className="gap-2">
+            <Icon name="Download" size={18} />
+            Импорт с Avito
+          </Button>
         </div>
 
         {!loading && !error && realEstateObjects.length > 0 && (
@@ -423,6 +502,55 @@ export default function CatalogTab() {
         onOpenChange={setViewDialogOpen}
         property={viewProperty}
       />
+
+      <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Импорт объявлений с Avito</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm text-gray-600 mb-3">
+                Вставьте ссылку на любое ваше объявление на Avito.
+                <br />
+                Система автоматически найдет все объявления из вашего профиля.
+              </p>
+              <Input
+                placeholder="https://www.avito.ru/sevastopol/..."
+                value={importUrl}
+                onChange={(e) => setImportUrl(e.target.value)}
+                disabled={importing}
+              />
+            </div>
+            <div className="flex gap-2">
+              <Button 
+                onClick={handleAvitoImport} 
+                disabled={!importUrl || importing}
+                className="flex-1 gap-2"
+              >
+                {importing ? (
+                  <>
+                    <Icon name="Loader2" size={18} className="animate-spin" />
+                    Импортирую...
+                  </>
+                ) : (
+                  <>
+                    <Icon name="Download" size={18} />
+                    Импортировать
+                  </>
+                )}
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setImportDialogOpen(false)}
+                disabled={importing}
+              >
+                Отмена
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </TabsContent>
   );
 }
