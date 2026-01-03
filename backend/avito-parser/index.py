@@ -53,37 +53,64 @@ def handler(event: dict, context) -> dict:
         
         try:
             headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
             }
             
             response = requests.get(avito_url, headers=headers, timeout=15)
             response.raise_for_status()
             
             soup = BeautifulSoup(response.text, 'html.parser')
+            
+            # Пробуем разные селекторы для поиска объявлений
             items = soup.find_all('div', {'data-marker': 'item'})
             
+            if not items:
+                # Альтернативный селектор
+                items = soup.select('[data-marker="item"]')
+            
+            print(f'[DEBUG] Found {len(items)} items on page')
+            
             profile_items = []
-            for item in items[:20]:
+            for idx, item in enumerate(items[:20]):
                 try:
+                    # Ищем ссылку на объявление
                     link_elem = item.find('a', {'itemprop': 'url'})
                     if not link_elem:
+                        link_elem = item.find('a', href=re.compile(r'/(dom|zemelnye|kvartiry|kommerchesk)'))
+                    
+                    if not link_elem:
+                        print(f'[DEBUG] Item {idx}: no link found')
                         continue
                     
-                    item_url = 'https://www.avito.ru' + link_elem.get('href', '')
+                    item_href = link_elem.get('href', '')
+                    item_url = 'https://www.avito.ru' + item_href if item_href.startswith('/') else item_href
                     
-                    title_elem = link_elem
-                    title = title_elem.get('title', '').strip()
+                    title = link_elem.get('title', '').strip()
+                    if not title:
+                        title_elem = item.find(['h3', 'h2'])
+                        title = title_elem.get_text(strip=True) if title_elem else 'Объявление'
                     
                     price_elem = item.find('meta', {'itemprop': 'price'})
-                    price = int(price_elem.get('content', 0)) if price_elem else 0
+                    if not price_elem:
+                        price_elem = item.find('span', {'data-marker': 'item-price'})
+                    
+                    price = 0
+                    if price_elem:
+                        price_text = price_elem.get('content', '') or price_elem.get_text(strip=True)
+                        price_text = re.sub(r'[^\d]', '', price_text)
+                        price = int(price_text) if price_text else 0
                     
                     location_elem = item.find('div', {'data-marker': 'item-address'})
+                    if not location_elem:
+                        location_elem = item.find('span', string=re.compile(r'Севастополь|Крым'))
                     location = location_elem.get_text(strip=True) if location_elem else 'Крым'
                     
                     img_elem = item.find('img')
-                    photo = img_elem.get('src', '') if img_elem else ''
+                    photo = img_elem.get('src', '') or img_elem.get('data-src', '') if img_elem else ''
                     
-                    if title and item_url:
+                    print(f'[DEBUG] Item {idx}: title={title[:30]}, price={price}, url={item_url[:50]}')
+                    
+                    if title and item_url and '_' in item_url:
                         profile_items.append({
                             'title': title,
                             'price': price,
@@ -92,7 +119,8 @@ def handler(event: dict, context) -> dict:
                             'property_link': item_url,
                             'type': 'land'
                         })
-                except Exception:
+                except Exception as e:
+                    print(f'[DEBUG] Item {idx} error: {str(e)}')
                     continue
             
             return {
