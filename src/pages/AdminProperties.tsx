@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
 import AdminPhotosTab from '@/components/tabs/AdminPhotosTab';
+import BulkPropertyImport from '@/components/BulkPropertyImport';
 
 const PROPERTIES_URL = 'https://functions.poehali.dev/d286a6ac-5f97-4343-9332-1ee6a1e9ad53';
 const AVITO_LISTINGS_URL = 'https://functions.poehali.dev/0363e1df-5e38-47b1-83ba-6d01b09d4e99';
@@ -39,6 +40,7 @@ export default function AdminProperties() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
@@ -216,14 +218,25 @@ export default function AdminProperties() {
 
         {activeTab === 'manual' ? (
           <>
-            <Button
-              onClick={openCreateDialog}
-              className="gap-2"
-              size="lg"
-            >
-              <Icon name="Plus" size={18} />
-              Добавить объект
-            </Button>
+            <div className="flex flex-wrap gap-3">
+              <Button
+                onClick={openCreateDialog}
+                className="gap-2"
+                size="lg"
+              >
+                <Icon name="Plus" size={18} />
+                Добавить объект
+              </Button>
+              <Button
+                onClick={() => setBulkImportOpen(true)}
+                variant="outline"
+                className="gap-2"
+                size="lg"
+              >
+                <Icon name="FileSpreadsheet" size={18} />
+                Массовая загрузка Excel
+              </Button>
+            </div>
 
             {loading ? (
               <div className="text-center py-12">
@@ -311,6 +324,12 @@ export default function AdminProperties() {
         ) : (
           <AdminPhotosTab />
         )}
+
+        <BulkPropertyImport
+          open={bulkImportOpen}
+          onOpenChange={setBulkImportOpen}
+          onSuccess={fetchProperties}
+        />
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
