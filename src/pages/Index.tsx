@@ -48,13 +48,13 @@ export default function Index() {
               }}
             >
               <img 
-                src="https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/97dcf769-3099-433c-93a7-982d4b12e27d.jpg" 
-                alt="Ипотека РФ" 
-                className="w-8 h-8 sm:w-12 sm:h-12 rounded-lg object-cover"
+                src="https://cdn.poehali.dev/files/с дескриптором черный вариант (2).png" 
+                alt="Арендодатель" 
+                className="h-10 sm:h-14 w-auto object-contain"
               />
-              <div>
-                <h1 className="text-lg sm:text-2xl font-bold text-gray-900">Ипотека РФ</h1>
-                <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Крым • Севастополь • Льготные программы</p>
+              <div className="hidden">
+                <h1 className="text-lg sm:text-2xl font-bold text-gray-900">Арендодатель</h1>
+                <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Агентство недвижимости</p>
                 <p className="text-xs text-gray-500 mt-0.5">
                   {new Date().toLocaleDateString('ru-RU', { 
                     day: 'numeric', 
