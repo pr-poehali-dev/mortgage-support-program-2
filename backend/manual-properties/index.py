@@ -127,6 +127,15 @@ def handler(event: dict, context) -> dict:
             if not photos and data.get('photo_url'):
                 photos = [data.get('photo_url')]
             
+            # Конвертируем пустые строки в None для числовых полей
+            def to_number(value):
+                if value == '' or value is None:
+                    return None
+                try:
+                    return float(value) if '.' in str(value) else int(value)
+                except:
+                    return None
+            
             cur.execute('''
                 INSERT INTO t_p26758318_mortgage_support_pro.manual_properties 
                 (title, type, property_category, operation, price, location, area, rooms, floor, total_floors, land_area, 
@@ -140,29 +149,29 @@ def handler(event: dict, context) -> dict:
                 data.get('type'),
                 data.get('property_category', data.get('type')),
                 data.get('operation', 'sale'),
-                data.get('price'),
+                to_number(data.get('price')),
                 data.get('location'),
-                data.get('area'),
-                data.get('rooms'),
-                data.get('floor'),
-                data.get('total_floors'),
-                data.get('land_area'),
+                to_number(data.get('area')),
+                to_number(data.get('rooms')),
+                to_number(data.get('floor')),
+                to_number(data.get('total_floors')),
+                to_number(data.get('land_area')),
                 photos[0] if photos else None,
                 photos,
-                data.get('description'),
+                data.get('description') or None,
                 data.get('features', []),
-                data.get('property_link'),
+                data.get('property_link') or None,
                 data.get('price_type', 'total'),
-                data.get('phone'),
-                data.get('building_type'),
-                data.get('renovation'),
-                data.get('bathroom'),
-                data.get('balcony'),
+                data.get('phone') or None,
+                data.get('building_type') or None,
+                data.get('renovation') or None,
+                data.get('bathroom') or None,
+                data.get('balcony') or None,
                 data.get('furniture', False),
                 data.get('pets_allowed', False),
                 data.get('children_allowed', True),
                 data.get('utilities_included', False),
-                data.get('wall_material'),
+                data.get('wall_material') or None,
                 data.get('contact_method', 'phone')
             ))
             
@@ -190,6 +199,15 @@ def handler(event: dict, context) -> dict:
             if not photos and data.get('photo_url'):
                 photos = [data.get('photo_url')]
             
+            # Конвертируем пустые строки в None для числовых полей
+            def to_number(value):
+                if value == '' or value is None:
+                    return None
+                try:
+                    return float(value) if '.' in str(value) else int(value)
+                except:
+                    return None
+            
             cur.execute('''
                 UPDATE t_p26758318_mortgage_support_pro.manual_properties 
                 SET title = %s, type = %s, property_category = %s, operation = %s, price = %s, location = %s, area = %s, 
@@ -205,29 +223,29 @@ def handler(event: dict, context) -> dict:
                 data.get('type'),
                 data.get('property_category', data.get('type')),
                 data.get('operation', 'sale'),
-                data.get('price'),
+                to_number(data.get('price')),
                 data.get('location'),
-                data.get('area'),
-                data.get('rooms'),
-                data.get('floor'),
-                data.get('total_floors'),
-                data.get('land_area'),
+                to_number(data.get('area')),
+                to_number(data.get('rooms')),
+                to_number(data.get('floor')),
+                to_number(data.get('total_floors')),
+                to_number(data.get('land_area')),
                 photos[0] if photos else None,
                 photos,
-                data.get('description'),
+                data.get('description') or None,
                 data.get('features', []),
-                data.get('property_link'),
+                data.get('property_link') or None,
                 data.get('price_type', 'total'),
-                data.get('phone'),
-                data.get('building_type'),
-                data.get('renovation'),
-                data.get('bathroom'),
-                data.get('balcony'),
+                data.get('phone') or None,
+                data.get('building_type') or None,
+                data.get('renovation') or None,
+                data.get('bathroom') or None,
+                data.get('balcony') or None,
                 data.get('furniture', False),
                 data.get('pets_allowed', False),
                 data.get('children_allowed', True),
                 data.get('utilities_included', False),
-                data.get('wall_material'),
+                data.get('wall_material') or None,
                 data.get('contact_method', 'phone'),
                 property_id
             ))
