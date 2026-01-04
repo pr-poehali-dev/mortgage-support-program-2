@@ -52,9 +52,9 @@ export default function Index() {
                 alt="Арендодатель" 
                 className="h-10 sm:h-14 w-auto object-contain"
               />
-              <div className="hidden">
-                <h1 className="text-lg sm:text-2xl font-bold text-gray-900">Арендодатель</h1>
-                <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Агентство недвижимости</p>
+              <div>
+                <p className="text-xs sm:text-sm text-gray-600 font-medium">Ипотечный центр | Севастополь, Крым</p>
+                <p className="text-xs text-gray-500">Продажа, Аренда, Оформление недвижимости</p>
                 <p className="text-xs text-gray-500 mt-0.5">
                   {new Date().toLocaleDateString('ru-RU', { 
                     day: 'numeric', 
@@ -178,12 +178,16 @@ export default function Index() {
       <footer className="bg-gray-900 text-white mt-8 sm:mt-16 py-6 sm:py-8">
         <div className="container mx-auto px-3 sm:px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="space-y-2">
               <img 
                 src="https://cdn.poehali.dev/files/с дескриптором белый вариант (1).png" 
                 alt="Арендодатель" 
                 className="h-12 sm:h-14 w-auto object-contain"
               />
+              <div className="text-xs sm:text-sm text-gray-400">
+                <p>Ипотечный центр | Севастополь, Крым</p>
+                <p>Продажа, Аренда, Оформление недвижимости</p>
+              </div>
             </div>
             <div className="text-center md:text-right space-y-3">
               <p className="font-semibold text-sm sm:text-base">Николаев Дмитрий Юрьевич</p>
