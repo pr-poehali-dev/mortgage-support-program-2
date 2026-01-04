@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
@@ -29,6 +30,7 @@ interface PropertyCardProps {
 }
 
 export default function PropertyCard({ property, onView, isAdmin = false }: PropertyCardProps) {
+  const navigate = useNavigate();
   const photos = property.photos && property.photos.length > 0 ? property.photos : [property.photo_url];
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
@@ -40,8 +42,16 @@ export default function PropertyCard({ property, onView, isAdmin = false }: Prop
     setCurrentPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length);
   };
 
+  const handleClick = () => {
+    if (onView) {
+      onView();
+    } else {
+      navigate(`/property/${property.id}`);
+    }
+  };
+
   return (
-    <Card className="hover:shadow-xl transition-all overflow-hidden cursor-pointer" onClick={onView}>
+    <Card className="hover:shadow-xl transition-all overflow-hidden cursor-pointer" onClick={handleClick}>
       <div className="relative h-48 overflow-hidden group">
         <img 
           src={photos[currentPhotoIndex]} 

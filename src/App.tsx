@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import AdminArticles from "./pages/AdminArticles";
 import AdminProperties from "./pages/AdminProperties";
+import PropertyView from "./pages/PropertyView";
 import Register from "./pages/Register";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
@@ -27,6 +28,7 @@ function AppContent() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/property/:id" element={<PropertyView />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/articles" element={<AdminArticles />} />
           <Route path="/admin/properties" element={<AdminProperties />} />
