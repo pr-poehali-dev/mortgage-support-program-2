@@ -126,20 +126,52 @@ export function useAdminLogic() {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
+    const MAX_PHOTOS = 50;
+    const currentPhotosCount = formData.photos.length;
+    const remainingSlots = MAX_PHOTOS - currentPhotosCount;
+
+    if (remainingSlots <= 0) {
+      alert(`Максимум ${MAX_PHOTOS} фотографий. Удалите лишние фото перед добавлением новых.`);
+      return;
+    }
+
+    const filesToUpload = Array.from(files).slice(0, remainingSlots);
+    
+    if (files.length > remainingSlots) {
+      alert(`Можно добавить только ${remainingSlots} фото. Первые ${remainingSlots} будут загружены.`);
+    }
+
     setUploadingPhoto(true);
     const uploadedUrls: string[] = [];
+    let errors = 0;
 
     try {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
+      for (let i = 0; i < filesToUpload.length; i++) {
+        const file = filesToUpload[i];
+        
+        // Проверка типа файла
+        if (!file.type.startsWith('image/')) {
+          console.error(`Файл ${file.name} не является изображением`);
+          errors++;
+          continue;
+        }
+
+        // Проверка размера (макс 10MB)
+        if (file.size > 10 * 1024 * 1024) {
+          console.error(`Файл ${file.name} слишком большой (макс 10MB)`);
+          errors++;
+          continue;
+        }
+
         const reader = new FileReader();
         
-        const base64 = await new Promise<string>((resolve) => {
+        const base64 = await new Promise<string>((resolve, reject) => {
           reader.onloadend = () => resolve(reader.result as string);
+          reader.onerror = () => reject(new Error('Ошибка чтения файла'));
           reader.readAsDataURL(file);
         });
 
-        const response = await fetch('https://functions.poehali.dev/f8e0cf3b-9d78-46e4-a8aa-6f6ff94f7c0b', {
+        const response = await fetch('https://functions.poehali.dev/94c626eb-409a-4a18-836f-f3750239d1b4', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ photo_data: base64 })
@@ -148,20 +180,32 @@ export function useAdminLogic() {
         const data = await response.json();
         if (data.success && data.photo_url) {
           uploadedUrls.push(data.photo_url);
+        } else {
+          errors++;
         }
       }
 
-      const allPhotos = [...formData.photos, ...uploadedUrls];
-      setFormData({
-        ...formData,
-        photos: allPhotos,
-        photo_url: allPhotos[0] || ''
-      });
+      if (uploadedUrls.length > 0) {
+        const allPhotos = [...formData.photos, ...uploadedUrls];
+        setFormData({
+          ...formData,
+          photos: allPhotos,
+          photo_url: allPhotos[0] || ''
+        });
+      }
+
+      if (errors > 0) {
+        alert(`Загружено ${uploadedUrls.length} фото. Ошибок: ${errors}`);
+      } else if (uploadedUrls.length > 0) {
+        alert(`Успешно загружено ${uploadedUrls.length} фото!`);
+      }
     } catch (err) {
       console.error('Photo upload error:', err);
-      alert('Ошибка загрузки фото');
+      alert('Ошибка загрузки фото: ' + (err as Error).message);
     } finally {
       setUploadingPhoto(false);
+      // Сбрасываем input для возможности повторной загрузки тех же файлов
+      e.target.value = '';
     }
   };
 
