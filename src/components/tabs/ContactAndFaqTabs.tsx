@@ -50,18 +50,72 @@ export default function ContactAndFaqTabs() {
                   </div>
                 </div>
 
-                <a
-                  href="tel:+79781281850"
-                  className="flex items-center gap-4 p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors group"
-                >
-                  <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Icon name="Phone" className="text-white" size={24} />
+                <div className="space-y-3">
+                  <a
+                    href="tel:+79781281850"
+                    className="flex items-center gap-4 p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors group"
+                  >
+                    <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Icon name="Phone" className="text-white" size={24} />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Телефон</p>
+                      <p className="font-semibold text-xl text-gray-900">+7 978 128-18-50</p>
+                    </div>
+                  </a>
+                  
+                  <div className="grid grid-cols-4 gap-2">
+                    <a
+                      href="https://t.me/+79781281850"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-col items-center gap-2 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors group"
+                      title="Telegram"
+                    >
+                      <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Icon name="Send" className="text-white" size={20} />
+                      </div>
+                      <span className="text-xs font-medium text-gray-700">Telegram</span>
+                    </a>
+                    
+                    <a
+                      href="https://wa.me/79781281850"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-col items-center gap-2 p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors group"
+                      title="WhatsApp"
+                    >
+                      <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Icon name="MessageCircle" className="text-white" size={20} />
+                      </div>
+                      <span className="text-xs font-medium text-gray-700">WhatsApp</span>
+                    </a>
+                    
+                    <a
+                      href="viber://chat?number=%2B79781281850"
+                      className="flex flex-col items-center gap-2 p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors group"
+                      title="Viber"
+                    >
+                      <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Icon name="Smartphone" className="text-white" size={20} />
+                      </div>
+                      <span className="text-xs font-medium text-gray-700">Viber</span>
+                    </a>
+                    
+                    <a
+                      href="https://maxim.chat/79781281850"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-col items-center gap-2 p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors group"
+                      title="Max Messenger"
+                    >
+                      <div className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Icon name="MessageSquare" className="text-white" size={20} />
+                      </div>
+                      <span className="text-xs font-medium text-gray-700">Max</span>
+                    </a>
                   </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Телефон</p>
-                    <p className="font-semibold text-xl text-gray-900">+7 978 128-18-50</p>
-                  </div>
-                </a>
+                </div>
 
                 <a
                   href="mailto:ipoteka_krym@mail.ru"
@@ -101,10 +155,45 @@ export default function ContactAndFaqTabs() {
                     <Icon name="MessageCircle" className="text-white" size={24} />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Telegram</p>
-                    <p className="font-semibold text-gray-900">Написать в мессенджер</p>
+                    <p className="text-sm text-gray-600">Telegram канал</p>
+                    <p className="font-semibold text-gray-900">Наши новости и советы</p>
                   </div>
                 </a>
+              </div>
+
+              <div className="border-t pt-6">
+                <h4 className="font-semibold mb-3">Мы в социальных сетях:</h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <a
+                    href="https://vk.com/arendodatel"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 bg-blue-600/10 rounded-lg hover:bg-blue-600/20 transition-colors group"
+                  >
+                    <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Icon name="Share2" className="text-white" size={20} />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900">ВКонтакте</p>
+                      <p className="text-xs text-gray-600">Группа Арендодатель</p>
+                    </div>
+                  </a>
+                  
+                  <a
+                    href="https://t.me/arendodatel_com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 bg-sky-500/10 rounded-lg hover:bg-sky-500/20 transition-colors group"
+                  >
+                    <div className="w-10 h-10 bg-sky-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Icon name="Send" className="text-white" size={20} />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900">Telegram</p>
+                      <p className="text-xs text-gray-600">Канал Арендодатель</p>
+                    </div>
+                  </a>
+                </div>
               </div>
 
               <div className="border-t pt-6">
