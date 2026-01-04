@@ -74,14 +74,43 @@ export default function Index() {
                 <Icon name="UserPlus" className="mr-1.5" size={16} />
                 Регистрация
               </Button>
-              <a 
-                href="tel:+79781281850" 
-                onClick={() => trackPhoneClick('header')}
-                className="flex items-center gap-1.5 sm:gap-2 text-primary hover:text-primary/80 transition-colors"
-              >
-                <Icon name="Phone" size={18} className="sm:w-5 sm:h-5" />
-                <span className="font-semibold text-sm sm:text-base hidden sm:inline">+7 978 128-18-50</span>
-              </a>
+              <div className="flex items-center gap-2 sm:gap-3">
+                <a 
+                  href="tel:+79781281850" 
+                  onClick={() => trackPhoneClick('header')}
+                  className="flex items-center gap-1.5 text-primary hover:text-primary/80 transition-colors"
+                >
+                  <Icon name="Phone" size={18} className="sm:w-5 sm:h-5" />
+                  <span className="font-semibold text-sm sm:text-base hidden sm:inline">+7 978 128-18-50</span>
+                </a>
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <a 
+                    href="https://t.me/+79781281850" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:text-blue-600 transition-colors"
+                    title="Telegram"
+                  >
+                    <Icon name="Send" size={18} className="sm:w-5 sm:h-5" />
+                  </a>
+                  <a 
+                    href="https://wa.me/79781281850" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-green-500 hover:text-green-600 transition-colors"
+                    title="WhatsApp"
+                  >
+                    <Icon name="MessageCircle" size={18} className="sm:w-5 sm:h-5" />
+                  </a>
+                  <a 
+                    href="viber://chat?number=%2B79781281850" 
+                    className="text-purple-500 hover:text-purple-600 transition-colors"
+                    title="Viber"
+                  >
+                    <Icon name="Smartphone" size={18} className="sm:w-5 sm:h-5" />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -94,25 +123,25 @@ export default function Index() {
               <Icon name="Home" size={16} className="sm:w-[18px] sm:h-[18px]" />
               <span>Главная</span>
             </TabsTrigger>
-            <TabsTrigger value="programs" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '50ms'}}>
+            <TabsTrigger value="catalog" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '50ms'}}>
+              <Icon name="Building2" size={16} className="sm:w-[18px] sm:h-[18px]" />
+              <span className="hidden md:inline">Объекты</span>
+              <span className="md:hidden">Объекты</span>
+            </TabsTrigger>
+            <TabsTrigger value="programs" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '100ms'}}>
               <Icon name="ClipboardList" size={16} className="sm:w-[18px] sm:h-[18px]" />
               <span className="hidden md:inline">Программы</span>
               <span className="md:hidden">Прогр.</span>
             </TabsTrigger>
-            <TabsTrigger value="comparison" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '100ms'}}>
+            <TabsTrigger value="comparison" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '150ms'}}>
               <Icon name="GitCompare" size={16} className="sm:w-[18px] sm:h-[18px]" />
               <span className="hidden md:inline">Сравнение</span>
               <span className="md:hidden">Сравн.</span>
             </TabsTrigger>
-            <TabsTrigger value="calculator" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '150ms'}}>
+            <TabsTrigger value="calculator" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '200ms'}}>
               <Icon name="Calculator" size={16} className="sm:w-[18px] sm:h-[18px]" />
               <span className="hidden md:inline">Калькулятор</span>
               <span className="md:hidden">Калькул.</span>
-            </TabsTrigger>
-            <TabsTrigger value="catalog" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '200ms'}}>
-              <Icon name="Building2" size={16} className="sm:w-[18px] sm:h-[18px]" />
-              <span className="hidden md:inline">Объекты</span>
-              <span className="md:hidden">Объекты</span>
             </TabsTrigger>
             <TabsTrigger value="documents" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '250ms'}}>
               <Icon name="FileText" size={16} className="sm:w-[18px] sm:h-[18px]" />
