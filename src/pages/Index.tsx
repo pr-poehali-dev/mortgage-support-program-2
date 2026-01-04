@@ -180,19 +180,67 @@ export default function Index() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
             <div className="flex items-center gap-2 sm:gap-3">
               <img 
-                src="https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/97dcf769-3099-433c-93a7-982d4b12e27d.jpg" 
-                alt="Ипотека РФ" 
-                className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-cover"
+                src="https://cdn.poehali.dev/files/с дескриптором черный вариант (2).png" 
+                alt="Арендодатель" 
+                className="h-12 sm:h-14 w-auto object-contain bg-white/90 px-2 py-1 rounded"
               />
-              <div>
-                <p className="font-bold text-sm sm:text-base">Ипотека РФ</p>
-                <p className="text-xs sm:text-sm text-gray-400">Льготные программы с господдержкой</p>
-              </div>
             </div>
-            <div className="text-center md:text-right">
+            <div className="text-center md:text-right space-y-3">
               <p className="font-semibold text-sm sm:text-base">Николаев Дмитрий Юрьевич</p>
-              <p className="text-sm text-gray-400">+7 978 128-18-50</p>
-              <p className="text-sm text-gray-400">ipoteka_krym@mail.ru</p>
+              
+              <div className="space-y-2">
+                <a
+                  href="tel:+79781281850"
+                  onClick={() => trackPhoneClick('footer')}
+                  className="text-sm text-gray-300 hover:text-white transition-colors block"
+                >
+                  +7 978 128-18-50
+                </a>
+                
+                <div className="flex items-center justify-center md:justify-end gap-2">
+                  <a
+                    href="https://t.me/+79781281850"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 bg-blue-500 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-colors"
+                    title="Telegram"
+                  >
+                    <Icon name="Send" size={16} className="text-white" />
+                  </a>
+                  <a
+                    href="https://wa.me/79781281850"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 bg-green-500 hover:bg-green-600 rounded-lg flex items-center justify-center transition-colors"
+                    title="WhatsApp"
+                  >
+                    <Icon name="MessageCircle" size={16} className="text-white" />
+                  </a>
+                  <a
+                    href="viber://chat?number=%2B79781281850"
+                    className="w-8 h-8 bg-purple-500 hover:bg-purple-600 rounded-lg flex items-center justify-center transition-colors"
+                    title="Viber"
+                  >
+                    <Icon name="Smartphone" size={16} className="text-white" />
+                  </a>
+                  <a
+                    href="https://maxim.chat/79781281850"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 bg-red-500 hover:bg-red-600 rounded-lg flex items-center justify-center transition-colors"
+                    title="Max Messenger"
+                  >
+                    <Icon name="MessageSquare" size={16} className="text-white" />
+                  </a>
+                </div>
+              </div>
+              
+              <a
+                href="mailto:ipoteka_krym@mail.ru"
+                className="text-sm text-gray-300 hover:text-white transition-colors block"
+              >
+                ipoteka_krym@mail.ru
+              </a>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-4 sm:mt-6 pt-4 sm:pt-6">
