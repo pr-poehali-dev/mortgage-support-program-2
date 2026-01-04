@@ -180,9 +180,9 @@ export default function Index() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
             <div className="flex items-center gap-2 sm:gap-3">
               <img 
-                src="https://cdn.poehali.dev/files/с дескриптором черный вариант (2).png" 
+                src="https://cdn.poehali.dev/files/с дескриптором белый вариант (1).png" 
                 alt="Арендодатель" 
-                className="h-12 sm:h-14 w-auto object-contain bg-white/90 px-2 py-1 rounded"
+                className="h-12 sm:h-14 w-auto object-contain"
               />
             </div>
             <div className="text-center md:text-right space-y-3">

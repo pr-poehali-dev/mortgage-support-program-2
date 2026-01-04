@@ -52,7 +52,7 @@ export default function FormStep3Description({
       </div>
 
       <div>
-        <Label>Фотографии</Label>
+        <Label>Фотографии (макс. 50)</Label>
         <Input
           type="file"
           accept="image/*"
@@ -60,8 +60,11 @@ export default function FormStep3Description({
           onChange={handlePhotoSelect}
           disabled={uploadingPhoto}
         />
+        <p className="text-xs text-gray-500 mt-1">
+          Загружено: {formData.photos?.length || 0} / 50 фото (макс. размер 10MB каждое)
+        </p>
         {uploadingPhoto && (
-          <p className="text-sm text-gray-500 mt-2 flex items-center gap-2">
+          <p className="text-sm text-primary mt-2 flex items-center gap-2 font-medium">
             <Icon name="Loader2" size={14} className="animate-spin" />
             Загрузка фото...
           </p>
