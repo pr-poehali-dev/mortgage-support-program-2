@@ -66,12 +66,12 @@ export default function Index() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 sm:gap-3">
               <Button
                 onClick={() => navigate('/register')}
-                className="h-8 sm:h-10 px-3 sm:px-6 text-xs sm:text-sm"
+                className="h-7 sm:h-10 px-2 sm:px-6 text-[10px] sm:text-sm whitespace-nowrap"
               >
-                <Icon name="UserPlus" className="mr-1.5" size={16} />
+                <Icon name="UserPlus" className="mr-1 sm:mr-1.5" size={14} />
                 Регистрация
               </Button>
               <div className="flex items-center gap-2 sm:gap-3">
