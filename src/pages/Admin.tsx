@@ -18,6 +18,7 @@ import AdminCharts from '@/components/admin/AdminCharts';
 import AdminEmailDialog from '@/components/admin/AdminEmailDialog';
 import AdminHeader from '@/components/admin/AdminHeader';
 import AdminPropertiesSection from '@/components/admin/AdminPropertiesSection';
+import AdminUserPropertiesSection from '@/components/admin/AdminUserPropertiesSection';
 import CRMPanel from '@/components/admin/CRMPanel';
 import IndexNowNotifier from '@/components/IndexNowNotifier';
 import SitemapInfo from '@/components/SitemapInfo';
@@ -131,6 +132,8 @@ export default function Admin() {
         <MetrikaTrendsChart />
 
         <AdminCharts analytics={analytics} />
+
+        <AdminUserPropertiesSection />
 
         <AdminPropertiesSection
           properties={properties}

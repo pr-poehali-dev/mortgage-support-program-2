@@ -11,6 +11,7 @@ import AdminProperties from "./pages/AdminProperties";
 import PropertyView from "./pages/PropertyView";
 import Register from "./pages/Register";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import AddProperty from "./pages/AddProperty";
 import NotFound from "./pages/NotFound";
 import AnalyticsProvider from "./components/analytics/AnalyticsProvider";
 import { useAnalytics } from "./hooks/useAnalytics";
@@ -34,6 +35,7 @@ function AppContent() {
           <Route path="/admin/properties" element={<AdminProperties />} />
           <Route path="/register" element={<Register />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/add-property" element={<AddProperty />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
