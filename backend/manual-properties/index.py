@@ -180,6 +180,34 @@ def handler(event: dict, context) -> dict:
             property_id = cur.fetchone()['id']
             conn.commit()
             
+            # Автопостинг в Telegram и VK
+            try:
+                import requests
+                
+                # Формируем URL для просмотра объекта
+                property_url = f"https://{event.get('headers', {}).get('Host', 'xn--80ajijbmjhop8h.xn--p1ai')}/property/{property_id}"
+                
+                autopost_data = {
+                    'property_id': property_id,
+                    'title': data.get('title'),
+                    'price': to_number(data.get('price')) or 0,
+                    'location': data.get('location'),
+                    'area': to_number(data.get('area')),
+                    'rooms': to_number(data.get('rooms')),
+                    'photo_url': photos[0] if photos else None,
+                    'property_url': property_url
+                }
+                
+                # Вызываем функцию автопостинга
+                requests.post(
+                    'https://functions.poehali.dev/4fd2d8f0-f94b-4d4b-8156-16b0e7ea6bb2',
+                    json=autopost_data,
+                    timeout=5
+                )
+            except Exception as e:
+                # Не прерываем выполнение, если автопостинг не сработал
+                print(f'Autopost error: {e}')
+            
             return {
                 'statusCode': 201,
                 'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
