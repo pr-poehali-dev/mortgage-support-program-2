@@ -77,7 +77,7 @@ export default function Index() {
                 </Button>
                 <Button
                   onClick={() => navigate('/add-property')}
-                  className="h-7 sm:h-10 px-2 sm:px-6 text-[10px] sm:text-sm whitespace-nowrap bg-green-600 hover:bg-green-700"
+                  className="h-7 sm:h-10 px-2 sm:px-6 text-[10px] sm:text-sm whitespace-nowrap bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 shadow-lg hover:shadow-xl transition-all hover:scale-105 animate-pulse"
                 >
                   <Icon name="PlusCircle" className="mr-1 sm:mr-1.5" size={14} />
                   Продам/Сдам
