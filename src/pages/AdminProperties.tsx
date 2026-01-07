@@ -24,6 +24,8 @@ interface Property {
   description?: string;
   property_link?: string;
   phone?: string;
+  contact_name?: string;
+  rutube_link?: string;
   operation?: string;
   property_category?: string;
   building_type?: string;

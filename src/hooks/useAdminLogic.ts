@@ -25,6 +25,8 @@ interface Property {
   rooms?: number;
   photo_url?: string;
   photos?: string[];
+  contact_name?: string;
+  rutube_link?: string;
 }
 
 const PROGRAM_NAMES: Record<string, string> = {
