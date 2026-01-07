@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import PropertyFormDialog from '@/components/catalog/PropertyFormDialog';
+import { compressImage } from '@/utils/imageCompressor';
 
 const PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d';
 
@@ -161,9 +162,12 @@ export default function AdminProperties() {
           continue;
         }
 
-        // Проверка размера (макс 10MB)
-        if (file.size > 10 * 1024 * 1024) {
-          console.error(`Файл ${file.name} слишком большой (макс 10MB)`);
+        // Сжимаем изображение до 9 МБ
+        let compressedFile: File;
+        try {
+          compressedFile = await compressImage(file, 9);
+        } catch (compressError) {
+          console.error(`Ошибка сжатия ${file.name}:`, compressError);
           errors++;
           continue;
         }
@@ -173,7 +177,7 @@ export default function AdminProperties() {
         const base64 = await new Promise<string>((resolve, reject) => {
           reader.onloadend = () => resolve(reader.result as string);
           reader.onerror = () => reject(new Error('Ошибка чтения файла'));
-          reader.readAsDataURL(file);
+          reader.readAsDataURL(compressedFile);
         });
 
         const response = await fetch('https://functions.poehali.dev/94c626eb-409a-4a18-836f-f3750239d1b4', {

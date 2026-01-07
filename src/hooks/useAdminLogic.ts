@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import { trackExcelDownload, trackEmailReport } from '@/services/analytics';
+import { compressImage } from '@/utils/imageCompressor';
 
 interface AnalyticsData {
   daily_views: Array<{ date: string; views: number }>;
@@ -156,9 +157,12 @@ export function useAdminLogic() {
           continue;
         }
 
-        // Проверка размера (макс 10MB)
-        if (file.size > 10 * 1024 * 1024) {
-          console.error(`Файл ${file.name} слишком большой (макс 10MB)`);
+        // Сжимаем изображение до 9 МБ
+        let compressedFile: File;
+        try {
+          compressedFile = await compressImage(file, 9);
+        } catch (compressError) {
+          console.error(`Ошибка сжатия ${file.name}:`, compressError);
           errors++;
           continue;
         }
@@ -168,7 +172,7 @@ export function useAdminLogic() {
         const base64 = await new Promise<string>((resolve, reject) => {
           reader.onloadend = () => resolve(reader.result as string);
           reader.onerror = () => reject(new Error('Ошибка чтения файла'));
-          reader.readAsDataURL(file);
+          reader.readAsDataURL(compressedFile);
         });
 
         const response = await fetch('https://functions.poehali.dev/94c626eb-409a-4a18-836f-f3750239d1b4', {
