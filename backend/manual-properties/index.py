@@ -267,6 +267,7 @@ def handler(event: dict, context) -> dict:
                 data.get('property_link') or None,
                 data.get('price_type', 'total'),
                 data.get('phone') or None,
+                data.get('contact_name') or None,
                 data.get('building_type') or None,
                 data.get('renovation') or None,
                 data.get('bathroom') or None,
@@ -278,7 +279,6 @@ def handler(event: dict, context) -> dict:
                 data.get('wall_material') or None,
                 data.get('contact_method', 'phone'),
                 data.get('rutube_link') or None,
-                data.get('contact_name') or None,
                 property_id
             ))
             conn.commit()
