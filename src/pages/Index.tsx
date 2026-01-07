@@ -67,20 +67,20 @@ export default function Index() {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 sm:gap-3">
-              <div className="flex gap-2">
-                <Button
-                  onClick={() => navigate('/add-property')}
-                  className="h-7 sm:h-10 px-2 sm:px-6 text-[10px] sm:text-sm whitespace-nowrap bg-green-600 hover:bg-green-700"
-                >
-                  <Icon name="PlusCircle" className="mr-1 sm:mr-1.5" size={14} />
-                  Добавить объявление
-                </Button>
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Button
                   onClick={() => navigate('/register')}
                   className="h-7 sm:h-10 px-2 sm:px-6 text-[10px] sm:text-sm whitespace-nowrap"
                 >
                   <Icon name="UserPlus" className="mr-1 sm:mr-1.5" size={14} />
                   Регистрация
+                </Button>
+                <Button
+                  onClick={() => navigate('/add-property')}
+                  className="h-7 sm:h-10 px-2 sm:px-6 text-[10px] sm:text-sm whitespace-nowrap bg-green-600 hover:bg-green-700"
+                >
+                  <Icon name="PlusCircle" className="mr-1 sm:mr-1.5" size={14} />
+                  Добавить объявление
                 </Button>
               </div>
               <div className="flex items-center gap-2 sm:gap-3">
