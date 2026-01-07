@@ -80,7 +80,7 @@ export default function Index() {
                   className="h-7 sm:h-10 px-2 sm:px-6 text-[10px] sm:text-sm whitespace-nowrap bg-green-600 hover:bg-green-700"
                 >
                   <Icon name="PlusCircle" className="mr-1 sm:mr-1.5" size={14} />
-                  Добавить объявление
+                  Продам/Сдам
                 </Button>
               </div>
               <div className="flex items-center gap-2 sm:gap-3">
