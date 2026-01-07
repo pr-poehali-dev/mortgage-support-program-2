@@ -5,6 +5,23 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Icon from '@/components/ui/icon';
 import { useState, useRef } from 'react';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  rectSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface FormStep3DescriptionProps {
   formData: any;
@@ -14,6 +31,63 @@ interface FormStep3DescriptionProps {
   uploadingPhoto: boolean;
   handleRemovePhoto: (photoUrl: string) => void;
   editProperty: any | null;
+}
+
+interface SortablePhotoItemProps {
+  photo: string;
+  index: number;
+  onRemove: (photo: string) => void;
+}
+
+function SortablePhotoItem({ photo, index, onRemove }: SortablePhotoItemProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: photo });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="relative group cursor-move"
+      {...attributes}
+      {...listeners}
+    >
+      <img
+        src={photo}
+        alt={`Photo ${index + 1}`}
+        className="w-full h-24 object-cover rounded-lg"
+      />
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onRemove(photo);
+        }}
+        className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
+      >
+        <Icon name="X" size={14} />
+      </button>
+      {index === 0 && (
+        <div className="absolute bottom-1 left-1 bg-primary text-white text-xs px-2 py-0.5 rounded">
+          Главное
+        </div>
+      )}
+      <div className="absolute top-1 left-1 bg-black/50 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+        <Icon name="GripVertical" size={14} />
+      </div>
+    </div>
+  );
 }
 
 export default function FormStep3Description({
@@ -27,6 +101,13 @@ export default function FormStep3Description({
 }: FormStep3DescriptionProps) {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const handleDragEnter = (e: React.DragEvent) => {
     e.preventDefault();
@@ -64,6 +145,22 @@ export default function FormStep3Description({
         const event = new Event('change', { bubbles: true });
         input.dispatchEvent(event);
       }
+    }
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = formData.photos.indexOf(active.id);
+      const newIndex = formData.photos.indexOf(over.id);
+
+      const newPhotos = arrayMove(formData.photos, oldIndex, newIndex);
+      setFormData({
+        ...formData,
+        photos: newPhotos,
+        photo_url: newPhotos[0] || '',
+      });
     }
   };
 
@@ -132,28 +229,29 @@ export default function FormStep3Description({
           </p>
         )}
         {formData.photos && formData.photos.length > 0 && (
-          <div className="mt-3 grid grid-cols-4 gap-2">
-            {formData.photos.map((photo: string, index: number) => (
-              <div key={index} className="relative group">
-                <img
-                  src={photo}
-                  alt={`Photo ${index + 1}`}
-                  className="w-full h-24 object-cover rounded-lg"
-                />
-                <button
-                  type="button"
-                  onClick={() => handleRemovePhoto(photo)}
-                  className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <Icon name="X" size={14} />
-                </button>
-                {index === 0 && (
-                  <div className="absolute bottom-1 left-1 bg-primary text-white text-xs px-2 py-0.5 rounded">
-                    Главное
-                  </div>
-                )}
-              </div>
-            ))}
+          <div className="mt-3">
+            <p className="text-xs text-gray-500 mb-2">
+              <Icon name="Info" size={12} className="inline mr-1" />
+              Перетащите фото, чтобы изменить порядок. Первое фото — главное.
+            </p>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext items={formData.photos} strategy={rectSortingStrategy}>
+                <div className="grid grid-cols-4 gap-2">
+                  {formData.photos.map((photo: string, index: number) => (
+                    <SortablePhotoItem
+                      key={photo}
+                      photo={photo}
+                      index={index}
+                      onRemove={handleRemovePhoto}
+                    />
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
           </div>
         )}
       </div>
