@@ -12,12 +12,7 @@ export default function CookieConsent() {
     const hasConsent = localStorage.getItem('cookie-consent');
     
     if (!hasConsent) {
-      // Показываем баннер через 1 секунду после загрузки
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 1000);
-
-      return () => clearTimeout(timer);
+      setIsVisible(true);
     }
   }, []);
 
