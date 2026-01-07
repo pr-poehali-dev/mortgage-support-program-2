@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Icon from '@/components/ui/icon';
+import { useState, useRef } from 'react';
 
 interface FormStep3DescriptionProps {
   formData: any;
@@ -24,6 +25,48 @@ export default function FormStep3Description({
   handleRemovePhoto,
   editProperty,
 }: FormStep3DescriptionProps) {
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      const input = fileInputRef.current;
+      if (input) {
+        const dataTransfer = new DataTransfer();
+        Array.from(files).forEach(file => {
+          if (file.type.startsWith('image/')) {
+            dataTransfer.items.add(file);
+          }
+        });
+        input.files = dataTransfer.files;
+        const event = new Event('change', { bubbles: true });
+        input.dispatchEvent(event);
+      }
+    }
+  };
+
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">Описание и фото</h3>
@@ -53,20 +96,39 @@ export default function FormStep3Description({
 
       <div>
         <Label>Фотографии (макс. 50)</Label>
+        <div
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+          onClick={() => fileInputRef.current?.click()}
+          className={`mt-2 border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all ${
+            isDragging
+              ? 'border-primary bg-primary/5'
+              : 'border-gray-300 hover:border-primary/50 hover:bg-gray-50'
+          } ${uploadingPhoto ? 'opacity-50 pointer-events-none' : ''}`}
+        >
+          <Icon name="Upload" size={48} className="mx-auto text-gray-400 mb-3" />
+          <p className="text-sm font-medium text-gray-700 mb-1">
+            Перетащите фото сюда или нажмите для выбора
+          </p>
+          <p className="text-xs text-gray-500">
+            Загружено: {formData.photos?.length || 0} / 50 фото (макс. 9 МБ каждое)
+          </p>
+        </div>
         <Input
+          ref={fileInputRef}
           type="file"
           accept="image/*"
           multiple
           onChange={handlePhotoSelect}
           disabled={uploadingPhoto}
+          className="hidden"
         />
-        <p className="text-xs text-gray-500 mt-1">
-          Загружено: {formData.photos?.length || 0} / 50 фото (макс. размер 10MB каждое)
-        </p>
         {uploadingPhoto && (
           <p className="text-sm text-primary mt-2 flex items-center gap-2 font-medium">
             <Icon name="Loader2" size={14} className="animate-spin" />
-            Загрузка фото...
+            Сжатие и загрузка фото...
           </p>
         )}
         {formData.photos && formData.photos.length > 0 && (
