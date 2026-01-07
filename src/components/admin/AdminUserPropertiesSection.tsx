@@ -32,7 +32,7 @@ export default function AdminUserPropertiesSection() {
 
   const loadProperties = async () => {
     try {
-      const response = await fetch('https://functions.poehali.dev/c13f7cf0-9c81-4e73-8cf7-36ee7f18cee3');
+      const response = await fetch('https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d?show_all=true');
       if (!response.ok) throw new Error('Ошибка загрузки');
       
       const data = await response.json();
@@ -58,7 +58,7 @@ export default function AdminUserPropertiesSection() {
       const property = properties.find(p => p.id === propertyId);
       if (!property) return;
 
-      const response = await fetch('https://functions.poehali.dev/c13f7cf0-9c81-4e73-8cf7-36ee7f18cee3', {
+      const response = await fetch('https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...property, id: propertyId, is_active: true }),
@@ -86,7 +86,7 @@ export default function AdminUserPropertiesSection() {
 
     try {
       const response = await fetch(
-        `https://functions.poehali.dev/c13f7cf0-9c81-4e73-8cf7-36ee7f18cee3?id=${propertyId}`,
+        `https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d?id=${propertyId}`,
         { method: 'DELETE' }
       );
 

@@ -95,7 +95,7 @@ export default function AddProperty() {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://functions.poehali.dev/c13f7cf0-9c81-4e73-8cf7-36ee7f18cee3', {
+      const response = await fetch('https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

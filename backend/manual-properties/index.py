@@ -38,11 +38,12 @@ def handler(event: dict, context) -> dict:
     try:
         if method == 'GET':
             property_id = event.get('queryStringParameters', {}).get('id')
+            show_all = event.get('queryStringParameters', {}).get('show_all')
             
             if property_id:
                 cur.execute('''
                     SELECT * FROM t_p26758318_mortgage_support_pro.manual_properties 
-                    WHERE id = %s AND is_active = true
+                    WHERE id = %s
                 ''', (property_id,))
                 prop = cur.fetchone()
                 prop_dict = convert_to_serializable(dict(prop)) if prop else None
@@ -52,11 +53,17 @@ def handler(event: dict, context) -> dict:
                     'body': json.dumps({'success': True, 'property': prop_dict}, ensure_ascii=False)
                 }
             else:
-                cur.execute('''
-                    SELECT * FROM t_p26758318_mortgage_support_pro.manual_properties 
-                    WHERE is_active = true 
-                    ORDER BY created_at DESC
-                ''')
+                if show_all == 'true':
+                    cur.execute('''
+                        SELECT * FROM t_p26758318_mortgage_support_pro.manual_properties 
+                        ORDER BY created_at DESC
+                    ''')
+                else:
+                    cur.execute('''
+                        SELECT * FROM t_p26758318_mortgage_support_pro.manual_properties 
+                        WHERE is_active = true 
+                        ORDER BY created_at DESC
+                    ''')
                 properties = [convert_to_serializable(dict(row)) for row in cur.fetchall()]
                 return {
                     'statusCode': 200,
@@ -180,33 +187,63 @@ def handler(event: dict, context) -> dict:
             property_id = cur.fetchone()['id']
             conn.commit()
             
-            # Автопостинг в Telegram и VK
-            try:
-                import requests
-                
-                # Формируем URL для просмотра объекта
-                property_url = f"https://{event.get('headers', {}).get('Host', 'xn--80ajijbmjhop8h.xn--p1ai')}/property/{property_id}"
-                
-                autopost_data = {
-                    'property_id': property_id,
-                    'title': data.get('title'),
-                    'price': to_number(data.get('price')) or 0,
-                    'location': data.get('location'),
-                    'area': to_number(data.get('area')),
-                    'rooms': to_number(data.get('rooms')),
-                    'photo_url': photos[0] if photos else None,
-                    'property_url': property_url
-                }
-                
-                # Вызываем функцию автопостинга
-                requests.post(
-                    'https://functions.poehali.dev/4fd2d8f0-f94b-4d4b-8156-16b0e7ea6bb2',
-                    json=autopost_data,
-                    timeout=5
-                )
-            except Exception as e:
-                # Не прерываем выполнение, если автопостинг не сработал
-                print(f'Autopost error: {e}')
+            # Если объявление неактивно (с сайта), отправляем уведомление админу
+            if not data.get('is_active', True):
+                try:
+                    import requests
+                    
+                    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+                    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
+                    
+                    if bot_token and chat_id:
+                        message = f"📢 *Новое объявление с сайта*\n\n"
+                        message += f"📋 *{data.get('title', 'Без названия')}*\n"
+                        message += f"💰 {to_number(data.get('price')) or 0:,.0f} ₽\n"
+                        message += f"📍 {data.get('location', 'Не указано')}\n"
+                        if data.get('area'):
+                            message += f"📐 {data.get('area')} м²\n"
+                        if data.get('phone'):
+                            message += f"📱 {data.get('phone')}\n"
+                        if data.get('contact_name'):
+                            message += f"👤 {data.get('contact_name')}\n"
+                        message += f"\n✅ Требуется модерация в админ-панели"
+                        
+                        requests.post(
+                            f'https://api.telegram.org/bot{bot_token}/sendMessage',
+                            json={'chat_id': chat_id, 'text': message, 'parse_mode': 'Markdown'},
+                            timeout=5
+                        )
+                except Exception as e:
+                    print(f'Telegram notification error: {e}')
+            
+            # Автопостинг в Telegram и VK (только для активных объявлений)
+            if data.get('is_active', True):
+                try:
+                    import requests
+                    
+                    # Формируем URL для просмотра объекта
+                    property_url = f"https://{event.get('headers', {}).get('Host', 'xn--80ajijbmjhop8h.xn--p1ai')}/property/{property_id}"
+                    
+                    autopost_data = {
+                        'property_id': property_id,
+                        'title': data.get('title'),
+                        'price': to_number(data.get('price')) or 0,
+                        'location': data.get('location'),
+                        'area': to_number(data.get('area')),
+                        'rooms': to_number(data.get('rooms')),
+                        'photo_url': photos[0] if photos else None,
+                        'property_url': property_url
+                    }
+                    
+                    # Вызываем функцию автопостинга
+                    requests.post(
+                        'https://functions.poehali.dev/4fd2d8f0-f94b-4d4b-8156-16b0e7ea6bb2',
+                        json=autopost_data,
+                        timeout=5
+                    )
+                except Exception as e:
+                    # Не прерываем выполнение, если автопостинг не сработал
+                    print(f'Autopost error: {e}')
             
             return {
                 'statusCode': 201,
