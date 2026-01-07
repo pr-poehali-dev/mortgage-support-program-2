@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
+  const [progress, setProgress] = useState(100);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +20,17 @@ export default function CookieConsent() {
         setIsVisible(false);
       }, 10000);
 
-      return () => clearTimeout(autoAcceptTimer);
+      const progressInterval = setInterval(() => {
+        setProgress((prev) => {
+          const newProgress = prev - 1;
+          return newProgress <= 0 ? 0 : newProgress;
+        });
+      }, 100);
+
+      return () => {
+        clearTimeout(autoAcceptTimer);
+        clearInterval(progressInterval);
+      };
     }
   }, []);
 
@@ -39,7 +50,13 @@ export default function CookieConsent() {
 
   return (
     <div className="fixed bottom-4 right-4 z-[100] max-w-sm animate-in slide-in-from-bottom-4 fade-in duration-300">
-      <Card className="bg-white shadow-lg border-2">
+      <Card className="bg-white shadow-lg border-2 overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gray-100">
+          <div 
+            className="h-full bg-primary transition-all duration-100 ease-linear"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
         <div className="p-4">
           <div className="flex items-start gap-3 mb-3">
             <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
