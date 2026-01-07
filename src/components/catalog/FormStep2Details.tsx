@@ -256,9 +256,9 @@ export default function FormStep2Details({ formData, setFormData, setCurrentStep
         </div>
         
         <div className="col-span-2">
-          <Label>Ссылка на видео Rutube</Label>
+          <Label>Ссылка на видео Rutube (необязательно)</Label>
           <Input
-            type="url"
+            type="text"
             value={formData.rutube_link}
             onChange={(e) => setFormData({ ...formData, rutube_link: e.target.value })}
             placeholder="https://rutube.ru/video/..."
