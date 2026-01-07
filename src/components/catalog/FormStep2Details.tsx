@@ -234,6 +234,38 @@ export default function FormStep2Details({ formData, setFormData, setCurrentStep
         ) : null}
       </div>
 
+      <div className="grid grid-cols-2 gap-4 pt-4 border-t">
+        <div>
+          <Label>ФИО контакта</Label>
+          <Input
+            type="text"
+            value={formData.contact_name}
+            onChange={(e) => setFormData({ ...formData, contact_name: e.target.value })}
+            placeholder="Николаев Дмитрий Юрьевич"
+          />
+        </div>
+        
+        <div>
+          <Label>Телефон</Label>
+          <Input
+            type="tel"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            placeholder="+7 978 128-18-50"
+          />
+        </div>
+        
+        <div className="col-span-2">
+          <Label>Ссылка на видео Rutube</Label>
+          <Input
+            type="url"
+            value={formData.rutube_link}
+            onChange={(e) => setFormData({ ...formData, rutube_link: e.target.value })}
+            placeholder="https://rutube.ru/video/..."
+          />
+        </div>
+      </div>
+
       <div className="flex justify-between">
         <Button type="button" variant="outline" onClick={() => setCurrentStep(1)}>
           <Icon name="ChevronLeft" size={16} className="mr-1" /> Назад

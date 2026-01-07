@@ -57,7 +57,7 @@ export function useAdminLogic() {
     operation: 'sale', price: '', location: '', area: '', rooms: '',
     floor: '', total_floors: '', land_area: '', photo_url: '',
     photos: [] as string[], description: '', property_link: '',
-    phone: '', building_type: '', renovation: '', bathroom: '',
+    phone: '', contact_name: '', rutube_link: '', building_type: '', renovation: '', bathroom: '',
     balcony: '', furniture: false, pets_allowed: false,
     children_allowed: true, utilities_included: false,
     wall_material: '', contact_method: 'phone'
@@ -230,6 +230,8 @@ export function useAdminLogic() {
         description: formData.description,
         property_link: formData.property_link,
         phone: formData.phone,
+        contact_name: formData.contact_name,
+        rutube_link: formData.rutube_link,
         building_type: formData.building_type,
         renovation: formData.renovation,
         bathroom: formData.bathroom,
@@ -263,7 +265,7 @@ export function useAdminLogic() {
           operation: 'sale', price: '', location: '', area: '', rooms: '',
           floor: '', total_floors: '', land_area: '', photo_url: '',
           photos: [], description: '', property_link: '',
-          phone: '', building_type: '', renovation: '', bathroom: '',
+          phone: '', contact_name: '', rutube_link: '', building_type: '', renovation: '', bathroom: '',
           balcony: '', furniture: false, pets_allowed: false,
           children_allowed: true, utilities_included: false,
           wall_material: '', contact_method: 'phone'

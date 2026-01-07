@@ -139,10 +139,10 @@ def handler(event: dict, context) -> dict:
             cur.execute('''
                 INSERT INTO t_p26758318_mortgage_support_pro.manual_properties 
                 (title, type, property_category, operation, price, location, area, rooms, floor, total_floors, land_area, 
-                 photo_url, photos, description, features, property_link, price_type, phone, 
+                 photo_url, photos, description, features, property_link, price_type, phone, contact_name,
                  building_type, renovation, bathroom, balcony, furniture, pets_allowed, children_allowed, 
-                 utilities_included, wall_material, contact_method, is_active, created_at, updated_at)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, true, NOW(), NOW())
+                 utilities_included, wall_material, contact_method, rutube_link, is_active, created_at, updated_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, true, NOW(), NOW())
                 RETURNING id
             ''', (
                 data.get('title'),
@@ -163,6 +163,7 @@ def handler(event: dict, context) -> dict:
                 data.get('property_link') or None,
                 data.get('price_type', 'total'),
                 data.get('phone') or None,
+                data.get('contact_name') or None,
                 data.get('building_type') or None,
                 data.get('renovation') or None,
                 data.get('bathroom') or None,
@@ -172,7 +173,8 @@ def handler(event: dict, context) -> dict:
                 data.get('children_allowed', True),
                 data.get('utilities_included', False),
                 data.get('wall_material') or None,
-                data.get('contact_method', 'phone')
+                data.get('contact_method', 'phone'),
+                data.get('rutube_link') or None
             ))
             
             property_id = cur.fetchone()['id']
@@ -213,10 +215,10 @@ def handler(event: dict, context) -> dict:
                 SET title = %s, type = %s, property_category = %s, operation = %s, price = %s, location = %s, area = %s, 
                     rooms = %s, floor = %s, total_floors = %s, land_area = %s, 
                     photo_url = %s, photos = %s, description = %s, features = %s, property_link = %s, 
-                    price_type = %s, phone = %s,
+                    price_type = %s, phone = %s, contact_name = %s,
                     building_type = %s, renovation = %s, bathroom = %s, balcony = %s,
                     furniture = %s, pets_allowed = %s, children_allowed = %s, utilities_included = %s,
-                    wall_material = %s, contact_method = %s, updated_at = NOW()
+                    wall_material = %s, contact_method = %s, rutube_link = %s, updated_at = NOW()
                 WHERE id = %s
             ''', (
                 data.get('title'),
@@ -247,6 +249,8 @@ def handler(event: dict, context) -> dict:
                 data.get('utilities_included', False),
                 data.get('wall_material') or None,
                 data.get('contact_method', 'phone'),
+                data.get('rutube_link') or None,
+                data.get('contact_name') or None,
                 property_id
             ))
             conn.commit()

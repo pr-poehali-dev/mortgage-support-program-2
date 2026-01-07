@@ -23,6 +23,8 @@ interface Property {
   photos?: string[];
   description?: string;
   phone?: string;
+  contact_name?: string;
+  rutube_link?: string;
   building_type?: string;
   renovation?: string;
   bathroom?: string;
@@ -213,33 +215,39 @@ export default function PropertyView() {
             {/* Карта */}
             <div>
               <h3 className="font-semibold text-lg mb-3">Местоположение</h3>
-              <div className="rounded-lg overflow-hidden border">
+              <a 
+                href={`https://yandex.ru/maps/?text=${encodeURIComponent(property.location)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block rounded-lg overflow-hidden border hover:opacity-90 transition-opacity cursor-pointer"
+              >
                 <iframe
                   src={`https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(property.location)}&z=14`}
                   width="100%"
                   height="400"
                   frameBorder="0"
-                  allowFullScreen
-                  style={{ position: 'relative' }}
+                  style={{ position: 'relative', pointerEvents: 'none' }}
                 />
-              </div>
+              </a>
             </div>
 
             {/* Видео Rutube */}
-            <div>
-              <h3 className="font-semibold text-lg mb-3">Видео обзор района</h3>
-              <div className="rounded-lg overflow-hidden border bg-gray-100 aspect-video flex items-center justify-center">
-                <a
-                  href="https://rutube.ru/channel/23903195/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-3 p-6 hover:scale-105 transition-transform"
-                >
-                  <Icon name="Video" size={48} className="text-primary" />
-                  <span className="text-lg font-semibold text-gray-700">Смотреть видео на Rutube</span>
-                </a>
+            {property.rutube_link && (
+              <div>
+                <h3 className="font-semibold text-lg mb-3">Видео обзор</h3>
+                <div className="rounded-lg overflow-hidden border bg-gray-100 aspect-video flex items-center justify-center">
+                  <a
+                    href={property.rutube_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col items-center gap-3 p-6 hover:scale-105 transition-transform"
+                  >
+                    <Icon name="Video" size={48} className="text-primary" />
+                    <span className="text-lg font-semibold text-gray-700">Смотреть видео на Rutube</span>
+                  </a>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Кнопки действий */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
@@ -263,9 +271,84 @@ export default function PropertyView() {
               <Button size="lg" variant="secondary" className="gap-2" asChild>
                 <a href={`tel:${property.phone || '+79781281850'}`}>
                   <Icon name="Phone" size={20} />
-                  Позвонить
+                  {property.contact_name ? `Позвонить ${property.contact_name}` : 'Позвонить'}
                 </a>
               </Button>
+            </div>
+            
+            {/* Кнопки репоста */}
+            <div className="pt-4 border-t">
+              <h3 className="font-semibold mb-3">Поделиться объявлением</h3>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => {
+                    const url = window.location.href;
+                    const text = `${property.title} - ${property.price.toLocaleString('ru-RU')} ₽`;
+                    window.open(`https://vk.com/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`, '_blank');
+                  }}
+                >
+                  <Icon name="Share2" size={16} />
+                  ВКонтакте
+                </Button>
+                
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => {
+                    const url = window.location.href;
+                    const text = `${property.title} - ${property.price.toLocaleString('ru-RU')} ₽`;
+                    window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+                  }}
+                >
+                  <Icon name="Send" size={16} />
+                  Telegram
+                </Button>
+                
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => {
+                    const url = window.location.href;
+                    const text = `${property.title} - ${property.price.toLocaleString('ru-RU')} ₽`;
+                    window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+                  }}
+                >
+                  <Icon name="MessageCircle" size={16} />
+                  WhatsApp
+                </Button>
+                
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => {
+                    const url = window.location.href;
+                    const text = `${property.title} - ${property.price.toLocaleString('ru-RU')} ₽`;
+                    window.open(`https://connect.ok.ru/offer?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`, '_blank');
+                  }}
+                >
+                  <Icon name="Circle" size={16} />
+                  Одноклассники
+                </Button>
+                
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    alert('Ссылка скопирована!');
+                  }}
+                >
+                  <Icon name="Copy" size={16} />
+                  Скопировать ссылку
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>
