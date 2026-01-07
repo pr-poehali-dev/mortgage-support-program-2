@@ -83,42 +83,43 @@ export default function PropertyView() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10">
-      <div className="container mx-auto p-4 space-y-6">
+      <div className="container mx-auto p-3 sm:p-4 space-y-4 sm:space-y-6">
         {/* Хедер с кнопкой назад */}
-        <div className="flex items-center gap-4">
-          <Button onClick={() => navigate('/')} variant="outline" className="gap-2">
+        <div className="flex items-center gap-2 sm:gap-4">
+          <Button onClick={() => navigate('/')} variant="outline" className="gap-1.5 sm:gap-2 text-sm">
             <Icon name="ArrowLeft" size={16} />
-            Назад к объектам
+            <span className="hidden sm:inline">Назад к объектам</span>
+            <span className="sm:hidden">Назад</span>
           </Button>
         </div>
 
         {/* Основная информация */}
         <Card>
-          <CardHeader>
-            <div className="flex items-start justify-between gap-4">
+          <CardHeader className="p-3 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
               <div className="flex-1">
-                <CardTitle className="text-3xl mb-2">{property.title}</CardTitle>
-                <div className="flex items-center gap-2 text-gray-600">
+                <CardTitle className="text-xl sm:text-2xl lg:text-3xl mb-2">{property.title}</CardTitle>
+                <div className="flex items-center gap-2 text-sm sm:text-base text-gray-600">
                   <Icon name="MapPin" size={16} />
                   <span>{property.location}</span>
                 </div>
               </div>
-              <div className="text-right">
-                <div className="text-3xl font-bold text-primary">
+              <div className="sm:text-right">
+                <div className="text-2xl sm:text-3xl font-bold text-primary">
                   {property.price.toLocaleString('ru-RU')} ₽
                 </div>
                 {property.operation && (
-                  <div className="mt-1 text-sm text-gray-600">
+                  <div className="mt-1 text-xs sm:text-sm text-gray-600">
                     {property.operation === 'sale' ? 'Продажа' : property.operation === 'rent' ? 'Аренда' : 'Посуточно'}
                   </div>
                 )}
               </div>
             </div>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-4 sm:space-y-6 p-3 sm:p-6">
             {/* Галерея фото */}
             {photos.length > 0 && (
-              <div className="space-y-4">
+              <div className="space-y-2 sm:space-y-4">
                 <div className="relative rounded-lg overflow-hidden bg-gray-100 aspect-video">
                   <img 
                     src={photos[currentPhotoIndex]} 
@@ -129,17 +130,17 @@ export default function PropertyView() {
                     <>
                       <button
                         onClick={() => setCurrentPhotoIndex((currentPhotoIndex - 1 + photos.length) % photos.length)}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all"
+                        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 sm:p-3 rounded-full shadow-lg transition-all touch-manipulation"
                       >
-                        <Icon name="ChevronLeft" size={24} />
+                        <Icon name="ChevronLeft" size={20} className="sm:w-6 sm:h-6" />
                       </button>
                       <button
                         onClick={() => setCurrentPhotoIndex((currentPhotoIndex + 1) % photos.length)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all"
+                        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 sm:p-3 rounded-full shadow-lg transition-all touch-manipulation"
                       >
-                        <Icon name="ChevronRight" size={24} />
+                        <Icon name="ChevronRight" size={20} className="sm:w-6 sm:h-6" />
                       </button>
-                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
+                      <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm">
                         {currentPhotoIndex + 1} / {photos.length}
                       </div>
                     </>
@@ -147,12 +148,12 @@ export default function PropertyView() {
                 </div>
                 
                 {photos.length > 1 && (
-                  <div className="grid grid-cols-6 md:grid-cols-10 gap-2">
+                  <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-10 gap-1.5 sm:gap-2">
                     {photos.map((photo, index) => (
                       <button
                         key={index}
                         onClick={() => setCurrentPhotoIndex(index)}
-                        className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                        className={`aspect-square rounded-md sm:rounded-lg overflow-hidden border-2 transition-all touch-manipulation ${
                           index === currentPhotoIndex ? 'border-primary scale-95' : 'border-transparent hover:border-gray-300'
                         }`}
                       >
@@ -165,7 +166,7 @@ export default function PropertyView() {
             )}
 
             {/* Характеристики */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-4 border-y">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 py-3 sm:py-4 border-y">
               {property.area && (
                 <div className="flex items-center gap-2">
                   <Icon name="Home" size={20} className="text-primary" />

@@ -52,7 +52,7 @@ export default function PropertyCard({ property, onView, isAdmin = false }: Prop
 
   return (
     <Card className="hover:shadow-xl transition-all overflow-hidden cursor-pointer" onClick={handleClick}>
-      <div className="relative h-48 overflow-hidden group">
+      <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden group">
         <img 
           src={photos[currentPhotoIndex]} 
           alt={property.title}
@@ -62,34 +62,34 @@ export default function PropertyCard({ property, onView, isAdmin = false }: Prop
           <>
             <button
               onClick={(e) => { e.stopPropagation(); prevPhoto(); }}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity touch-manipulation"
             >
-              <Icon name="ChevronLeft" size={20} />
+              <Icon name="ChevronLeft" size={18} className="sm:w-5 sm:h-5" />
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); nextPhoto(); }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity touch-manipulation"
             >
-              <Icon name="ChevronRight" size={20} />
+              <Icon name="ChevronRight" size={18} className="sm:w-5 sm:h-5" />
             </button>
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+            <div className="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 bg-black/50 text-white text-xs px-2 py-1 rounded">
               {currentPhotoIndex + 1} / {photos.length}
             </div>
           </>
         )}
-        <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg">
-          <p className="font-bold text-primary text-lg">{property.price.toLocaleString('ru-RU')} ₽</p>
+        <div className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-white/90 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg">
+          <p className="font-bold text-primary text-sm sm:text-base lg:text-lg">{property.price.toLocaleString('ru-RU')} ₽</p>
         </div>
       </div>
-      <CardHeader>
-        <CardTitle className="text-xl">{property.title}</CardTitle>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+      <CardHeader className="p-3 sm:p-6">
+        <CardTitle className="text-base sm:text-lg lg:text-xl">{property.title}</CardTitle>
+        <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600">
           <Icon name="MapPin" size={14} />
-          <span>{property.location}</span>
+          <span className="line-clamp-1">{property.location}</span>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="flex flex-wrap gap-3 text-sm">
+      <CardContent className="space-y-3 sm:space-y-4 p-3 sm:p-6 pt-0">
+        <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm">
           {property.area && (
             <div className="flex items-center gap-1.5">
               <Icon name="Maximize" size={14} className="text-gray-400" />

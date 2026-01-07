@@ -339,75 +339,74 @@ export default function AdminProperties() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10">
-      <div className="container mx-auto p-4 sm:p-6 space-y-6">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
               Управление объектами
             </h1>
-            <p className="text-gray-600 mt-1">Все объекты недвижимости на сайте</p>
+            <p className="text-sm sm:text-base text-gray-600 mt-1">Все объекты недвижимости на сайте</p>
           </div>
           <Button
             onClick={() => navigate('/admin')}
             variant="outline"
-            className="gap-2"
+            className="gap-1.5 sm:gap-2 w-full sm:w-auto"
           >
             <Icon name="ArrowLeft" size={16} />
             Назад
           </Button>
         </div>
 
-        <div className="flex flex-wrap gap-3 items-center justify-between">
-          <div className="flex flex-wrap gap-3">
-            <Button
-              onClick={openCreateDialog}
-              className="gap-2"
-              size="lg"
-            >
-              <Icon name="Plus" size={18} />
-              Добавить объект
-            </Button>
-          </div>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:items-center sm:justify-between">
+          <Button
+            onClick={openCreateDialog}
+            className="gap-2 w-full sm:w-auto"
+            size="lg"
+          >
+            <Icon name="Plus" size={18} />
+            Добавить объект
+          </Button>
           {properties.length > 0 && (
             <Button
               onClick={handleDeleteAll}
               variant="destructive"
-              className="gap-2"
+              className="gap-2 w-full sm:w-auto"
               size="lg"
             >
               <Icon name="Trash2" size={18} />
-              Удалить все ({properties.length})
+              <span className="hidden sm:inline">Удалить все ({properties.length})</span>
+              <span className="sm:hidden">Удалить все ({properties.length})</span>
             </Button>
           )}
         </div>
 
         {loading ? (
-          <div className="text-center py-12">
-            <Icon name="Loader2" size={64} className="mx-auto animate-spin text-primary" />
+          <div className="text-center py-8 sm:py-12">
+            <Icon name="Loader2" size={48} className="sm:w-16 sm:h-16 mx-auto animate-spin text-primary" />
           </div>
         ) : properties.length === 0 ? (
           <Card>
-            <CardContent className="text-center py-12">
-              <Icon name="Building2" size={64} className="mx-auto text-gray-300 mb-4" />
-              <p className="text-gray-600">Нет добавленных объектов</p>
-              <Button onClick={openCreateDialog} className="mt-4 gap-2">
+            <CardContent className="text-center py-8 sm:py-12 p-4 sm:p-6">
+              <Icon name="Building2" size={48} className="sm:w-16 sm:h-16 mx-auto text-gray-300 mb-3 sm:mb-4" />
+              <p className="text-sm sm:text-base text-gray-600">Нет добавленных объектов</p>
+              <Button onClick={openCreateDialog} className="mt-3 sm:mt-4 gap-2 w-full sm:w-auto">
                 <Icon name="Plus" size={16} />
                 Добавить первый объект
               </Button>
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {properties.map((property) => (
               <Card key={property.id} className="hover:shadow-lg transition-shadow">
-                <div className="relative h-48 overflow-hidden">
+                <div className="relative h-40 sm:h-48 overflow-hidden">
                   <img 
                     src={property.photos?.[0] || property.photo_url || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80'} 
                     alt={property.title}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg">
-                    <p className="font-bold text-primary">{property.price.toLocaleString('ru-RU')} ₽</p>
+                  <div className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-white/90 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg">
+                    <p className="font-bold text-primary text-sm sm:text-base">{property.price.toLocaleString('ru-RU')} ₽</p>
                   </div>
                   {property.operation && (
                     <div className="absolute top-3 left-3 bg-primary/90 backdrop-blur-sm px-2 py-1 rounded text-white text-xs font-medium">
