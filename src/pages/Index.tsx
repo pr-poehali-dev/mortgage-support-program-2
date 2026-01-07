@@ -73,7 +73,7 @@ export default function Index() {
                   className="h-7 sm:h-10 px-2 sm:px-6 text-[10px] sm:text-sm whitespace-nowrap"
                 >
                   <Icon name="UserPlus" className="mr-1 sm:mr-1.5" size={14} />
-                  Регистрация
+                  Заявка на ипотеку
                 </Button>
                 <Button
                   onClick={() => navigate('/add-property')}
