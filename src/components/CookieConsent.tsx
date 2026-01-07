@@ -13,6 +13,13 @@ export default function CookieConsent() {
     
     if (!hasConsent) {
       setIsVisible(true);
+      
+      const autoAcceptTimer = setTimeout(() => {
+        localStorage.setItem('cookie-consent', 'accepted');
+        setIsVisible(false);
+      }, 10000);
+
+      return () => clearTimeout(autoAcceptTimer);
     }
   }, []);
 
