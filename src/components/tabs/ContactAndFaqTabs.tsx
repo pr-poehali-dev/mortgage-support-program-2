@@ -32,13 +32,13 @@ export default function ContactAndFaqTabs() {
       </TabsContent>
 
       <TabsContent value="contact" className="space-y-4 sm:space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-2xl">Свяжитесь с нами</CardTitle>
-              <CardDescription>Получите бесплатную консультацию по ипотеке</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="text-3xl">Контакты</CardTitle>
+            <CardDescription>Свяжитесь с нами любым удобным способом</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
                   <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
@@ -117,16 +117,6 @@ export default function ContactAndFaqTabs() {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                  <div className="w-12 h-12 bg-gray-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Icon name="MapPin" className="text-white" size={24} />
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Адрес офиса</p>
-                    <p className="font-semibold text-gray-900">г. Севастополь, ул. Гоголя, 20А</p>
-                  </div>
-                </div>
-
                 <a
                   href="mailto:ipoteka_krym@mail.ru"
                   className="flex items-center gap-4 p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors group"
@@ -171,8 +161,8 @@ export default function ContactAndFaqTabs() {
                 </a>
               </div>
 
-              <div className="border-t pt-6">
-                <h4 className="font-semibold mb-3">Мы в социальных сетях:</h4>
+              <div>
+                <h4 className="font-semibold text-lg mb-4">Мы в социальных сетях</h4>
                 <div className="grid grid-cols-2 gap-3">
                   <a
                     href="https://vk.com/arendodatel"
@@ -206,21 +196,8 @@ export default function ContactAndFaqTabs() {
                 </div>
               </div>
 
-              <div className="border-t pt-6">
-                <h4 className="font-semibold mb-3">Наш рейтинг:</h4>
-                <div className="flex justify-center">
-                  <iframe 
-                    src="https://yandex.ru/sprav/widget/rating-badge/81713615933?type=award" 
-                    width="150" 
-                    height="50" 
-                    frameBorder="0"
-                    title="Награда Яндекс.Карт"
-                  ></iframe>
-                </div>
-              </div>
-
-              <div className="border-t pt-6">
-                <h4 className="font-semibold mb-3">Наши услуги:</h4>
+              <div className="mt-6">
+                <h4 className="font-semibold text-lg mb-4">Наши услуги</h4>
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2">
                     <Icon name="CheckCircle2" className="text-green-600 flex-shrink-0 mt-1" size={18} />
@@ -240,15 +217,16 @@ export default function ContactAndFaqTabs() {
                   </li>
                 </ul>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </CardContent>
+        </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-2xl">Где мы находимся</CardTitle>
-              <CardDescription>Наш офис на карте Севастополя</CardDescription>
-            </CardHeader>
-            <CardContent>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">Где мы находимся</CardTitle>
+            <CardDescription>г. Севастополь, ул. Гоголя, 20А</CardDescription>
+          </CardHeader>
+          <CardContent>
               <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '8px' }}>
                 <a 
                   href="https://yandex.ru/maps/org/arendodatel/81713615933/?utm_medium=mapframe&utm_source=maps" 
@@ -276,6 +254,16 @@ export default function ContactAndFaqTabs() {
                   allowFullScreen={true}
                   style={{ position: 'relative' }}
                   title="Карта офиса"
+                ></iframe>
+              </div>
+
+              <div className="mt-4 flex justify-center">
+                <iframe 
+                  src="https://yandex.ru/sprav/widget/rating-badge/81713615933?type=award" 
+                  width="150" 
+                  height="50" 
+                  frameBorder="0"
+                  title="Награда Яндекс.Карт"
                 ></iframe>
               </div>
             </CardContent>
