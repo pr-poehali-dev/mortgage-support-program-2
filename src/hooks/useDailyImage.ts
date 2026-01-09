@@ -2,39 +2,39 @@ import { useEffect, useState } from 'react';
 
 const images = [
   {
-    url: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/31597f26-2abe-48c6-949c-e47169e4f980.jpg',
-    alt: 'Счастливая семья с ключами от нового дома',
-    title: 'Ваша мечта об идеальном доме'
+    url: 'https://images.unsplash.com/photo-1586276393635-5ecd8a851acc?w=1600&q=80',
+    alt: 'Панорама Севастополя с видом на бухту',
+    title: 'Севастополь — город-герой у моря'
   },
   {
-    url: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/a9b2b7d3-08f2-4654-8846-305e6e4e4a72.jpg',
-    alt: 'Современный интерьер квартиры',
-    title: 'Комфортное пространство для жизни'
+    url: 'https://images.unsplash.com/photo-1598894116651-29f7b3fc4f2d?w=1600&q=80',
+    alt: 'Набережная Севастополя на закате',
+    title: 'Жизнь у Черного моря в Крыму'
   },
   {
-    url: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/8976bf92-c0d9-4853-9e1c-47f1952c59d1.jpg',
-    alt: 'Красивый загородный дом',
-    title: 'Собственный дом вашей мечты'
+    url: 'https://images.unsplash.com/photo-1573052905904-34ad8c27f0cc?w=1600&q=80',
+    alt: 'Крымские горы и побережье',
+    title: 'Крым — жемчужина у моря'
   },
   {
-    url: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/bc4b1b3e-67f2-494f-8372-c623ca361322.jpg',
-    alt: 'Подписание ипотечных документов',
-    title: 'Профессиональное сопровождение сделки'
+    url: 'https://images.unsplash.com/photo-1580837119756-563d608dd119?w=1600&q=80',
+    alt: 'Южный берег Крыма',
+    title: 'Недвижимость на ЮБК'
   },
   {
-    url: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/1a3d4d0e-d793-46f3-b868-e1af25dbd70b.jpg',
-    alt: 'Новый жилой комплекс',
-    title: 'Современные жилые комплексы'
+    url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1600&q=80',
+    alt: 'Современные дома в Севастополе',
+    title: 'Современное жильё в Севастополе'
   },
   {
-    url: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/886057d5-d836-4f1c-a498-6804269c9d75.jpg',
-    alt: 'Ключи и ипотечные документы',
-    title: 'Простое оформление ипотеки'
+    url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600&q=80',
+    alt: 'Морской вид на побережье Крыма',
+    title: 'Дом с видом на море в Крыму'
   },
   {
-    url: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/c837d9b9-ac83-44cb-a474-f4147ea5dce3.jpg',
-    alt: 'Недвижимость в Крыму у моря',
-    title: 'Жильё в Крыму у моря'
+    url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80',
+    alt: 'Уютный дом на побережье',
+    title: 'Жильё вашей мечты в Крыму'
   }
 ];
 
