@@ -12,6 +12,7 @@ import PropertyView from "./pages/PropertyView";
 import Register from "./pages/Register";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AddProperty from "./pages/AddProperty";
+import ReviewsAdmin from "./pages/ReviewsAdmin";
 import NotFound from "./pages/NotFound";
 import AnalyticsProvider from "./components/analytics/AnalyticsProvider";
 import { useAnalytics } from "./hooks/useAnalytics";
@@ -33,6 +34,7 @@ function AppContent() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/articles" element={<AdminArticles />} />
           <Route path="/admin/properties" element={<AdminProperties />} />
+          <Route path="/admin/reviews" element={<ReviewsAdmin />} />
           <Route path="/register" element={<Register />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/add-property" element={<AddProperty />} />

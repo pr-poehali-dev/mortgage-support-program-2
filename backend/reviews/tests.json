@@ -1,0 +1,30 @@
+{
+  "tests": [
+    {
+      "name": "Get approved reviews (public)",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "reviews": "array"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Create new review",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "author_name": "Иван Петров",
+        "rating": 5,
+        "review_text": "Отличный сервис! Помогли быстро решить все вопросы."
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "message": "string",
+        "id": "number"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

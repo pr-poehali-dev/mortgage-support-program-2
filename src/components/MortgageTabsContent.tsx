@@ -8,6 +8,8 @@ import ContactAndFaqTabs from './tabs/ContactAndFaqTabs';
 import VideosTab from './tabs/VideosTab';
 import HomeTab from './HomeTab';
 import DailyHeroImage from './DailyHeroImage';
+import ReviewsSection from './ReviewsSection';
+import ReviewForm from './ReviewForm';
 
 export default function MortgageTabsContent({ onNavigateToCalculator }: { onNavigateToCalculator: () => void }) {
   return (
@@ -16,6 +18,8 @@ export default function MortgageTabsContent({ onNavigateToCalculator }: { onNavi
         <DailyHeroImage />
         <MortgageQuiz onNavigateToCalculator={onNavigateToCalculator} />
         <HomeTab />
+        <ReviewsSection />
+        <ReviewForm />
       </TabsContent>
 
       <ProgramsAndComparisonTabs />
