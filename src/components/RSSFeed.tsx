@@ -156,10 +156,10 @@ export default function RSSFeed() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2">
-          <Icon name="Newspaper" size={32} className="text-blue-600" />
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+        <h2 className="text-lg sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+          <Icon name="Newspaper" size={24} className="text-blue-600 sm:w-8 sm:h-8" />
           Новости ипотеки
         </h2>
         <button
@@ -172,13 +172,13 @@ export default function RSSFeed() {
       </div>
 
       <div className="relative">
-        <Icon name="Search" size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <Icon name="Search" size={18} className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 text-gray-400" />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Поиск по новостям..."
-          className="w-full pl-10 pr-10 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
+          className="w-full pl-8 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
         />
         {searchQuery && (
           <button
@@ -190,16 +190,16 @@ export default function RSSFeed() {
         )}
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
         {availableSources.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-semibold text-gray-700 flex items-center gap-1">
-              <Icon name="Filter" size={16} />
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <span className="text-xs sm:text-sm font-semibold text-gray-700 flex items-center gap-1">
+              <Icon name="Filter" size={14} className="sm:w-4 sm:h-4" />
               Источники:
             </span>
           <button
             onClick={clearFilters}
-            className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors ${
+            className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-semibold transition-colors ${
               selectedSources.length === 0
                 ? 'bg-blue-600 text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -211,7 +211,7 @@ export default function RSSFeed() {
             <button
               key={source}
               onClick={() => toggleSource(source)}
-              className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors ${
+              className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-semibold transition-colors ${
                 selectedSources.includes(source)
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -223,9 +223,9 @@ export default function RSSFeed() {
           </div>
         )}
 
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-semibold text-gray-700 flex items-center gap-1">
-            <Icon name="ArrowUpDown" size={16} />
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+          <span className="text-xs sm:text-sm font-semibold text-gray-700 flex items-center gap-1">
+            <Icon name="ArrowUpDown" size={14} className="sm:w-4 sm:h-4" />
             Сортировка:
           </span>
           <button
@@ -240,7 +240,7 @@ export default function RSSFeed() {
           </button>
           <button
             onClick={() => setSortOrder('oldest')}
-            className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors ${
+            className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-semibold transition-colors ${
               sortOrder === 'oldest'
                 ? 'bg-purple-600 text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -250,7 +250,7 @@ export default function RSSFeed() {
           </button>
           <button
             onClick={() => setSortOrder('source')}
-            className={`px-3 py-1 rounded-full text-sm font-semibold transition-colors ${
+            className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-semibold transition-colors ${
               sortOrder === 'source'
                 ? 'bg-purple-600 text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -290,7 +290,7 @@ export default function RSSFeed() {
           </div>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {sortedArticles.map((article, index) => (
           <a
             key={index}
@@ -320,13 +320,13 @@ export default function RSSFeed() {
                 </div>
               )}
               
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 {!article.image && (
-                  <div className="flex items-start justify-between mb-3">
-                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+                  <div className="flex items-start justify-between mb-2 sm:mb-3">
+                    <span className="text-[10px] sm:text-xs font-semibold text-blue-600 bg-blue-50 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full">
                       {article.source}
                     </span>
-                    <span className="text-xs text-gray-500">{formatDate(article.pubDate)}</span>
+                    <span className="text-[10px] sm:text-xs text-gray-500">{formatDate(article.pubDate)}</span>
                   </div>
                 )}
                 

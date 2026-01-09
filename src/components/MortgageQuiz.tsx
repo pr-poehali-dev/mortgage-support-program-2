@@ -94,23 +94,23 @@ export default function MortgageQuiz({ onNavigateToCalculator }: MortgageQuizPro
   };
 
   return (
-    <section className="mb-8 sm:mb-12 text-center">
-      <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent px-2">
+    <section className="mb-4 sm:mb-8 text-center">
+      <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent px-2">
         Найдите свою ипотеку за 3 вопроса
       </h2>
-      <p className="text-base sm:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
+      <p className="text-sm sm:text-lg text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">
         Подберём оптимальную программу на основе вашей ситуации
       </p>
       
       <Dialog>
         <DialogTrigger asChild>
-          <Button size="lg" className="text-sm sm:text-lg px-4 sm:px-8 py-4 sm:py-6 hover:scale-105 transition-transform w-full sm:w-auto max-w-md mx-auto">
-            <Icon name="MessageSquare" className="mr-2" size={18} />
+          <Button size="lg" className="text-xs sm:text-base px-3 sm:px-6 py-3 sm:py-5 hover:scale-105 transition-transform w-full sm:w-auto max-w-md mx-auto">
+            <Icon name="MessageSquare" className="mr-1.5 sm:mr-2" size={16} />
             <span className="hidden sm:inline">Пройти опрос — подобрать программу</span>
             <span className="sm:hidden">Подобрать программу</span>
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl">Подбор ипотечной программы</DialogTitle>
             <DialogDescription>
@@ -136,18 +136,18 @@ export default function MortgageQuiz({ onNavigateToCalculator }: MortgageQuizPro
               
               <h3 className="text-xl font-semibold mb-4">{quizQuestions[quizStep].question}</h3>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 {quizQuestions[quizStep].options.map((option) => (
                   <Card
                     key={option.value}
                     className="cursor-pointer hover:shadow-lg transition-all hover:scale-105 border-2 hover:border-primary"
                     onClick={() => handleQuizAnswer(quizQuestions[quizStep].id, option.value)}
                   >
-                    <CardContent className="flex items-center gap-4 p-6">
-                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <Icon name={option.icon} className="text-primary" size={24} />
+                    <CardContent className="flex items-center gap-3 sm:gap-4 p-4 sm:p-6">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Icon name={option.icon} className="text-primary" size={20} />
                       </div>
-                      <span className="font-medium">{option.label}</span>
+                      <span className="font-medium text-sm sm:text-base">{option.label}</span>
                     </CardContent>
                   </Card>
                 ))}

@@ -8,7 +8,7 @@ export default function HomeTab() {
   const { video } = useLatestRutubeVideo();
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-6 md:space-y-8">
       <HeroSection video={video} />
       <AdvantagesSection />
       <RSSFeed />

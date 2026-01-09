@@ -91,8 +91,8 @@ export default function RegionsMapSection() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8">
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+    <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl sm:rounded-2xl p-4 sm:p-8">
+      <h2 className="text-lg sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
         Работаю во всех районах Крыма
       </h2>
       
