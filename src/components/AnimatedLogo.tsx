@@ -23,13 +23,20 @@ export default function AnimatedLogo({ src, alt, className, onClick }: AnimatedL
   }, []);
 
   return (
-    <div className={`logo-container ${animate ? 'animate-smoke' : ''}`}>
+    <div className="logo-animated-wrapper" onClick={onClick}>
       <img 
         src={src}
         alt={alt}
         className={className}
-        onClick={onClick}
       />
+      <div className={`smoke-overlay ${animate ? 'animate' : ''}`}>
+        <img 
+          src={src}
+          alt=""
+          className={className}
+          aria-hidden="true"
+        />
+      </div>
     </div>
   );
 }
