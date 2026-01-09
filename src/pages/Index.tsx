@@ -167,103 +167,140 @@ export default function Index() {
         </Tabs>
       </main>
 
-      <footer className="bg-gray-900 text-white mt-8 sm:mt-16 py-6 sm:py-8">
-        <div className="container mx-auto px-3 sm:px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
-            <div className="space-y-2">
+      <footer className="bg-gray-900 text-white mt-8 sm:mt-12 py-8 sm:py-12">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+            <div>
               <AnimatedLogo
                 src="https://cdn.poehali.dev/files/с дескриптором белый вариант (1).png"
                 alt="Арендодатель"
-                className="h-12 sm:h-14 w-auto object-contain"
+                className="h-12 w-auto object-contain mb-4"
               />
-              <div className="text-xs sm:text-sm text-gray-400">
-                <p>Ипотечный центр | Севастополь, Крым</p>
-                <p>Продажа, Аренда, Оформление недвижимости</p>
+              <p className="text-sm text-gray-400 mb-2">Ипотечный центр</p>
+              <p className="text-sm text-gray-400 mb-4">Севастополь, Крым</p>
+              <div className="flex gap-2">
+                <a
+                  href="https://t.me/+79781281850"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center justify-center transition-colors"
+                  title="Telegram"
+                >
+                  <Icon name="Send" size={18} className="text-white" />
+                </a>
+                <a
+                  href="https://wa.me/79781281850"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 bg-green-600 hover:bg-green-700 rounded-lg flex items-center justify-center transition-colors"
+                  title="WhatsApp"
+                >
+                  <Icon name="MessageCircle" size={18} className="text-white" />
+                </a>
+                <a
+                  href="viber://chat?number=%2B79781281850"
+                  className="w-9 h-9 bg-purple-600 hover:bg-purple-700 rounded-lg flex items-center justify-center transition-colors"
+                  title="Viber"
+                >
+                  <Icon name="Smartphone" size={18} className="text-white" />
+                </a>
               </div>
             </div>
-            <div className="text-center md:text-right space-y-3">
-              <p className="font-semibold text-sm sm:text-base">Николаев Дмитрий Юрьевич</p>
-              
-              <div className="space-y-2">
+
+            <div>
+              <h3 className="font-semibold text-base mb-4">Услуги</h3>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li>
+                  <button onClick={() => { setActiveTab('programs'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
+                    Ипотечные программы
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setActiveTab('calculator'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
+                    Калькулятор ипотеки
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setActiveTab('catalog'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
+                    Каталог недвижимости
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => navigate('/register')} className="hover:text-white transition-colors">
+                    Оформление ипотеки
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-base mb-4">Информация</h3>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li>
+                  <button onClick={() => { setActiveTab('blog'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
+                    Блог
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setActiveTab('videos'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
+                    Видео
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setActiveTab('faq'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
+                    Вопросы и ответы
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => navigate('/privacy-policy')} className="hover:text-white transition-colors">
+                    Политика конфиденциальности
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-base mb-4">Контакты</h3>
+              <div className="space-y-3 text-sm">
+                <div>
+                  <p className="text-gray-400 mb-1">Специалист по ипотеке</p>
+                  <p className="text-white font-medium">Николаев Дмитрий Юрьевич</p>
+                </div>
                 <a
                   href="tel:+79781281850"
                   onClick={() => trackPhoneClick('footer')}
-                  className="text-sm text-gray-300 hover:text-white transition-colors block"
+                  className="flex items-center gap-2 text-white hover:text-blue-400 transition-colors font-medium"
                 >
+                  <Icon name="Phone" size={16} />
                   +7 978 128-18-50
                 </a>
-                
-                <div className="flex items-center justify-center md:justify-end gap-2">
-                  <a
-                    href="https://t.me/+79781281850"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-8 h-8 bg-blue-500 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-colors"
-                    title="Telegram"
-                  >
-                    <Icon name="Send" size={16} className="text-white" />
-                  </a>
-                  <a
-                    href="https://wa.me/79781281850"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-8 h-8 bg-green-500 hover:bg-green-600 rounded-lg flex items-center justify-center transition-colors"
-                    title="WhatsApp"
-                  >
-                    <Icon name="MessageCircle" size={16} className="text-white" />
-                  </a>
-                  <a
-                    href="viber://chat?number=%2B79781281850"
-                    className="w-8 h-8 bg-purple-500 hover:bg-purple-600 rounded-lg flex items-center justify-center transition-colors"
-                    title="Viber"
-                  >
-                    <Icon name="Smartphone" size={16} className="text-white" />
-                  </a>
-                  <a
-                    href="https://maxim.chat/79781281850"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-8 h-8 bg-red-500 hover:bg-red-600 rounded-lg flex items-center justify-center transition-colors"
-                    title="Max Messenger"
-                  >
-                    <Icon name="MessageSquare" size={16} className="text-white" />
-                  </a>
-                </div>
+                <a
+                  href="mailto:ipoteka_krym@mail.ru"
+                  className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                >
+                  <Icon name="Mail" size={16} />
+                  ipoteka_krym@mail.ru
+                </a>
               </div>
-              
-              <a
-                href="mailto:ipoteka_krym@mail.ru"
-                className="text-sm text-gray-300 hover:text-white transition-colors block"
-              >
-                ipoteka_krym@mail.ru
-              </a>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-4 sm:mt-6 pt-4 sm:pt-6">
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4">
-              <ViewsCounter />
-              <ThemeIndicator inline />
-            </div>
-            <div className="text-center text-gray-400 text-xs sm:text-sm">
-              <p>© 2008-2026 Все права защищены.</p>
-              <div className="flex items-center justify-center gap-4 mt-3">
-                <button
-                  onClick={() => navigate('/privacy-policy')}
-                  className="text-gray-400 hover:text-gray-200 transition-colors text-sm underline"
-                >
-                  Политика конфиденциальности
-                </button>
-                <button
-                  onClick={() => navigate('/admin')}
-                  className="text-gray-500 hover:text-gray-300 transition-all text-sm px-3 py-1 rounded hover:bg-gray-800 group relative"
-                  title="Панель администратора"
-                >
-                  <Icon name="Settings" size={16} className="inline" />
-                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    Панель администратора
-                  </span>
-                </button>
+
+          <div className="border-t border-gray-800 pt-6">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="flex items-center gap-4">
+                <ViewsCounter />
+                <ThemeIndicator inline />
               </div>
+              <p className="text-xs sm:text-sm text-gray-400">
+                © 2008-2026 Арендодатель. Все права защищены.
+              </p>
+              <button
+                onClick={() => navigate('/admin')}
+                className="text-gray-500 hover:text-gray-300 transition-colors"
+                title="Панель администратора"
+              >
+                <Icon name="Settings" size={16} />
+              </button>
             </div>
           </div>
         </div>
