@@ -197,6 +197,19 @@ export default function ContactAndFaqTabs() {
               </div>
 
               <div className="border-t pt-6">
+                <h4 className="font-semibold mb-3">Наш рейтинг:</h4>
+                <div className="flex justify-center">
+                  <iframe 
+                    src="https://yandex.ru/sprav/widget/rating-badge/81713615933?type=award" 
+                    width="150" 
+                    height="50" 
+                    frameBorder="0"
+                    title="Награда Яндекс.Карт"
+                  ></iframe>
+                </div>
+              </div>
+
+              <div className="border-t pt-6">
                 <h4 className="font-semibold mb-3">Наши услуги:</h4>
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2">
