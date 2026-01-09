@@ -338,7 +338,6 @@ export default function ContactAndFaqTabs() {
               </div>
             </CardContent>
           </Card>
-        </div>
       </TabsContent>
     </>
   );
