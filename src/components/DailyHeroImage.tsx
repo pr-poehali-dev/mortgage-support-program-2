@@ -16,7 +16,7 @@ export default function DailyHeroImage() {
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg mb-2 sm:mb-3">
               {image.title}
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-white/90 drop-shadow-md max-w-2xl">Льготные ипотечные программы с господдержкой от 6%</p>
+            <p className="text-base sm:text-lg md:text-xl text-white/90 drop-shadow-md max-w-2xl">Льготные ипотечные программы с господдержкой от 3%</p>
           </div>
         </div>
       </div>
