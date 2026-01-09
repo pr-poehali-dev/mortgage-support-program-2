@@ -13,26 +13,26 @@ import ReviewsSection from './ReviewsSection';
 export default function MortgageTabsContent({ onNavigateToCalculator }: { onNavigateToCalculator: () => void }) {
   return (
     <>
-      <TabsContent value="home" className="space-y-4 sm:space-y-6">
+      <TabsContent value="home" className="space-y-3 sm:space-y-6">
         <DailyHeroImage />
         <MortgageQuiz onNavigateToCalculator={onNavigateToCalculator} />
         <HomeTab />
         <ReviewsSection />
       </TabsContent>
 
-      <ProgramsAndComparisonTabs />
+      <CatalogTab />
 
-      <TabsContent value="calculator" className="space-y-4 sm:space-y-6">
+      <TabsContent value="calculator" className="space-y-3 sm:space-y-6">
         <MortgageCalculator />
       </TabsContent>
 
+      <ProgramsAndComparisonTabs />
+
       <DocumentsAndBlogTabs />
 
-      <ContactAndFaqTabs />
-
-      <CatalogTab />
-
       <VideosTab />
+
+      <ContactAndFaqTabs />
     </>
   );
 }

@@ -51,15 +51,15 @@ export default function ReviewsSection() {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-b from-background to-primary/5">
+    <section className="py-8 sm:py-12 bg-gradient-to-b from-background to-primary/5">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8">
           Отзывы клиентов
         </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          <div className="w-full">
-            <div className="relative w-full" style={{ height: '800px', overflow: 'hidden' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 max-w-6xl mx-auto">
+          <div className="w-full order-2 lg:order-1">
+            <div className="relative w-full" style={{ height: '500px', overflow: 'hidden' }}>
               <iframe
                 style={{
                   width: '100%',
@@ -99,9 +99,9 @@ export default function ReviewsSection() {
             </div>
           </div>
 
-          <div className="w-full">
+          <div className="w-full order-1 lg:order-2">
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-4 sm:p-6">
                 <h3 className="text-2xl font-bold mb-2">Оставьте отзыв</h3>
                 <p className="text-muted-foreground mb-6">
                   Поделитесь вашим мнением о нашей работе

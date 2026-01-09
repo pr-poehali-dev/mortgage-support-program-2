@@ -5,16 +5,16 @@ export default function AdvantagesSection() {
   return (
     <>
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
           Почему выбирают меня
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="p-6 hover:shadow-lg transition-shadow">
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-              <Icon name="BadgeCheck" size={24} className="text-blue-600" />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <Card className="p-4 sm:p-6 hover:shadow-lg transition-shadow">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-3 sm:mb-4">
+              <Icon name="BadgeCheck" size={20} className="text-blue-600 sm:w-6 sm:h-6" />
             </div>
-            <h3 className="font-semibold text-lg mb-2">Опыт с 2020 года</h3>
-            <p className="text-gray-600 text-sm">Более 500 успешно оформленных ипотек в Крыму</p>
+            <h3 className="font-semibold text-sm sm:text-base mb-1 sm:mb-2">Опыт с 2020 года</h3>
+            <p className="text-gray-600 text-xs sm:text-sm hidden sm:block">Более 500 успешно оформленных ипотек в Крыму</p>
           </Card>
 
           <Card className="p-6 hover:shadow-lg transition-shadow">
@@ -43,11 +43,11 @@ export default function AdvantagesSection() {
         </div>
       </div>
 
-      <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 sm:p-8">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+      <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 sm:p-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
           Доступные программы 2025
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           <Card className="p-5 border-2 border-blue-200 hover:border-blue-400 transition-colors">
             <div className="flex items-start justify-between mb-3">
               <h3 className="font-bold text-lg">Семейная ипотека</h3>
@@ -86,11 +86,11 @@ export default function AdvantagesSection() {
         </div>
       </div>
 
-      <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-6 sm:p-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 text-center">
+      <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-4 sm:p-6 animate-in fade-in slide-in-from-bottom-8 duration-700">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 text-center">
           Межрегиональные сделки
         </h2>
-        <p className="text-center text-gray-600 mb-6">Готовое решение</p>
+        <p className="text-center text-gray-600 text-sm sm:text-base mb-4 sm:mb-6">Готовое решение</p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="p-6 hover:shadow-xl transition-all border-2 border-indigo-100 animate-in fade-in slide-in-from-left duration-500" style={{animationDelay: '100ms'}}>
@@ -126,10 +126,10 @@ export default function AdvantagesSection() {
       </div>
 
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
           Как я работаю
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           <div className="relative">
             <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow">
               <div className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-lg mb-4">1</div>

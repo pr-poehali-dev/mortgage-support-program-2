@@ -39,10 +39,10 @@ export default function Index() {
       <SEO />
       <StructuredData />
       <header className={`border-b ${theme.headerBg} backdrop-blur-md sticky top-0 z-50`}>
-        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
-          <div className="flex items-center justify-between">
+        <div className="container mx-auto px-3 sm:px-4 py-2 sm:py-3">
+          <div className="flex items-center justify-between gap-2">
             <div 
-              className="flex items-center gap-2 sm:gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+              className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity min-w-0 flex-shrink"
               onClick={() => {
                 navigate('/');
                 setActiveTab('home');
@@ -51,131 +51,113 @@ export default function Index() {
               <AnimatedLogo
                 src="https://cdn.poehali.dev/files/с дескриптором черный вариант (2).png"
                 alt="Арендодатель"
-                className="h-10 sm:h-14 w-auto object-contain"
+                className="h-8 sm:h-12 w-auto object-contain flex-shrink-0"
               />
-              <div>
-                <p className="text-xs sm:text-sm text-gray-600 font-medium">Ипотечный центр | Севастополь, Крым</p>
-                <p className="text-xs text-gray-500">Продажа, Аренда, Оформление недвижимости</p>
-                <p className="text-xs text-gray-500 mt-0.5">
-                  {new Date().toLocaleDateString('ru-RU', { 
-                    day: 'numeric', 
-                    month: 'long', 
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
-                </p>
+              <div className="hidden md:block">
+                <p className="text-xs sm:text-sm text-gray-600 font-medium">Ипотечный центр | Севастополь</p>
+                <p className="text-xs text-gray-500">Продажа, Аренда, Оформление</p>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 sm:gap-3">
-              <div className="flex flex-col sm:flex-row gap-2">
-                <Button
-                  onClick={() => navigate('/register')}
-                  className="h-7 sm:h-10 px-2 sm:px-6 text-[10px] sm:text-sm whitespace-nowrap"
-                >
-                  <Icon name="FileText" className="mr-1 sm:mr-1.5" size={14} />
-                  Заявка на ипотеку
-                </Button>
-                <Button
-                  onClick={() => navigate('/add-property')}
-                  className="h-7 sm:h-10 px-2 sm:px-6 text-[10px] sm:text-sm whitespace-nowrap bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 shadow-lg hover:shadow-xl transition-all hover:scale-105 animate-pulse-periodic"
-                >
-                  <Icon name="PlusCircle" className="mr-1 sm:mr-1.5" size={14} />
-                  Продам/Сдам
-                </Button>
-              </div>
-              <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <a 
+                href="tel:+79781281850" 
+                onClick={() => trackPhoneClick('header')}
+                className="flex items-center gap-1.5 text-primary hover:text-primary/80 transition-colors"
+              >
+                <Icon name="Phone" size={20} className="sm:w-6 sm:h-6" />
+                <span className="font-semibold text-xs sm:text-sm hidden lg:inline whitespace-nowrap">+7 978 128-18-50</span>
+              </a>
+              <div className="hidden sm:flex items-center gap-1.5">
                 <a 
-                  href="tel:+79781281850" 
-                  onClick={() => trackPhoneClick('header')}
-                  className="flex items-center gap-1.5 text-primary hover:text-primary/80 transition-colors"
+                  href="https://t.me/+79781281850" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:text-blue-600 transition-colors"
+                  title="Telegram"
                 >
-                  <Icon name="Phone" size={18} className="sm:w-5 sm:h-5" />
-                  <span className="font-semibold text-sm sm:text-base hidden sm:inline">+7 978 128-18-50</span>
+                  <Icon name="Send" size={20} />
                 </a>
-                <div className="flex items-center gap-1.5 sm:gap-2">
-                  <a 
-                    href="https://t.me/+79781281850" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:text-blue-600 transition-colors"
-                    title="Telegram"
-                  >
-                    <Icon name="Send" size={18} className="sm:w-5 sm:h-5" />
-                  </a>
-                  <a 
-                    href="https://wa.me/79781281850" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-green-500 hover:text-green-600 transition-colors"
-                    title="WhatsApp"
-                  >
-                    <Icon name="MessageCircle" size={18} className="sm:w-5 sm:h-5" />
-                  </a>
-                  <a 
-                    href="viber://chat?number=%2B79781281850" 
-                    className="text-purple-500 hover:text-purple-600 transition-colors"
-                    title="Viber"
-                  >
-                    <Icon name="Smartphone" size={18} className="sm:w-5 sm:h-5" />
-                  </a>
-                </div>
+                <a 
+                  href="https://wa.me/79781281850" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-green-500 hover:text-green-600 transition-colors"
+                  title="WhatsApp"
+                >
+                  <Icon name="MessageCircle" size={20} />
+                </a>
               </div>
             </div>
+          </div>
+          <div className="flex gap-2 mt-2 sm:mt-3">
+            <Button
+              onClick={() => navigate('/register')}
+              className="flex-1 h-8 sm:h-10 px-3 sm:px-4 text-xs sm:text-sm"
+            >
+              <Icon name="FileText" className="mr-1.5" size={16} />
+              <span className="hidden sm:inline">Заявка на ипотеку</span>
+              <span className="sm:hidden">Заявка</span>
+            </Button>
+            <Button
+              onClick={() => navigate('/add-property')}
+              className="flex-1 h-8 sm:h-10 px-3 sm:px-4 text-xs sm:text-sm bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+            >
+              <Icon name="PlusCircle" className="mr-1.5" size={16} />
+              <span className="hidden sm:inline">Продам/Сдам</span>
+              <span className="sm:hidden">Продать</span>
+            </Button>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
-        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4 sm:space-y-8">
-          <TabsList className="!grid grid-cols-5 gap-1 sm:gap-2 bg-white p-1.5 sm:p-2 rounded-xl shadow-sm h-auto w-full" style={{gridTemplateRows: 'auto auto auto'}}>
-            <TabsTrigger value="home" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '0ms'}}>
-              <Icon name="Home" size={16} className="sm:w-[18px] sm:h-[18px]" />
+      <main className="container mx-auto px-3 sm:px-4 py-3 sm:py-6">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-3 sm:space-y-6">
+          <TabsList className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-10 gap-1 sm:gap-1.5 bg-white/80 backdrop-blur-sm p-1 sm:p-1.5 rounded-lg shadow-sm h-auto w-full">
+            <TabsTrigger value="home" className="flex flex-col items-center gap-0.5 sm:gap-1 py-1.5 sm:py-2 text-[10px] sm:text-xs">
+              <Icon name="Home" size={16} className="sm:w-5 sm:h-5" />
               <span>Главная</span>
             </TabsTrigger>
-            <TabsTrigger value="catalog" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '50ms'}}>
-              <Icon name="Building2" size={16} className="sm:w-[18px] sm:h-[18px]" />
-              <span className="hidden md:inline">Объекты</span>
-              <span className="md:hidden">Объекты</span>
+            <TabsTrigger value="catalog" className="flex flex-col items-center gap-0.5 sm:gap-1 py-1.5 sm:py-2 text-[10px] sm:text-xs">
+              <Icon name="Building2" size={16} className="sm:w-5 sm:h-5" />
+              <span>Объекты</span>
             </TabsTrigger>
-            <TabsTrigger value="programs" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '100ms'}}>
-              <Icon name="ClipboardList" size={16} className="sm:w-[18px] sm:h-[18px]" />
-              <span className="hidden md:inline">Программы</span>
-              <span className="md:hidden">Прогр.</span>
+            <TabsTrigger value="calculator" className="flex flex-col items-center gap-0.5 sm:gap-1 py-1.5 sm:py-2 text-[10px] sm:text-xs">
+              <Icon name="Calculator" size={16} className="sm:w-5 sm:h-5" />
+              <span className="hidden sm:inline">Калькулятор</span>
+              <span className="sm:hidden">Калькул.</span>
             </TabsTrigger>
-            <TabsTrigger value="comparison" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '150ms'}}>
-              <Icon name="GitCompare" size={16} className="sm:w-[18px] sm:h-[18px]" />
-              <span className="hidden md:inline">Сравнение</span>
-              <span className="md:hidden">Сравн.</span>
+            <TabsTrigger value="programs" className="flex flex-col items-center gap-0.5 sm:gap-1 py-1.5 sm:py-2 text-[10px] sm:text-xs">
+              <Icon name="ClipboardList" size={16} className="sm:w-5 sm:h-5" />
+              <span className="hidden sm:inline">Программы</span>
+              <span className="sm:hidden">Прогр.</span>
             </TabsTrigger>
-            <TabsTrigger value="calculator" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '200ms'}}>
-              <Icon name="Calculator" size={16} className="sm:w-[18px] sm:h-[18px]" />
-              <span className="hidden md:inline">Калькулятор</span>
-              <span className="md:hidden">Калькул.</span>
+            <TabsTrigger value="comparison" className="flex flex-col items-center gap-0.5 sm:gap-1 py-1.5 sm:py-2 text-[10px] sm:text-xs">
+              <Icon name="GitCompare" size={16} className="sm:w-5 sm:h-5" />
+              <span className="hidden sm:inline">Сравнение</span>
+              <span className="sm:hidden">Сравн.</span>
             </TabsTrigger>
-            <TabsTrigger value="documents" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '250ms'}}>
-              <Icon name="FileText" size={16} className="sm:w-[18px] sm:h-[18px]" />
-              <span className="hidden md:inline">Документы</span>
-              <span className="md:hidden">Докум.</span>
+            <TabsTrigger value="documents" className="flex flex-col items-center gap-0.5 sm:gap-1 py-1.5 sm:py-2 text-[10px] sm:text-xs">
+              <Icon name="FileText" size={16} className="sm:w-5 sm:h-5" />
+              <span className="hidden sm:inline">Документы</span>
+              <span className="sm:hidden">Док.</span>
             </TabsTrigger>
-            <TabsTrigger value="faq" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '300ms'}}>
-              <Icon name="HelpCircle" size={16} className="sm:w-[18px] sm:h-[18px]" />
-              <span>FAQ</span>
-            </TabsTrigger>
-            <TabsTrigger value="blog" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '350ms'}}>
-              <Icon name="BookOpen" size={16} className="sm:w-[18px] sm:h-[18px]" />
+            <TabsTrigger value="blog" className="flex flex-col items-center gap-0.5 sm:gap-1 py-1.5 sm:py-2 text-[10px] sm:text-xs">
+              <Icon name="BookOpen" size={16} className="sm:w-5 sm:h-5" />
               <span>Блог</span>
             </TabsTrigger>
-            <TabsTrigger value="videos" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '400ms'}}>
-              <Icon name="Video" size={16} className="sm:w-[18px] sm:h-[18px]" />
+            <TabsTrigger value="videos" className="flex flex-col items-center gap-0.5 sm:gap-1 py-1.5 sm:py-2 text-[10px] sm:text-xs">
+              <Icon name="Video" size={16} className="sm:w-5 sm:h-5" />
               <span>Видео</span>
             </TabsTrigger>
-            <TabsTrigger value="contact" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 text-xs sm:text-sm transition-all hover:scale-105 hover:shadow-md active:scale-95" style={{animationDelay: '450ms'}}>
-              <Icon name="Phone" size={16} className="sm:w-[18px] sm:h-[18px]" />
-              <span className="hidden md:inline">Контакты</span>
-              <span className="md:hidden">Конт.</span>
+            <TabsTrigger value="faq" className="flex flex-col items-center gap-0.5 sm:gap-1 py-1.5 sm:py-2 text-[10px] sm:text-xs">
+              <Icon name="HelpCircle" size={16} className="sm:w-5 sm:h-5" />
+              <span>FAQ</span>
             </TabsTrigger>
-
+            <TabsTrigger value="contact" className="flex flex-col items-center gap-0.5 sm:gap-1 py-1.5 sm:py-2 text-[10px] sm:text-xs">
+              <Icon name="Phone" size={16} className="sm:w-5 sm:h-5" />
+              <span className="hidden sm:inline">Контакты</span>
+              <span className="sm:hidden">Конт.</span>
+            </TabsTrigger>
           </TabsList>
 
           <MortgageTabsContent onNavigateToCalculator={() => {
