@@ -46,7 +46,6 @@ export default function ContactAndFaqTabs() {
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">Николаев Дмитрий Юрьевич</p>
-                    <p className="text-sm text-gray-600">Специалист по ипотеке</p>
                   </div>
                 </div>
 

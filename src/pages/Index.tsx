@@ -263,7 +263,6 @@ export default function Index() {
               <h3 className="font-semibold text-base mb-4">Контакты</h3>
               <div className="space-y-3 text-sm">
                 <div>
-                  <p className="text-gray-400 mb-1">Специалист по ипотеке</p>
                   <p className="text-white font-medium">Николаев Дмитрий Юрьевич</p>
                 </div>
                 <a
