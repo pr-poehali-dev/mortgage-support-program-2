@@ -8,18 +8,10 @@ interface AnimatedLogoProps {
 }
 
 export default function AnimatedLogo({ src, alt, className, onClick }: AnimatedLogoProps) {
-  const [animate, setAnimate] = useState(false);
+  const [animate, setAnimate] = useState(true);
 
   useEffect(() => {
-    const triggerAnimation = () => {
-      setAnimate(true);
-      setTimeout(() => setAnimate(false), 2000);
-    };
-
-    triggerAnimation();
-    const interval = setInterval(triggerAnimation, 20000);
-
-    return () => clearInterval(interval);
+    setAnimate(true);
   }, []);
 
   return (
