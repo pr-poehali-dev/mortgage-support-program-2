@@ -117,6 +117,16 @@ export default function ContactAndFaqTabs() {
                   </div>
                 </div>
 
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="w-12 h-12 bg-gray-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Icon name="MapPin" className="text-white" size={24} />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Адрес офиса</p>
+                    <p className="font-semibold text-gray-900">г. Севастополь, ул. Гоголя, 20А</p>
+                  </div>
+                </div>
+
                 <a
                   href="mailto:ipoteka_krym@mail.ru"
                   className="flex items-center gap-4 p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors group"
@@ -229,6 +239,44 @@ export default function ContactAndFaqTabs() {
                     <span>Консультации по всем вопросам ипотеки</span>
                   </li>
                 </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl">Где мы находимся</CardTitle>
+              <CardDescription>Наш офис на карте Севастополя</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '8px' }}>
+                <a 
+                  href="https://yandex.ru/maps/org/arendodatel/81713615933/?utm_medium=mapframe&utm_source=maps" 
+                  style={{ color: '#eee', fontSize: '12px', position: 'absolute', top: '0px', zIndex: 1 }}
+                >
+                  Арендодатель
+                </a>
+                <a 
+                  href="https://yandex.ru/maps/959/sevastopol/category/real_estate_agency/184107503/?utm_medium=mapframe&utm_source=maps" 
+                  style={{ color: '#eee', fontSize: '12px', position: 'absolute', top: '14px', zIndex: 1 }}
+                >
+                  Агентство недвижимости в Севастополе
+                </a>
+                <a 
+                  href="https://yandex.ru/maps/959/sevastopol/category/apartments_in_new_buildings/184107519/?utm_medium=mapframe&utm_source=maps" 
+                  style={{ color: '#eee', fontSize: '12px', position: 'absolute', top: '28px', zIndex: 1 }}
+                >
+                  Квартиры в новостройках в Севастополе
+                </a>
+                <iframe 
+                  src="https://yandex.ru/map-widget/v1/org/arendodatel/81713615933/reviews/?indoorLevel=1&ll=33.518898%2C44.580696&z=17.2" 
+                  width="100%" 
+                  height="400" 
+                  frameBorder="1" 
+                  allowFullScreen={true}
+                  style={{ position: 'relative' }}
+                  title="Карта офиса"
+                ></iframe>
               </div>
             </CardContent>
           </Card>
