@@ -132,3 +132,38 @@
 .animate-pulse-periodic {
   animation: pulse-periodic 30s ease-in-out infinite;
 }
+
+@keyframes smoke {
+  0% {
+    opacity: 0;
+    transform: translateY(0) translateX(0) scale(0.5);
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px) translateX(20px) scale(1.5);
+  }
+}
+
+.logo-container {
+  position: relative;
+  display: inline-block;
+}
+
+.logo-container::before {
+  content: "💨";
+  position: absolute;
+  top: 50%;
+  right: -15px;
+  font-size: 20px;
+  opacity: 0;
+  animation: smoke 2s ease-out infinite;
+  animation-iteration-count: 1;
+  animation-play-state: paused;
+}
+
+.logo-container.animate-smoke::before {
+  animation-play-state: running;
+}

@@ -16,6 +16,7 @@ import ThemeIndicator from '@/components/ThemeIndicator';
 import DailyHeroImage from '@/components/DailyHeroImage';
 import BlogPublicationIndicator from '@/components/BlogPublicationIndicator';
 import CookieConsent from '@/components/CookieConsent';
+import AnimatedLogo from '@/components/AnimatedLogo';
 import { useAutoIndexNow } from '@/hooks/useAutoIndexNow';
 import { useDailyTheme } from '@/hooks/useDailyTheme';
 import { useSitemapGenerator } from '@/hooks/useSitemapGenerator';
@@ -47,9 +48,9 @@ export default function Index() {
                 setActiveTab('home');
               }}
             >
-              <img 
-                src="https://cdn.poehali.dev/files/с дескриптором черный вариант (2).png" 
-                alt="Арендодатель" 
+              <AnimatedLogo
+                src="https://cdn.poehali.dev/files/с дескриптором черный вариант (2).png"
+                alt="Арендодатель"
                 className="h-10 sm:h-14 w-auto object-contain"
               />
               <div>
@@ -188,9 +189,9 @@ export default function Index() {
         <div className="container mx-auto px-3 sm:px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
             <div className="space-y-2">
-              <img 
-                src="https://cdn.poehali.dev/files/с дескриптором белый вариант (1).png" 
-                alt="Арендодатель" 
+              <AnimatedLogo
+                src="https://cdn.poehali.dev/files/с дескриптором белый вариант (1).png"
+                alt="Арендодатель"
                 className="h-12 sm:h-14 w-auto object-contain"
               />
               <div className="text-xs sm:text-sm text-gray-400">
