@@ -260,6 +260,14 @@ export default function Index() {
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4">
               <ViewsCounter />
               <ThemeIndicator inline />
+              <iframe 
+                src="https://yandex.ru/sprav/widget/rating-badge/81713615933?type=alt" 
+                width="150" 
+                height="50" 
+                frameBorder="0"
+                title="Рейтинг на Яндекс.Картах"
+                className="inline-block"
+              ></iframe>
             </div>
             <div className="text-center text-gray-400 text-xs sm:text-sm">
               <p>© 2008-2026 Все права защищены.</p>
