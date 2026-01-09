@@ -136,14 +136,17 @@
 @keyframes smoke-puff {
   0% {
     opacity: 0;
-    transform: translateY(0) translateX(0) scale(0.3);
+    transform: translateY(0) translateX(0) scale(0.4);
+    filter: blur(0px);
   }
-  20% {
-    opacity: 0.8;
+  15% {
+    opacity: 0.9;
+    filter: blur(1px);
   }
   100% {
     opacity: 0;
-    transform: translateY(-60px) translateX(15px) scale(1.2);
+    transform: translateY(-70px) translateX(18px) scale(1.4);
+    filter: blur(3px);
   }
 }
 
@@ -151,13 +154,16 @@
   0% {
     opacity: 0;
     transform: translateY(0) translateX(0) scale(0.3);
+    filter: blur(0px);
   }
-  20% {
-    opacity: 0.6;
+  15% {
+    opacity: 0.7;
+    filter: blur(1px);
   }
   100% {
     opacity: 0;
-    transform: translateY(-70px) translateX(-10px) scale(1.3);
+    transform: translateY(-80px) translateX(-12px) scale(1.5);
+    filter: blur(3px);
   }
 }
 
@@ -184,9 +190,9 @@
 .logo-container::after {
   content: "💨";
   position: absolute;
-  top: 15%;
-  left: 28%;
-  font-size: 16px;
+  top: 8%;
+  left: 22%;
+  font-size: 18px;
   opacity: 0;
   pointer-events: none;
 }
@@ -198,8 +204,9 @@
 
 .logo-container::after {
   animation: smoke-puff-2 2.8s ease-out;
-  animation-delay: 0.3s;
+  animation-delay: 0.4s;
   animation-play-state: paused;
+  font-size: 15px;
 }
 
 .logo-container.animate-smoke::before {
