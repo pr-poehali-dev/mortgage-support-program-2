@@ -224,7 +224,6 @@ export default function ContactAndFaqTabs() {
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl">Где мы находимся</CardTitle>
-            <CardDescription>г. Севастополь, ул. Гоголя, 20А</CardDescription>
           </CardHeader>
           <CardContent>
               <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '8px' }}>
