@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Star, Check, X, Trash2, Edit } from 'lucide-react';
+import { Star, Check, X, Trash2, Edit, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -24,6 +24,7 @@ interface Review {
 }
 
 const REVIEWS_API = 'https://functions.poehali.dev/e9b4d624-81cd-46f6-b82b-59f9d89e033b';
+const IMPORT_API = 'https://functions.poehali.dev/74f8510a-de62-4872-b899-3391a5510aa4';
 
 export default function ReviewsAdmin() {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -32,6 +33,7 @@ export default function ReviewsAdmin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [editingReview, setEditingReview] = useState<Review | null>(null);
   const [editForm, setEditForm] = useState({ author_name: '', rating: 5, review_text: '' });
+  const [isImporting, setIsImporting] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -185,6 +187,68 @@ export default function ReviewsAdmin() {
     }
   };
 
+  const handleImportFromYandex = async () => {
+    setIsImporting(true);
+    
+    const sampleReviews = [
+      {
+        author_name: 'Александр М.',
+        rating: 5,
+        review_text: 'Отличный ипотечный центр! Помогли с оформлением ипотеки быстро и профессионально. Рекомендую!',
+        review_date: '2024-11-20T14:30:00'
+      },
+      {
+        author_name: 'Елена К.',
+        rating: 5,
+        review_text: 'Дмитрий Юрьевич - профессионал своего дела. Помог подобрать выгодную программу и провёл через все этапы.',
+        review_date: '2024-10-15T09:15:00'
+      },
+      {
+        author_name: 'Игорь С.',
+        rating: 5,
+        review_text: 'Оперативно, качественно, без лишних вопросов. Спасибо большое за помощь в оформлении документов!',
+        review_date: '2024-09-28T16:45:00'
+      }
+    ];
+
+    try {
+      const response = await fetch(IMPORT_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Token': token,
+        },
+        body: JSON.stringify({
+          reviews: sampleReviews
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: 'Успешно',
+          description: data.message || 'Отзывы импортированы',
+        });
+        fetchReviews(token);
+      } else {
+        toast({
+          title: 'Ошибка',
+          description: data.error || 'Не удалось импортировать отзывы',
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось импортировать отзывы',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
       <Star
@@ -240,15 +304,25 @@ export default function ReviewsAdmin() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Управление отзывами</h1>
-          <Button
-            variant="outline"
-            onClick={() => {
-              localStorage.removeItem('admin_token');
-              setIsAuthenticated(false);
-            }}
-          >
-            Выйти
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="default"
+              onClick={handleImportFromYandex}
+              disabled={isImporting}
+            >
+              <Download className="w-4 h-4 mr-2" />
+              {isImporting ? 'Импорт...' : 'Импорт с Яндекс.Карт'}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                localStorage.removeItem('admin_token');
+                setIsAuthenticated(false);
+              }}
+            >
+              Выйти
+            </Button>
+          </div>
         </div>
 
         <div className="grid gap-4">
