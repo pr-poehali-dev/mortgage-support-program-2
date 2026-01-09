@@ -22,7 +22,7 @@ export default function HeroSection({ video }: HeroSectionProps) {
               Профессиональная помощь в получении ипотеки. Работаю со всеми программами господдержки 2025-2026
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <a
                 href="https://t.me/ipoteka_krym_rf"
                 target="_blank"
@@ -39,6 +39,16 @@ export default function HeroSection({ video }: HeroSectionProps) {
                 <Icon name="Phone" size={20} />
                 +7 978 128-18-50
               </a>
+            </div>
+            
+            <div className="inline-block bg-white/10 backdrop-blur-sm rounded-xl p-2">
+              <iframe 
+                src="https://yandex.ru/sprav/widget/rating-badge/81713615933?type=rating" 
+                width="150" 
+                height="50" 
+                frameBorder="0"
+                title="Рейтинг на Яндекс.Картах"
+              ></iframe>
             </div>
           </div>
 
