@@ -133,17 +133,45 @@
   animation: pulse-periodic 30s ease-in-out infinite;
 }
 
-@keyframes smoke {
+@keyframes smoke-puff {
   0% {
     opacity: 0;
-    transform: translateY(0) translateX(0) scale(0.5);
+    transform: translateY(0) translateX(0) scale(0.3);
   }
-  50% {
+  20% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-60px) translateX(15px) scale(1.2);
+  }
+}
+
+@keyframes smoke-puff-2 {
+  0% {
+    opacity: 0;
+    transform: translateY(0) translateX(0) scale(0.3);
+  }
+  20% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-70px) translateX(-10px) scale(1.3);
+  }
+}
+
+@keyframes smoke-puff-3 {
+  0% {
+    opacity: 0;
+    transform: translateY(0) translateX(0) scale(0.3);
+  }
+  20% {
     opacity: 0.7;
   }
   100% {
     opacity: 0;
-    transform: translateY(-50px) translateX(20px) scale(1.5);
+    transform: translateY(-55px) translateX(5px) scale(1.1);
   }
 }
 
@@ -152,18 +180,32 @@
   display: inline-block;
 }
 
-.logo-container::before {
+.logo-container::before,
+.logo-container::after {
   content: "💨";
   position: absolute;
-  top: 50%;
-  right: -15px;
-  font-size: 20px;
+  top: 15%;
+  left: 28%;
+  font-size: 16px;
   opacity: 0;
-  animation: smoke 2s ease-out infinite;
-  animation-iteration-count: 1;
+  pointer-events: none;
+}
+
+.logo-container::before {
+  animation: smoke-puff 2.5s ease-out;
+  animation-play-state: paused;
+}
+
+.logo-container::after {
+  animation: smoke-puff-2 2.8s ease-out;
+  animation-delay: 0.3s;
   animation-play-state: paused;
 }
 
 .logo-container.animate-smoke::before {
+  animation-play-state: running;
+}
+
+.logo-container.animate-smoke::after {
   animation-play-state: running;
 }
