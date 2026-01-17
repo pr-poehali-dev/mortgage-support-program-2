@@ -2,37 +2,37 @@ import { useEffect, useState } from 'react';
 
 const images = [
   {
-    url: 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=1600&q=80&fit=crop',
+    url: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/68d6c5ff-d99f-4e9f-a29c-674a4743e077.jpg',
     alt: 'Панорама Севастополя с видом на бухту',
     title: 'Севастополь — город-герой у моря'
   },
   {
-    url: 'https://images.unsplash.com/photo-1582610116397-edb318620f90?w=1600&q=80&fit=crop',
+    url: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/619f0b65-2d55-479f-a06e-35e0937adaa7.jpg',
     alt: 'Набережная Севастополя на закате',
     title: 'Жизнь у Черного моря в Крыму'
   },
   {
-    url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80&fit=crop',
+    url: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/36a03ba1-7dbb-4775-a463-74656e0be2ca.jpg',
     alt: 'Крымские горы и побережье',
     title: 'Крым — жемчужина у моря'
   },
   {
-    url: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80&fit=crop',
+    url: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/2a691af1-d7c1-4e8f-b760-aa7d9cb5e211.jpg',
     alt: 'Южный берег Крыма',
     title: 'Недвижимость на ЮБК'
   },
   {
-    url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1600&q=80&fit=crop',
+    url: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/619f0b65-2d55-479f-a06e-35e0937adaa7.jpg',
     alt: 'Современные дома в Севастополе',
     title: 'Современное жильё в Севастополе'
   },
   {
-    url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600&q=80&fit=crop',
+    url: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/36a03ba1-7dbb-4775-a463-74656e0be2ca.jpg',
     alt: 'Морской вид на побережье Крыма',
     title: 'Дом с видом на море в Крыму'
   },
   {
-    url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80&fit=crop',
+    url: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/68d6c5ff-d99f-4e9f-a29c-674a4743e077.jpg',
     alt: 'Уютный дом на побережье',
     title: 'Жильё вашей мечты в Крыму'
   }
