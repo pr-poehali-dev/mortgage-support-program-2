@@ -53,7 +53,7 @@ export default function AdminProperties() {
     title: '', type: 'apartment', property_category: 'apartment',
     operation: 'sale', price: '', location: '', area: '', rooms: '',
     floor: '', total_floors: '', land_area: '', photo_url: '',
-    photos: [] as string[], description: '', property_link: '',
+    photos: [] as string[], documents: [] as string[], description: '', property_link: '',
     phone: '', contact_name: '', rutube_link: '', building_type: '', renovation: '', bathroom: '',
     balcony: '', furniture: false, pets_allowed: false,
     children_allowed: true, utilities_included: false,
@@ -86,7 +86,7 @@ export default function AdminProperties() {
       title: '', type: 'apartment', property_category: 'apartment',
       operation: 'sale', price: '', location: '', area: '', rooms: '',
       floor: '', total_floors: '', land_area: '', photo_url: '',
-      photos: [], description: '', property_link: '',
+      photos: [], documents: [], description: '', property_link: '',
       phone: '', contact_name: '', rutube_link: '', building_type: '', renovation: '', bathroom: '',
       balcony: '', furniture: false, pets_allowed: false,
       children_allowed: true, utilities_included: false,
@@ -215,9 +215,57 @@ export default function AdminProperties() {
       alert('Ошибка загрузки фото: ' + (err as Error).message);
     } finally {
       setUploadingPhoto(false);
-      // Сбрасываем input для возможности повторной загрузки тех же файлов
       e.target.value = '';
     }
+  };
+
+  const handleDocumentSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploadingPhoto(true);
+
+    try {
+      const uploadPromises = Array.from(files).map(async (file) => {
+        const reader = new FileReader();
+        const base64 = await new Promise<string>((resolve, reject) => {
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.onerror = () => reject(new Error('Ошибка чтения файла'));
+          reader.readAsDataURL(file);
+        });
+        
+        const response = await fetch('https://functions.poehali.dev/be14ce68-1655-468e-be45-ca3e59d65813', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image: base64 }),
+        });
+
+        if (!response.ok) throw new Error('Ошибка загрузки документа');
+
+        const data = await response.json();
+        return data.url;
+      });
+
+      const uploadedUrls = await Promise.all(uploadPromises);
+      
+      setFormData(prev => ({
+        ...prev,
+        documents: [...prev.documents, ...uploadedUrls],
+      }));
+
+      alert(`Загружено ${uploadedUrls.length} документов`);
+    } catch (error) {
+      alert('Не удалось загрузить документы');
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
+
+  const handleRemoveDocument = (url: string) => {
+    setFormData(prev => ({
+      ...prev,
+      documents: prev.documents.filter(doc => doc !== url),
+    }));
   };
 
   const handlePropertySubmit = async (e: React.FormEvent) => {
@@ -479,6 +527,8 @@ export default function AdminProperties() {
         handlePhotoSelect={handlePhotoSelect}
         uploadingPhoto={uploadingPhoto}
         photoPreview={formData.photos[0] || ''}
+        handleDocumentSelect={handleDocumentSelect}
+        handleRemoveDocument={handleRemoveDocument}
       />
     </div>
   );

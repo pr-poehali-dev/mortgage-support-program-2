@@ -33,6 +33,10 @@ interface FormStep3DescriptionProps {
   editProperty: any | null;
   handleDocumentSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleRemoveDocument: (url: string) => void;
+  agreedToTerms?: boolean;
+  setAgreedToTerms?: (agreed: boolean) => void;
+  agreedToPrivacy?: boolean;
+  setAgreedToPrivacy?: (agreed: boolean) => void;
 }
 
 interface SortablePhotoItemProps {
@@ -102,6 +106,10 @@ export default function FormStep3Description({
   editProperty,
   handleDocumentSelect,
   handleRemoveDocument,
+  agreedToTerms,
+  setAgreedToTerms,
+  agreedToPrivacy,
+  setAgreedToPrivacy,
 }: FormStep3DescriptionProps) {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -340,6 +348,50 @@ export default function FormStep3Description({
           )}
         </div>
       </div>
+
+      {!editProperty && agreedToTerms !== undefined && setAgreedToTerms && agreedToPrivacy !== undefined && setAgreedToPrivacy && (
+        <div className="mt-4 space-y-3 p-4 bg-gray-50 rounded-lg">
+          <div className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="agreedToTerms"
+              checked={agreedToTerms}
+              onChange={(e) => setAgreedToTerms(e.target.checked)}
+              className="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+            />
+            <label htmlFor="agreedToTerms" className="text-sm text-gray-700 flex-1">
+              Я согласен с{' '}
+              <button
+                type="button"
+                onClick={() => window.open('/terms-of-service', '_blank')}
+                className="text-primary hover:underline font-medium"
+              >
+                правилами использования сайта
+              </button>
+            </label>
+          </div>
+          
+          <div className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="agreedToPrivacy"
+              checked={agreedToPrivacy}
+              onChange={(e) => setAgreedToPrivacy(e.target.checked)}
+              className="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+            />
+            <label htmlFor="agreedToPrivacy" className="text-sm text-gray-700 flex-1">
+              Я согласен на обработку персональных данных в соответствии с{' '}
+              <button
+                type="button"
+                onClick={() => window.open('/privacy-policy', '_blank')}
+                className="text-primary hover:underline font-medium"
+              >
+                политикой конфиденциальности
+              </button>
+            </label>
+          </div>
+        </div>
+      )}
 
       <div className="flex justify-between pt-4">
         <Button type="button" variant="outline" onClick={() => setCurrentStep(2)}>

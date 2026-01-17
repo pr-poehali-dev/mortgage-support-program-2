@@ -17,6 +17,10 @@ interface PropertyFormDialogProps {
   photoPreview: string;
   handleDocumentSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleRemoveDocument: (url: string) => void;
+  agreedToTerms?: boolean;
+  setAgreedToTerms?: (agreed: boolean) => void;
+  agreedToPrivacy?: boolean;
+  setAgreedToPrivacy?: (agreed: boolean) => void;
 }
 
 export default function PropertyFormDialog({
@@ -30,6 +34,10 @@ export default function PropertyFormDialog({
   uploadingPhoto,
   handleDocumentSelect,
   handleRemoveDocument,
+  agreedToTerms,
+  setAgreedToTerms,
+  agreedToPrivacy,
+  setAgreedToPrivacy,
 }: PropertyFormDialogProps) {
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -77,6 +85,10 @@ export default function PropertyFormDialog({
               editProperty={editProperty}
               handleDocumentSelect={handleDocumentSelect}
               handleRemoveDocument={handleRemoveDocument}
+              agreedToTerms={agreedToTerms}
+              setAgreedToTerms={setAgreedToTerms}
+              agreedToPrivacy={agreedToPrivacy}
+              setAgreedToPrivacy={setAgreedToPrivacy}
             />
           )}
         </form>

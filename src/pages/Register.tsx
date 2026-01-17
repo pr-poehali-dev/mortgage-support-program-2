@@ -47,6 +47,8 @@ export default function Register() {
 
   const [submitting, setSubmitting] = useState(false);
   const [uploadingFiles, setUploadingFiles] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [agreedToPrivacy, setAgreedToPrivacy] = useState(false);
   const { toast } = useToast();
 
   const handleInputChange = (field: string, value: string) => {
@@ -201,6 +203,14 @@ export default function Register() {
         });
         return false;
       }
+      if (!agreedToTerms || !agreedToPrivacy) {
+        toast({
+          title: 'Ошибка',
+          description: 'Необходимо согласиться с правилами и политикой конфиденциальности',
+          variant: 'destructive',
+        });
+        return false;
+      }
     }
     return true;
   };
@@ -271,13 +281,57 @@ export default function Register() {
                 />
               )}
               {step === 4 && (
-                <RegisterStep4Property 
-                  formData={formData} 
-                  handleInputChange={handleInputChange}
-                  handleFileUpload={handleFileUpload}
-                  handleRemoveFile={handleRemoveFile}
-                  uploadingFiles={uploadingFiles}
-                />
+                <>
+                  <RegisterStep4Property 
+                    formData={formData} 
+                    handleInputChange={handleInputChange}
+                    handleFileUpload={handleFileUpload}
+                    handleRemoveFile={handleRemoveFile}
+                    uploadingFiles={uploadingFiles}
+                  />
+                  
+                  <div className="mt-6 space-y-3 p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        id="agreedToTerms"
+                        checked={agreedToTerms}
+                        onChange={(e) => setAgreedToTerms(e.target.checked)}
+                        className="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                      />
+                      <label htmlFor="agreedToTerms" className="text-sm text-gray-700 flex-1">
+                        Я согласен с{' '}
+                        <button
+                          type="button"
+                          onClick={() => window.open('/terms-of-service', '_blank')}
+                          className="text-primary hover:underline font-medium"
+                        >
+                          правилами использования сайта
+                        </button>
+                      </label>
+                    </div>
+                    
+                    <div className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        id="agreedToPrivacy"
+                        checked={agreedToPrivacy}
+                        onChange={(e) => setAgreedToPrivacy(e.target.checked)}
+                        className="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                      />
+                      <label htmlFor="agreedToPrivacy" className="text-sm text-gray-700 flex-1">
+                        Я согласен на обработку персональных данных в соответствии с{' '}
+                        <button
+                          type="button"
+                          onClick={() => window.open('/privacy-policy', '_blank')}
+                          className="text-primary hover:underline font-medium"
+                        >
+                          политикой конфиденциальности
+                        </button>
+                      </label>
+                    </div>
+                  </div>
+                </>
               )}
 
               <div className="flex items-center justify-between mt-6 pt-6 border-t">

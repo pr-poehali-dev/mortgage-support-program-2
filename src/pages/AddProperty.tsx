@@ -11,6 +11,8 @@ export default function AddProperty() {
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(true);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [agreedToPrivacy, setAgreedToPrivacy] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     type: 'apartment',
@@ -146,6 +148,15 @@ export default function AddProperty() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!agreedToTerms || !agreedToPrivacy) {
+      toast({
+        title: 'Ошибка',
+        description: 'Необходимо согласиться с правилами и политикой конфиденциальности',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     try {
       const response = await fetch('https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d', {
         method: 'POST',
@@ -208,6 +219,10 @@ export default function AddProperty() {
         photoPreview=""
         handleDocumentSelect={handleDocumentSelect}
         handleRemoveDocument={handleRemoveDocument}
+        agreedToTerms={agreedToTerms}
+        setAgreedToTerms={setAgreedToTerms}
+        agreedToPrivacy={agreedToPrivacy}
+        setAgreedToPrivacy={setAgreedToPrivacy}
       />
     </div>
   );
