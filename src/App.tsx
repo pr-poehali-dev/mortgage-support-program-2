@@ -11,6 +11,7 @@ import AdminProperties from "./pages/AdminProperties";
 import PropertyView from "./pages/PropertyView";
 import Register from "./pages/Register";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 import AddProperty from "./pages/AddProperty";
 import ReviewsAdmin from "./pages/ReviewsAdmin";
 import NotFound from "./pages/NotFound";
@@ -50,6 +51,7 @@ function AppContent() {
             <Route path="/admin/reviews" element={<ReviewsAdmin />} />
             <Route path="/register" element={<Register />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/add-property" element={<AddProperty />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

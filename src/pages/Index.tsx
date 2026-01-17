@@ -258,6 +258,11 @@ export default function Index() {
                     Политика конфиденциальности
                   </button>
                 </li>
+                <li>
+                  <button onClick={() => navigate('/terms-of-service')} className="hover:text-white transition-colors">
+                    Правила использования
+                  </button>
+                </li>
               </ul>
             </div>
 
