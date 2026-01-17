@@ -52,7 +52,7 @@ export default function HeroSection({ video }: HeroSectionProps) {
             </div>
           </div>
 
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-white/10 backdrop-blur-sm hidden lg:block">
+          <div className="relative rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl bg-white/10 backdrop-blur-sm">
             <div className="aspect-video">
               <iframe
                 width="100%"
