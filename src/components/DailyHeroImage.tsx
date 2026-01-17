@@ -16,7 +16,6 @@ export default function DailyHeroImage() {
           className="w-full h-full object-cover"
           onError={() => setImgError(true)}
           loading="eager"
-          crossOrigin="anonymous"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end">
           <div className="container mx-auto px-4 sm:px-6 pb-8 sm:pb-12">
