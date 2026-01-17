@@ -15,34 +15,48 @@ import AddProperty from "./pages/AddProperty";
 import ReviewsAdmin from "./pages/ReviewsAdmin";
 import NotFound from "./pages/NotFound";
 import AnalyticsProvider from "./components/analytics/AnalyticsProvider";
+import PageLoader from "./components/PageLoader";
 import { useAnalytics } from "./hooks/useAnalytics";
+import { useState, useEffect } from "react";
 
 const queryClient = new QueryClient();
 
 function AppContent() {
   const analytics = useAnalytics();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <AnalyticsProvider
-      googleAnalyticsId={analytics.google_analytics_id || undefined}
-      yandexMetrikaId={analytics.yandex_metrika_id || "105974763"}
-    >
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/property/:id" element={<PropertyView />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/admin/articles" element={<AdminArticles />} />
-          <Route path="/admin/properties" element={<AdminProperties />} />
-          <Route path="/admin/reviews" element={<ReviewsAdmin />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/add-property" element={<AddProperty />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </AnalyticsProvider>
+    <>
+      {isLoading && <PageLoader />}
+      <AnalyticsProvider
+        googleAnalyticsId={analytics.google_analytics_id || undefined}
+        yandexMetrikaId={analytics.yandex_metrika_id || "105974763"}
+      >
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/property/:id" element={<PropertyView />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/articles" element={<AdminArticles />} />
+            <Route path="/admin/properties" element={<AdminProperties />} />
+            <Route path="/admin/reviews" element={<ReviewsAdmin />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/add-property" element={<AddProperty />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AnalyticsProvider>
+    </>
   );
 }
 
