@@ -54,7 +54,7 @@ export default function Index() {
                 className="h-10 sm:h-12 md:h-14 w-auto object-contain flex-shrink-0"
               />
               <div className="hidden sm:block">
-                <p className="text-xs md:text-sm text-gray-600 font-medium whitespace-nowrap">Ипотечный центр | Севастополь</p>
+                <p className="text-xs md:text-sm text-gray-600 font-medium whitespace-nowrap">Ипотечный центр | Крым, Севастополь</p>
                 <p className="text-[10px] md:text-xs text-gray-500">Продажа, Аренда, Оформление</p>
               </div>
             </div>
@@ -85,6 +85,15 @@ export default function Index() {
                   title="WhatsApp"
                 >
                   <Icon name="MessageCircle" size={18} className="sm:w-5 sm:h-5" />
+                </a>
+                <a 
+                  href="https://maxim.chat/79781281850" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-red-500 hover:text-red-600 transition-colors bg-red-50 hover:bg-red-100 p-1.5 sm:p-2 rounded-lg"
+                  title="Max Messenger"
+                >
+                  <Icon name="MessageSquare" size={18} className="sm:w-5 sm:h-5" />
                 </a>
               </div>
             </div>
