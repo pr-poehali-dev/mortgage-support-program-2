@@ -15,6 +15,8 @@ interface PropertyFormDialogProps {
   handlePhotoSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
   uploadingPhoto: boolean;
   photoPreview: string;
+  handleDocumentSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleRemoveDocument: (url: string) => void;
 }
 
 export default function PropertyFormDialog({
@@ -26,6 +28,8 @@ export default function PropertyFormDialog({
   handleSubmit,
   handlePhotoSelect,
   uploadingPhoto,
+  handleDocumentSelect,
+  handleRemoveDocument,
 }: PropertyFormDialogProps) {
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -71,6 +75,8 @@ export default function PropertyFormDialog({
               uploadingPhoto={uploadingPhoto}
               handleRemovePhoto={handleRemovePhoto}
               editProperty={editProperty}
+              handleDocumentSelect={handleDocumentSelect}
+              handleRemoveDocument={handleRemoveDocument}
             />
           )}
         </form>

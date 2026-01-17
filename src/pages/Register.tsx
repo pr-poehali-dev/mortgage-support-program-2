@@ -8,6 +8,9 @@ import RegisterStep1Personal from '@/components/register/RegisterStep1Personal';
 import RegisterStep2Passport from '@/components/register/RegisterStep2Passport';
 import RegisterStep3Employment from '@/components/register/RegisterStep3Employment';
 import RegisterStep4Property from '@/components/register/RegisterStep4Property';
+import { compressImage, fileToBase64 } from '@/utils/imageCompressor';
+import { useToast } from '@/hooks/use-toast';
+import { Toaster } from '@/components/ui/toaster';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -37,13 +40,69 @@ export default function Register() {
     propertyCost: '',
     initialPayment: '',
     creditTerm: '20',
-    additionalInfo: ''
+    additionalInfo: '',
+    photos: [] as string[],
+    documents: [] as string[]
   });
 
   const [submitting, setSubmitting] = useState(false);
+  const [uploadingFiles, setUploadingFiles] = useState(false);
+  const { toast } = useToast();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'photos' | 'documents') => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploadingFiles(true);
+
+    try {
+      const uploadPromises = Array.from(files).map(async (file) => {
+        const compressedFile = type === 'photos' ? await compressImage(file, 1, 1920) : file;
+        const base64 = await fileToBase64(compressedFile);
+        
+        const response = await fetch('https://functions.poehali.dev/be14ce68-1655-468e-be45-ca3e59d65813', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image: base64 }),
+        });
+
+        if (!response.ok) throw new Error('Ошибка загрузки файла');
+
+        const data = await response.json();
+        return data.url;
+      });
+
+      const uploadedUrls = await Promise.all(uploadPromises);
+      
+      setFormData(prev => ({
+        ...prev,
+        [type]: [...prev[type], ...uploadedUrls],
+      }));
+
+      toast({
+        title: 'Файлы загружены',
+        description: `Загружено ${uploadedUrls.length} ${type === 'photos' ? 'фото' : 'документов'}`,
+      });
+    } catch (error) {
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось загрузить файлы',
+        variant: 'destructive',
+      });
+    } finally {
+      setUploadingFiles(false);
+    }
+  };
+
+  const handleRemoveFile = (url: string, type: 'photos' | 'documents') => {
+    setFormData(prev => ({
+      ...prev,
+      [type]: prev[type].filter((item: string) => item !== url),
+    }));
   };
 
   const handleSubmit = async () => {
@@ -80,7 +139,9 @@ export default function Register() {
           propertyCost: parseFloat(formData.propertyCost) || 0,
           initialPayment: parseFloat(formData.initialPayment) || 0,
           creditTerm: parseInt(formData.creditTerm) || 20,
-          additionalInfo: formData.additionalInfo
+          additionalInfo: formData.additionalInfo,
+          photos: formData.photos,
+          documents: formData.documents
         })
       });
 
@@ -97,8 +158,57 @@ export default function Register() {
     }
   };
 
+  const validateCurrentStep = () => {
+    if (step === 1) {
+      if (!formData.fullName || !formData.phone || !formData.email || !formData.birthDate || !formData.birthPlace) {
+        toast({
+          title: 'Ошибка',
+          description: 'Пожалуйста, заполните все обязательные поля',
+          variant: 'destructive',
+        });
+        return false;
+      }
+    }
+    if (step === 2) {
+      if (!formData.passportSeries || !formData.passportNumber || !formData.passportDate || 
+          !formData.passportIssuer || !formData.registrationAddress || !formData.inn || !formData.snils) {
+        toast({
+          title: 'Ошибка',
+          description: 'Пожалуйста, заполните все обязательные поля',
+          variant: 'destructive',
+        });
+        return false;
+      }
+    }
+    if (step === 3) {
+      if (formData.employment !== 'unemployed') {
+        if (!formData.employer || !formData.position || !formData.workExperience || !formData.monthlyIncome) {
+          toast({
+            title: 'Ошибка',
+            description: 'Пожалуйста, заполните все обязательные поля',
+            variant: 'destructive',
+          });
+          return false;
+        }
+      }
+    }
+    if (step === 4) {
+      if (!formData.propertyAddress || !formData.propertyCost || !formData.initialPayment) {
+        toast({
+          title: 'Ошибка',
+          description: 'Пожалуйста, заполните все обязательные поля',
+          variant: 'destructive',
+        });
+        return false;
+      }
+    }
+    return true;
+  };
+
   const nextStep = () => {
-    if (step < 4) setStep(step + 1);
+    if (validateCurrentStep() && step < 4) {
+      setStep(step + 1);
+    }
   };
 
   const prevStep = () => {
@@ -163,7 +273,10 @@ export default function Register() {
               {step === 4 && (
                 <RegisterStep4Property 
                   formData={formData} 
-                  handleInputChange={handleInputChange} 
+                  handleInputChange={handleInputChange}
+                  handleFileUpload={handleFileUpload}
+                  handleRemoveFile={handleRemoveFile}
+                  uploadingFiles={uploadingFiles}
                 />
               )}
 
@@ -207,6 +320,7 @@ export default function Register() {
           </div>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 }

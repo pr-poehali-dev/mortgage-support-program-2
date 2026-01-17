@@ -31,6 +31,8 @@ interface FormStep3DescriptionProps {
   uploadingPhoto: boolean;
   handleRemovePhoto: (photoUrl: string) => void;
   editProperty: any | null;
+  handleDocumentSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleRemoveDocument: (url: string) => void;
 }
 
 interface SortablePhotoItemProps {
@@ -98,6 +100,8 @@ export default function FormStep3Description({
   uploadingPhoto,
   handleRemovePhoto,
   editProperty,
+  handleDocumentSelect,
+  handleRemoveDocument,
 }: FormStep3DescriptionProps) {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -282,6 +286,58 @@ export default function FormStep3Description({
               <SelectItem value="any">Любой</SelectItem>
             </SelectContent>
           </Select>
+        </div>
+      </div>
+
+      <div>
+        <Label>Документы (свидетельство, выписка ЕГРН и т.д.)</Label>
+        <div className="mt-2">
+          <input
+            type="file"
+            id="documents-upload"
+            accept="image/*,.pdf,.doc,.docx"
+            multiple
+            onChange={handleDocumentSelect}
+            className="hidden"
+          />
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => document.getElementById('documents-upload')?.click()}
+            disabled={uploadingPhoto}
+            className="w-full"
+          >
+            {uploadingPhoto ? (
+              <>
+                <Icon name="Loader2" className="mr-2 animate-spin" size={18} />
+                Загрузка...
+              </>
+            ) : (
+              <>
+                <Icon name="FileText" className="mr-2" size={18} />
+                Добавить документы
+              </>
+            )}
+          </Button>
+          {formData.documents && formData.documents.length > 0 && (
+            <div className="mt-3 space-y-2">
+              {formData.documents.map((doc: string, index: number) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <Icon name="FileText" size={18} className="text-blue-600" />
+                    <span className="text-sm text-gray-700">Документ {index + 1}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveDocument(doc)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <Icon name="X" size={18} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

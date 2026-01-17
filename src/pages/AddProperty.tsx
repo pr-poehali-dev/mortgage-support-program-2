@@ -25,6 +25,7 @@ export default function AddProperty() {
     land_area: '',
     photo_url: '',
     photos: [] as string[],
+    documents: [] as string[],
     description: '',
     features: [] as string[],
     property_link: '',
@@ -91,6 +92,57 @@ export default function AddProperty() {
     }
   };
 
+  const handleDocumentSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploadingPhoto(true);
+
+    try {
+      const uploadPromises = Array.from(files).map(async (file) => {
+        const base64 = await fileToBase64(file);
+        
+        const response = await fetch('https://functions.poehali.dev/be14ce68-1655-468e-be45-ca3e59d65813', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image: base64 }),
+        });
+
+        if (!response.ok) throw new Error('Ошибка загрузки документа');
+
+        const data = await response.json();
+        return data.url;
+      });
+
+      const uploadedUrls = await Promise.all(uploadPromises);
+      
+      setFormData(prev => ({
+        ...prev,
+        documents: [...prev.documents, ...uploadedUrls],
+      }));
+
+      toast({
+        title: 'Документы загружены',
+        description: `Загружено ${uploadedUrls.length} документов`,
+      });
+    } catch (error) {
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось загрузить документы',
+        variant: 'destructive',
+      });
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
+
+  const handleRemoveDocument = (url: string) => {
+    setFormData(prev => ({
+      ...prev,
+      documents: prev.documents.filter(doc => doc !== url),
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -154,6 +206,8 @@ export default function AddProperty() {
         handlePhotoSelect={handlePhotoSelect}
         uploadingPhoto={uploadingPhoto}
         photoPreview=""
+        handleDocumentSelect={handleDocumentSelect}
+        handleRemoveDocument={handleRemoveDocument}
       />
     </div>
   );

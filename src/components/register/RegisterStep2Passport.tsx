@@ -74,7 +74,7 @@ export default function RegisterStep2Passport({ formData, handleInputChange }: R
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">ИНН</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">ИНН *</label>
           <input
             type="text"
             value={formData.inn}
@@ -82,16 +82,18 @@ export default function RegisterStep2Passport({ formData, handleInputChange }: R
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
             placeholder="123456789012"
             maxLength={12}
+            required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">СНИЛС</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">СНИЛС *</label>
           <input
             type="text"
             value={formData.snils}
             onChange={(e) => handleInputChange('snils', e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
             placeholder="123-456-789 00"
+            required
           />
         </div>
       </div>
