@@ -40,6 +40,7 @@ export default function PropertyView() {
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     fetchProperty();
@@ -120,23 +121,34 @@ export default function PropertyView() {
             {/* Галерея фото */}
             {photos.length > 0 && (
               <div className="space-y-2 sm:space-y-4">
-                <div className="relative rounded-lg overflow-hidden bg-gray-100 aspect-video">
+                <div className="relative rounded-lg overflow-hidden bg-gray-100 aspect-video cursor-pointer group" onClick={() => setIsFullscreen(true)}>
                   <img 
                     src={photos[currentPhotoIndex]} 
                     alt={property.title}
                     className="w-full h-full object-contain"
                   />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                    <div className="bg-white/90 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all">
+                      <Icon name="Maximize2" size={24} className="text-gray-800" />
+                    </div>
+                  </div>
                   {photos.length > 1 && (
                     <>
                       <button
-                        onClick={() => setCurrentPhotoIndex((currentPhotoIndex - 1 + photos.length) % photos.length)}
-                        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 sm:p-3 rounded-full shadow-lg transition-all touch-manipulation"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCurrentPhotoIndex((currentPhotoIndex - 1 + photos.length) % photos.length);
+                        }}
+                        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 sm:p-3 rounded-full shadow-lg transition-all touch-manipulation z-10"
                       >
                         <Icon name="ChevronLeft" size={20} className="sm:w-6 sm:h-6" />
                       </button>
                       <button
-                        onClick={() => setCurrentPhotoIndex((currentPhotoIndex + 1) % photos.length)}
-                        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 sm:p-3 rounded-full shadow-lg transition-all touch-manipulation"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCurrentPhotoIndex((currentPhotoIndex + 1) % photos.length);
+                        }}
+                        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 sm:p-3 rounded-full shadow-lg transition-all touch-manipulation z-10"
                       >
                         <Icon name="ChevronRight" size={20} className="sm:w-6 sm:h-6" />
                       </button>
@@ -354,6 +366,49 @@ export default function PropertyView() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Полноэкранный просмотр */}
+      {isFullscreen && (
+        <div 
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+          onClick={() => setIsFullscreen(false)}
+        >
+          <button
+            onClick={() => setIsFullscreen(false)}
+            className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition-all z-10"
+          >
+            <Icon name="X" size={24} />
+          </button>
+          
+          <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <img 
+              src={photos[currentPhotoIndex]} 
+              alt={property.title}
+              className="max-w-full max-h-full object-contain"
+            />
+            
+            {photos.length > 1 && (
+              <>
+                <button
+                  onClick={() => setCurrentPhotoIndex((currentPhotoIndex - 1 + photos.length) % photos.length)}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-4 rounded-full transition-all"
+                >
+                  <Icon name="ChevronLeft" size={32} />
+                </button>
+                <button
+                  onClick={() => setCurrentPhotoIndex((currentPhotoIndex + 1) % photos.length)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-4 rounded-full transition-all"
+                >
+                  <Icon name="ChevronRight" size={32} />
+                </button>
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full">
+                  {currentPhotoIndex + 1} / {photos.length}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
