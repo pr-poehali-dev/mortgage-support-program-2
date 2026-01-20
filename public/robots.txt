@@ -1,6 +1,11 @@
 User-agent: *
 Allow: /
-Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /*.json$
+
+# Crawl delay
+Crawl-delay: 1
 
 # Sitemap
 Sitemap: https://ипотекакрым.рф/sitemap.xml
@@ -11,13 +16,25 @@ Host: https://ипотекакрым.рф
 # Yandex
 User-agent: Yandex
 Allow: /
+Crawl-delay: 1
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term
 
 # Google
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 # Bing
 User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Mail.ru
+User-agent: Mail.RU_Bot
+Allow: /
+
+# Rambler
+User-agent: Rambler
 Allow: /
 
 # Social Networks
@@ -26,3 +43,22 @@ Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+User-agent: Slackbot
+Allow: /
+
+# Bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
