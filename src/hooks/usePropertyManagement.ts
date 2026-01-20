@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Property, PropertyFormData, PROPERTIES_URL } from '@/types/Property';
 import { compressImage } from '@/utils/imageCompressor';
+import { notifyPropertyPage, notifyAllMainPages } from '@/services/indexnow';
 
 const initialFormData: PropertyFormData = {
   title: '', type: 'apartment', property_category: 'apartment',
@@ -271,6 +272,15 @@ export function usePropertyManagement() {
         alert(editProperty ? 'Объект успешно обновлен!' : 'Объект успешно добавлен!');
         setPropertyDialogOpen(false);
         fetchProperties();
+        
+        if (result.property?.id) {
+          notifyPropertyPage(result.property.id).catch(err => 
+            console.warn('IndexNow notification failed:', err)
+          );
+          notifyAllMainPages().catch(err => 
+            console.warn('IndexNow main pages notification failed:', err)
+          );
+        }
       } else {
         alert('Ошибка: ' + (result.error || 'Неизвестная ошибка'));
       }
@@ -297,6 +307,10 @@ export function usePropertyManagement() {
       if (result.success) {
         alert('Объект успешно удален!');
         fetchProperties();
+        
+        notifyAllMainPages().catch(err => 
+          console.warn('IndexNow notification failed:', err)
+        );
       } else {
         alert('Ошибка удаления: ' + (result.error || 'Неизвестная ошибка'));
       }

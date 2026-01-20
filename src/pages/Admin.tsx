@@ -28,6 +28,7 @@ import MetrikaGoalsDashboard from '@/components/MetrikaGoalsDashboard';
 import MetrikaTrendsChart from '@/components/MetrikaTrendsChart';
 import AdminClock from '@/components/AdminClock';
 import AdminCalendar from '@/components/AdminCalendar';
+import IndexNowControl from '@/components/admin/IndexNowControl';
 import PropertyFormDialog from '@/components/catalog/PropertyFormDialog';
 import { useAdminLogic } from '@/hooks/useAdminLogic';
 
@@ -117,6 +118,7 @@ export default function Admin() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <AdminCalendar />
           <div className="space-y-6">
+            <IndexNowControl />
             <IndexNowNotifier />
             <SitemapInfo />
           </div>

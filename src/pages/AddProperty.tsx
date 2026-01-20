@@ -5,6 +5,7 @@ import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 import PropertyFormDialog from '@/components/catalog/PropertyFormDialog';
 import { compressImage, fileToBase64 } from '@/utils/imageCompressor';
+import { notifyAllMainPages } from '@/services/indexnow';
 
 export default function AddProperty() {
   const navigate = useNavigate();
@@ -170,6 +171,10 @@ export default function AddProperty() {
         title: 'Успешно!',
         description: 'Объявление отправлено на модерацию',
       });
+
+      notifyAllMainPages().catch(err => 
+        console.warn('IndexNow notification failed:', err)
+      );
 
       navigate('/');
     } catch (error) {

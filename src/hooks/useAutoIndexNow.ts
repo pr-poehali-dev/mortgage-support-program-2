@@ -1,26 +1,33 @@
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { notifyCurrentPage } from '@/services/indexnow';
 
-export function useAutoIndexNow() {
+export function useAutoIndexNow(delay = 3000) {
+  const location = useLocation();
+
   useEffect(() => {
     const notifyPage = async () => {
-      const currentPath = window.location.pathname;
-      const storageKey = `indexnow_notified_${currentPath}`;
-      const lastNotified = localStorage.getItem(storageKey);
-      
-      if (!lastNotified) {
-        try {
-          await notifyCurrentPage();
-          localStorage.setItem(storageKey, new Date().toISOString());
-          console.log('IndexNow: Page automatically notified to search engines');
-        } catch (error) {
-          console.error('IndexNow auto-notification failed:', error);
+      try {
+        const result = await notifyCurrentPage();
+        
+        if (result.urls_submitted > 0) {
+          console.log('✅ IndexNow: Page indexed', {
+            url: window.location.href,
+            engines: result.results.map(r => r.engine).join(', '),
+            timestamp: result.timestamp
+          });
         }
+      } catch (error) {
+        console.warn('⚠️ IndexNow notification failed:', error);
       }
     };
 
-    const timer = setTimeout(notifyPage, 5000);
+    const skipPaths = ['/admin', '/admin/'];
+    const currentPath = location.pathname;
     
-    return () => clearTimeout(timer);
-  }, []);
+    if (!skipPaths.some(path => currentPath.startsWith(path))) {
+      const timer = setTimeout(notifyPage, delay);
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname, delay]);
 }
