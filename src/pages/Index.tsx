@@ -156,6 +156,10 @@ export default function Index() {
               <Icon name="HelpCircle" size={18} className="sm:w-5 sm:h-5" />
               <span className="whitespace-nowrap">FAQ</span>
             </TabsTrigger>
+            <TabsTrigger value="tags" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs min-w-[60px]">
+              <Icon name="Tags" size={18} className="sm:w-5 sm:h-5" />
+              <span className="whitespace-nowrap">Теги</span>
+            </TabsTrigger>
             <TabsTrigger value="contact" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs min-w-[60px]">
               <Icon name="Phone" size={18} className="sm:w-5 sm:h-5" />
               <span className="whitespace-nowrap">Контакты</span>
