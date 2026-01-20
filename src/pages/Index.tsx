@@ -119,52 +119,56 @@ export default function Index() {
 
       <main className="container mx-auto px-3 sm:px-4 py-3 sm:py-6">
         <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-3 sm:space-y-6">
-          <TabsList className="grid grid-cols-5 sm:grid-cols-5 lg:grid-cols-10 gap-1 sm:gap-1.5 bg-white/80 backdrop-blur-sm p-1 sm:p-1.5 rounded-lg shadow-sm h-auto w-full overflow-x-auto">
-            <TabsTrigger value="home" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs min-w-[60px]">
-              <Icon name="Home" size={18} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">Главная</span>
-            </TabsTrigger>
-            <TabsTrigger value="catalog" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs min-w-[60px]">
-              <Icon name="Building2" size={18} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">Объекты</span>
-            </TabsTrigger>
-            <TabsTrigger value="calculator" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs min-w-[60px]">
-              <Icon name="Calculator" size={18} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">Расчёт</span>
-            </TabsTrigger>
-            <TabsTrigger value="programs" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs min-w-[60px]">
-              <Icon name="ClipboardList" size={18} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">Прогр.</span>
-            </TabsTrigger>
-            <TabsTrigger value="comparison" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs min-w-[60px]">
-              <Icon name="GitCompare" size={18} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">Сравн.</span>
-            </TabsTrigger>
-            <TabsTrigger value="documents" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs min-w-[60px]">
-              <Icon name="FileText" size={18} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">Док.</span>
-            </TabsTrigger>
-            <TabsTrigger value="blog" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs min-w-[60px]">
-              <Icon name="BookOpen" size={18} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">Блог</span>
-            </TabsTrigger>
-            <TabsTrigger value="videos" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs min-w-[60px]">
-              <Icon name="Video" size={18} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">Видео</span>
-            </TabsTrigger>
-            <TabsTrigger value="faq" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs min-w-[60px]">
-              <Icon name="HelpCircle" size={18} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">FAQ</span>
-            </TabsTrigger>
-            <TabsTrigger value="tags" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs min-w-[60px]">
-              <Icon name="Tags" size={18} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">Теги</span>
-            </TabsTrigger>
-            <TabsTrigger value="contact" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs min-w-[60px]">
-              <Icon name="Phone" size={18} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">Контакты</span>
-            </TabsTrigger>
-          </TabsList>
+          <div className="bg-white/80 backdrop-blur-sm p-1 sm:p-1.5 rounded-lg shadow-sm space-y-1">
+            <div className="grid grid-cols-6 gap-1 sm:gap-1.5">
+              <TabsTrigger value="home" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
+                <Icon name="Home" size={18} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">Главная</span>
+              </TabsTrigger>
+              <TabsTrigger value="catalog" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
+                <Icon name="Building2" size={18} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">Объекты</span>
+              </TabsTrigger>
+              <TabsTrigger value="calculator" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
+                <Icon name="Calculator" size={18} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">Расчёт</span>
+              </TabsTrigger>
+              <TabsTrigger value="programs" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
+                <Icon name="ClipboardList" size={18} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">Прогр.</span>
+              </TabsTrigger>
+              <TabsTrigger value="comparison" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
+                <Icon name="GitCompare" size={18} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">Сравн.</span>
+              </TabsTrigger>
+              <TabsTrigger value="documents" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
+                <Icon name="FileText" size={18} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">Док.</span>
+              </TabsTrigger>
+            </div>
+            <div className="grid grid-cols-5 gap-1 sm:gap-1.5">
+              <TabsTrigger value="blog" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
+                <Icon name="BookOpen" size={18} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">Блог</span>
+              </TabsTrigger>
+              <TabsTrigger value="videos" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
+                <Icon name="Video" size={18} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">Видео</span>
+              </TabsTrigger>
+              <TabsTrigger value="faq" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
+                <Icon name="HelpCircle" size={18} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">FAQ</span>
+              </TabsTrigger>
+              <TabsTrigger value="tags" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
+                <Icon name="Tags" size={18} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">Теги</span>
+              </TabsTrigger>
+              <TabsTrigger value="contact" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
+                <Icon name="Phone" size={18} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">Контакты</span>
+              </TabsTrigger>
+            </div>
+          </div>
 
           <MortgageTabsContent onNavigateToCalculator={() => {
             setActiveTab('calculator');
