@@ -68,10 +68,6 @@ export default function TagCloud() {
 
   return (
     <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-lg">
-      <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-6 text-center">
-        🏷️ Популярные запросы
-      </h2>
-      
       <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
         {tags.map((tag, index) => (
           <button
