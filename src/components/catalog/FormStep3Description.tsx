@@ -43,9 +43,10 @@ interface SortablePhotoItemProps {
   photo: string;
   index: number;
   onRemove: (photo: string) => void;
+  onView: (photo: string) => void;
 }
 
-function SortablePhotoItem({ photo, index, onRemove }: SortablePhotoItemProps) {
+function SortablePhotoItem({ photo, index, onRemove, onView }: SortablePhotoItemProps) {
   const {
     attributes,
     listeners,
@@ -74,6 +75,18 @@ function SortablePhotoItem({ photo, index, onRemove }: SortablePhotoItemProps) {
         alt={`Photo ${index + 1}`}
         className="w-full h-24 object-cover rounded-lg"
       />
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onView(photo);
+        }}
+        className="absolute inset-0 bg-black/0 hover:bg-black/40 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100 z-[5]"
+      >
+        <div className="bg-white/90 p-2 rounded-full">
+          <Icon name="Maximize2" size={16} />
+        </div>
+      </button>
       <button
         type="button"
         onClick={(e) => {
@@ -112,6 +125,7 @@ export default function FormStep3Description({
   setAgreedToPrivacy,
 }: FormStep3DescriptionProps) {
   const [isDragging, setIsDragging] = useState(false);
+  const [fullscreenPhoto, setFullscreenPhoto] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const sensors = useSensors(
@@ -259,6 +273,7 @@ export default function FormStep3Description({
                       photo={photo}
                       index={index}
                       onRemove={handleRemovePhoto}
+                      onView={setFullscreenPhoto}
                     />
                   ))}
                 </div>
@@ -401,6 +416,29 @@ export default function FormStep3Description({
           {editProperty ? 'Сохранить изменения' : 'Разместить объявление'}
         </Button>
       </div>
+
+      {/* Полноэкранный просмотр */}
+      {fullscreenPhoto && (
+        <div 
+          className="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center p-4"
+          onClick={() => setFullscreenPhoto(null)}
+        >
+          <button
+            onClick={() => setFullscreenPhoto(null)}
+            className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition-all z-10"
+          >
+            <Icon name="X" size={24} />
+          </button>
+          
+          <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <img 
+              src={fullscreenPhoto} 
+              alt="Полноэкранный просмотр"
+              className="max-w-full max-h-full object-contain"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
