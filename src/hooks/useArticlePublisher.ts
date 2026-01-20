@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { sendNewsletter } from '@/utils/sendNewsletter';
-import { notifyCurrentPage, notifySitemapXml } from '@/services/indexnow';
+import { notifyCurrentPage, notifySitemap } from '@/services/indexnow';
 
 interface Article {
   id: number;
@@ -53,7 +53,7 @@ export function useArticlePublisher(articles: Article[]) {
                 await notifyCurrentPage();
                 console.log(`IndexNow: Статья "${article.title}" отправлена в поисковые системы`);
                 
-                await notifySitemapXml();
+                await notifySitemap();
                 console.log(`IndexNow: Обновленный sitemap.xml отправлен в поисковые системы`);
               } catch (indexError) {
                 console.error(`Ошибка отправки в IndexNow для статьи "${article.title}":`, indexError);
