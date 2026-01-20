@@ -54,7 +54,7 @@ export default function HeroSection({ video }: HeroSectionProps) {
                 src="https://yandex.ru/sprav/widget/rating-badge/81713615933?type=rating" 
                 width="150" 
                 height="50" 
-                frameBorder="0"
+                style={{ border: 0 }}
                 title="Рейтинг на Яндекс.Картах"
                 className="max-w-full"
               ></iframe>
@@ -68,7 +68,7 @@ export default function HeroSection({ video }: HeroSectionProps) {
                 height="100%"
                 src={video.embed_url}
                 title={video.title}
-                frameBorder="0"
+                style={{ border: 0 }}
                 allow="clipboard-write; autoplay"
                 allowFullScreen
                 className="rounded-lg sm:rounded-xl"

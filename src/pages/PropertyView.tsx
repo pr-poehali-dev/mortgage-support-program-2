@@ -226,8 +226,8 @@ export default function PropertyView() {
                   src={`https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(property.location)}&z=14`}
                   width="100%"
                   height="400"
-                  frameBorder="0"
-                  style={{ position: 'relative', pointerEvents: 'none' }}
+                  style={{ position: 'relative', pointerEvents: 'none', border: 0 }}
+                  title={`Карта: ${property.location}`}
                 />
               </a>
             </div>

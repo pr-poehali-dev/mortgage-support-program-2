@@ -248,9 +248,8 @@ export default function ContactAndFaqTabs() {
                   src="https://yandex.ru/map-widget/v1/org/arendodatel/81713615933/reviews/?indoorLevel=1&ll=33.518898%2C44.580696&z=17.2" 
                   width="100%" 
                   height="400" 
-                  frameBorder="1" 
+                  style={{ position: 'relative', border: '1px solid #ddd' }}
                   allowFullScreen={true}
-                  style={{ position: 'relative' }}
                   title="Карта офиса"
                 ></iframe>
               </div>
@@ -260,7 +259,7 @@ export default function ContactAndFaqTabs() {
                   src="https://yandex.ru/sprav/widget/rating-badge/81713615933?type=award" 
                   width="150" 
                   height="50" 
-                  frameBorder="0"
+                  style={{ border: 0 }}
                   title="Награда Яндекс.Карт"
                 ></iframe>
               </div>

@@ -84,7 +84,7 @@ export default function VideosTab() {
               height="100%"
               src={selectedVideo.embed_url}
               title={selectedVideo.title}
-              frameBorder="0"
+              style={{ border: 0 }}
               allow="clipboard-write; autoplay"
               allowFullScreen
               className="w-full h-full"
