@@ -49,7 +49,7 @@ export default function Index() {
               }}
             >
               <AnimatedLogo
-                src="https://cdn.poehali.dev/files/с дескриптором черный вариант (2).png"
+                src="https://i.imgur.com/LxyQAtM.jpeg"
                 alt="Арендодатель"
                 className="h-10 sm:h-12 md:h-14 w-auto object-contain flex-shrink-0"
               />
@@ -174,7 +174,7 @@ export default function Index() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             <div>
               <AnimatedLogo
-                src="https://cdn.poehali.dev/files/с дескриптором белый вариант (1).png"
+                src="https://i.imgur.com/LxyQAtM.jpeg"
                 alt="Арендодатель"
                 className="h-12 w-auto object-contain mb-4"
               />
