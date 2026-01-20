@@ -12,7 +12,7 @@ export default function HeroSection({ video }: HeroSectionProps) {
     <div className="relative rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-2xl">
       <div className="absolute inset-0">
         <img 
-          src="https://images.pexels.com/photos/164336/pexels-photo-164336.jpeg?auto=compress&cs=tinysrgb&w=2400&h=800&dpr=2" 
+          src="https://i.imgur.com/LxyQAtM.jpeg" 
           alt="Крым недвижимость" 
           className="w-full h-full object-cover"
         />
