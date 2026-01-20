@@ -119,8 +119,8 @@ export default function Index() {
 
       <main className="container mx-auto px-3 sm:px-4 py-3 sm:py-6">
         <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-3 sm:space-y-6">
-          <div className="bg-white/80 backdrop-blur-sm p-1 sm:p-1.5 rounded-lg shadow-sm space-y-1">
-            <div className="grid grid-cols-6 gap-1 sm:gap-1.5">
+          <TabsList className="bg-white/80 backdrop-blur-sm p-1 sm:p-1.5 rounded-lg shadow-sm h-auto flex flex-col gap-1">
+            <div className="grid grid-cols-6 gap-1 sm:gap-1.5 w-full">
               <TabsTrigger value="home" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
                 <Icon name="Home" size={18} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Главная</span>
@@ -146,7 +146,7 @@ export default function Index() {
                 <span className="whitespace-nowrap">Док.</span>
               </TabsTrigger>
             </div>
-            <div className="grid grid-cols-5 gap-1 sm:gap-1.5">
+            <div className="grid grid-cols-5 gap-1 sm:gap-1.5 w-full">
               <TabsTrigger value="blog" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
                 <Icon name="BookOpen" size={18} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Блог</span>
@@ -168,7 +168,7 @@ export default function Index() {
                 <span className="whitespace-nowrap">Контакты</span>
               </TabsTrigger>
             </div>
-          </div>
+          </TabsList>
 
           <MortgageTabsContent onNavigateToCalculator={() => {
             setActiveTab('calculator');
