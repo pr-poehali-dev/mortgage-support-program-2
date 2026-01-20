@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
-import { notifySitemap, notifyCurrentPage, notifySitemapXml } from '@/services/indexnow';
+import { notifySitemap, notifyCurrentPage, notifyAllMainPages } from '@/services/indexnow';
 import { toast } from 'sonner';
 
 export default function IndexNowNotifier() {
@@ -42,8 +42,8 @@ export default function IndexNowNotifier() {
     setIsLoading(true);
     try {
       const [sitemapResult, pagesResult] = await Promise.all([
-        notifySitemapXml(),
-        notifySitemap()
+        notifySitemap(),
+        notifyAllMainPages()
       ]);
       
       const successCount = pagesResult.results.filter(r => r.status === 'success').length;
