@@ -24,6 +24,7 @@ const AddProperty = lazy(() => import("./pages/AddProperty"));
 const Register = lazy(() => import("./pages/Register"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const Services = lazy(() => import("./pages/Services"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -74,6 +75,7 @@ function AppContent() {
               <Route path="/register" element={<Register />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/services" element={<Services />} />
               <Route path="/add-property" element={<AddProperty />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

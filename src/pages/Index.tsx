@@ -146,7 +146,7 @@ export default function Index() {
                 <span className="whitespace-nowrap">Док.</span>
               </TabsTrigger>
             </div>
-            <div className="grid grid-cols-5 gap-1 sm:gap-1.5 w-full">
+            <div className="grid grid-cols-6 gap-1 sm:gap-1.5 w-full">
               <TabsTrigger value="blog" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
                 <Icon name="BookOpen" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Блог</span>
@@ -154,6 +154,14 @@ export default function Index() {
               <TabsTrigger value="videos" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
                 <Icon name="Video" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Видео</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="services" 
+                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
+                onClick={() => navigate('/services')}
+              >
+                <Icon name="Briefcase" size={20} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">Услуги</span>
               </TabsTrigger>
               <TabsTrigger value="faq" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
                 <Icon name="HelpCircle" size={20} className="sm:w-5 sm:h-5" />
