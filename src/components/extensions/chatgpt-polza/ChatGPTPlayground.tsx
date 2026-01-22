@@ -119,7 +119,7 @@ export function ChatGPTPlayground({
   const [modelsLoading, setModelsLoading] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { generate, getModels, isLoading, error } = useChatGPT({ apiUrl });
+  const { generate, getModels, testConnection, isLoading, error } = useChatGPT({ apiUrl });
 
   // Загрузка моделей
   useEffect(() => {
@@ -178,12 +178,34 @@ export function ChatGPTPlayground({
 
   const clearChat = () => setMessages([]);
 
+  const handleTestConnection = async () => {
+    const result = await testConnection(selectedModel);
+    if (result.success) {
+      setMessages([{
+        id: crypto.randomUUID(),
+        role: "assistant",
+        content: `✅ Подключение успешно!\n\nМодель: ${result.model}\nОтвет: ${result.response}`,
+      }]);
+    } else {
+      setMessages([{
+        id: crypto.randomUUID(),
+        role: "assistant",
+        content: `❌ Ошибка подключения: ${result.error}`,
+      }]);
+    }
+  };
+
   return (
     <div className="flex h-full bg-[#1e1e1e] text-white">
       {/* Левая панель - Настройки */}
       <div className="w-80 border-r border-gray-700 flex flex-col">
         <div className="p-4 border-b border-gray-700">
-          <h1 className="text-lg font-medium">Песочница</h1>
+          <h1 className="text-lg font-medium">Песочница ChatGPT</h1>
+          {error && (
+            <div className="mt-2 p-2 bg-red-500/20 border border-red-500 rounded text-xs text-red-300">
+              Ошибка: {error}
+            </div>
+          )}
         </div>
 
         <div className="p-4 space-y-4 flex-1 overflow-y-auto">
@@ -211,8 +233,15 @@ export function ChatGPTPlayground({
           </div>
         </div>
 
-        {/* Кнопка очистки */}
-        <div className="p-4 border-t border-gray-700">
+        {/* Кнопки */}
+        <div className="p-4 border-t border-gray-700 space-y-2">
+          <button
+            onClick={handleTestConnection}
+            disabled={isLoading}
+            className="w-full px-4 py-2 text-sm bg-green-600 hover:bg-green-700 rounded disabled:opacity-50 transition-colors"
+          >
+            {isLoading ? "Тестирование..." : "Тест подключения"}
+          </button>
           <button
             onClick={clearChat}
             className="w-full px-4 py-2 text-sm text-gray-400 hover:text-white border border-gray-600 rounded hover:border-gray-500 transition-colors"

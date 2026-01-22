@@ -1,0 +1,42 @@
+{
+  "tests": [
+    {
+      "name": "Test OPTIONS request (CORS preflight)",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedHeaders": {
+        "Access-Control-Allow-Origin": "*"
+      }
+    },
+    {
+      "name": "Test GET models endpoint",
+      "method": "GET",
+      "path": "/?action=models",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "models": "array"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test POST generate endpoint",
+      "method": "POST",
+      "path": "/?action=generate",
+      "body": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Скажи привет"
+          }
+        ],
+        "model": "openai/gpt-4o-mini"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "content": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
