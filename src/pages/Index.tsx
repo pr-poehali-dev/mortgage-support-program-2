@@ -62,9 +62,9 @@ export default function Index() {
               <a 
                 href="tel:+79781281850" 
                 onClick={() => trackPhoneClick('header')}
-                className="flex items-center gap-1 sm:gap-1.5 text-primary hover:text-primary/80 transition-colors bg-blue-50 hover:bg-blue-100 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg"
+                className="flex items-center gap-1 sm:gap-1.5 text-primary hover:text-primary/80 transition-colors bg-blue-50 hover:bg-blue-100 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg min-h-[44px]"
               >
-                <Icon name="Phone" size={18} className="sm:w-5 sm:h-5" />
+                <Icon name="Phone" size={20} className="sm:w-6 sm:h-6" />
                 <span className="font-semibold text-xs sm:text-sm whitespace-nowrap hidden xs:inline">Позвонить</span>
               </a>
               <div className="flex items-center gap-1 sm:gap-1.5">
@@ -72,28 +72,28 @@ export default function Index() {
                   href="https://t.me/+79781281850" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 hover:bg-blue-100 p-1.5 sm:p-2 rounded-lg"
+                  className="text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 hover:bg-blue-100 p-2.5 sm:p-3 rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center"
                   title="Telegram"
                 >
-                  <Icon name="Send" size={18} className="sm:w-5 sm:h-5" />
+                  <Icon name="Send" size={20} className="sm:w-6 sm:h-6" />
                 </a>
                 <a 
                   href="https://wa.me/79781281850" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-green-500 hover:text-green-600 transition-colors bg-green-50 hover:bg-green-100 p-1.5 sm:p-2 rounded-lg"
+                  className="text-green-500 hover:text-green-600 transition-colors bg-green-50 hover:bg-green-100 p-2.5 sm:p-3 rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center"
                   title="WhatsApp"
                 >
-                  <Icon name="MessageCircle" size={18} className="sm:w-5 sm:h-5" />
+                  <Icon name="MessageCircle" size={20} className="sm:w-6 sm:h-6" />
                 </a>
                 <a 
                   href="https://maxim.chat/79781281850" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-red-500 hover:text-red-600 transition-colors bg-red-50 hover:bg-red-100 p-1.5 sm:p-2 rounded-lg"
+                  className="text-red-500 hover:text-red-600 transition-colors bg-red-50 hover:bg-red-100 p-2.5 sm:p-3 rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center"
                   title="Max Messenger"
                 >
-                  <Icon name="MessageSquare" size={18} className="sm:w-5 sm:h-5" />
+                  <Icon name="MessageSquare" size={20} className="sm:w-6 sm:h-6" />
                 </a>
               </div>
             </div>
@@ -121,50 +121,50 @@ export default function Index() {
         <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-3 sm:space-y-6">
           <TabsList className="bg-white/80 backdrop-blur-sm p-1 sm:p-1.5 rounded-lg shadow-sm h-auto flex flex-col gap-1">
             <div className="grid grid-cols-6 gap-1 sm:gap-1.5 w-full">
-              <TabsTrigger value="home" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
-                <Icon name="Home" size={18} className="sm:w-5 sm:h-5" />
+              <TabsTrigger value="home" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+                <Icon name="Home" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Главная</span>
               </TabsTrigger>
-              <TabsTrigger value="catalog" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
-                <Icon name="Building2" size={18} className="sm:w-5 sm:h-5" />
+              <TabsTrigger value="catalog" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+                <Icon name="Building2" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Объекты</span>
               </TabsTrigger>
-              <TabsTrigger value="calculator" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
-                <Icon name="Calculator" size={18} className="sm:w-5 sm:h-5" />
+              <TabsTrigger value="calculator" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+                <Icon name="Calculator" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Расчёт</span>
               </TabsTrigger>
-              <TabsTrigger value="programs" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
-                <Icon name="ClipboardList" size={18} className="sm:w-5 sm:h-5" />
+              <TabsTrigger value="programs" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+                <Icon name="ClipboardList" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Прогр.</span>
               </TabsTrigger>
-              <TabsTrigger value="comparison" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
-                <Icon name="GitCompare" size={18} className="sm:w-5 sm:h-5" />
+              <TabsTrigger value="comparison" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+                <Icon name="GitCompare" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Сравн.</span>
               </TabsTrigger>
-              <TabsTrigger value="documents" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
-                <Icon name="FileText" size={18} className="sm:w-5 sm:h-5" />
+              <TabsTrigger value="documents" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+                <Icon name="FileText" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Док.</span>
               </TabsTrigger>
             </div>
             <div className="grid grid-cols-5 gap-1 sm:gap-1.5 w-full">
-              <TabsTrigger value="blog" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
-                <Icon name="BookOpen" size={18} className="sm:w-5 sm:h-5" />
+              <TabsTrigger value="blog" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+                <Icon name="BookOpen" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Блог</span>
               </TabsTrigger>
-              <TabsTrigger value="videos" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
-                <Icon name="Video" size={18} className="sm:w-5 sm:h-5" />
+              <TabsTrigger value="videos" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+                <Icon name="Video" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Видео</span>
               </TabsTrigger>
-              <TabsTrigger value="faq" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
-                <Icon name="HelpCircle" size={18} className="sm:w-5 sm:h-5" />
+              <TabsTrigger value="faq" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+                <Icon name="HelpCircle" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">FAQ</span>
               </TabsTrigger>
-              <TabsTrigger value="tags" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
-                <Icon name="Tags" size={18} className="sm:w-5 sm:h-5" />
+              <TabsTrigger value="tags" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+                <Icon name="Tags" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Теги</span>
               </TabsTrigger>
-              <TabsTrigger value="contact" className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-2 text-[10px] sm:text-xs">
-                <Icon name="Phone" size={18} className="sm:w-5 sm:h-5" />
+              <TabsTrigger value="contact" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+                <Icon name="Phone" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Контакты</span>
               </TabsTrigger>
             </div>
