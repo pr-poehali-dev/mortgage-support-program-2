@@ -225,22 +225,22 @@ export default function ContactAndFaqTabs() {
             <CardTitle className="text-2xl">Где мы находимся</CardTitle>
           </CardHeader>
           <CardContent>
-              <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '8px' }}>
+              <div className="relative overflow-hidden rounded-lg">
                 <a 
                   href="https://yandex.ru/maps/org/arendodatel/81713615933/?utm_medium=mapframe&utm_source=maps" 
-                  style={{ color: '#eee', fontSize: '12px', position: 'absolute', top: '0px', zIndex: 1 }}
+                  className="text-gray-200 text-xs absolute top-0 z-10"
                 >
                   Арендодатель
                 </a>
                 <a 
                   href="https://yandex.ru/maps/959/sevastopol/category/real_estate_agency/184107503/?utm_medium=mapframe&utm_source=maps" 
-                  style={{ color: '#eee', fontSize: '12px', position: 'absolute', top: '14px', zIndex: 1 }}
+                  className="text-gray-200 text-xs absolute top-[14px] z-10"
                 >
                   Агентство недвижимости в Севастополе
                 </a>
                 <a 
                   href="https://yandex.ru/maps/959/sevastopol/category/apartments_in_new_buildings/184107519/?utm_medium=mapframe&utm_source=maps" 
-                  style={{ color: '#eee', fontSize: '12px', position: 'absolute', top: '28px', zIndex: 1 }}
+                  className="text-gray-200 text-xs absolute top-[28px] z-10"
                 >
                   Квартиры в новостройках в Севастополе
                 </a>
@@ -248,7 +248,7 @@ export default function ContactAndFaqTabs() {
                   src="https://yandex.ru/map-widget/v1/org/arendodatel/81713615933/reviews/?indoorLevel=1&ll=33.518898%2C44.580696&z=17.2" 
                   width="100%" 
                   height="400" 
-                  style={{ position: 'relative', border: '1px solid #ddd' }}
+                  className="relative border border-gray-300"
                   allowFullScreen={true}
                   title="Карта офиса"
                 ></iframe>

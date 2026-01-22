@@ -93,7 +93,7 @@ export default function AdvantagesSection() {
         <p className="text-center text-gray-600 text-xs sm:text-base mb-3 sm:mb-5">Готовое решение</p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6">
-          <Card className="p-4 sm:p-6 hover:shadow-xl transition-all border-2 border-indigo-100 animate-in fade-in slide-in-from-left duration-500" style={{animationDelay: '100ms'}}>
+          <Card className="p-4 sm:p-6 hover:shadow-xl transition-all border-2 border-indigo-100 animate-in fade-in slide-in-from-left duration-500 [animation-delay:100ms]">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-3 sm:mb-4">
               <Icon name="MapPin" size={20} className="text-indigo-600 sm:w-6 sm:h-6" />
             </div>
@@ -103,7 +103,7 @@ export default function AdvantagesSection() {
             </p>
           </Card>
 
-          <Card className="p-4 sm:p-6 hover:shadow-xl transition-all border-2 border-blue-100 animate-in fade-in slide-in-from-bottom duration-500" style={{animationDelay: '200ms'}}>
+          <Card className="p-4 sm:p-6 hover:shadow-xl transition-all border-2 border-blue-100 animate-in fade-in slide-in-from-bottom duration-500 [animation-delay:200ms]">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-3 sm:mb-4">
               <Icon name="Monitor" size={20} className="text-blue-600 sm:w-6 sm:h-6" />
             </div>
@@ -113,7 +113,7 @@ export default function AdvantagesSection() {
             </p>
           </Card>
 
-          <Card className="p-4 sm:p-6 hover:shadow-xl transition-all border-2 border-green-100 animate-in fade-in slide-in-from-right duration-500" style={{animationDelay: '300ms'}}>
+          <Card className="p-4 sm:p-6 hover:shadow-xl transition-all border-2 border-green-100 animate-in fade-in slide-in-from-right duration-500 [animation-delay:300ms]">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-lg flex items-center justify-center mb-3 sm:mb-4">
               <Icon name="ShieldCheck" size={20} className="text-green-600 sm:w-6 sm:h-6" />
             </div>

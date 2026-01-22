@@ -48,7 +48,13 @@ export default function YandexMetrika({ counterId }: YandexMetrikaProps) {
     document.head.appendChild(script);
 
     const noscript = document.createElement('noscript');
-    noscript.innerHTML = `<div><img src="https://mc.yandex.ru/watch/${id}" style="position:absolute; left:-9999px;" alt="Яндекс Метрика" /></div>`;
+    const noscriptDiv = document.createElement('div');
+    noscriptDiv.className = 'absolute -left-[9999px]';
+    const noscriptImg = document.createElement('img');
+    noscriptImg.src = `https://mc.yandex.ru/watch/${id}`;
+    noscriptImg.alt = 'Яндекс Метрика';
+    noscriptDiv.appendChild(noscriptImg);
+    noscript.appendChild(noscriptDiv);
     document.body.appendChild(noscript);
 
     console.log('Yandex Metrika initialized:', id);

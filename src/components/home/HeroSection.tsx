@@ -54,9 +54,8 @@ export default function HeroSection({ video }: HeroSectionProps) {
                 src="https://yandex.ru/sprav/widget/rating-badge/81713615933?type=rating" 
                 width="150" 
                 height="50" 
-                style={{ border: 0 }}
+                className="max-w-full border-0"
                 title="Рейтинг на Яндекс.Картах"
-                className="max-w-full"
               ></iframe>
             </div>
           </div>
@@ -68,10 +67,9 @@ export default function HeroSection({ video }: HeroSectionProps) {
                 height="100%"
                 src={video.embed_url}
                 title={video.title}
-                style={{ border: 0 }}
+                className="rounded-lg sm:rounded-xl border-0"
                 allow="clipboard-write; autoplay"
                 allowFullScreen
-                className="rounded-lg sm:rounded-xl"
               ></iframe>
             </div>
             <div className="absolute inset-0 pointer-events-none border-2 border-white/20 rounded-lg sm:rounded-xl"></div>

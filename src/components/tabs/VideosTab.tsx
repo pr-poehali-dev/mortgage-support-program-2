@@ -84,10 +84,9 @@ export default function VideosTab() {
               height="100%"
               src={selectedVideo.embed_url}
               title={selectedVideo.title}
-              style={{ border: 0 }}
+              className="w-full h-full border-0"
               allow="clipboard-write; autoplay"
               allowFullScreen
-              className="w-full h-full"
             ></iframe>
           </div>
           <h3 className="text-xl font-bold text-gray-900 mb-2">{selectedVideo.title}</h3>

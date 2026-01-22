@@ -132,15 +132,9 @@ export default function ReviewsSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 max-w-6xl mx-auto">
           <div className="w-full order-2 lg:order-1">
-            <div className="relative w-full" style={{ height: '500px', overflow: 'hidden' }}>
+            <div className="relative w-full h-[500px] overflow-hidden">
               <iframe
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  border: '1px solid #e6e6e6',
-                  borderRadius: '8px',
-                  boxSizing: 'border-box'
-                }}
+                className="w-full h-full border border-gray-200 rounded-lg box-border"
                 src="https://yandex.ru/maps-reviews-widget/81713615933?comments"
                 title="Отзывы на Яндекс.Картах"
               />
@@ -148,24 +142,7 @@ export default function ReviewsSection() {
                 href="https://yandex.ru/maps/org/arendodatel/81713615933/"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{
-                  boxSizing: 'border-box',
-                  textDecoration: 'none',
-                  color: '#b3b3b3',
-                  fontSize: '10px',
-                  fontFamily: 'YS Text,sans-serif',
-                  padding: '0 20px',
-                  position: 'absolute',
-                  bottom: '8px',
-                  width: '100%',
-                  textAlign: 'center',
-                  left: 0,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  display: 'block',
-                  maxHeight: '14px',
-                  whiteSpace: 'nowrap'
-                }}
+                className="box-border no-underline text-[#b3b3b3] text-[10px] font-[YS_Text,sans-serif] px-5 py-0 absolute bottom-2 w-full text-center left-0 overflow-hidden text-ellipsis block max-h-[14px] whitespace-nowrap"
               >
                 Арендодатель на карте Севастополя — Яндекс Карты
               </a>
