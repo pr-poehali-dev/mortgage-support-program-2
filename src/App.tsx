@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import PropertyView from "./pages/PropertyView";
 import AnalyticsProvider from "./components/analytics/AnalyticsProvider";
 import PageLoader from "./components/PageLoader";
+import NotificationPrompt from "./components/NotificationPrompt";
 import { useAnalytics } from "./hooks/useAnalytics";
 
 // Lazy load admin pages
@@ -77,6 +78,7 @@ function AppContent() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
+          <NotificationPrompt />
         </BrowserRouter>
       </AnalyticsProvider>
     </>

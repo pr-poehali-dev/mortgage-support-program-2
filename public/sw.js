@@ -94,3 +94,60 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }
 });
+
+self.addEventListener('push', (event) => {
+  const data = event.data ? event.data.json() : {};
+  const title = data.title || 'Ипотека Крым';
+  const options = {
+    body: data.body || 'Новая информация об ипотечных программах',
+    icon: 'https://cdn.poehali.dev/files/с дескриптором черный вариант (2).png',
+    badge: 'https://cdn.poehali.dev/files/с дескриптором черный вариант (2).png',
+    image: data.image || 'https://i.imgur.com/LxyQAtM.jpeg',
+    vibrate: [200, 100, 200],
+    tag: data.tag || 'mortgage-notification',
+    requireInteraction: false,
+    actions: [
+      {
+        action: 'open',
+        title: 'Открыть',
+        icon: 'https://cdn.poehali.dev/files/с дескриптором черный вариант (2).png'
+      },
+      {
+        action: 'close',
+        title: 'Закрыть'
+      }
+    ],
+    data: {
+      url: data.url || '/',
+      date: new Date().toISOString()
+    }
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(title, options)
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  if (event.action === 'close') {
+    return;
+  }
+
+  const urlToOpen = event.notification.data.url || '/';
+
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      for (let i = 0; i < clientList.length; i++) {
+        const client = clientList[i];
+        if (client.url === urlToOpen && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(urlToOpen);
+      }
+    })
+  );
+});
