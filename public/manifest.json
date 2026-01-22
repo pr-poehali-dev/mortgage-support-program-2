@@ -3,13 +3,16 @@
   "short_name": "Арендодатель",
   "description": "Агентство недвижимости в Крыму. Аренда квартир и домов, продажа недвижимости, помощь с ипотекой",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "fullscreen", "minimal-ui"],
   "background_color": "#ffffff",
   "theme_color": "#3b82f6",
   "orientation": "portrait-primary",
   "lang": "ru",
   "dir": "ltr",
   "categories": ["finance", "business"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/2a987310-09a5-48c9-800f-436827a5e12a.jpg",
