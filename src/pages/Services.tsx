@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import SEO from '@/components/SEO';
 import { useDailyTheme } from '@/hooks/useDailyTheme';
+import ServiceCalculator from '@/components/ServiceCalculator';
 import {
   Dialog,
   DialogContent,
@@ -513,6 +514,10 @@ export default function Services() {
               Мы предлагаем полный спектр услуг для решения любых задач, связанных с недвижимостью. 
               Наша команда экспертов обеспечит вам надежную поддержку на каждом этапе.
             </p>
+          </div>
+
+          <div className="mb-10 sm:mb-12">
+            <ServiceCalculator />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
