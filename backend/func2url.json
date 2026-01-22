@@ -1,10 +1,8 @@
 {
   "yandex-reviews-import": "https://functions.poehali.dev/74f8510a-de62-4872-b899-3391a5510aa4",
   "reviews": "https://functions.poehali.dev/e9b4d624-81cd-46f6-b82b-59f9d89e033b",
-  "autopost-property": "https://functions.poehali.dev/4fd2d8f0-f94b-4d4b-8156-16b0e7ea6bb2",
   "upload-property-photo": "https://functions.poehali.dev/94c626eb-409a-4a18-836f-f3750239d1b4",
   "manual-properties": "https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d",
-  "properties-admin": "https://functions.poehali.dev/d286a6ac-5f97-4343-9332-1ee6a1e9ad53",
   "quiz-submit": "https://functions.poehali.dev/a629770f-6198-42f3-b832-972cdcbcdf61",
   "register-submit": "https://functions.poehali.dev/5ce9a672-9918-45c3-bbfe-9689604ecec5",
   "crm-api": "https://functions.poehali.dev/e72807e0-91d8-4a57-992b-41b5cc49df17",
@@ -18,10 +16,8 @@
   "metrika-stats": "https://functions.poehali.dev/b04ca2ea-c45c-4dc1-b73c-ba60c3641d0f",
   "metrika-setup": "https://functions.poehali.dev/5ee362e0-261a-45f7-8c6d-6bbcd110368a",
   "analytics-config": "https://functions.poehali.dev/be14ce68-1655-468e-be45-ca3e59d65813",
-  "sitemap": "https://functions.poehali.dev/ded87144-73b6-40d7-9c84-0679f31fa6b3",
   "indexnow": "https://functions.poehali.dev/e96cd64b-29a1-4638-a5e1-b57be7f496c9",
   "rss-parser": "https://functions.poehali.dev/fa7fba79-8d4e-408d-9177-7d0078f39e64",
   "email-reports": "https://functions.poehali.dev/2e6103d5-386e-4440-bed1-61b66d7e25f9",
-  "analytics": "https://functions.poehali.dev/66427508-92e1-41bc-837c-dfc3f217d6c3",
-  "send-application": "https://functions.poehali.dev/2ea2118e-5b11-45d1-8e9d-bd90ba41a588"
+  "analytics": "https://functions.poehali.dev/66427508-92e1-41bc-837c-dfc3f217d6c3"
 }
