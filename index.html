@@ -44,8 +44,7 @@
     <noscript><div><img src="https://mc.yandex.ru/watch/105974763" style="position:absolute; left:-9999px;" alt="Яндекс Метрика" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
     
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PL79VVNQWD"></script>
+    <!-- Google Analytics 4 - Delayed load -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -54,6 +53,22 @@
         'send_page_view': true,
         'anonymize_ip': true
       });
+      
+      // Delay GA loading until page is interactive
+      if (document.readyState === 'complete') {
+        loadGA();
+      } else {
+        window.addEventListener('load', loadGA);
+      }
+      
+      function loadGA() {
+        setTimeout(function() {
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-PL79VVNQWD';
+          document.head.appendChild(script);
+        }, 2000);
+      }
     </script>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="theme-color" content="#3b82f6"/>
@@ -104,10 +119,18 @@
     <link rel="alternate" hreflang="x-default" href="https://ипотекакрым.рф/"/>
     
     <!-- Preconnect for Performance -->
-    <link rel="preconnect" href="https://cdn.poehali.dev"/>
+    <link rel="preconnect" href="https://cdn.poehali.dev" crossorigin/>
     <link rel="dns-prefetch" href="https://cdn.poehali.dev"/>
-    <link rel="preconnect" href="https://functions.poehali.dev"/>
+    <link rel="preconnect" href="https://functions.poehali.dev" crossorigin/>
     <link rel="dns-prefetch" href="https://functions.poehali.dev"/>
+    <link rel="preconnect" href="https://i.imgur.com" crossorigin/>
+    <link rel="dns-prefetch" href="https://i.imgur.com"/>
+    <link rel="preconnect" href="https://mc.yandex.ru"/>
+    <link rel="preconnect" href="https://www.googletagmanager.com"/>
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="https://cdn.poehali.dev/files/с дескриптором черный вариант (2).png" as="image" type="image/png" fetchpriority="high"/>
+    <link rel="preload" href="https://i.imgur.com/LxyQAtM.jpeg" as="image" type="image/jpeg" fetchpriority="high"/>
 
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT! -->
 
