@@ -99,7 +99,7 @@ export default function PropertyView() {
           <CardHeader className="p-3 sm:p-6">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
               <div className="flex-1">
-                <CardTitle className="text-xl sm:text-2xl lg:text-3xl mb-2">{property.title}</CardTitle>
+                <h1 className="text-xl sm:text-2xl lg:text-3xl mb-2 font-bold">{property.title}</h1>
                 <div className="flex items-center gap-2 text-sm sm:text-base text-gray-600">
                   <Icon name="MapPin" size={16} />
                   <span>{property.location}</span>

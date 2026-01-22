@@ -24,7 +24,7 @@ export default function HeroSection({ video }: HeroSectionProps) {
         <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 items-center">
           <div>
             <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-3 lg:mb-4 leading-tight">
-              Ипотека в Крыму от 0.1% годовых
+              Ипотечный центр в Крыму и Севастополе — Ипотека от 0.1%
             </h1>
             <p className="text-sm sm:text-base lg:text-lg text-blue-50 mb-3 sm:mb-4 lg:mb-6 leading-relaxed">
               Профессиональная помощь в получении ипотеки. Работаю со всеми программами господдержки 2025-2026
