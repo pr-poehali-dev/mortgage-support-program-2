@@ -163,6 +163,14 @@ export default function Index() {
                 <Icon name="Briefcase" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Услуги</span>
               </TabsTrigger>
+              <TabsTrigger 
+                value="chatgpt" 
+                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
+                onClick={() => navigate('/chatgpt')}
+              >
+                <Icon name="Bot" size={20} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">ChatGPT</span>
+              </TabsTrigger>
               <TabsTrigger value="faq" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
                 <Icon name="HelpCircle" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">FAQ</span>
