@@ -4,21 +4,25 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { lazy, Suspense, useState, useEffect } from "react";
 import Index from "./pages/Index";
-import Admin from "./pages/Admin";
-import AdminArticles from "./pages/AdminArticles";
-import AdminProperties from "./pages/AdminProperties";
 import PropertyView from "./pages/PropertyView";
-import Register from "./pages/Register";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsOfService from "./pages/TermsOfService";
-import AddProperty from "./pages/AddProperty";
-import ReviewsAdmin from "./pages/ReviewsAdmin";
-import NotFound from "./pages/NotFound";
 import AnalyticsProvider from "./components/analytics/AnalyticsProvider";
 import PageLoader from "./components/PageLoader";
 import { useAnalytics } from "./hooks/useAnalytics";
-import { useState, useEffect } from "react";
+
+// Lazy load admin pages
+const Admin = lazy(() => import("./pages/Admin"));
+const AdminArticles = lazy(() => import("./pages/AdminArticles"));
+const AdminProperties = lazy(() => import("./pages/AdminProperties"));
+const ReviewsAdmin = lazy(() => import("./pages/ReviewsAdmin"));
+const AddProperty = lazy(() => import("./pages/AddProperty"));
+
+// Lazy load other pages
+const Register = lazy(() => import("./pages/Register"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
@@ -42,20 +46,22 @@ function AppContent() {
         yandexMetrikaId={analytics.yandex_metrika_id || "105974763"}
       >
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/property/:id" element={<PropertyView />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/admin/articles" element={<AdminArticles />} />
-            <Route path="/admin/properties" element={<AdminProperties />} />
-            <Route path="/admin/reviews" element={<ReviewsAdmin />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-of-service" element={<TermsOfService />} />
-            <Route path="/add-property" element={<AddProperty />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/property/:id" element={<PropertyView />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/articles" element={<AdminArticles />} />
+              <Route path="/admin/properties" element={<AdminProperties />} />
+              <Route path="/admin/reviews" element={<ReviewsAdmin />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/add-property" element={<AddProperty />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
       </AnalyticsProvider>
     </>

@@ -33,6 +33,8 @@ export default function PageLoader() {
             src="https://cdn.poehali.dev/files/с дескриптором черный вариант (2).png" 
             alt="Арендодатель"
             className="h-24 sm:h-32 w-auto mx-auto mb-6 object-contain"
+            loading="eager"
+            fetchpriority="high"
           />
           <div className="text-blue-600 text-6xl sm:text-7xl font-bold mb-2">
             {Math.floor(progress)}%
@@ -52,9 +54,9 @@ export default function PageLoader() {
         </div>
 
         <div className="mt-8 flex items-center justify-center gap-2">
-          <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-          <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-          <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+          <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce [animation-delay:0ms]" />
+          <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce [animation-delay:150ms]" />
+          <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce [animation-delay:300ms]" />
         </div>
       </div>
     </div>

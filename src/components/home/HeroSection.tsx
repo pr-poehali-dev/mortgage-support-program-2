@@ -15,6 +15,8 @@ export default function HeroSection({ video }: HeroSectionProps) {
           src="https://i.imgur.com/LxyQAtM.jpeg" 
           alt="Крым недвижимость" 
           className="w-full h-full object-cover"
+          loading="eager"
+          fetchpriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/95 via-blue-500/90 to-purple-600/95"></div>
       </div>
