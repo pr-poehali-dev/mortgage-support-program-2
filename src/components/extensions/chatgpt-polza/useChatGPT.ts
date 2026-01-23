@@ -152,17 +152,23 @@ export function useChatGPT({ apiUrl }: UseChatGPTConfig): UseChatGPTReturn {
       setError(null);
 
       try {
+        console.log('[ChatGPT] Testing connection:', { apiUrl, model });
+        
         const response = await fetch(`${apiUrl}?action=test`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(model ? { model } : {}),
         });
 
+        console.log('[ChatGPT] Response status:', response.status);
+        
         const data = await response.json();
+        console.log('[ChatGPT] Response data:', data);
 
         if (!response.ok) {
-          setError(data.error || "Test failed");
-          return { success: false, error: data.error };
+          const errorMsg = data.error || "Test failed";
+          setError(errorMsg);
+          return { success: false, error: errorMsg };
         }
 
         return {
@@ -172,6 +178,7 @@ export function useChatGPT({ apiUrl }: UseChatGPTConfig): UseChatGPTReturn {
           model: data.model,
         };
       } catch (err) {
+        console.error('[ChatGPT] Test error:', err);
         const message = err instanceof Error ? err.message : "Network error";
         setError(message);
         return { success: false, error: message };
