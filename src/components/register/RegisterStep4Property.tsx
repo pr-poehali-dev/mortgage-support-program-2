@@ -1,5 +1,6 @@
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
+import OptimizedImage from '@/components/OptimizedImage';
 
 interface RegisterStep4PropertyProps {
   formData: {
@@ -131,7 +132,7 @@ export default function RegisterStep4Property({ formData, handleInputChange }: R
             <div className="grid grid-cols-3 gap-2">
               {formData.photos.map((photo, index) => (
                 <div key={index} className="relative group">
-                  <img src={photo} alt={`Фото ${index + 1}`} className="w-full h-24 object-cover rounded-lg" />
+                  <OptimizedImage src={photo} alt={`Фото ${index + 1}`} className="w-full h-24 rounded-lg" objectFit="cover" />
                   <button
                     type="button"
                     onClick={() => handleRemoveFile(photo, 'photos')}

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
+import OptimizedImage from '@/components/OptimizedImage';
 
 const PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d';
 
@@ -122,10 +123,12 @@ export default function PropertyView() {
             {photos.length > 0 && (
               <div className="space-y-2 sm:space-y-4">
                 <div className="relative rounded-lg overflow-hidden bg-gray-100 aspect-video cursor-pointer group" onClick={() => setIsFullscreen(true)}>
-                  <img 
+                  <OptimizedImage 
                     src={photos[currentPhotoIndex]} 
                     alt={property.title}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full"
+                    objectFit="contain"
+                    loading="eager"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
                     <div className="bg-white/90 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all">
@@ -169,7 +172,7 @@ export default function PropertyView() {
                           index === currentPhotoIndex ? 'border-primary scale-95' : 'border-transparent hover:border-gray-300'
                         }`}
                       >
-                        <img src={photo} alt={`${index + 1}`} className="w-full h-full object-cover" />
+                        <OptimizedImage src={photo} alt={`${index + 1}`} className="w-full h-full" objectFit="cover" />
                       </button>
                     ))}
                   </div>
