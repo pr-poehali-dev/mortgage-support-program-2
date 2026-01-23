@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
+import ShareButton from '@/components/ShareButton';
 import { useToast } from '@/hooks/use-toast';
 import PropertyFormDialog from '@/components/catalog/PropertyFormDialog';
 import { compressImage, fileToBase64 } from '@/utils/imageCompressor';
@@ -207,7 +208,7 @@ export default function AddProperty() {
               Назад
             </Button>
             <h1 className="text-xl font-bold">Добавить объявление</h1>
-            <div className="w-24"></div>
+            <ShareButton />
           </div>
         </div>
       </header>

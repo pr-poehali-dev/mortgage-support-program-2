@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
+import ShareButton from '@/components/ShareButton';
 import SEO from '@/components/SEO';
 
 export default function PrivacyPolicy() {
@@ -15,14 +16,17 @@ export default function PrivacyPolicy() {
       
       <header className="bg-white/80 backdrop-blur-md border-b sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/')}
-            className="gap-2"
-          >
-            <Icon name="ArrowLeft" size={18} />
-            Вернуться на главную
-          </Button>
+          <div className="flex items-center justify-between">
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/')}
+              className="gap-2"
+            >
+              <Icon name="ArrowLeft" size={18} />
+              Вернуться на главную
+            </Button>
+            <ShareButton />
+          </div>
         </div>
       </header>
 

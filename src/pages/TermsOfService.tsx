@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
+import ShareButton from '@/components/ShareButton';
 
 export default function TermsOfService() {
   const navigate = useNavigate();
@@ -8,14 +9,16 @@ export default function TermsOfService() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10">
       <div className="container mx-auto px-4 py-8">
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/')}
-          className="mb-6"
-        >
-          <Icon name="ArrowLeft" className="mr-2" size={18} />
-          Вернуться на главную
-        </Button>
+        <div className="flex items-center justify-between mb-6">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+          >
+            <Icon name="ArrowLeft" className="mr-2" size={18} />
+            Вернуться на главную
+          </Button>
+          <ShareButton />
+        </div>
 
         <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">

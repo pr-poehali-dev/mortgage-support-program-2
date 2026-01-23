@@ -8,6 +8,7 @@ import MortgageQuiz from '@/components/MortgageQuiz';
 import MortgageTabsContent from '@/components/MortgageTabsContent';
 import InternalLinks from '@/components/InternalLinks';
 import SiteMap from '@/components/SiteMap';
+import ShareButton from '@/components/ShareButton';
 
 import StatisticsCounter from '@/components/StatisticsCounter';
 import ViewsCounter from '@/components/ViewsCounter';
@@ -61,6 +62,7 @@ export default function Index() {
               </div>
             </div>
             <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+              <ShareButton />
               <a 
                 href="tel:+79781281850" 
                 onClick={() => trackPhoneClick('header')}

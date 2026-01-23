@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import OptimizedImage from '@/components/OptimizedImage';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import ShareButton from '@/components/ShareButton';
 
 const PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d';
 
@@ -89,12 +90,13 @@ export default function PropertyView() {
       <div className="container mx-auto p-3 sm:p-4 space-y-4 sm:space-y-6">
         <Breadcrumbs />
         {/* Хедер с кнопкой назад */}
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex items-center justify-between gap-2 sm:gap-4">
           <Button onClick={() => navigate('/')} variant="outline" className="gap-1.5 sm:gap-2 text-sm">
             <Icon name="ArrowLeft" size={16} />
             <span className="hidden sm:inline">Назад к объектам</span>
             <span className="sm:hidden">Назад</span>
           </Button>
+          <ShareButton title={property.title} text={`${property.title} - ${property.price.toLocaleString('ru-RU')} ₽`} />
         </div>
 
         {/* Основная информация */}

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import SEO from '@/components/SEO';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import ShareButton from '@/components/ShareButton';
 import { useDailyTheme } from '@/hooks/useDailyTheme';
 import ServiceCalculator from '@/components/ServiceCalculator';
 import ServiceCard from '@/components/ServiceCard';
@@ -37,7 +38,7 @@ export default function Services() {
               <span className="hidden sm:inline">На главную</span>
             </Button>
             <h1 className="text-lg sm:text-2xl font-bold">Наши услуги</h1>
-            <div className="w-20 sm:w-32"></div>
+            <ShareButton />
           </div>
         </div>
       </header>
