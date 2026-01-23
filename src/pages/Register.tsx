@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import RegisterStepIndicator from '@/components/register/RegisterStepIndicator';
 import RegisterStep1Personal from '@/components/register/RegisterStep1Personal';
 import RegisterStep2Passport from '@/components/register/RegisterStep2Passport';
@@ -245,6 +246,7 @@ export default function Register() {
         </Button>
 
         <div className="max-w-4xl mx-auto">
+          <Breadcrumbs />
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent mb-3">
               Регистрация на ипотеку

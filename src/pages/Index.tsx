@@ -6,6 +6,7 @@ import Icon from '@/components/ui/icon';
 import { Toaster } from '@/components/ui/toaster';
 import MortgageQuiz from '@/components/MortgageQuiz';
 import MortgageTabsContent from '@/components/MortgageTabsContent';
+import InternalLinks from '@/components/InternalLinks';
 
 import StatisticsCounter from '@/components/StatisticsCounter';
 import ViewsCounter from '@/components/ViewsCounter';
@@ -191,6 +192,10 @@ export default function Index() {
             trackTabChanged('calculator');
           }} />
         </Tabs>
+
+        <div className="container mx-auto px-3 sm:px-4 mt-8 sm:mt-12">
+          <InternalLinks />
+        </div>
       </main>
 
       <footer className="bg-gray-900 text-white mt-8 sm:mt-12 py-8 sm:py-12">
@@ -236,6 +241,11 @@ export default function Index() {
             <div>
               <h3 className="font-semibold text-base mb-4">Услуги</h3>
               <ul className="space-y-2 text-sm text-gray-400">
+                <li>
+                  <button onClick={() => navigate('/services')} className="hover:text-white transition-colors">
+                    Все услуги
+                  </button>
+                </li>
                 <li>
                   <button onClick={() => { setActiveTab('programs'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
                     Ипотечные программы

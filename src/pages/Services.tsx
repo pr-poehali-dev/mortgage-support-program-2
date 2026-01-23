@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import SEO from '@/components/SEO';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { useDailyTheme } from '@/hooks/useDailyTheme';
 import ServiceCalculator from '@/components/ServiceCalculator';
 import ServiceCard from '@/components/ServiceCard';
@@ -43,6 +44,7 @@ export default function Services() {
 
       <main className="container mx-auto px-3 sm:px-4 py-6 sm:py-10">
         <div className="max-w-6xl mx-auto">
+          <Breadcrumbs />
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">
               Профессиональные услуги в сфере недвижимости
