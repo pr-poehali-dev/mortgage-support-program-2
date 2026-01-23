@@ -7,12 +7,15 @@ import { useDailyTheme } from '@/hooks/useDailyTheme';
 import ServiceCalculator from '@/components/ServiceCalculator';
 import ServiceCard from '@/components/ServiceCard';
 import ServiceDetailsDialog from '@/components/ServiceDetailsDialog';
+import ServiceRequestForm from '@/components/ServiceRequestForm';
 import { services, Service } from '@/data/servicesData';
 
 export default function Services() {
   const navigate = useNavigate();
   const theme = useDailyTheme();
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [requestFormOpen, setRequestFormOpen] = useState(false);
+  const [requestServiceName, setRequestServiceName] = useState('');
 
   return (
     <div className={`min-h-screen ${theme.gradient}`}>
@@ -60,7 +63,10 @@ export default function Services() {
                 key={service.id}
                 service={service}
                 onDetailsClick={setSelectedService}
-                onRequestClick={() => navigate('/register')}
+                onRequestClick={(serviceName) => {
+                  setRequestServiceName(serviceName);
+                  setRequestFormOpen(true);
+                }}
               />
             ))}
           </div>
@@ -110,7 +116,17 @@ export default function Services() {
         service={selectedService}
         open={!!selectedService}
         onOpenChange={() => setSelectedService(null)}
-        onRequestClick={() => navigate('/register')}
+        onRequestClick={() => {
+          setRequestServiceName(selectedService?.title || '');
+          setSelectedService(null);
+          setRequestFormOpen(true);
+        }}
+      />
+
+      <ServiceRequestForm
+        isOpen={requestFormOpen}
+        onClose={() => setRequestFormOpen(false)}
+        serviceName={requestServiceName}
       />
     </div>
   );

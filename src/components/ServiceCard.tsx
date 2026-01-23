@@ -5,7 +5,7 @@ import { Service } from '@/data/servicesData';
 interface ServiceCardProps {
   service: Service;
   onDetailsClick: (service: Service) => void;
-  onRequestClick: () => void;
+  onRequestClick: (serviceName: string) => void;
 }
 
 export default function ServiceCard({ service, onDetailsClick, onRequestClick }: ServiceCardProps) {
@@ -47,7 +47,7 @@ export default function ServiceCard({ service, onDetailsClick, onRequestClick }:
           Подробнее
         </Button>
         <Button
-          onClick={onRequestClick}
+          onClick={() => onRequestClick(service.title)}
           className="flex-1 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary"
         >
           Заявка

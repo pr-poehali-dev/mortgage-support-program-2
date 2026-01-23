@@ -1,0 +1,31 @@
+{
+  "tests": [
+    {
+      "name": "Отправка заявки с полными данными",
+      "method": "POST",
+      "body": {
+        "name": "Иван Иванов",
+        "phone": "+79991234567",
+        "service": "Помощь в покупке квартиры"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Ошибка при пустых полях",
+      "method": "POST",
+      "body": {
+        "name": "",
+        "phone": ""
+      },
+      "expectedStatus": 400,
+      "expectedBody": {
+        "error": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
