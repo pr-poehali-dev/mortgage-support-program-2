@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import MortgageQuiz from '@/components/MortgageQuiz';
 import MortgageTabsContent from '@/components/MortgageTabsContent';
 import InternalLinks from '@/components/InternalLinks';
+import SiteMap from '@/components/SiteMap';
 
 import StatisticsCounter from '@/components/StatisticsCounter';
 import ViewsCounter from '@/components/ViewsCounter';
@@ -193,8 +194,9 @@ export default function Index() {
           }} />
         </Tabs>
 
-        <div className="container mx-auto px-3 sm:px-4 mt-8 sm:mt-12">
+        <div className="container mx-auto px-3 sm:px-4 mt-8 sm:mt-12 space-y-8">
           <InternalLinks />
+          <SiteMap />
         </div>
       </main>
 
@@ -239,13 +241,8 @@ export default function Index() {
             </div>
 
             <div>
-              <h3 className="font-semibold text-base mb-4">Услуги</h3>
+              <h3 className="font-semibold text-base mb-4">Ипотека</h3>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li>
-                  <button onClick={() => navigate('/services')} className="hover:text-white transition-colors">
-                    Все услуги
-                  </button>
-                </li>
                 <li>
                   <button onClick={() => { setActiveTab('programs'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
                     Ипотечные программы
@@ -257,13 +254,34 @@ export default function Index() {
                   </button>
                 </li>
                 <li>
+                  <button onClick={() => navigate('/register')} className="hover:text-white transition-colors">
+                    Подать заявку
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { setActiveTab('faq'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
+                    Вопросы и ответы
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-base mb-4">Недвижимость</h3>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li>
                   <button onClick={() => { setActiveTab('catalog'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
                     Каталог недвижимости
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => navigate('/register')} className="hover:text-white transition-colors">
-                    Оформление ипотеки
+                  <button onClick={() => navigate('/add-property')} className="hover:text-white transition-colors">
+                    Добавить объект
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => navigate('/services')} className="hover:text-white transition-colors">
+                    Услуги агентства
                   </button>
                 </li>
               </ul>
@@ -274,17 +292,12 @@ export default function Index() {
               <ul className="space-y-2 text-sm text-gray-400">
                 <li>
                   <button onClick={() => { setActiveTab('blog'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
-                    Блог
+                    Блог и статьи
                   </button>
                 </li>
                 <li>
                   <button onClick={() => { setActiveTab('videos'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
                     Видео
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => { setActiveTab('faq'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
-                    Вопросы и ответы
                   </button>
                 </li>
                 <li>
@@ -294,7 +307,7 @@ export default function Index() {
                 </li>
                 <li>
                   <button onClick={() => navigate('/terms-of-service')} className="hover:text-white transition-colors">
-                    Правила использования
+                    Условия использования
                   </button>
                 </li>
               </ul>
