@@ -249,17 +249,15 @@ def handler(event: dict, context) -> dict:
         return cors_response(400, {"error": "action parameter is required"})
 
     body = {}
-    if method == "POST":
-        raw_body = event.get("body", "{}")
-        if isinstance(raw_body, str):
-            try:
-                body = json.loads(raw_body) if raw_body else {}
-            except json.JSONDecodeError:
-                return cors_response(400, {"error": "Invalid JSON"})
-        elif isinstance(raw_body, dict):
-            body = raw_body
-        else:
-            body = {}
+    raw_body = event.get("body", "{}")
+    
+    if isinstance(raw_body, str):
+        try:
+            body = json.loads(raw_body) if raw_body else {}
+        except json.JSONDecodeError:
+            return cors_response(400, {"error": "Invalid JSON"})
+    elif isinstance(raw_body, dict):
+        body = raw_body
 
     if action == "generate":
         return handle_generate(body)
