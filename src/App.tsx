@@ -26,6 +26,7 @@ const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const Services = lazy(() => import("./pages/Services"));
 const RentHelp = lazy(() => import("./pages/RentHelp"));
+const SellHelp = lazy(() => import("./pages/SellHelp"));
 const ChatGPTPlaygroundPage = lazy(() => import("./components/extensions/chatgpt-polza/ChatGPTPlaygroundPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -79,6 +80,7 @@ function AppContent() {
               <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="/services" element={<Services />} />
               <Route path="/rent-help" element={<RentHelp />} />
+              <Route path="/sell-help" element={<SellHelp />} />
               <Route path="/add-property" element={<AddProperty />} />
               <Route path="/chatgpt" element={<ChatGPTPlaygroundPage apiUrl="https://functions.poehali.dev/536eca85-b7ba-4712-8615-fc41995e6ee6" defaultModel="openai/gpt-4o-mini" />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

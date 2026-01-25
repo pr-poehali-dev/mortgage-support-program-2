@@ -111,11 +111,11 @@ export default function Index() {
               <span>Заявка на ипотеку</span>
             </Button>
             <Button
-              onClick={() => navigate('/add-property')}
+              onClick={() => navigate('/sell-help')}
               className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
             >
-              <Icon name="PlusCircle" className="mr-1 sm:mr-1.5" size={16} />
-              <span>Продам/Сдам</span>
+              <Icon name="TrendingUp" className="mr-1 sm:mr-1.5" size={16} />
+              <span>Помощь продать</span>
             </Button>
             <Button
               onClick={() => navigate('/services')}
