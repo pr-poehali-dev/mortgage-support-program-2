@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import Icon from '@/components/ui/icon';
 import ShareButton from '@/components/ShareButton';
 import SEO from '@/components/SEO';
+import RentCalculator from '@/components/RentCalculator';
 
 export default function RentHelp() {
   const navigate = useNavigate();
@@ -125,6 +126,10 @@ export default function RentHelp() {
               Сделаем фото, проведём показы, найдём идеальных жильцов и оформим договор
             </p>
           </div>
+
+          <section className="mb-16">
+            <RentCalculator />
+          </section>
 
           <section className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
