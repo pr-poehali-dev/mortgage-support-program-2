@@ -102,20 +102,36 @@ export default function Index() {
               </div>
             </div>
           </div>
-          <div className="flex gap-2 mt-2 sm:mt-3">
+          <div className="grid grid-cols-2 gap-2 mt-2 sm:mt-3">
             <Button
               onClick={() => navigate('/register')}
-              className="flex-1 h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
+              className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
             >
               <Icon name="FileText" className="mr-1 sm:mr-1.5" size={16} />
               <span>Заявка на ипотеку</span>
             </Button>
             <Button
               onClick={() => navigate('/add-property')}
-              className="flex-1 h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+              className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
             >
               <Icon name="PlusCircle" className="mr-1 sm:mr-1.5" size={16} />
               <span>Продам/Сдам</span>
+            </Button>
+            <Button
+              onClick={() => navigate('/services')}
+              variant="outline"
+              className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
+            >
+              <Icon name="Briefcase" className="mr-1 sm:mr-1.5" size={16} />
+              <span>Услуги</span>
+            </Button>
+            <Button
+              onClick={() => navigate('/rent-help')}
+              variant="outline"
+              className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold border-primary text-primary hover:bg-primary/10"
+            >
+              <Icon name="HandshakeIcon" className="mr-1 sm:mr-1.5" size={16} />
+              <span>Помощь сдать</span>
             </Button>
           </div>
         </div>
