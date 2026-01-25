@@ -162,7 +162,7 @@ export default function Register() {
         <Breadcrumbs
           items={[
             { label: 'Главная', href: '/' },
-            { label: 'Ипотека' },
+            { label: 'Заявка' },
           ]}
         />
 
@@ -174,8 +174,8 @@ export default function Register() {
                   <Icon name="FileText" className="text-white" size={24} />
                 </div>
                 <div>
-                  <CardTitle className="text-2xl">Ипотека</CardTitle>
-                  <CardDescription>Заполните форму для получения консультации по ипотеке</CardDescription>
+                  <CardTitle className="text-2xl">Оставить заявку</CardTitle>
+                  <CardDescription>Заполните форму и мы свяжемся с вами в ближайшее время</CardDescription>
                 </div>
               </div>
             </CardHeader>
@@ -344,7 +344,7 @@ export default function Register() {
               <div className="bg-blue-50 rounded-lg p-4 flex gap-3">
                 <Icon name="Info" className="text-primary flex-shrink-0 mt-0.5" size={20} />
                 <p className="text-sm text-gray-600">
-                  После отправки заявки наш специалист свяжется с вами в течение 24 часов для уточнения деталей и консультации по ипотечным программам.
+                  После отправки заявки наш специалист свяжется с вами в течение 24 часов для уточнения деталей и консультации.
                 </p>
               </div>
             </CardContent>

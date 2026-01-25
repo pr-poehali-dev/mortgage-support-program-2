@@ -19,7 +19,7 @@ def send_telegram_notification(client_data: dict):
         return
     
     try:
-        text = f"🏠 *Новая заявка на ипотеку*\n\n"
+        text = f"📝 *Новая заявка*\n\n"
         text += f"👤 *ФИО:* {client_data.get('full_name', 'Не указано')}\n"
         text += f"📱 *Телефон:* {client_data.get('phone', 'Не указан')}\n"
         text += f"✉️ *Email:* {client_data.get('email', 'Не указан')}\n"
@@ -60,7 +60,7 @@ def send_telegram_notification(client_data: dict):
 
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
-    """Обработчик заявок на ипотеку с упрощённой формой"""
+    """Обработчик универсальных заявок с формы"""
     method = event.get('httpMethod', 'POST')
     
     if method == 'OPTIONS':
@@ -131,7 +131,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             cursor.execute("""
                 INSERT INTO t_p26758318_mortgage_support_pro.clients (
                     full_name, name, phone, email, source
-                ) VALUES (%s, %s, %s, %s, 'mortgage_form')
+                ) VALUES (%s, %s, %s, %s, 'website_form')
                 RETURNING id
             """, (full_name, full_name, phone, email))
             client_id = cursor.fetchone()['id']
@@ -141,7 +141,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         cursor.execute("""
             INSERT INTO t_p26758318_mortgage_support_pro.requests (
                 client_id, status, message, additional_info
-            ) VALUES (%s, 'new', 'Заявка на ипотеку через упрощённую форму', %s)
+            ) VALUES (%s, 'new', 'Заявка с сайта', %s)
             RETURNING id
         """, (client_id, documents_json))
         request_id = cursor.fetchone()['id']
