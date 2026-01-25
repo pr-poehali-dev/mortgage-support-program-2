@@ -104,11 +104,11 @@ export default function Index() {
           </div>
           <div className="grid grid-cols-2 gap-2 mt-2 sm:mt-3">
             <Button
-              onClick={() => navigate('/register')}
+              onClick={() => navigate('/mortgage-help')}
               className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
             >
-              <Icon name="FileText" className="mr-1 sm:mr-1.5" size={16} />
-              <span>Заявка на ипотеку</span>
+              <Icon name="Calculator" className="mr-1 sm:mr-1.5" size={16} />
+              <span>Ипотека</span>
             </Button>
             <Button
               onClick={() => navigate('/sell-help')}
@@ -118,7 +118,7 @@ export default function Index() {
               <span>Помощь продать</span>
             </Button>
             <Button
-              onClick={() => navigate('/services')}
+              onClick={() => navigate('/services-help')}
               variant="outline"
               className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
             >
