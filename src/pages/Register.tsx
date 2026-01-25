@@ -2,48 +2,22 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import Icon from '@/components/ui/icon';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ShareButton from '@/components/ShareButton';
-import RegisterStepIndicator from '@/components/register/RegisterStepIndicator';
-import RegisterStep1Personal from '@/components/register/RegisterStep1Personal';
-import RegisterStep2Passport from '@/components/register/RegisterStep2Passport';
-import RegisterStep3Employment from '@/components/register/RegisterStep3Employment';
-import RegisterStep4Property from '@/components/register/RegisterStep4Property';
 import { compressImage, fileToBase64 } from '@/utils/imageCompressor';
 import { useToast } from '@/hooks/use-toast';
 import { Toaster } from '@/components/ui/toaster';
 
 export default function Register() {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
     email: '',
-    passportSeries: '',
-    passportNumber: '',
-    passportDate: '',
-    passportIssuer: '',
-    birthDate: '',
-    birthPlace: '',
-    registrationAddress: '',
-    inn: '',
-    snils: '',
-    maritalStatus: 'single',
-    children: '0',
-    employment: 'employed',
-    employer: '',
-    position: '',
-    workExperience: '',
-    monthlyIncome: '',
-    propertyType: 'apartment',
-    propertyAddress: '',
-    propertyCost: '',
-    initialPayment: '',
-    creditTerm: '20',
-    additionalInfo: '',
-    photos: [] as string[],
     documents: [] as string[]
   });
 
@@ -57,15 +31,29 @@ export default function Register() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'photos' | 'documents') => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
+
+    const currentDocsCount = formData.documents.length;
+    const newFilesCount = files.length;
+    
+    if (currentDocsCount + newFilesCount > 50) {
+      toast({
+        title: 'Превышен лимит',
+        description: `Можно загрузить максимум 50 файлов. Уже загружено: ${currentDocsCount}`,
+        variant: 'destructive',
+      });
+      return;
+    }
 
     setUploadingFiles(true);
 
     try {
       const uploadPromises = Array.from(files).map(async (file) => {
-        const compressedFile = type === 'photos' ? await compressImage(file, 1, 1920) : file;
+        const compressedFile = file.type.startsWith('image/') 
+          ? await compressImage(file, 1, 1920) 
+          : file;
         const base64 = await fileToBase64(compressedFile);
         
         const response = await fetch('https://functions.poehali.dev/be14ce68-1655-468e-be45-ca3e59d65813', {
@@ -84,12 +72,12 @@ export default function Register() {
       
       setFormData(prev => ({
         ...prev,
-        [type]: [...prev[type], ...uploadedUrls],
+        documents: [...prev.documents, ...uploadedUrls],
       }));
 
       toast({
         title: 'Файлы загружены',
-        description: `Загружено ${uploadedUrls.length} ${type === 'photos' ? 'фото' : 'документов'}`,
+        description: `Загружено документов: ${uploadedUrls.length}`,
       });
     } catch (error) {
       toast({
@@ -102,14 +90,32 @@ export default function Register() {
     }
   };
 
-  const handleRemoveFile = (url: string, type: 'photos' | 'documents') => {
+  const handleRemoveFile = (url: string) => {
     setFormData(prev => ({
       ...prev,
-      [type]: prev[type].filter((item: string) => item !== url),
+      documents: prev.documents.filter((item: string) => item !== url),
     }));
   };
 
   const handleSubmit = async () => {
+    if (!formData.fullName || !formData.phone || !formData.email) {
+      toast({
+        title: 'Ошибка',
+        description: 'Пожалуйста, заполните все обязательные поля',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!agreedToTerms || !agreedToPrivacy) {
+      toast({
+        title: 'Ошибка',
+        description: 'Необходимо согласиться с правилами и политикой конфиденциальности',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setSubmitting(true);
     
     try {
@@ -122,29 +128,6 @@ export default function Register() {
           fullName: formData.fullName,
           phone: formData.phone,
           email: formData.email,
-          birthDate: formData.birthDate,
-          birthPlace: formData.birthPlace,
-          passportSeries: formData.passportSeries,
-          passportNumber: formData.passportNumber,
-          passportIssueDate: formData.passportDate,
-          passportIssuer: formData.passportIssuer,
-          registrationAddress: formData.registrationAddress,
-          inn: formData.inn,
-          snils: formData.snils,
-          maritalStatus: formData.maritalStatus,
-          childrenCount: parseInt(formData.children) || 0,
-          employmentType: formData.employment,
-          employer: formData.employer,
-          position: formData.position,
-          workExperience: formData.workExperience,
-          monthlyIncome: parseFloat(formData.monthlyIncome) || 0,
-          propertyType: formData.propertyType,
-          propertyAddress: formData.propertyAddress,
-          propertyCost: parseFloat(formData.propertyCost) || 0,
-          initialPayment: parseFloat(formData.initialPayment) || 0,
-          creditTerm: parseInt(formData.creditTerm) || 20,
-          additionalInfo: formData.additionalInfo,
-          photos: formData.photos,
           documents: formData.documents
         })
       });
@@ -162,78 +145,6 @@ export default function Register() {
     }
   };
 
-  const validateCurrentStep = () => {
-    if (step === 1) {
-      if (!formData.fullName || !formData.phone || !formData.email || !formData.birthDate || !formData.birthPlace) {
-        toast({
-          title: 'Ошибка',
-          description: 'Пожалуйста, заполните все обязательные поля',
-          variant: 'destructive',
-        });
-        return false;
-      }
-    }
-    if (step === 2) {
-      if (!formData.passportSeries || !formData.passportNumber || !formData.passportDate || 
-          !formData.passportIssuer || !formData.registrationAddress || !formData.inn || !formData.snils) {
-        toast({
-          title: 'Ошибка',
-          description: 'Пожалуйста, заполните все обязательные поля',
-          variant: 'destructive',
-        });
-        return false;
-      }
-    }
-    if (step === 3) {
-      if (formData.employment !== 'unemployed') {
-        if (!formData.employer || !formData.position || !formData.workExperience || !formData.monthlyIncome) {
-          toast({
-            title: 'Ошибка',
-            description: 'Пожалуйста, заполните все обязательные поля',
-            variant: 'destructive',
-          });
-          return false;
-        }
-      }
-    }
-    if (step === 4) {
-      if (!formData.propertyAddress || !formData.propertyCost || !formData.initialPayment) {
-        toast({
-          title: 'Ошибка',
-          description: 'Пожалуйста, заполните все обязательные поля',
-          variant: 'destructive',
-        });
-        return false;
-      }
-      if (!agreedToTerms || !agreedToPrivacy) {
-        toast({
-          title: 'Ошибка',
-          description: 'Необходимо согласиться с правилами и политикой конфиденциальности',
-          variant: 'destructive',
-        });
-        return false;
-      }
-    }
-    return true;
-  };
-
-  const nextStep = () => {
-    if (validateCurrentStep() && step < 4) {
-      setStep(step + 1);
-    }
-  };
-
-  const prevStep = () => {
-    if (step > 1) setStep(step - 1);
-  };
-
-  const steps = [
-    { number: 1, title: 'Личные данные', icon: 'User' },
-    { number: 2, title: 'Паспортные данные', icon: 'CreditCard' },
-    { number: 3, title: 'Занятость', icon: 'Briefcase' },
-    { number: 4, title: 'Недвижимость', icon: 'Home' },
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10">
       <div className="container mx-auto px-4 py-12">
@@ -248,135 +159,196 @@ export default function Register() {
           <ShareButton />
         </div>
 
-        <div className="max-w-4xl mx-auto">
-          <Breadcrumbs />
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent mb-3">
-              Регистрация на ипотеку
-            </h1>
-            <p className="text-gray-600">
-              Заполните все шаги для подачи заявки на ипотечный кредит
-            </p>
-          </div>
+        <Breadcrumbs
+          items={[
+            { label: 'Главная', href: '/' },
+            { label: 'Ипотека' },
+          ]}
+        />
 
-          <RegisterStepIndicator currentStep={step} steps={steps} />
-
-          <Card>
+        <div className="max-w-2xl mx-auto mt-8">
+          <Card className="shadow-xl">
             <CardHeader>
-              <CardTitle>Шаг {step} из 4</CardTitle>
-              <CardDescription>{steps[step - 1].title}</CardDescription>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-12 h-12 bg-gradient-to-br from-primary to-purple-600 rounded-lg flex items-center justify-center">
+                  <Icon name="FileText" className="text-white" size={24} />
+                </div>
+                <div>
+                  <CardTitle className="text-2xl">Ипотека</CardTitle>
+                  <CardDescription>Заполните форму для получения консультации по ипотеке</CardDescription>
+                </div>
+              </div>
             </CardHeader>
-            <CardContent>
-              {step === 1 && (
-                <RegisterStep1Personal 
-                  formData={formData} 
-                  handleInputChange={handleInputChange} 
-                />
-              )}
-              {step === 2 && (
-                <RegisterStep2Passport 
-                  formData={formData} 
-                  handleInputChange={handleInputChange} 
-                />
-              )}
-              {step === 3 && (
-                <RegisterStep3Employment 
-                  formData={formData} 
-                  handleInputChange={handleInputChange} 
-                />
-              )}
-              {step === 4 && (
-                <>
-                  <RegisterStep4Property 
-                    formData={formData} 
-                    handleInputChange={handleInputChange}
-                    handleFileUpload={handleFileUpload}
-                    handleRemoveFile={handleRemoveFile}
-                    uploadingFiles={uploadingFiles}
+
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="fullName">Ф.И.О. *</Label>
+                  <Input
+                    id="fullName"
+                    placeholder="Иванов Иван Иванович"
+                    value={formData.fullName}
+                    onChange={(e) => handleInputChange('fullName', e.target.value)}
+                    required
                   />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Телефон *</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="+7 (978) 123-45-67"
+                    value={formData.phone}
+                    onChange={(e) => handleInputChange('phone', e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="email">Электронная почта *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="example@mail.ru"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-3 pt-4 border-t">
+                  <Label>Документы (до 50 файлов)</Label>
+                  <p className="text-sm text-gray-500">
+                    Загрузите документы: паспорт, СНИЛС, справка о доходах, трудовая книжка и др.
+                  </p>
                   
-                  <div className="mt-6 space-y-3 p-4 bg-gray-50 rounded-lg">
-                    <div className="flex items-start gap-3">
-                      <input
-                        type="checkbox"
-                        id="agreedToTerms"
-                        checked={agreedToTerms}
-                        onChange={(e) => setAgreedToTerms(e.target.checked)}
-                        className="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
-                      />
-                      <label htmlFor="agreedToTerms" className="text-sm text-gray-700 flex-1">
-                        Я согласен с{' '}
-                        <button
-                          type="button"
-                          onClick={() => window.open('/terms-of-service', '_blank')}
-                          className="text-primary hover:underline font-medium"
-                        >
-                          правилами использования сайта
-                        </button>
-                      </label>
-                    </div>
-                    
-                    <div className="flex items-start gap-3">
-                      <input
-                        type="checkbox"
-                        id="agreedToPrivacy"
-                        checked={agreedToPrivacy}
-                        onChange={(e) => setAgreedToPrivacy(e.target.checked)}
-                        className="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
-                      />
-                      <label htmlFor="agreedToPrivacy" className="text-sm text-gray-700 flex-1">
-                        Я согласен на обработку персональных данных в соответствии с{' '}
-                        <button
-                          type="button"
-                          onClick={() => window.open('/privacy-policy', '_blank')}
-                          className="text-primary hover:underline font-medium"
-                        >
-                          политикой конфиденциальности
-                        </button>
-                      </label>
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => document.getElementById('documents')?.click()}
+                      disabled={uploadingFiles || formData.documents.length >= 50}
+                      className="gap-2"
+                    >
+                      <Icon name="Upload" size={18} />
+                      {uploadingFiles ? 'Загрузка...' : 'Добавить файлы'}
+                    </Button>
+                    <span className="text-sm text-gray-500">
+                      {formData.documents.length} / 50
+                    </span>
                   </div>
-                </>
-              )}
 
-              <div className="flex items-center justify-between mt-6 pt-6 border-t">
-                {step > 1 ? (
-                  <Button variant="outline" onClick={prevStep}>
-                    <Icon name="ChevronLeft" className="mr-2" size={18} />
-                    Назад
-                  </Button>
-                ) : (
-                  <div></div>
-                )}
+                  <input
+                    id="documents"
+                    type="file"
+                    accept="image/*,.pdf,.doc,.docx"
+                    multiple
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
 
-                {step < 4 ? (
-                  <Button onClick={nextStep}>
-                    Далее
-                    <Icon name="ChevronRight" className="ml-2" size={18} />
-                  </Button>
-                ) : (
-                  <Button onClick={handleSubmit} disabled={submitting}>
-                    {submitting ? (
-                      <>
-                        <Icon name="Loader2" className="mr-2 animate-spin" size={18} />
-                        Отправка...
-                      </>
-                    ) : (
-                      <>
-                        <Icon name="Send" className="mr-2" size={18} />
-                        Отправить заявку
-                      </>
-                    )}
-                  </Button>
-                )}
+                  {formData.documents.length > 0 && (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {formData.documents.map((url, index) => (
+                        <div key={index} className="relative group">
+                          <div className="aspect-square rounded-lg border-2 border-gray-200 overflow-hidden bg-gray-50 flex items-center justify-center">
+                            {url.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                              <img
+                                src={url}
+                                alt={`Документ ${index + 1}`}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="flex flex-col items-center gap-2 text-gray-400">
+                                <Icon name="FileText" size={32} />
+                                <span className="text-xs">Документ {index + 1}</span>
+                              </div>
+                            )}
+                          </div>
+                          <button
+                            onClick={() => handleRemoveFile(url)}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                          >
+                            <Icon name="X" size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-4 pt-4 border-t">
+                <div className="flex items-start space-x-2">
+                  <Checkbox
+                    id="terms"
+                    checked={agreedToTerms}
+                    onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
+                  />
+                  <label
+                    htmlFor="terms"
+                    className="text-sm leading-tight cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Я согласен с{' '}
+                    <button
+                      onClick={() => navigate('/terms')}
+                      className="text-primary hover:underline"
+                    >
+                      правилами использования сайта
+                    </button>
+                  </label>
+                </div>
+
+                <div className="flex items-start space-x-2">
+                  <Checkbox
+                    id="privacy"
+                    checked={agreedToPrivacy}
+                    onCheckedChange={(checked) => setAgreedToPrivacy(checked as boolean)}
+                  />
+                  <label
+                    htmlFor="privacy"
+                    className="text-sm leading-tight cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Я согласен с{' '}
+                    <button
+                      onClick={() => navigate('/privacy')}
+                      className="text-primary hover:underline"
+                    >
+                      политикой конфиденциальности
+                    </button>
+                  </label>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t">
+                <Button
+                  onClick={handleSubmit}
+                  disabled={submitting}
+                  className="w-full h-12 text-base font-semibold"
+                >
+                  {submitting ? (
+                    <>
+                      <Icon name="Loader2" className="mr-2 animate-spin" size={20} />
+                      Отправка...
+                    </>
+                  ) : (
+                    <>
+                      <Icon name="Send" className="mr-2" size={20} />
+                      Отправить заявку
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              <div className="bg-blue-50 rounded-lg p-4 flex gap-3">
+                <Icon name="Info" className="text-primary flex-shrink-0 mt-0.5" size={20} />
+                <p className="text-sm text-gray-600">
+                  После отправки заявки наш специалист свяжется с вами в течение 24 часов для уточнения деталей и консультации по ипотечным программам.
+                </p>
               </div>
             </CardContent>
           </Card>
-
-          <div className="mt-6 text-center text-sm text-gray-600">
-            <Icon name="Lock" className="inline mr-1" size={14} />
-            Все ваши данные защищены и передаются по защищенному каналу
-          </div>
         </div>
       </div>
       <Toaster />

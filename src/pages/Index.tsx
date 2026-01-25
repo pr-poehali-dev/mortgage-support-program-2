@@ -107,7 +107,7 @@ export default function Index() {
               onClick={() => navigate('/register')}
               className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
             >
-              <Icon name="Calculator" className="mr-1 sm:mr-1.5" size={16} />
+              <Icon name="Home" className="mr-1 sm:mr-1.5" size={16} />
               <span>Ипотека</span>
             </Button>
             <Button
