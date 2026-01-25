@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import Icon from '@/components/ui/icon';
 import ShareButton from '@/components/ShareButton';
 import SEO from '@/components/SEO';
+import SellCalculator from '@/components/SellCalculator';
 
 export default function SellHelp() {
   const navigate = useNavigate();
@@ -134,6 +135,10 @@ export default function SellHelp() {
               Оценим, сделаем фото, найдём покупателей и проведём сделку под ключ
             </p>
           </div>
+
+          <section className="mb-16">
+            <SellCalculator />
+          </section>
 
           <section className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
