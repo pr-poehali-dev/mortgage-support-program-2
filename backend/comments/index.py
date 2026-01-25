@@ -1,7 +1,39 @@
 import json
 import os
 import psycopg2
+import urllib.request
 from typing import Dict, Any
+
+
+def send_telegram_notification(article_id: int, author_name: str, comment_text: str):
+    """Отправляет уведомление о новом комментарии в Telegram"""
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
+    
+    if not bot_token or not chat_id:
+        return
+    
+    try:
+        text = f"💬 *Новый комментарий к статье*\n\n"
+        text += f"📄 *ID статьи:* {article_id}\n"
+        text += f"👤 *Автор:* {author_name}\n"
+        text += f"📝 *Комментарий:*\n{comment_text[:200]}{'...' if len(comment_text) > 200 else ''}\n"
+        
+        url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+        payload = {
+            'chat_id': chat_id,
+            'text': text,
+            'parse_mode': 'Markdown'
+        }
+        
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode('utf-8'),
+            headers={'Content-Type': 'application/json'}
+        )
+        urllib.request.urlopen(req, timeout=5)
+    except:
+        pass
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     '''
@@ -52,6 +84,9 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             )
             comment_id, created_at = cur.fetchone()
             conn.commit()
+            
+            # Отправляем уведомление в Telegram
+            send_telegram_notification(article_id, author_name, comment_text)
             
             return {
                 'statusCode': 200,

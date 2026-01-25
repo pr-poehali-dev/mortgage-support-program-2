@@ -1,7 +1,38 @@
 import json
 import os
 import psycopg2
+import urllib.request
 from typing import Dict, Any
+
+
+def send_telegram_notification(email: str, name: str):
+    """Отправляет уведомление о новой подписке в Telegram"""
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
+    
+    if not bot_token or not chat_id:
+        return
+    
+    try:
+        text = f"📧 *Новая подписка на рассылку*\n\n"
+        text += f"👤 *Имя:* {name}\n"
+        text += f"✉️ *Email:* {email}\n"
+        
+        url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+        payload = {
+            'chat_id': chat_id,
+            'text': text,
+            'parse_mode': 'Markdown'
+        }
+        
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode('utf-8'),
+            headers={'Content-Type': 'application/json'}
+        )
+        urllib.request.urlopen(req, timeout=5)
+    except:
+        pass
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     '''
@@ -62,6 +93,9 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             )
             subscriber_id = cur.fetchone()[0]
             conn.commit()
+            
+            # Отправляем уведомление в Telegram
+            send_telegram_notification(email, name)
             
             return {
                 'statusCode': 200,
