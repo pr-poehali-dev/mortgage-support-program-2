@@ -390,21 +390,19 @@ export default function Index() {
           <div className="border-t border-gray-800 pt-6">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
               <div className="flex items-center gap-4">
+                <button
+                  onClick={() => navigate('/admin')}
+                  className="text-gray-500 hover:text-gray-300 transition-colors p-2 hover:bg-gray-800 rounded-lg"
+                  title="Админ-панель"
+                >
+                  <Icon name="Settings" size={20} />
+                </button>
                 <ViewsCounter />
                 <ThemeIndicator inline />
               </div>
               <p className="text-xs sm:text-sm text-gray-400">
                 © 2008-2026 Арендодатель. Все права защищены.
               </p>
-              <Button
-                onClick={() => navigate('/admin')}
-                variant="outline"
-                size="sm"
-                className="bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border-gray-700"
-              >
-                <Icon name="Settings" size={16} className="mr-2" />
-                Админ-панель
-              </Button>
             </div>
           </div>
         </div>
