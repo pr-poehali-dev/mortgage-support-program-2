@@ -191,13 +191,13 @@ export default function Index() {
                 <Icon name="Bot" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">ChatGPT</span>
               </TabsTrigger>
+              <TabsTrigger value="online-services" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+                <Icon name="ShoppingCart" size={20} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">Онлайн</span>
+              </TabsTrigger>
               <TabsTrigger value="faq" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
                 <Icon name="HelpCircle" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">FAQ</span>
-              </TabsTrigger>
-              <TabsTrigger value="tags" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
-                <Icon name="Tags" size={20} className="sm:w-5 sm:h-5" />
-                <span className="whitespace-nowrap">Теги</span>
               </TabsTrigger>
               <TabsTrigger value="contact" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
                 <Icon name="Phone" size={20} className="sm:w-5 sm:h-5" />

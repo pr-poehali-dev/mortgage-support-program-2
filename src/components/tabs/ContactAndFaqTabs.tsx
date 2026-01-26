@@ -4,10 +4,15 @@ import { TabsContent } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { faqItems } from '@/data/mortgageData';
+import OnlineServices from '@/components/OnlineServices';
 
 export default function ContactAndFaqTabs() {
   return (
     <>
+      <TabsContent value="online-services" className="space-y-6">
+        <OnlineServices />
+      </TabsContent>
+
       <TabsContent value="faq" className="space-y-6">
         <Card>
           <CardHeader>

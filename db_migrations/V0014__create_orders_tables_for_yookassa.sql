@@ -1,0 +1,31 @@
+-- Таблица заказов для онлайн-услуг
+CREATE TABLE IF NOT EXISTS orders (
+    id SERIAL PRIMARY KEY,
+    order_number VARCHAR(50) UNIQUE NOT NULL,
+    user_name VARCHAR(255),
+    user_email VARCHAR(255) NOT NULL,
+    user_phone VARCHAR(50),
+    amount DECIMAL(10,2) NOT NULL,
+    yookassa_payment_id VARCHAR(100),
+    status VARCHAR(20) DEFAULT 'pending',
+    payment_url TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    paid_at TIMESTAMP
+);
+
+-- Таблица товаров в заказе
+CREATE TABLE IF NOT EXISTS order_items (
+    id SERIAL PRIMARY KEY,
+    order_id INTEGER,
+    product_id VARCHAR(100),
+    product_name VARCHAR(255),
+    product_price DECIMAL(10,2),
+    quantity INTEGER DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Индексы для быстрого поиска
+CREATE INDEX IF NOT EXISTS idx_orders_payment_id ON orders(yookassa_payment_id);
+CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
+CREATE INDEX IF NOT EXISTS idx_orders_email ON orders(user_email);
