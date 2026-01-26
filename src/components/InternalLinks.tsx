@@ -23,7 +23,7 @@ const links: InternalLink[] = [
   },
   {
     title: 'Объекты недвижимости',
-    url: '/?tab=properties',
+    url: '/catalog',
     icon: 'Home',
     description: 'Каталог квартир, домов и земельных участков'
   },

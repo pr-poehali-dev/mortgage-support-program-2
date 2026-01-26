@@ -19,16 +19,16 @@ export default function SiteMap() {
         { label: 'Ипотечные программы', path: '/?tab=programs', onClick: () => navigate('/?tab=programs') },
         { label: 'Калькулятор ипотеки', path: '/?tab=calculator', onClick: () => navigate('/?tab=calculator') },
         { label: 'Подать заявку на ипотеку', path: '/register', onClick: () => navigate('/register') },
-        { label: 'Часто задаваемые вопросы', path: '/?tab=faq', onClick: () => navigate('/?tab=faq') }
+        { label: 'Часто задаваемые вопросы', path: '/faq', onClick: () => navigate('/faq') }
       ]
     },
     {
       title: 'Недвижимость',
       icon: 'Building',
       links: [
-        { label: 'Каталог недвижимости', path: '/?tab=properties', onClick: () => navigate('/?tab=properties') },
-        { label: 'Квартиры в Севастополе', path: '/?tab=properties', onClick: () => navigate('/?tab=properties') },
-        { label: 'Дома и участки', path: '/?tab=properties', onClick: () => navigate('/?tab=properties') },
+        { label: 'Каталог недвижимости', path: '/catalog', onClick: () => navigate('/catalog') },
+        { label: 'Квартиры в Севастополе', path: '/catalog', onClick: () => navigate('/catalog') },
+        { label: 'Дома и участки', path: '/catalog', onClick: () => navigate('/catalog') },
         { label: 'Добавить объект', path: '/add-property', onClick: () => navigate('/add-property') }
       ]
     },
@@ -47,9 +47,9 @@ export default function SiteMap() {
       icon: 'Info',
       links: [
         { label: 'О компании', path: '/?tab=home', onClick: () => navigate('/?tab=home') },
-        { label: 'Блог и статьи', path: '/?tab=blog', onClick: () => navigate('/?tab=blog') },
+        { label: 'Блог и статьи', path: '/blog', onClick: () => navigate('/blog') },
         { label: 'Видео', path: '/?tab=videos', onClick: () => navigate('/?tab=videos') },
-        { label: 'Контакты', path: '/?tab=contact', onClick: () => navigate('/?tab=contact') }
+        { label: 'Контакты', path: '/contact', onClick: () => navigate('/contact') }
       ]
     },
     {
@@ -100,7 +100,7 @@ export default function SiteMap() {
             Не нашли что искали? Свяжитесь с нами напрямую
           </p>
           <Button
-            onClick={() => navigate('/?tab=contact')}
+            onClick={() => navigate('/contact')}
             className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary"
           >
             <Icon name="Phone" className="mr-2" size={18} />

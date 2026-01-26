@@ -126,14 +126,14 @@ export default function Services() {
                 <span className="text-sm font-medium text-center">Калькулятор</span>
               </button>
               <button
-                onClick={() => navigate('/?tab=properties')}
+                onClick={() => navigate('/catalog')}
                 className="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-all"
               >
                 <Icon name="Building" size={24} className="text-primary" />
                 <span className="text-sm font-medium text-center">Недвижимость</span>
               </button>
               <button
-                onClick={() => navigate('/?tab=contact')}
+                onClick={() => navigate('/contact')}
                 className="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-all"
               >
                 <Icon name="Phone" size={24} className="text-primary" />
