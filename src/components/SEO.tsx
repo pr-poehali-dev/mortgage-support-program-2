@@ -123,6 +123,14 @@ export default function SEO({
     if (ogImageMeta) {
       ogImageMeta.setAttribute('content', finalOgImage);
     }
+
+    let ogUrl = document.querySelector('meta[property="og:url"]');
+    if (!ogUrl) {
+      ogUrl = document.createElement('meta');
+      ogUrl.setAttribute('property', 'og:url');
+      document.head.appendChild(ogUrl);
+    }
+    ogUrl.setAttribute('content', finalCanonicalUrl);
     
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {
