@@ -309,10 +309,17 @@ export default function DocumentsAndBlogTabs() {
           <NewsletterSubscription />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {blogArticles
-            .filter(article => blogCategory === 'all' || article.category === blogCategory)
-            .map((article) => (
+        {blogArticles.length === 0 ? (
+          <Card className="p-8 text-center">
+            <Icon name="BookOpen" size={48} className="mx-auto text-gray-300 mb-4" />
+            <h3 className="text-xl font-bold mb-2">Статьи скоро появятся</h3>
+            <p className="text-gray-600">Мы готовим для вас полезные материалы об ипотеке</p>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {blogArticles
+              .filter(article => blogCategory === 'all' || article.category === blogCategory)
+              .map((article) => (
             <Card 
               key={article.id} 
               className="hover:shadow-xl transition-all cursor-pointer group overflow-hidden"
@@ -443,7 +450,8 @@ export default function DocumentsAndBlogTabs() {
               </CardContent>
             </Card>
           ))}
-        </div>
+          </div>
+        )}
 
         {fullscreenArticle && (
           <FullscreenArticle
