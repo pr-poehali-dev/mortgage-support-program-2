@@ -1,7 +1,8 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
-import BlogSection from '@/components/BlogSection';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import DocumentsAndBlogTabs from '@/components/tabs/DocumentsAndBlogTabs';
 import { useDailyTheme } from '@/hooks/useDailyTheme';
 
 export default function Blog() {
@@ -15,7 +16,10 @@ export default function Blog() {
       />
       <Header />
       <main className="container mx-auto px-3 sm:px-4 py-6">
-        <BlogSection />
+        <Breadcrumbs />
+        <div className="space-y-6">
+          <DocumentsAndBlogTabs />
+        </div>
       </main>
       <Footer />
     </div>

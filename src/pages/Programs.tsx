@@ -1,7 +1,8 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
-import MortgagePrograms from '@/components/MortgagePrograms';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import ProgramsAndComparisonTabs from '@/components/tabs/ProgramsAndComparisonTabs';
 import { useDailyTheme } from '@/hooks/useDailyTheme';
 
 export default function Programs() {
@@ -15,7 +16,10 @@ export default function Programs() {
       />
       <Header />
       <main className="container mx-auto px-3 sm:px-4 py-6">
-        <MortgagePrograms />
+        <Breadcrumbs />
+        <div className="space-y-6">
+          <ProgramsAndComparisonTabs />
+        </div>
       </main>
       <Footer />
     </div>

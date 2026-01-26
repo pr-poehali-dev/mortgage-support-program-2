@@ -1,14 +1,12 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
-import PropertyCatalog from '@/components/PropertyCatalog';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import CatalogTab from '@/components/tabs/CatalogTab';
 import { useDailyTheme } from '@/hooks/useDailyTheme';
 
 export default function Catalog() {
   const theme = useDailyTheme();
-  const navigate = useNavigate();
 
   return (
     <div className={`min-h-screen ${theme.gradient}`}>
@@ -18,7 +16,10 @@ export default function Catalog() {
       />
       <Header />
       <main className="container mx-auto px-3 sm:px-4 py-6">
-        <PropertyCatalog />
+        <Breadcrumbs />
+        <div className="space-y-6">
+          <CatalogTab />
+        </div>
       </main>
       <Footer />
     </div>

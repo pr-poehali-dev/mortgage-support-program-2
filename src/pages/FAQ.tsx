@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { faqItems } from '@/data/mortgageData';
@@ -17,6 +18,7 @@ export default function FAQ() {
       />
       <Header />
       <main className="container mx-auto px-3 sm:px-4 py-6">
+        <Breadcrumbs />
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl">Часто задаваемые вопросы</CardTitle>

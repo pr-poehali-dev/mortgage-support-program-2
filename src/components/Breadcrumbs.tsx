@@ -8,8 +8,18 @@ interface BreadcrumbItem {
 
 const routeNames: Record<string, string> = {
   '/': 'Главная',
+  '/catalog': 'Каталог недвижимости',
+  '/calculator': 'Ипотечный калькулятор',
+  '/programs': 'Ипотечные программы',
+  '/online-services': 'Онлайн-услуги',
+  '/contact': 'Контакты',
+  '/faq': 'Часто задаваемые вопросы',
+  '/blog': 'Блог',
   '/services': 'Услуги',
   '/register': 'Заявка на ипотеку',
+  '/sell-help': 'Помощь продать',
+  '/rent-help': 'Помощь сдать',
+  '/chatgpt': 'ChatGPT',
   '/add-property': 'Добавить объект',
   '/privacy-policy': 'Политика конфиденциальности',
   '/terms-of-service': 'Условия использования',

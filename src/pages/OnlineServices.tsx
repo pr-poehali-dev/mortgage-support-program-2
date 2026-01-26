@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import OnlineServices from '@/components/OnlineServices';
 import { useDailyTheme } from '@/hooks/useDailyTheme';
 
@@ -15,6 +16,7 @@ export default function OnlineServicesPage() {
       />
       <Header />
       <main className="container mx-auto px-3 sm:px-4 py-6">
+        <Breadcrumbs />
         <OnlineServices />
       </main>
       <Footer />

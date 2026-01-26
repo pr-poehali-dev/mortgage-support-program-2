@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
@@ -17,6 +18,7 @@ export default function Contact() {
       />
       <Header />
       <main className="container mx-auto px-3 sm:px-4 py-6">
+        <Breadcrumbs />
         <Card className="mb-6">
           <CardHeader>
             <CardTitle className="text-3xl">Контакты</CardTitle>
