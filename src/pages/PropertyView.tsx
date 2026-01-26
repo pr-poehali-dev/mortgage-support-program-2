@@ -313,76 +313,11 @@ export default function PropertyView() {
             {/* Кнопки репоста */}
             <div className="pt-4 border-t">
               <h3 className="font-semibold mb-3">Поделиться объявлением</h3>
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="gap-2"
-                  onClick={() => {
-                    const url = window.location.href;
-                    const text = `${property.title} - ${property.price.toLocaleString('ru-RU')} ₽`;
-                    window.open(`https://vk.com/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`, '_blank');
-                  }}
-                >
-                  <Icon name="Share2" size={16} />
-                  ВКонтакте
-                </Button>
-                
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="gap-2"
-                  onClick={() => {
-                    const url = window.location.href;
-                    const text = `${property.title} - ${property.price.toLocaleString('ru-RU')} ₽`;
-                    window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
-                  }}
-                >
-                  <Icon name="Send" size={16} />
-                  Telegram
-                </Button>
-                
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="gap-2"
-                  onClick={() => {
-                    const url = window.location.href;
-                    const text = `${property.title} - ${property.price.toLocaleString('ru-RU')} ₽`;
-                    window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
-                  }}
-                >
-                  <Icon name="MessageCircle" size={16} />
-                  WhatsApp
-                </Button>
-                
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="gap-2"
-                  onClick={() => {
-                    const url = window.location.href;
-                    const text = `${property.title} - ${property.price.toLocaleString('ru-RU')} ₽`;
-                    window.open(`https://connect.ok.ru/offer?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`, '_blank');
-                  }}
-                >
-                  <Icon name="Circle" size={16} />
-                  Одноклассники
-                </Button>
-                
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="gap-2"
-                  onClick={() => {
-                    navigator.clipboard.writeText(window.location.href);
-                    alert('Ссылка скопирована!');
-                  }}
-                >
-                  <Icon name="Copy" size={16} />
-                  Скопировать ссылку
-                </Button>
-              </div>
+              <ShareButton
+                variant="buttons"
+                title={property.title}
+                text={`${property.title} - ${property.price.toLocaleString('ru-RU')} ₽`}
+              />
             </div>
           </CardContent>
         </Card>

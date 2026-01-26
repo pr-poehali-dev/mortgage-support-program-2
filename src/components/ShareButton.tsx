@@ -14,13 +14,15 @@ interface ShareButtonProps {
   text?: string;
   url?: string;
   className?: string;
+  variant?: 'dropdown' | 'buttons';
 }
 
 export default function ShareButton({ 
   title = document.title,
   text = '',
   url = window.location.href,
-  className = ''
+  className = '',
+  variant = 'dropdown'
 }: ShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -70,6 +72,43 @@ export default function ShareButton({
       }
     }
   };
+
+  if (variant === 'buttons') {
+    return (
+      <div className={`flex flex-wrap gap-2 ${className}`}>
+        <Button
+          onClick={() => handleShare('whatsapp')}
+          className="gap-2 bg-[#25D366] hover:bg-[#1EBE57] text-white flex-1 sm:flex-initial"
+        >
+          <Icon name="MessageCircle" size={18} />
+          WhatsApp
+        </Button>
+        <Button
+          onClick={() => handleShare('telegram')}
+          className="gap-2 bg-[#0088cc] hover:bg-[#006699] text-white flex-1 sm:flex-initial"
+        >
+          <Icon name="Send" size={18} />
+          Telegram
+        </Button>
+        <Button
+          onClick={() => handleShare('vk')}
+          variant="outline"
+          className="gap-2 flex-1 sm:flex-initial"
+        >
+          <Icon name="Share2" size={18} />
+          ВКонтакте
+        </Button>
+        <Button
+          onClick={handleCopyLink}
+          variant="outline"
+          className="gap-2"
+        >
+          <Icon name="Link" size={18} />
+          <span className="hidden sm:inline">Копировать</span>
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
