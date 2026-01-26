@@ -6,6 +6,7 @@ import Icon from '@/components/ui/icon';
 import OptimizedImage from '@/components/OptimizedImage';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ShareButton from '@/components/ShareButton';
+import SEO from '@/components/SEO';
 
 const PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d';
 
@@ -85,8 +86,21 @@ export default function PropertyView() {
   const photos = property.photos || (property.photo_url ? [property.photo_url] : []);
   const isLand = property.property_category === 'land' || property.type === 'land';
 
+  const operationType = property.operation === 'sale' ? 'Продажа' : property.operation === 'rent' ? 'Аренда' : 'Посуточная аренда';
+  const priceText = property.price.toLocaleString('ru-RU');
+  const seoTitle = `${property.title} | ${operationType} за ${priceText} ₽ | Арендодатель`;
+  const seoDescription = `${operationType}: ${property.title} в ${property.location}. Цена: ${priceText} ₽${property.area ? `, площадь ${property.area} м²` : ''}${property.rooms ? `, ${property.rooms} комн.` : ''}. Звоните: +7 978 128-18-50`;
+  const seoImage = photos.length > 0 ? photos[0] : 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/4d093a65-2fb8-4f42-bd03-2748bab0d832.jpg';
+  const canonicalUrl = `https://ипотекакрым.рф/property/${id}`;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        ogImage={seoImage}
+        canonicalUrl={canonicalUrl}
+      />
       <div className="container mx-auto p-3 sm:p-4 space-y-4 sm:space-y-6">
         <Breadcrumbs />
         {/* Хедер с кнопкой назад */}
