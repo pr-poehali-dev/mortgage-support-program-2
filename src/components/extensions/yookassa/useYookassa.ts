@@ -55,10 +55,17 @@ interface UseYookassaReturn {
  * Open payment page (new tab on mobile, same tab on desktop)
  */
 export function openPaymentPage(url: string): void {
+  console.log('[openPaymentPage] URL:', url);
+  console.log('[openPaymentPage] User Agent:', navigator.userAgent);
+  
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  console.log('[openPaymentPage] isMobile:', isMobile);
+  
   if (isMobile) {
+    console.log('[openPaymentPage] Открываем в новой вкладке (мобильный)');
     window.open(url, "_blank");
   } else {
+    console.log('[openPaymentPage] Перенаправляем в текущей вкладке (десктоп)');
     window.location.href = url;
   }
 }
@@ -123,6 +130,8 @@ export function useYookassa(options: UseYookassaOptions): UseYookassaReturn {
           cart_items: payload.cartItems || [],
         };
 
+        console.log('[YooKassa] Отправка запроса на создание платежа:', body);
+        
         const response = await fetch(apiUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -130,6 +139,7 @@ export function useYookassa(options: UseYookassaOptions): UseYookassaReturn {
         });
 
         const data = await response.json();
+        console.log('[YooKassa] Ответ от API:', data);
 
         if (!response.ok) {
           throw new Error(data.error || "Ошибка создания платежа");
@@ -137,6 +147,8 @@ export function useYookassa(options: UseYookassaOptions): UseYookassaReturn {
 
         setPaymentUrl(data.payment_url);
         setOrderNumber(data.order_number);
+        
+        console.log('[YooKassa] payment_url:', data.payment_url);
 
         // Save pending order to localStorage
         if (typeof window !== "undefined") {

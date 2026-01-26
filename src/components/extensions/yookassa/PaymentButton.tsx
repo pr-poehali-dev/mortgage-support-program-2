@@ -68,6 +68,7 @@ export function PaymentButton({
   });
 
   const handleClick = async () => {
+    console.log('[PaymentButton] Начало создания платежа');
     const response = await createPayment({
       amount,
       userEmail,
@@ -78,8 +79,13 @@ export function PaymentButton({
       cartItems,
     });
 
+    console.log('[PaymentButton] Ответ:', response);
+    
     if (response?.payment_url) {
+      console.log('[PaymentButton] Открываем страницу оплаты:', response.payment_url);
       openPaymentPage(response.payment_url);
+    } else {
+      console.error('[PaymentButton] payment_url отсутствует в ответе');
     }
   };
 
