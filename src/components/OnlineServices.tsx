@@ -96,9 +96,11 @@ export default function OnlineServices() {
                 {selectedService === service.id && (
                   <div className="mt-3 space-y-2 border-t pt-3">
                     <PaymentButton
+                      apiUrl="https://functions.poehali.dev/72d9915f-4d87-4e17-9854-dba7c8bae060"
                       amount={service.price}
-                      userEmail=""
-                      returnUrl={`${window.location.origin}/success`}
+                      userEmail="customer@example.com"
+                      returnUrl={`${window.location.origin}/`}
+                      description={service.title}
                       cartItems={[{
                         id: service.id,
                         name: service.title,
@@ -106,10 +108,15 @@ export default function OnlineServices() {
                         quantity: 1
                       }]}
                       onSuccess={(orderNumber) => {
-                        console.log('Заказ создан:', orderNumber);
                         alert(`Заказ ${orderNumber} создан! Переходим к оплате...`);
+                        setSelectedService(null);
+                      }}
+                      onError={(error) => {
+                        alert(`Ошибка создания платежа: ${error.message}`);
+                        setSelectedService(null);
                       }}
                       className="w-full"
+                      buttonText="Перейти к оплате"
                     />
                     <Button 
                       variant="ghost" 
