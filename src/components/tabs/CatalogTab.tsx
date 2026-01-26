@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { TabsContent } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import PropertyCard from '@/components/catalog/PropertyCard';
 import PropertyFormDialog from '@/components/catalog/PropertyFormDialog';
@@ -83,11 +82,17 @@ export default function CatalogTab() {
       setLoading(true);
       setError(null);
       
+      console.log('Fetching properties from:', MANUAL_PROPERTIES_URL);
       const response = await fetch(MANUAL_PROPERTIES_URL);
+      console.log('Response status:', response.status);
       const data = await response.json();
+      console.log('Response data:', data);
       
       if (data.success) {
+        console.log('Properties loaded:', data.properties?.length);
         setRealEstateObjects(data.properties || []);
+      } else {
+        setError('Ошибка: ' + (data.error || 'Неизвестная ошибка'));
       }
     } catch (err) {
       setError('Ошибка загрузки объектов');
@@ -306,7 +311,7 @@ export default function CatalogTab() {
   const catalogCounts = getCatalogCounts();
 
   return (
-    <TabsContent value="catalog" className="space-y-4 sm:space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div className="mb-4 sm:mb-6">
         <div className="mb-3 sm:mb-4">
           <h2 className="text-2xl sm:text-3xl font-bold">Объекты</h2>
@@ -400,6 +405,6 @@ export default function CatalogTab() {
         onOpenChange={setViewDialogOpen}
         property={viewProperty}
       />
-    </TabsContent>
+    </div>
   );
 }
