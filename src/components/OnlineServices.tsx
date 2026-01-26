@@ -9,6 +9,11 @@ import { cartService } from '@/services/cart';
 export default function OnlineServices() {
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [addedToCart, setAddedToCart] = useState<string | null>(null);
+  const [paymentForm, setPaymentForm] = useState<{ email: string; phone: string; name: string }>({
+    email: '',
+    phone: '',
+    name: ''
+  });
 
   const handleAddToCart = (service: typeof onlineServices[0]) => {
     cartService.addItem({
@@ -95,10 +100,37 @@ export default function OnlineServices() {
                 
                 {selectedService === service.id && (
                   <div className="mt-3 space-y-2 border-t pt-3">
+                    <div className="mb-2 text-xs text-gray-600">
+                      <p className="font-medium mb-1">Контакты для связи:</p>
+                      <input
+                        type="email"
+                        placeholder="Ваш email *"
+                        required
+                        className="w-full px-3 py-2 border rounded-md text-sm mb-2"
+                        value={paymentForm.email}
+                        onChange={(e) => setPaymentForm({ ...paymentForm, email: e.target.value })}
+                      />
+                      <input
+                        type="tel"
+                        placeholder="Телефон (необязательно)"
+                        className="w-full px-3 py-2 border rounded-md text-sm mb-2"
+                        value={paymentForm.phone}
+                        onChange={(e) => setPaymentForm({ ...paymentForm, phone: e.target.value })}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Ваше имя (необязательно)"
+                        className="w-full px-3 py-2 border rounded-md text-sm"
+                        value={paymentForm.name}
+                        onChange={(e) => setPaymentForm({ ...paymentForm, name: e.target.value })}
+                      />
+                    </div>
                     <PaymentButton
                       apiUrl="https://functions.poehali.dev/72d9915f-4d87-4e17-9854-dba7c8bae060"
                       amount={service.price}
-                      userEmail="customer@example.com"
+                      userEmail={paymentForm.email || "info@example.com"}
+                      userName={paymentForm.name}
+                      userPhone={paymentForm.phone}
                       returnUrl={`${window.location.origin}/`}
                       description={service.title}
                       cartItems={[{
@@ -108,19 +140,23 @@ export default function OnlineServices() {
                         quantity: 1
                       }]}
                       onSuccess={(orderNumber) => {
-                        alert(`Заказ ${orderNumber} создан! Переходим к оплате...`);
+                        console.log(`Заказ ${orderNumber} создан, переходим к оплате`);
                         setSelectedService(null);
+                        setPaymentForm({ email: '', phone: '', name: '' });
                       }}
                       onError={(error) => {
-                        alert(`Ошибка создания платежа: ${error.message}`);
-                        setSelectedService(null);
+                        alert(`Ошибка: ${error.message}`);
                       }}
+                      disabled={!paymentForm.email || !paymentForm.email.includes('@')}
                       className="w-full"
-                      buttonText="Перейти к оплате"
+                      buttonText={!paymentForm.email || !paymentForm.email.includes('@') ? 'Укажите email' : 'Перейти к оплате ЮКасса'}
                     />
                     <Button 
                       variant="ghost" 
-                      onClick={() => setSelectedService(null)}
+                      onClick={() => {
+                        setSelectedService(null);
+                        setPaymentForm({ email: '', phone: '', name: '' });
+                      }}
                       className="w-full"
                       size="sm"
                     >
