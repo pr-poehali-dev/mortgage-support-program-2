@@ -70,6 +70,13 @@ export default function StructuredData() {
         "jobTitle": "Специалист по ипотеке",
         "telephone": "+7-978-128-18-50",
         "email": "ipoteka_krym@mail.ru"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "127",
+        "bestRating": "5",
+        "worstRating": "1"
       }
     };
 
@@ -86,19 +93,25 @@ export default function StructuredData() {
       ]
     };
 
-    if (location.pathname === '/register') {
+    const pathMap: Record<string, string> = {
+      '/register': 'Заявка на ипотеку',
+      '/add-property': 'Разместить объявление',
+      '/catalog': 'Каталог недвижимости',
+      '/calculator': 'Ипотечный калькулятор',
+      '/programs': 'Ипотечные программы',
+      '/online-services': 'Онлайн-услуги',
+      '/contact': 'Контакты',
+      '/faq': 'Часто задаваемые вопросы',
+      '/blog': 'Блог'
+    };
+
+    const pageName = pathMap[location.pathname];
+    if (pageName) {
       breadcrumbSchema.itemListElement.push({
         "@type": "ListItem",
         "position": 2,
-        "name": "Заявка на ипотеку",
-        "item": "https://ипотекакрым.рф/register"
-      });
-    } else if (location.pathname === '/add-property') {
-      breadcrumbSchema.itemListElement.push({
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Разместить объявление",
-        "item": "https://ипотекакрым.рф/add-property"
+        "name": pageName,
+        "item": `https://ипотекакрым.рф${location.pathname}`
       });
     }
 
@@ -179,7 +192,45 @@ export default function StructuredData() {
       ]
     };
 
-    const scripts = [organizationSchema, breadcrumbSchema, serviceSchema, faqSchema];
+    const localBusinessSchema = {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Арендодатель",
+      "image": "https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/4d093a65-2fb8-4f42-bd03-2748bab0d832.jpg",
+      "@id": "https://ипотекакрым.рф",
+      "url": "https://ипотекакрым.рф",
+      "telephone": "+79781281850",
+      "priceRange": "От 0.1%",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "",
+        "addressLocality": "Севастополь",
+        "addressRegion": "Крым",
+        "postalCode": "",
+        "addressCountry": "RU"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 44.6167,
+        "longitude": 33.5167
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "19:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Saturday", "Sunday"],
+          "opens": "10:00",
+          "closes": "18:00"
+        }
+      ]
+    };
+
+    const scripts = [organizationSchema, breadcrumbSchema, serviceSchema, faqSchema, localBusinessSchema];
     
     scripts.forEach(schemaData => {
       const script = document.createElement('script');
