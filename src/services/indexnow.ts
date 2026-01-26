@@ -133,7 +133,17 @@ export async function notifyAllMainPages(force = false): Promise<IndexNowRespons
     '/register',
     '/add-property',
     '/privacy-policy',
-    '/terms-of-service'
+    '/terms-of-service',
+    '/services',
+    '/catalog',
+    '/calculator',
+    '/programs',
+    '/online-services',
+    '/contact',
+    '/faq',
+    '/blog',
+    '/rent-help',
+    '/sell-help'
   ];
   
   return notifyIndexNow(mainPages, force);

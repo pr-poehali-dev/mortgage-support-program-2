@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 import { notifySitemap, notifyCurrentPage, notifyAllMainPages } from '@/services/indexnow';
+import { notifySitemapToSearchEngines } from '@/services/sitemap-notifier';
 import { toast } from 'sonner';
 
 export default function IndexNowNotifier() {
@@ -41,15 +42,24 @@ export default function IndexNowNotifier() {
   const handleNotifyAllPages = async () => {
     setIsLoading(true);
     try {
-      const [sitemapResult, pagesResult] = await Promise.all([
+      const [sitemapResult, pagesResult, searchEnginesResult] = await Promise.all([
         notifySitemap(),
-        notifyAllMainPages()
+        notifyAllMainPages(),
+        notifySitemapToSearchEngines()
       ]);
       
       const successCount = pagesResult.results.filter(r => r.status === 'success').length;
+      const searchEnginesSuccess = [
+        searchEnginesResult.google.success,
+        searchEnginesResult.yandex.success,
+        searchEnginesResult.bing.success
+      ].filter(Boolean).length;
       
-      if (successCount > 0) {
-        toast.success(`${pagesResult.urls_submitted} страниц + sitemap.xml отправлено в ${successCount} поисковых систем`);
+      if (successCount > 0 || searchEnginesSuccess > 0) {
+        toast.success(
+          `${pagesResult.urls_submitted} страниц отправлено через IndexNow. ` +
+          `Sitemap отправлен в ${searchEnginesSuccess} поисковых системы (Google, Яндекс, Bing)`
+        );
         const now = new Date().toISOString();
         localStorage.setItem('indexnow_last_notification', now);
         setLastNotification(now);
@@ -84,7 +94,7 @@ export default function IndexNowNotifier() {
         <div className="flex-1">
           <h3 className="font-bold text-lg mb-2">Быстрая индексация</h3>
           <p className="text-sm text-gray-600 mb-4">
-            Отправьте уведомление в поисковые системы (Яндекс, Bing) для моментальной индексации страниц
+            Отправьте уведомление в поисковые системы (Google, Яндекс, Bing) для моментальной индексации страниц и sitemap
           </p>
           
           {lastNotification && (

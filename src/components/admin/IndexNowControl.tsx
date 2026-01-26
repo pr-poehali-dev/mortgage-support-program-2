@@ -8,6 +8,7 @@ import {
   clearNotificationCache, 
   getNotificationStats 
 } from '@/services/indexnow';
+import { notifySitemapToSearchEngines } from '@/services/sitemap-notifier';
 
 export default function IndexNowControl() {
   const [loading, setLoading] = useState(false);
@@ -38,10 +39,21 @@ export default function IndexNowControl() {
     setLastResult('Отправка sitemap...');
     
     try {
-      const result = await notifySitemap(true);
+      const [indexNowResult, searchEnginesResult] = await Promise.all([
+        notifySitemap(true),
+        notifySitemapToSearchEngines()
+      ]);
       
-      if (result.success && result.urls_submitted > 0) {
-        setLastResult(`✅ Sitemap отправлен в поисковые системы`);
+      const searchEnginesSuccess = [
+        searchEnginesResult.google.success,
+        searchEnginesResult.yandex.success,
+        searchEnginesResult.bing.success
+      ].filter(Boolean).length;
+      
+      if (indexNowResult.success || searchEnginesSuccess > 0) {
+        setLastResult(
+          `✅ Sitemap отправлен через IndexNow и в ${searchEnginesSuccess}/3 поисковых систем (Google, Яндекс, Bing)`
+        );
       } else {
         setLastResult('ℹ️ Sitemap уже был недавно отправлен');
       }
