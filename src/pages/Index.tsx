@@ -145,15 +145,27 @@ export default function Index() {
                 <Icon name="Home" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Главная</span>
               </TabsTrigger>
-              <TabsTrigger value="catalog" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+              <TabsTrigger 
+                value="catalog" 
+                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
+                onClick={() => navigate('/catalog')}
+              >
                 <Icon name="Building2" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Объекты</span>
               </TabsTrigger>
-              <TabsTrigger value="calculator" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+              <TabsTrigger 
+                value="calculator" 
+                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
+                onClick={() => navigate('/calculator')}
+              >
                 <Icon name="Calculator" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Расчёт</span>
               </TabsTrigger>
-              <TabsTrigger value="programs" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+              <TabsTrigger 
+                value="programs" 
+                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
+                onClick={() => navigate('/programs')}
+              >
                 <Icon name="ClipboardList" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Прогр.</span>
               </TabsTrigger>
@@ -167,7 +179,11 @@ export default function Index() {
               </TabsTrigger>
             </div>
             <div className="grid grid-cols-6 gap-1 sm:gap-1.5 w-full">
-              <TabsTrigger value="blog" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+              <TabsTrigger 
+                value="blog" 
+                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
+                onClick={() => navigate('/blog')}
+              >
                 <Icon name="BookOpen" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Блог</span>
               </TabsTrigger>
@@ -191,15 +207,27 @@ export default function Index() {
                 <Icon name="Bot" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">ChatGPT</span>
               </TabsTrigger>
-              <TabsTrigger value="online-services" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+              <TabsTrigger 
+                value="online-services" 
+                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
+                onClick={() => navigate('/online-services')}
+              >
                 <Icon name="ShoppingCart" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Онлайн</span>
               </TabsTrigger>
-              <TabsTrigger value="faq" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+              <TabsTrigger 
+                value="faq" 
+                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
+                onClick={() => navigate('/faq')}
+              >
                 <Icon name="HelpCircle" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">FAQ</span>
               </TabsTrigger>
-              <TabsTrigger value="contact" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+              <TabsTrigger 
+                value="contact" 
+                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
+                onClick={() => navigate('/contact')}
+              >
                 <Icon name="Phone" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Контакты</span>
               </TabsTrigger>

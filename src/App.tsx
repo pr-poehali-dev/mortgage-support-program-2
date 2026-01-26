@@ -27,6 +27,13 @@ const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const Services = lazy(() => import("./pages/Services"));
 const RentHelp = lazy(() => import("./pages/RentHelp"));
 const SellHelp = lazy(() => import("./pages/SellHelp"));
+const Catalog = lazy(() => import("./pages/Catalog"));
+const Calculator = lazy(() => import("./pages/Calculator"));
+const Programs = lazy(() => import("./pages/Programs"));
+const OnlineServices = lazy(() => import("./pages/OnlineServices"));
+const Contact = lazy(() => import("./pages/Contact"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const Blog = lazy(() => import("./pages/Blog"));
 const ChatGPTPlaygroundPage = lazy(() => import("./components/extensions/chatgpt-polza/ChatGPTPlaygroundPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -70,6 +77,13 @@ function AppContent() {
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/catalog" element={<Catalog />} />
+              <Route path="/calculator" element={<Calculator />} />
+              <Route path="/programs" element={<Programs />} />
+              <Route path="/online-services" element={<OnlineServices />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/blog" element={<Blog />} />
               <Route path="/property/:id" element={<PropertyView />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/articles" element={<AdminArticles />} />
