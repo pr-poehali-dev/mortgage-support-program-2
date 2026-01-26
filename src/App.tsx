@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import PropertyView from "./pages/PropertyView";
 import AnalyticsProvider from "./components/analytics/AnalyticsProvider";
 import PageLoader from "./components/PageLoader";
+import RouteTransition from "./components/RouteTransition";
 import NotificationPrompt from "./components/NotificationPrompt";
 import InstallPrompt from "./components/InstallPrompt";
 import { useAnalytics } from "./hooks/useAnalytics";
@@ -74,6 +75,7 @@ function AppContent() {
         yandexMetrikaId={analytics.yandex_metrika_id || "105974763"}
       >
         <BrowserRouter>
+          <RouteTransition />
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<Index />} />

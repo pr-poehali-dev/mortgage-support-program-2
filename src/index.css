@@ -133,6 +133,15 @@
   animation: pulse-periodic 30s ease-in-out infinite;
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 @keyframes smoke-wave-up {
   0% {
     transform: translateY(0) translateX(0);
