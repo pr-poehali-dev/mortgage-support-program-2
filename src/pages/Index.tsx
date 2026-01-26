@@ -6,6 +6,7 @@ import Icon from '@/components/ui/icon';
 import { Toaster } from '@/components/ui/toaster';
 import MortgageQuiz from '@/components/MortgageQuiz';
 import MortgageTabsContent from '@/components/MortgageTabsContent';
+import PopularServicesSection from '@/components/PopularServicesSection';
 import InternalLinks from '@/components/InternalLinks';
 import SiteMap from '@/components/SiteMap';
 import ShareButton from '@/components/ShareButton';
@@ -239,6 +240,8 @@ export default function Index() {
             trackTabChanged('calculator');
           }} />
         </Tabs>
+
+        <PopularServicesSection />
 
         <div className="container mx-auto px-3 sm:px-4 mt-8 sm:mt-12 space-y-8">
           <InternalLinks />

@@ -4,9 +4,23 @@ import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import { onlineServices } from '@/data/onlineServices';
 import { PaymentButton } from '@/components/extensions/yookassa/PaymentButton';
+import { cartService } from '@/services/cart';
 
 export default function OnlineServices() {
   const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [addedToCart, setAddedToCart] = useState<string | null>(null);
+
+  const handleAddToCart = (service: typeof onlineServices[0]) => {
+    cartService.addItem({
+      id: service.id,
+      name: service.title,
+      price: `${service.price.toLocaleString('ru-RU')} ₽`,
+      description: service.description,
+      icon: service.icon
+    });
+    setAddedToCart(service.id);
+    setTimeout(() => setAddedToCart(null), 2000);
+  };
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -47,8 +61,40 @@ export default function OnlineServices() {
                   </span>
                 </div>
                 
-                {selectedService === service.id ? (
-                  <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-2">
+                  <Button 
+                    onClick={() => handleAddToCart(service)}
+                    className={`transition-all ${
+                      addedToCart === service.id
+                        ? 'bg-green-600 hover:bg-green-700' 
+                        : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'
+                    }`}
+                    size="sm"
+                  >
+                    {addedToCart === service.id ? (
+                      <>
+                        <Icon name="CheckCircle" size={16} className="mr-1" />
+                        Добавлено
+                      </>
+                    ) : (
+                      <>
+                        <Icon name="ShoppingCart" size={16} className="mr-1" />
+                        В корзину
+                      </>
+                    )}
+                  </Button>
+                  <Button 
+                    onClick={() => setSelectedService(service.id)}
+                    variant="outline"
+                    size="sm"
+                  >
+                    <Icon name="CreditCard" size={16} className="mr-1" />
+                    Оплатить
+                  </Button>
+                </div>
+                
+                {selectedService === service.id && (
+                  <div className="mt-3 space-y-2 border-t pt-3">
                     <PaymentButton
                       amount={service.price}
                       userEmail=""
@@ -66,20 +112,14 @@ export default function OnlineServices() {
                       className="w-full"
                     />
                     <Button 
-                      variant="outline" 
+                      variant="ghost" 
                       onClick={() => setSelectedService(null)}
                       className="w-full"
+                      size="sm"
                     >
                       Отмена
                     </Button>
                   </div>
-                ) : (
-                  <Button 
-                    onClick={() => setSelectedService(service.id)}
-                    className="w-full"
-                  >
-                    Оплатить услугу
-                  </Button>
                 )}
               </div>
             </CardContent>
