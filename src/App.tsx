@@ -12,6 +12,7 @@ import PageLoader from "./components/PageLoader";
 import RouteTransition from "./components/RouteTransition";
 import NotificationPrompt from "./components/NotificationPrompt";
 import InstallPrompt from "./components/InstallPrompt";
+import Cart from "./components/Cart";
 import { useAnalytics } from "./hooks/useAnalytics";
 
 // Lazy load admin pages
@@ -105,6 +106,7 @@ function AppContent() {
           </Suspense>
           <InstallPrompt />
           <NotificationPrompt />
+          <Cart />
         </BrowserRouter>
       </AnalyticsProvider>
     </>
