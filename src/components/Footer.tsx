@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 
 export default function Footer() {
@@ -90,9 +91,22 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-          <p>© {new Date().getFullYear()} ИП Николаев Дмитрий Юрьевич. Все права защищены.</p>
-          <p className="mt-2">ИНН: 920360130683 | ОГРНИП: 318920400012912</p>
+        <div className="border-t border-gray-800 mt-8 pt-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-center sm:text-left text-sm text-gray-400">
+              <p>© {new Date().getFullYear()} ИП Николаев Дмитрий Юрьевич. Все права защищены.</p>
+              <p className="mt-2">ИНН: 920360130683 | ОГРНИП: 318920400012912</p>
+            </div>
+            <Button
+              onClick={() => navigate('/admin')}
+              variant="outline"
+              size="sm"
+              className="bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border-gray-700 flex-shrink-0"
+            >
+              <Icon name="Settings" size={16} className="mr-2" />
+              Админ-панель
+            </Button>
+          </div>
         </div>
       </div>
     </footer>
