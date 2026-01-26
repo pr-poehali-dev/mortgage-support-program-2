@@ -161,6 +161,34 @@ export default function ContactAndFaqTabs() {
               </div>
 
               <div>
+                <div className="mb-6">
+                  <h4 className="font-semibold text-lg mb-4">Реквизиты</h4>
+                  <div className="space-y-3 p-4 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="text-sm text-gray-600">Полное наименование</p>
+                      <p className="font-semibold text-gray-900">ИП Николаев Дмитрий Юрьевич</p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-gray-600">ИНН</p>
+                        <p className="font-semibold text-gray-900">920360130683</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">ОГРНИП</p>
+                        <p className="font-semibold text-gray-900">318920400012912</p>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Дата регистрации</p>
+                      <p className="font-semibold text-gray-900">23 мая 2018 г.</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Регион</p>
+                      <p className="font-semibold text-gray-900">г. Севастополь</p>
+                    </div>
+                  </div>
+                </div>
+
                 <h4 className="font-semibold text-lg mb-4">Мы в социальных сетях</h4>
                 <div className="grid grid-cols-2 gap-3">
                   <a
