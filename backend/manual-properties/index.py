@@ -50,7 +50,8 @@ def handler(event: dict, context) -> dict:
                 return {
                     'statusCode': 200,
                     'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-                    'body': json.dumps({'success': True, 'property': prop_dict}, ensure_ascii=False)
+                    'body': json.dumps({'success': True, 'property': prop_dict}, ensure_ascii=False),
+                    'isBase64Encoded': False
                 }
             else:
                 if show_all == 'true':
@@ -68,7 +69,8 @@ def handler(event: dict, context) -> dict:
                 return {
                     'statusCode': 200,
                     'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-                    'body': json.dumps({'success': True, 'properties': properties}, ensure_ascii=False)
+                    'body': json.dumps({'success': True, 'properties': properties}, ensure_ascii=False),
+                    'isBase64Encoded': False
                 }
 
         elif method == 'POST':
@@ -126,7 +128,8 @@ def handler(event: dict, context) -> dict:
                 return {
                     'statusCode': 201,
                     'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-                    'body': json.dumps({'success': True, 'imported': imported, 'errors': errors}, ensure_ascii=False)
+                    'body': json.dumps({'success': True, 'imported': imported, 'errors': errors}, ensure_ascii=False),
+                    'isBase64Encoded': False
                 }
             
             # Один объект
@@ -248,7 +251,8 @@ def handler(event: dict, context) -> dict:
             return {
                 'statusCode': 201,
                 'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-                'body': json.dumps({'success': True, 'id': property_id}, ensure_ascii=False)
+                'body': json.dumps({'success': True, 'id': property_id}, ensure_ascii=False),
+                'isBase64Encoded': False
             }
 
         elif method == 'PUT':
@@ -323,7 +327,8 @@ def handler(event: dict, context) -> dict:
             return {
                 'statusCode': 200,
                 'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-                'body': json.dumps({'success': True}, ensure_ascii=False)
+                'body': json.dumps({'success': True}, ensure_ascii=False),
+                'isBase64Encoded': False
             }
 
         elif method == 'DELETE':
@@ -342,14 +347,16 @@ def handler(event: dict, context) -> dict:
                 return {
                     'statusCode': 200,
                     'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-                    'body': json.dumps({'success': True}, ensure_ascii=False)
+                    'body': json.dumps({'success': True}, ensure_ascii=False),
+                    'isBase64Encoded': False
                 }
             
             if not property_id:
                 return {
                     'statusCode': 400,
                     'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-                    'body': json.dumps({'success': False, 'error': 'Property ID required'})
+                    'body': json.dumps({'success': False, 'error': 'Property ID required'}),
+                    'isBase64Encoded': False
                 }
             
             cur.execute('''
@@ -362,15 +369,24 @@ def handler(event: dict, context) -> dict:
             return {
                 'statusCode': 200,
                 'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-                'body': json.dumps({'success': True}, ensure_ascii=False)
+                'body': json.dumps({'success': True}, ensure_ascii=False),
+                'isBase64Encoded': False
             }
 
         return {
             'statusCode': 405,
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-            'body': json.dumps({'success': False, 'error': 'Method not allowed'})
+            'body': json.dumps({'success': False, 'error': 'Method not allowed'}),
+            'isBase64Encoded': False
         }
 
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+            'body': json.dumps({'success': False, 'error': str(e)}, ensure_ascii=False),
+            'isBase64Encoded': False
+        }
     finally:
         cur.close()
         conn.close()
