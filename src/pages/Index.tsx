@@ -396,13 +396,15 @@ export default function Index() {
               <p className="text-xs sm:text-sm text-gray-400">
                 © 2008-2026 Арендодатель. Все права защищены.
               </p>
-              <button
+              <Button
                 onClick={() => navigate('/admin')}
-                className="text-gray-500 hover:text-gray-300 transition-colors"
-                title="Панель администратора"
+                variant="outline"
+                size="sm"
+                className="bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border-gray-700"
               >
-                <Icon name="Settings" size={16} />
-              </button>
+                <Icon name="Settings" size={16} className="mr-2" />
+                Админ-панель
+              </Button>
             </div>
           </div>
         </div>
