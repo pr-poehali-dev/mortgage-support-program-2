@@ -1,13 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
 import { cartService, CartItem } from '@/services/cart';
+import { promocodeService, Promocode } from '@/services/promocodes';
 import CartOrderForm from '@/components/CartOrderForm';
 
 export default function Cart() {
   const [isOpen, setIsOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [showOrderForm, setShowOrderForm] = useState(false);
+  const [promocodeInput, setPromocodeInput] = useState('');
+  const [appliedPromocode, setAppliedPromocode] = useState<Promocode | null>(null);
+  const [promocodeError, setPromocodeError] = useState('');
+  const [discount, setDiscount] = useState(0);
 
   const updateCart = () => {
     setCartItems(cartService.getCart());
@@ -21,6 +27,7 @@ export default function Cart() {
 
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cartService.getTotalPrice();
+  const finalPrice = totalPrice - discount;
 
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
     cartService.updateQuantity(itemId, newQuantity);
@@ -28,6 +35,32 @@ export default function Cart() {
 
   const handleRemoveItem = (itemId: string) => {
     cartService.removeItem(itemId);
+  };
+
+  const handleApplyPromocode = () => {
+    if (!promocodeInput.trim()) {
+      setPromocodeError('Введите промокод');
+      return;
+    }
+
+    const result = promocodeService.applyPromocode(totalPrice, promocodeInput);
+
+    if (result.isValid) {
+      setAppliedPromocode(result.promocode!);
+      setDiscount(result.discount);
+      setPromocodeError('');
+      setPromocodeInput('');
+    } else {
+      setPromocodeError(result.message);
+      setAppliedPromocode(null);
+      setDiscount(0);
+    }
+  };
+
+  const handleRemovePromocode = () => {
+    setAppliedPromocode(null);
+    setDiscount(0);
+    setPromocodeError('');
   };
 
   return (
@@ -126,11 +159,68 @@ export default function Cart() {
 
             {cartItems.length > 0 && (
               <div className="border-t bg-gray-50 p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-lg font-semibold">Итого:</span>
-                  <span className="text-2xl font-bold text-blue-600">
-                    {totalPrice.toLocaleString('ru-RU')} ₽
-                  </span>
+                <div className="mb-4">
+                  <label className="text-sm font-medium mb-2 block flex items-center gap-2">
+                    <Icon name="Tag" size={16} />
+                    Промокод
+                  </label>
+                  {appliedPromocode ? (
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center justify-between">
+                      <div>
+                        <p className="font-bold text-green-700">{appliedPromocode.code}</p>
+                        <p className="text-xs text-green-600">{appliedPromocode.description}</p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={handleRemovePromocode}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <Icon name="X" size={16} />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <Input
+                        value={promocodeInput}
+                        onChange={(e) => {
+                          setPromocodeInput(e.target.value.toUpperCase());
+                          setPromocodeError('');
+                        }}
+                        placeholder="Введите код"
+                        className="uppercase"
+                      />
+                      <Button
+                        onClick={handleApplyPromocode}
+                        variant="outline"
+                        size="sm"
+                      >
+                        <Icon name="Check" size={16} />
+                      </Button>
+                    </div>
+                  )}
+                  {promocodeError && (
+                    <p className="text-xs text-red-500 mt-1">{promocodeError}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-600">Сумма:</span>
+                    <span className="font-semibold">{totalPrice.toLocaleString('ru-RU')} ₽</span>
+                  </div>
+                  {discount > 0 && (
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-green-600">Скидка:</span>
+                      <span className="font-semibold text-green-600">-{discount.toLocaleString('ru-RU')} ₽</span>
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between pt-2 border-t">
+                    <span className="text-lg font-semibold">Итого:</span>
+                    <span className="text-2xl font-bold text-blue-600">
+                      {finalPrice.toLocaleString('ru-RU')} ₽
+                    </span>
+                  </div>
                 </div>
 
                 <Button
@@ -165,7 +255,9 @@ export default function Cart() {
 
       <CartOrderForm 
         isOpen={showOrderForm} 
-        onClose={() => setShowOrderForm(false)} 
+        onClose={() => setShowOrderForm(false)}
+        appliedPromocode={appliedPromocode}
+        discount={discount}
       />
     </>
   );

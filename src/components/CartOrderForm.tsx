@@ -4,13 +4,16 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
 import { cartService } from '@/services/cart';
+import { Promocode } from '@/services/promocodes';
 
 interface CartOrderFormProps {
   isOpen: boolean;
   onClose: () => void;
+  appliedPromocode?: Promocode | null;
+  discount?: number;
 }
 
-export default function CartOrderForm({ isOpen, onClose }: CartOrderFormProps) {
+export default function CartOrderForm({ isOpen, onClose, appliedPromocode, discount = 0 }: CartOrderFormProps) {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -24,6 +27,7 @@ export default function CartOrderForm({ isOpen, onClose }: CartOrderFormProps) {
 
   const cartItems = cartService.getCart();
   const totalPrice = cartService.getTotalPrice();
+  const finalPrice = totalPrice - discount;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,19 +37,26 @@ export default function CartOrderForm({ isOpen, onClose }: CartOrderFormProps) {
       `${item.name} x${item.quantity} - ${item.price}`
     ).join('\n');
 
-    const message = `
+    let message = `
 === ЗАКАЗ УСЛУГ ===
 
 Услуги:
 ${orderDetails}
 
-Итого: ${totalPrice.toLocaleString('ru-RU')} ₽
+Сумма: ${totalPrice.toLocaleString('ru-RU')} ₽`;
 
-Клиент: ${formData.name}
-Телефон: ${formData.phone}
-Email: ${formData.email}
-${formData.comment ? `\nКомментарий: ${formData.comment}` : ''}
-    `.trim();
+    if (appliedPromocode && discount > 0) {
+      message += `\nПромокод: ${appliedPromocode.code} (${appliedPromocode.description})\nСкидка: -${discount.toLocaleString('ru-RU')} ₽`;
+    }
+
+    message += `\n\nИТОГО К ОПЛАТЕ: ${finalPrice.toLocaleString('ru-RU')} ₽`;
+    message += `\n\nКлиент: ${formData.name}\nТелефон: ${formData.phone}\nEmail: ${formData.email}`;
+    
+    if (formData.comment) {
+      message += `\nКомментарий: ${formData.comment}`;
+    }
+    
+    message = message.trim();
 
     try {
       const response = await fetch('https://api.telegram.org/bot7936167332:AAGZwZaBbsE4vIvPD69QoN1J-0K91lq_Vns/sendMessage', {
@@ -121,11 +132,33 @@ ${formData.comment ? `\nКомментарий: ${formData.comment}` : ''}
                     </div>
                   ))}
                 </div>
-                <div className="border-t mt-3 pt-3 flex justify-between items-center">
-                  <span className="font-bold">Итого:</span>
-                  <span className="text-xl font-bold text-blue-600">
-                    {totalPrice.toLocaleString('ru-RU')} ₽
-                  </span>
+                <div className="border-t mt-3 pt-3 space-y-2">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600">Сумма:</span>
+                    <span className="font-semibold">{totalPrice.toLocaleString('ru-RU')} ₽</span>
+                  </div>
+                  {appliedPromocode && discount > 0 && (
+                    <>
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-green-600">Промокод {appliedPromocode.code}:</span>
+                        <span className="font-semibold text-green-600">-{discount.toLocaleString('ru-RU')} ₽</span>
+                      </div>
+                      <div className="flex justify-between items-center pt-2 border-t">
+                        <span className="font-bold">К оплате:</span>
+                        <span className="text-xl font-bold text-blue-600">
+                          {finalPrice.toLocaleString('ru-RU')} ₽
+                        </span>
+                      </div>
+                    </>
+                  )}
+                  {(!appliedPromocode || discount === 0) && (
+                    <div className="flex justify-between items-center pt-2 border-t">
+                      <span className="font-bold">Итого:</span>
+                      <span className="text-xl font-bold text-blue-600">
+                        {totalPrice.toLocaleString('ru-RU')} ₽
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
 
