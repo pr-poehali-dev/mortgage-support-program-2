@@ -44,9 +44,7 @@ export default function AdvantagesSection() {
       </div>
 
       <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl sm:rounded-2xl p-3 sm:p-6">
-        <h2 className="text-lg sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-5 text-center">
-          Доступные программы 2025
-        </h2>
+        <h2 className="text-lg sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-5 text-center">Доступные программы 2026</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
           <Card className="p-3 sm:p-5 border-2 border-blue-200 hover:border-blue-400 transition-colors">
             <div className="flex items-start justify-between mb-2 sm:mb-3">
