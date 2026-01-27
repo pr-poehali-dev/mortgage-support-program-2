@@ -7,6 +7,7 @@ import OptimizedImage from '@/components/OptimizedImage';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ShareButton from '@/components/ShareButton';
 import SEO from '@/components/SEO';
+import YandexMap from '@/components/YandexMap';
 
 const PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d';
 
@@ -36,6 +37,8 @@ interface Property {
   furniture?: boolean;
   pets_allowed?: boolean;
   children_allowed?: boolean;
+  latitude?: number;
+  longitude?: number;
 }
 
 export default function PropertyView() {
@@ -280,23 +283,18 @@ export default function PropertyView() {
             )}
 
             {/* Карта */}
-            <div>
-              <h3 className="font-semibold text-lg mb-3">Местоположение</h3>
-              <a 
-                href={`https://yandex.ru/maps/?text=${encodeURIComponent(property.location)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block rounded-lg overflow-hidden border hover:opacity-90 transition-opacity cursor-pointer"
-              >
-                <iframe
-                  src={`https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(property.location)}&z=14`}
-                  width="100%"
-                  height="400"
-                  style={{ position: 'relative', pointerEvents: 'none', border: 0 }}
-                  title={`Карта: ${property.location}`}
+            {property.latitude && property.longitude && (
+              <div>
+                <h3 className="font-semibold text-lg mb-3">Местоположение</h3>
+                <YandexMap
+                  latitude={property.latitude}
+                  longitude={property.longitude}
+                  title={property.title}
+                  address={property.location}
+                  className="border shadow-sm"
                 />
-              </a>
-            </div>
+              </div>
+            )}
 
             {/* Видео Rutube */}
             {property.rutube_link && (
