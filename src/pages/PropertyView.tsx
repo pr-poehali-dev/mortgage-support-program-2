@@ -93,6 +93,35 @@ export default function PropertyView() {
   const seoImage = photos.length > 0 ? photos[0] : 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/4d093a65-2fb8-4f42-bd03-2748bab0d832.jpg';
   const canonicalUrl = `https://ипотекакрым.рф/property/${id}`;
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": property.operation === 'sale' ? 'RealEstateListing' : 'RentAction',
+    "name": property.title,
+    "description": property.description || seoDescription,
+    "url": canonicalUrl,
+    "image": photos,
+    "offers": {
+      "@type": "Offer",
+      "price": property.price,
+      "priceCurrency": "RUB",
+      "availability": "https://schema.org/InStock"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": property.location,
+      "addressCountry": "RU"
+    },
+    ...(property.area && {
+      "floorSize": {
+        "@type": "QuantitativeValue",
+        "value": property.area,
+        "unitCode": "MTK"
+      }
+    }),
+    ...(property.rooms && { "numberOfRooms": property.rooms }),
+    ...(property.floor && { "floorLevel": property.floor })
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10">
       <SEO
@@ -100,6 +129,10 @@ export default function PropertyView() {
         description={seoDescription}
         ogImage={seoImage}
         canonicalUrl={canonicalUrl}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <div className="container mx-auto p-3 sm:p-4 space-y-4 sm:space-y-6">
         <Breadcrumbs />
