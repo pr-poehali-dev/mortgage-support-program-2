@@ -31,6 +31,8 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
   const photos = property.photos && property.photos.length > 0 ? property.photos : [property.photo_url];
   const urlParam = property.slug || property.id;
   const propertyUrl = `/property/${urlParam}`;
+  
+  console.log('PropertyCard rendered with URL:', propertyUrl, 'slug:', property.slug, 'id:', property.id);
 
   if (onView) {
     return (
