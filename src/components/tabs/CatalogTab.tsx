@@ -310,6 +310,12 @@ export default function CatalogTab() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
+      <button 
+        onClick={() => console.log('TEST BUTTON CLICKED!')}
+        style={{ background: 'red', color: 'white', padding: '20px', fontSize: '20px', cursor: 'pointer', zIndex: 9999, position: 'relative' }}
+      >
+        ТЕСТОВАЯ КНОПКА - КЛИКНИ МЕНЯ
+      </button>
       <div className="mb-4 sm:mb-6">
         <div className="mb-3 sm:mb-4">
           <h2 className="text-2xl sm:text-3xl font-bold">Объекты</h2>
