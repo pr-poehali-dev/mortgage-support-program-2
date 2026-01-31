@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -43,11 +43,17 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
     setCurrentPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length);
   };
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    // Ігноруємо клік, якщо натиснули на кнопку навігації фото
+    if ((e.target as HTMLElement).closest('button')) {
+      return;
+    }
+    
     if (onView) {
       onView();
     } else {
       const urlParam = property.slug || property.id;
+      console.log('Navigating to:', `/property/${urlParam}`);
       navigate(`/property/${urlParam}`);
     }
   };
