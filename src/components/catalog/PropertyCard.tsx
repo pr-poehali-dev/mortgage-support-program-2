@@ -126,4 +126,4 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
   );
 }
 
-export default memo(PropertyCard);
+export default PropertyCard;
