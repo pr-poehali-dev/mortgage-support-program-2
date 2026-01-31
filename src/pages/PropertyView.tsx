@@ -51,47 +51,35 @@ export default function PropertyView() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
 
-  console.log('PropertyView render, slugOrId:', slugOrId);
-
   useEffect(() => {
-    console.log('PropertyView useEffect, fetching property...');
     if (slugOrId) {
       fetchProperty();
     } else {
-      console.error('No slugOrId in URL!');
-      setError('No property ID in URL');
+      setError('Неверная ссылка на объект');
     }
   }, [slugOrId]);
 
   const fetchProperty = async () => {
     try {
-      console.log('=== FETCH PROPERTY START ===');
       setLoading(true);
       setError('');
+      
       const isNumeric = /^\d+$/.test(slugOrId || '');
       const queryParam = isNumeric ? `id=${slugOrId}` : `slug=${slugOrId}`;
       const url = `${PROPERTIES_URL}?${queryParam}`;
-      console.log('Fetching property:', { slugOrId, isNumeric, queryParam, url });
       
       const response = await fetch(url);
-      console.log('Response status:', response.status);
-      
       const data = await response.json();
-      console.log('Property response:', data);
       
       if (data.success && data.property) {
-        console.log('Property found:', data.property.title);
         setProperty(data.property);
       } else {
-        console.error('Property not found in response:', data);
-        setError('Объект не найден: ' + JSON.stringify(data));
+        setError('Объект не найден');
       }
     } catch (err) {
-      console.error('Error fetching property:', err);
-      setError('Ошибка загрузки: ' + String(err));
+      setError('Ошибка загрузки объекта');
     } finally {
       setLoading(false);
-      console.log('=== FETCH PROPERTY END ===');
     }
   };
 
@@ -100,7 +88,7 @@ export default function PropertyView() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10">
         <div className="text-center">
           <Icon name="Loader2" size={64} className="animate-spin text-primary mx-auto mb-4" />
-          <p className="text-gray-600">Загрузка объекта: {slugOrId}</p>
+          <p className="text-gray-600">Загрузка...</p>
         </div>
       </div>
     );
@@ -109,12 +97,21 @@ export default function PropertyView() {
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10 p-4">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded max-w-2xl">
-          <p className="font-bold">Ошибка загрузки</p>
-          <p className="text-sm mt-2">{error}</p>
-          <p className="text-xs mt-2">slugOrId: {slugOrId}</p>
-          <button onClick={() => navigate('/')} className="mt-4 bg-red-500 text-white px-4 py-2 rounded">Вернуться на главную</button>
-        </div>
+        <Card className="max-w-md">
+          <CardHeader>
+            <div className="flex items-center gap-2 text-red-600">
+              <Icon name="AlertCircle" size={24} />
+              <h2 className="text-xl font-bold">Объект не найден</h2>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <p className="text-gray-600 mb-4">{error}</p>
+            <Button onClick={() => navigate('/')} className="w-full">
+              <Icon name="ArrowLeft" size={16} />
+              Вернуться к каталогу
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
