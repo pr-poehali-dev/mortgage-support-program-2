@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
+import { useState } from 'react';
 
 interface Property {
   id: number;
@@ -28,9 +29,15 @@ interface PropertyCardProps {
 }
 
 const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) => {
+  const [debugLogs, setDebugLogs] = useState<string[]>([]);
   const photos = property.photos && property.photos.length > 0 ? property.photos : [property.photo_url];
   const urlParam = property.slug || property.id;
   const propertyUrl = `/property/${urlParam}`;
+  
+  const addLog = (msg: string) => {
+    const timestamp = new Date().toLocaleTimeString();
+    setDebugLogs(prev => [...prev, `[${timestamp}] ${msg}`].slice(-5));
+  };
 
   if (onView) {
     return (
@@ -95,6 +102,7 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
   }
 
   const handleClick = (e: React.MouseEvent) => {
+    addLog('CARD CLICKED');
     console.log('=== CARD CLICKED ===', propertyUrl);
     e.preventDefault();
     e.stopPropagation();
@@ -102,11 +110,17 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    addLog('MOUSE DOWN');
     console.log('=== MOUSE DOWN ===', propertyUrl);
   };
 
   const handleMouseUp = (e: React.MouseEvent) => {
+    addLog('MOUSE UP');
     console.log('=== MOUSE UP ===', propertyUrl);
+  };
+  
+  const handleMouseEnter = () => {
+    addLog('MOUSE ENTER (hover)');
   };
 
   return (
@@ -114,9 +128,17 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
       onClick={handleClick}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
+      onMouseEnter={handleMouseEnter}
       style={{ cursor: 'pointer', position: 'relative', zIndex: 1 }}
       className="block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all"
     >
+      {debugLogs.length > 0 && (
+        <div className="absolute top-0 left-0 right-0 bg-green-500 text-white text-xs p-2 z-50 max-h-24 overflow-auto">
+          {debugLogs.map((log, i) => (
+            <div key={i}>{log}</div>
+          ))}
+        </div>
+      )}
       <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden">
         <img 
           src={photos[0]} 
