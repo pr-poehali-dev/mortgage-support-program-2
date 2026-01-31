@@ -52,9 +52,11 @@ export default function PropertyView() {
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
+    console.log('[PropertyView] Component mounted! slugOrId:', slugOrId);
     if (slugOrId) {
       fetchProperty();
     } else {
+      console.error('[PropertyView] No slugOrId in URL params!');
       setError('Неверная ссылка на объект');
     }
   }, [slugOrId]);
