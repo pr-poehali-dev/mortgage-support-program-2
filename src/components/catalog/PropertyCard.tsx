@@ -101,10 +101,20 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
     window.location.href = propertyUrl;
   };
 
+  const handleMouseDown = (e: React.MouseEvent) => {
+    console.log('=== MOUSE DOWN ===', propertyUrl);
+  };
+
+  const handleMouseUp = (e: React.MouseEvent) => {
+    console.log('=== MOUSE UP ===', propertyUrl);
+  };
+
   return (
     <div 
       onClick={handleClick}
-      style={{ cursor: 'pointer' }}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      style={{ cursor: 'pointer', position: 'relative', zIndex: 1 }}
       className="block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all"
     >
       <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden">
