@@ -121,21 +121,23 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
     </>
   );
 
+  const cardElement = (
+    <Card className="hover:shadow-xl transition-all overflow-hidden">
+      {cardContent}
+    </Card>
+  );
+
   if (onView) {
     return (
-      <Card className="hover:shadow-xl transition-all overflow-hidden">
-        <div className="cursor-pointer" onClick={onView}>
-          {cardContent}
-        </div>
-      </Card>
+      <div className="cursor-pointer" onClick={onView}>
+        {cardElement}
+      </div>
     );
   }
 
   return (
-    <Link to={propertyUrl} className="block no-underline">
-      <Card className="hover:shadow-xl transition-all overflow-hidden">
-        {cardContent}
-      </Card>
+    <Link to={propertyUrl} className="block no-underline cursor-pointer">
+      {cardElement}
     </Link>
   );
 };
