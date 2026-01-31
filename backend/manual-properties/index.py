@@ -16,6 +16,22 @@ def convert_to_serializable(obj):
         return [convert_to_serializable(i) for i in obj]
     return obj
 
+def slugify(text: str) -> str:
+    '''Преобразует текст в SEO-friendly URL slug'''
+    cyrillic_to_latin = {
+        'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e',
+        'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm',
+        'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u',
+        'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'sch',
+        'ъ': '', 'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya'
+    }
+    
+    result = text.lower().strip()
+    result = ''.join(cyrillic_to_latin.get(c, c) for c in result)
+    result = ''.join(c if c.isalnum() else '-' for c in result)
+    result = '-'.join(filter(None, result.split('-')))
+    return result[:100]
+
 def handler(event: dict, context) -> dict:
     '''API для управления собственными объектами недвижимости и массового импорта с Avito'''
     method = event.get('httpMethod', 'GET')
@@ -38,13 +54,20 @@ def handler(event: dict, context) -> dict:
     try:
         if method == 'GET':
             property_id = event.get('queryStringParameters', {}).get('id')
+            slug = event.get('queryStringParameters', {}).get('slug')
             show_all = event.get('queryStringParameters', {}).get('show_all')
             
-            if property_id:
-                cur.execute('''
-                    SELECT * FROM t_p26758318_mortgage_support_pro.manual_properties 
-                    WHERE id = %s
-                ''', (property_id,))
+            if property_id or slug:
+                if slug:
+                    cur.execute('''
+                        SELECT * FROM t_p26758318_mortgage_support_pro.manual_properties 
+                        WHERE slug = %s
+                    ''', (slug,))
+                else:
+                    cur.execute('''
+                        SELECT * FROM t_p26758318_mortgage_support_pro.manual_properties 
+                        WHERE id = %s
+                    ''', (property_id,))
                 prop = cur.fetchone()
                 prop_dict = convert_to_serializable(dict(prop)) if prop else None
                 return {
@@ -75,6 +98,31 @@ def handler(event: dict, context) -> dict:
 
         elif method == 'POST':
             data = json.loads(event.get('body', '{}'))
+            
+            # Генерация slug для всех объектов
+            if data.get('regenerate_slugs'):
+                cur.execute('''
+                    SELECT id, title FROM t_p26758318_mortgage_support_pro.manual_properties 
+                    WHERE slug IS NULL OR slug = ''
+                ''')
+                properties = cur.fetchall()
+                updated = 0
+                
+                for prop in properties:
+                    new_slug = f"{slugify(prop['title'])}-{prop['id']}"
+                    cur.execute('''
+                        UPDATE t_p26758318_mortgage_support_pro.manual_properties 
+                        SET slug = %s WHERE id = %s
+                    ''', (new_slug, prop['id']))
+                    updated += 1
+                
+                conn.commit()
+                return {
+                    'statusCode': 200,
+                    'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                    'body': json.dumps({'success': True, 'updated': updated}, ensure_ascii=False),
+                    'isBase64Encoded': False
+                }
             
             # Массовый импорт
             if 'items' in data:
@@ -188,6 +236,15 @@ def handler(event: dict, context) -> dict:
             ))
             
             property_id = cur.fetchone()['id']
+            
+            # Генерируем slug для нового объекта
+            title = data.get('title', '')
+            generated_slug = f"{slugify(title)}-{property_id}"
+            cur.execute('''
+                UPDATE t_p26758318_mortgage_support_pro.manual_properties 
+                SET slug = %s WHERE id = %s
+            ''', (generated_slug, property_id))
+            
             conn.commit()
             
             # Если объявление неактивно (с сайта), отправляем уведомление админу
@@ -224,8 +281,11 @@ def handler(event: dict, context) -> dict:
                 try:
                     import requests
                     
-                    # Формируем URL для просмотра объекта
-                    property_url = f"https://{event.get('headers', {}).get('Host', 'xn--80ajijbmjhop8h.xn--p1ai')}/property/{property_id}"
+                    # Формируем URL для просмотра объекта (используем slug)
+                    cur.execute('SELECT slug FROM t_p26758318_mortgage_support_pro.manual_properties WHERE id = %s', (property_id,))
+                    result = cur.fetchone()
+                    slug_value = result['slug'] if result else property_id
+                    property_url = f"https://{event.get('headers', {}).get('Host', 'xn--80ajijbmjhop8h.xn--p1ai')}/property/{slug_value}"
                     
                     autopost_data = {
                         'property_id': property_id,

@@ -13,6 +13,7 @@ const PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03
 
 interface Property {
   id: number;
+  slug?: string;
   title: string;
   type: string;
   property_category: string;
@@ -42,7 +43,7 @@ interface Property {
 }
 
 export default function PropertyView() {
-  const { id } = useParams();
+  const { id: slugOrId } = useParams();
   const navigate = useNavigate();
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
@@ -51,12 +52,14 @@ export default function PropertyView() {
 
   useEffect(() => {
     fetchProperty();
-  }, [id]);
+  }, [slugOrId]);
 
   const fetchProperty = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${PROPERTIES_URL}?id=${id}`);
+      const isNumeric = /^\d+$/.test(slugOrId || '');
+      const queryParam = isNumeric ? `id=${slugOrId}` : `slug=${slugOrId}`;
+      const response = await fetch(`${PROPERTIES_URL}?${queryParam}`);
       const data = await response.json();
       
       if (data.success && data.property) {
@@ -94,7 +97,7 @@ export default function PropertyView() {
   const seoTitle = `${property.title} | ${operationType} за ${priceText} ₽ | Арендодатель`;
   const seoDescription = `${operationType}: ${property.title} в ${property.location}. Цена: ${priceText} ₽${property.area ? `, площадь ${property.area} м²` : ''}${property.rooms ? `, ${property.rooms} комн.` : ''}. Звоните: +7 978 128-18-50`;
   const seoImage = photos.length > 0 ? photos[0] : 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/4d093a65-2fb8-4f42-bd03-2748bab0d832.jpg';
-  const canonicalUrl = `https://ипотекакрым.рф/property/${id}`;
+  const canonicalUrl = `https://ипотекакрым.рф/property/${property.slug || property.id}`;
 
   const structuredData = {
     "@context": "https://schema.org",

@@ -6,6 +6,7 @@ import Icon from '@/components/ui/icon';
 
 interface Property {
   id: number;
+  slug?: string;
   title: string;
   type: string;
   price: number;
@@ -46,7 +47,8 @@ export default function PropertyCard({ property, onView, isAdmin = false }: Prop
     if (onView) {
       onView();
     } else {
-      navigate(`/property/${property.id}`);
+      const urlParam = property.slug || property.id;
+      navigate(`/property/${urlParam}`);
     }
   };
 
