@@ -31,53 +31,26 @@ interface PropertyCardProps {
 
 const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) => {
   const photos = property.photos && property.photos.length > 0 ? property.photos : [property.photo_url];
-  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-
-  const nextPhoto = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setCurrentPhotoIndex((prev) => (prev + 1) % photos.length);
-  };
-
-  const prevPhoto = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setCurrentPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length);
-  };
-
   const urlParam = property.slug || property.id;
   const propertyUrl = `/property/${urlParam}`;
 
   const cardContent = (
     <>
-      <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden group">
+      <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden">
         <img 
-          src={photos[currentPhotoIndex]} 
+          src={photos[0]} 
           alt={property.title}
           className="w-full h-full object-cover"
         />
-        {photos.length > 1 && (
-          <>
-            <button
-              onClick={prevPhoto}
-              className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity touch-manipulation z-10"
-            >
-              <Icon name="ChevronLeft" size={18} className="sm:w-5 sm:h-5" />
-            </button>
-            <button
-              onClick={nextPhoto}
-              className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity touch-manipulation z-10"
-            >
-              <Icon name="ChevronRight" size={18} className="sm:w-5 sm:h-5" />
-            </button>
-            <div className="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 bg-black/50 text-white text-xs px-2 py-1 rounded">
-              {currentPhotoIndex + 1} / {photos.length}
-            </div>
-          </>
-        )}
         <div className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-white/90 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg">
           <p className="font-bold text-primary text-sm sm:text-base lg:text-lg">{property.price.toLocaleString('ru-RU')} ₽</p>
         </div>
+        {photos.length > 1 && (
+          <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 bg-black/70 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+            <Icon name="Image" size={12} />
+            <span>{photos.length}</span>
+          </div>
+        )}
       </div>
       <CardHeader className="p-3 sm:p-6">
         <CardTitle className="text-base sm:text-lg lg:text-xl">{property.title}</CardTitle>
