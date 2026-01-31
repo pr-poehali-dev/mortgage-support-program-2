@@ -52,15 +52,9 @@ export default function PropertyView() {
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
-    console.log('[PropertyView] ==================== COMPONENT MOUNTED ====================');
-    console.log('[PropertyView] slugOrId from useParams:', slugOrId);
-    console.log('[PropertyView] window.location.pathname:', window.location.pathname);
-    console.log('[PropertyView] window.location.href:', window.location.href);
-    
     if (slugOrId) {
       fetchProperty();
     } else {
-      console.error('[PropertyView] ERROR: No slugOrId in URL params!');
       setError('Неверная ссылка на объект');
     }
   }, [slugOrId]);
@@ -74,18 +68,12 @@ export default function PropertyView() {
       const queryParam = isNumeric ? `id=${slugOrId}` : `slug=${slugOrId}`;
       const url = `${PROPERTIES_URL}?${queryParam}`;
       
-      console.log('[PropertyView] Fetching:', { slugOrId, isNumeric, queryParam, url });
-      
       const response = await fetch(url);
       const data = await response.json();
       
-      console.log('[PropertyView] Response:', data);
-      
       if (data.success && data.property) {
-        console.log('[PropertyView] Property found:', data.property.title);
         setProperty(data.property);
       } else {
-        console.error('[PropertyView] Property not found in response');
         setError('Объект не найден');
       }
     } catch (err) {

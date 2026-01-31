@@ -6,6 +6,7 @@ from datetime import datetime
 from decimal import Decimal
 
 def convert_to_serializable(obj):
+    """Convert non-serializable objects to JSON-serializable format (v2 debug)"""
     if isinstance(obj, Decimal):
         return float(obj)
     elif isinstance(obj, datetime):
@@ -58,18 +59,23 @@ def handler(event: dict, context) -> dict:
             show_all = event.get('queryStringParameters', {}).get('show_all')
             
             if property_id or slug:
+                print(f'[DEBUG] Searching for property: id={property_id}, slug={slug}')
                 if slug:
+                    print(f'[DEBUG] Executing slug query with slug="{slug}"')
                     cur.execute('''
                         SELECT * FROM t_p26758318_mortgage_support_pro.manual_properties 
                         WHERE slug = %s
                     ''', (slug,))
                 else:
+                    print(f'[DEBUG] Executing id query with id={property_id}')
                     cur.execute('''
                         SELECT * FROM t_p26758318_mortgage_support_pro.manual_properties 
                         WHERE id = %s
                     ''', (property_id,))
                 prop = cur.fetchone()
+                print(f'[DEBUG] Query result: {prop}')
                 prop_dict = convert_to_serializable(dict(prop)) if prop else None
+                print(f'[DEBUG] Serialized property: {prop_dict is not None}')
                 return {
                     'statusCode': 200,
                     'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},

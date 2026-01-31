@@ -31,8 +31,8 @@ interface PropertyCardProps {
 const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) => {
   const navigate = useNavigate();
   const photos = property.photos && property.photos.length > 0 ? property.photos : [property.photo_url];
-  const urlParam = property.slug || property.id;
-  const propertyUrl = `/property/${urlParam}`;
+  // Use ID instead of slug for now (slug has issues)
+  const propertyUrl = `/property/${property.id}`;
 
   if (onView) {
     return (
@@ -97,28 +97,19 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
   }
 
   const handleClick = () => {
-    console.log('[PropertyCard] ========== CLICK DETECTED ==========');
-    console.log('[PropertyCard] URL:', propertyUrl);
-    console.log('[PropertyCard] Slug:', property.slug);
-    console.log('[PropertyCard] ID:', property.id);
     navigate(propertyUrl);
   };
 
   return (
     <div 
-      onClick={(e) => {
-        console.log('[PropertyCard] ROOT DIV CLICK!', e.target);
-        handleClick();
-      }}
-      onMouseDown={() => console.log('[PropertyCard] MOUSE DOWN')}
-      onMouseUp={() => console.log('[PropertyCard] MOUSE UP')}
+      onClick={handleClick}
       className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all cursor-pointer"
     >
-      <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden pointer-events-none">
+      <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden">
         <img 
           src={photos[0]} 
           alt={property.title}
-          className="w-full h-full object-cover pointer-events-none"
+          className="w-full h-full object-cover"
         />
         <div className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-white/90 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg">
           <p className="font-bold text-primary text-sm sm:text-base lg:text-lg">{property.price.toLocaleString('ru-RU')} ₽</p>
