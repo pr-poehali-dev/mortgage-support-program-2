@@ -49,47 +49,85 @@ export default function PropertyView() {
   const [loading, setLoading] = useState(true);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [error, setError] = useState<string>('');
+
+  console.log('PropertyView render, slugOrId:', slugOrId);
 
   useEffect(() => {
-    fetchProperty();
+    console.log('PropertyView useEffect, fetching property...');
+    if (slugOrId) {
+      fetchProperty();
+    } else {
+      console.error('No slugOrId in URL!');
+      setError('No property ID in URL');
+    }
   }, [slugOrId]);
 
   const fetchProperty = async () => {
     try {
+      console.log('=== FETCH PROPERTY START ===');
       setLoading(true);
+      setError('');
       const isNumeric = /^\d+$/.test(slugOrId || '');
       const queryParam = isNumeric ? `id=${slugOrId}` : `slug=${slugOrId}`;
-      console.log('Fetching property:', { slugOrId, isNumeric, queryParam, url: `${PROPERTIES_URL}?${queryParam}` });
-      const response = await fetch(`${PROPERTIES_URL}?${queryParam}`);
+      const url = `${PROPERTIES_URL}?${queryParam}`;
+      console.log('Fetching property:', { slugOrId, isNumeric, queryParam, url });
+      
+      const response = await fetch(url);
+      console.log('Response status:', response.status);
+      
       const data = await response.json();
       console.log('Property response:', data);
       
       if (data.success && data.property) {
+        console.log('Property found:', data.property.title);
         setProperty(data.property);
       } else {
-        console.error('Property not found:', data);
-        alert('Объект не найден');
-        navigate('/');
+        console.error('Property not found in response:', data);
+        setError('Объект не найден: ' + JSON.stringify(data));
       }
     } catch (err) {
       console.error('Error fetching property:', err);
-      alert('Ошибка загрузки объекта');
-      navigate('/');
+      setError('Ошибка загрузки: ' + String(err));
     } finally {
       setLoading(false);
+      console.log('=== FETCH PROPERTY END ===');
     }
   };
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10">
-        <Icon name="Loader2" size={64} className="animate-spin text-primary" />
+        <div className="text-center">
+          <Icon name="Loader2" size={64} className="animate-spin text-primary mx-auto mb-4" />
+          <p className="text-gray-600">Загрузка объекта: {slugOrId}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10 p-4">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded max-w-2xl">
+          <p className="font-bold">Ошибка загрузки</p>
+          <p className="text-sm mt-2">{error}</p>
+          <p className="text-xs mt-2">slugOrId: {slugOrId}</p>
+          <button onClick={() => navigate('/')} className="mt-4 bg-red-500 text-white px-4 py-2 rounded">Вернуться на главную</button>
+        </div>
       </div>
     );
   }
 
   if (!property) {
-    return null;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10">
+        <div className="text-center">
+          <p className="text-gray-600">Объект не найден</p>
+          <button onClick={() => navigate('/')} className="mt-4 bg-primary text-white px-4 py-2 rounded">Вернуться на главную</button>
+        </div>
+      </div>
+    );
   }
 
   const photos = property.photos || (property.photo_url ? [property.photo_url] : []);
