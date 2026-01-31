@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 
 interface Property {
@@ -97,9 +96,12 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
   }
 
   return (
-    <Link 
-      to={propertyUrl}
+    <a 
+      href={propertyUrl}
       className="block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all no-underline"
+      onClick={(e) => {
+        console.log('Link clicked!', propertyUrl);
+      }}
     >
       <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden">
         <img 
@@ -153,7 +155,7 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
           <p className="text-sm text-gray-600 line-clamp-3">{property.description}</p>
         )}
       </div>
-    </Link>
+    </a>
   );
 };
 
