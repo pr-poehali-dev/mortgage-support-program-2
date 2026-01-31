@@ -96,18 +96,18 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
     );
   }
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log('[PropertyCard] Click - URL:', propertyUrl, 'Slug:', property.slug, 'ID:', property.id);
+  const handleClick = () => {
+    console.log('[PropertyCard] ========== CLICK DETECTED ==========');
+    console.log('[PropertyCard] URL:', propertyUrl);
+    console.log('[PropertyCard] Slug:', property.slug);
+    console.log('[PropertyCard] ID:', property.id);
     navigate(propertyUrl);
   };
 
   return (
     <div 
       onClick={handleClick}
-      style={{ cursor: 'pointer', position: 'relative', zIndex: 10 }}
-      className="block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all"
+      className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all cursor-pointer"
     >
       <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden">
         <img 
