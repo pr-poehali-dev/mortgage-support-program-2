@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 
@@ -131,11 +132,11 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
   }
 
   return (
-    <a href={propertyUrl} className="block no-underline">
+    <Link to={propertyUrl} className="block no-underline">
       <Card className="hover:shadow-xl transition-all overflow-hidden">
         {cardContent}
       </Card>
-    </a>
+    </Link>
   );
 };
 
