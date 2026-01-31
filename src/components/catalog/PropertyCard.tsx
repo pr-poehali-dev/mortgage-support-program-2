@@ -99,6 +99,7 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    console.log('Navigating to:', propertyUrl, 'Property:', property);
     navigate(propertyUrl);
   };
 
