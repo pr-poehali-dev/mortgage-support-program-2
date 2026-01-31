@@ -94,12 +94,14 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
     );
   }
 
+  console.log('PropertyCard render:', { id: property.id, slug: property.slug, propertyUrl });
+
   return (
     <Link 
       to={propertyUrl}
       onClick={(e) => {
+        console.log('=== CLICK EVENT ===', propertyUrl);
         e.stopPropagation();
-        console.log('Click on card, navigating to:', propertyUrl);
       }}
       className="block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all"
     >
