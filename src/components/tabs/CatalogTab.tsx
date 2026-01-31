@@ -363,7 +363,14 @@ export default function CatalogTab() {
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <>
+          <button 
+            onClick={() => console.log('TEST BUTTON CLICKED!')} 
+            style={{padding: '20px', background: 'red', color: 'white', fontSize: '20px', cursor: 'pointer', marginBottom: '20px'}}
+          >
+            ТЕСТ КНОПКА - КЛИКНИ МЕНЯ
+          </button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {realEstateObjects
             .filter(obj => catalogFilter === 'all' || obj.type === catalogFilter)
             .sort((a, b) => {
@@ -380,6 +387,7 @@ export default function CatalogTab() {
               />
             ))}
         </div>
+        </>
       )}
 
       <PropertyFormDialog
