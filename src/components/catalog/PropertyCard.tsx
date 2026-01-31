@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 
 interface Property {
@@ -27,11 +28,10 @@ interface PropertyCardProps {
 }
 
 const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) => {
+  const navigate = useNavigate();
   const photos = property.photos && property.photos.length > 0 ? property.photos : [property.photo_url];
   const urlParam = property.slug || property.id;
   const propertyUrl = `/property/${urlParam}`;
-  
-  console.log('PropertyCard rendered with URL:', propertyUrl, 'slug:', property.slug, 'id:', property.id);
 
   if (onView) {
     return (
@@ -100,7 +100,8 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        window.location.href = propertyUrl;
+        console.log('Navigating to:', propertyUrl);
+        navigate(propertyUrl);
       }}
       className="block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all cursor-pointer"
     >
