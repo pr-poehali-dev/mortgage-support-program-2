@@ -1,1 +1,23 @@
-/*    /index.html   200
+# Valid routes return 200
+/                         /index.html   200
+/catalog                  /index.html   200
+/calculator               /index.html   200
+/programs                 /index.html   200
+/online-services          /index.html   200
+/contact                  /index.html   200
+/faq                      /index.html   200
+/blog                     /index.html   200
+/property/*               /index.html   200
+/admin                    /index.html   200
+/admin/*                  /index.html   200
+/register                 /index.html   200
+/privacy-policy           /index.html   200
+/terms-of-service         /index.html   200
+/services                 /index.html   200
+/rent-help                /index.html   200
+/sell-help                /index.html   200
+/add-property             /index.html   200
+/chatgpt                  /index.html   200
+
+# Everything else returns 404
+/*                        /index.html   404
