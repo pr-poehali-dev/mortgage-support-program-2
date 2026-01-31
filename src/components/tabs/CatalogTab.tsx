@@ -365,8 +365,14 @@ export default function CatalogTab() {
       ) : (
         <>
           <button 
-            onClick={() => console.log('TEST BUTTON CLICKED!')} 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('TEST BUTTON CLICKED!');
+              alert('Тест кнопка сработала!');
+            }} 
             style={{padding: '20px', background: 'red', color: 'white', fontSize: '20px', cursor: 'pointer', marginBottom: '20px'}}
+            type="button"
           >
             ТЕСТ КНОПКА - КЛИКНИ МЕНЯ
           </button>
