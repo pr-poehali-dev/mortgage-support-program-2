@@ -94,15 +94,17 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
     );
   }
 
-  console.log('PropertyCard render:', { id: property.id, slug: property.slug, propertyUrl });
+  const handleClick = (e: React.MouseEvent) => {
+    console.log('=== CARD CLICKED ===', propertyUrl);
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href = propertyUrl;
+  };
 
   return (
-    <Link 
-      to={propertyUrl}
-      onClick={(e) => {
-        console.log('=== CLICK EVENT ===', propertyUrl);
-        e.stopPropagation();
-      }}
+    <div 
+      onClick={handleClick}
+      style={{ cursor: 'pointer' }}
       className="block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all"
     >
       <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden">
@@ -157,7 +159,7 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
           <p className="text-sm text-gray-600 line-clamp-3">{property.description}</p>
         )}
       </div>
-    </Link>
+    </div>
   );
 };
 
