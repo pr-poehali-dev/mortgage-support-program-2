@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
-import OptimizedImage from '@/components/OptimizedImage';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ShareButton from '@/components/ShareButton';
 import SEO from '@/components/SEO';
-import YandexMap from '@/components/YandexMap';
+import PropertyGallery from '@/components/property/PropertyGallery';
+import PropertyInfo from '@/components/property/PropertyInfo';
+import PropertyActions from '@/components/property/PropertyActions';
+import PropertyRelatedLinks from '@/components/property/PropertyRelatedLinks';
 
 const PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d';
 
@@ -47,8 +49,6 @@ export default function PropertyView() {
   const navigate = useNavigate();
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
-  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [error, setError] = useState<string>('');
 
   console.log('PropertyView render, slugOrId:', slugOrId);
@@ -218,290 +218,25 @@ export default function PropertyView() {
           </CardHeader>
           <CardContent className="space-y-4 sm:space-y-6 p-3 sm:p-6">
             {/* Галерея фото */}
-            {photos.length > 0 && (
-              <div className="space-y-2 sm:space-y-4">
-                <div className="relative rounded-lg overflow-hidden bg-gray-100 aspect-video cursor-pointer group" onClick={() => setIsFullscreen(true)}>
-                  <OptimizedImage 
-                    src={photos[currentPhotoIndex]} 
-                    alt={property.title}
-                    className="w-full h-full"
-                    objectFit="contain"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                    <div className="bg-white/90 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all">
-                      <Icon name="Maximize2" size={24} className="text-gray-800" />
-                    </div>
-                  </div>
-                  {photos.length > 1 && (
-                    <>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setCurrentPhotoIndex((currentPhotoIndex - 1 + photos.length) % photos.length);
-                        }}
-                        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 sm:p-3 rounded-full shadow-lg transition-all touch-manipulation z-10"
-                      >
-                        <Icon name="ChevronLeft" size={20} className="sm:w-6 sm:h-6" />
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setCurrentPhotoIndex((currentPhotoIndex + 1) % photos.length);
-                        }}
-                        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 sm:p-3 rounded-full shadow-lg transition-all touch-manipulation z-10"
-                      >
-                        <Icon name="ChevronRight" size={20} className="sm:w-6 sm:h-6" />
-                      </button>
-                      <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm">
-                        {currentPhotoIndex + 1} / {photos.length}
-                      </div>
-                    </>
-                  )}
-                </div>
-                
-                {photos.length > 1 && (
-                  <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-10 gap-1.5 sm:gap-2">
-                    {photos.map((photo, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentPhotoIndex(index)}
-                        className={`aspect-square rounded-md sm:rounded-lg overflow-hidden border-2 transition-all touch-manipulation ${
-                          index === currentPhotoIndex ? 'border-primary scale-95' : 'border-transparent hover:border-gray-300'
-                        }`}
-                      >
-                        <OptimizedImage src={photo} alt={`${index + 1}`} className="w-full h-full" objectFit="cover" />
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
+            <PropertyGallery photos={photos} title={property.title} />
 
-            {/* Характеристики */}
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 py-3 sm:py-4 border-y">
-              {property.area && (
-                <div className="flex items-center gap-2">
-                  <Icon name="Home" size={20} className="text-primary" />
-                  <div>
-                    <div className="text-sm text-gray-600">Площадь</div>
-                    <div className="font-semibold">{property.area} м²</div>
-                  </div>
-                </div>
-              )}
-              {property.rooms && (
-                <div className="flex items-center gap-2">
-                  <Icon name="DoorOpen" size={20} className="text-primary" />
-                  <div>
-                    <div className="text-sm text-gray-600">Комнат</div>
-                    <div className="font-semibold">{property.rooms}</div>
-                  </div>
-                </div>
-              )}
-              {property.floor && (
-                <div className="flex items-center gap-2">
-                  <Icon name="Building" size={20} className="text-primary" />
-                  <div>
-                    <div className="text-sm text-gray-600">Этаж</div>
-                    <div className="font-semibold">{property.floor} из {property.total_floors}</div>
-                  </div>
-                </div>
-              )}
-              {property.land_area && (
-                <div className="flex items-center gap-2">
-                  <Icon name="TreePine" size={20} className="text-primary" />
-                  <div>
-                    <div className="text-sm text-gray-600">Участок</div>
-                    <div className="font-semibold">{property.land_area} сот.</div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Описание */}
-            {property.description && (
-              <div>
-                <h3 className="font-semibold text-lg mb-2">Описание</h3>
-                <p className="text-gray-700 whitespace-pre-wrap">{property.description}</p>
-              </div>
-            )}
-
-            {/* Карта */}
-            {property.latitude && property.longitude && (
-              <div>
-                <h3 className="font-semibold text-lg mb-3">Местоположение</h3>
-                <YandexMap
-                  latitude={property.latitude}
-                  longitude={property.longitude}
-                  title={property.title}
-                  address={property.location}
-                  className="border shadow-sm"
-                />
-              </div>
-            )}
-
-            {/* Видео Rutube */}
-            {property.rutube_link && (
-              <div>
-                <h3 className="font-semibold text-lg mb-3">Видео обзор</h3>
-                <div className="rounded-lg overflow-hidden border bg-gray-100 aspect-video flex items-center justify-center">
-                  <a
-                    href={property.rutube_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex flex-col items-center gap-3 p-6 hover:scale-105 transition-transform"
-                  >
-                    <Icon name="Video" size={48} className="text-primary" />
-                    <span className="text-lg font-semibold text-gray-700">Смотреть видео на Rutube</span>
-                  </a>
-                </div>
-              </div>
-            )}
+            {/* Информация об объекте */}
+            <PropertyInfo property={property} />
 
             {/* Кнопки действий */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-              <Button size="lg" className="gap-2">
-                <Icon name="CreditCard" size={20} />
-                Купить в ипотеку
-              </Button>
-              
-              {isLand ? (
-                <Button size="lg" variant="outline" className="gap-2">
-                  <Icon name="HardHat" size={20} />
-                  Строительство под ключ
-                </Button>
-              ) : (
-                <Button size="lg" variant="outline" className="gap-2">
-                  <Icon name="Paintbrush" size={20} />
-                  Отделочные работы
-                </Button>
-              )}
-              
-              <Button size="lg" variant="secondary" className="gap-2" asChild>
-                <a href={`tel:${property.phone || '+79781281850'}`}>
-                  <Icon name="Phone" size={20} />
-                  {property.contact_name ? `Позвонить ${property.contact_name}` : 'Позвонить'}
-                </a>
-              </Button>
-            </div>
-            
-            {/* Кнопки репоста */}
-            <div className="pt-4 border-t">
-              <h3 className="font-semibold mb-3">Поделиться объявлением</h3>
-              <ShareButton
-                variant="buttons"
-                title={property.title}
-                text={`${property.title} - ${property.price.toLocaleString('ru-RU')} ₽`}
-              />
-            </div>
+            <PropertyActions 
+              isLand={isLand}
+              phone={property.phone}
+              contactName={property.contact_name}
+              title={property.title}
+              price={property.price}
+            />
           </CardContent>
         </Card>
 
         {/* Связанные страницы */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg sm:text-xl">Это может быть вам интересно</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <Link 
-                to="/?tab=calculator" 
-                className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-primary hover:bg-primary/5 transition-all"
-              >
-                <div className="bg-primary/10 rounded-lg p-2">
-                  <Icon name="Calculator" size={20} className="text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm">Калькулятор ипотеки</h3>
-                  <p className="text-xs text-gray-600">Рассчитайте платеж</p>
-                </div>
-              </Link>
-              
-              <Link 
-                to="/services" 
-                className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-primary hover:bg-primary/5 transition-all"
-              >
-                <div className="bg-primary/10 rounded-lg p-2">
-                  <Icon name="Briefcase" size={20} className="text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm">Наши услуги</h3>
-                  <p className="text-xs text-gray-600">Помощь в покупке</p>
-                </div>
-              </Link>
-              
-              <Link 
-                to="/register" 
-                className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-primary hover:bg-primary/5 transition-all"
-              >
-                <div className="bg-primary/10 rounded-lg p-2">
-                  <Icon name="FileText" size={20} className="text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm">Подать заявку</h3>
-                  <p className="text-xs text-gray-600">Оформить ипотеку</p>
-                </div>
-              </Link>
-              
-              <Link 
-                to="/?tab=properties" 
-                className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-primary hover:bg-primary/5 transition-all"
-              >
-                <div className="bg-primary/10 rounded-lg p-2">
-                  <Icon name="Home" size={20} className="text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm">Другие объекты</h3>
-                  <p className="text-xs text-gray-600">Смотреть каталог</p>
-                </div>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+        <PropertyRelatedLinks />
       </div>
-
-      {/* Полноэкранный просмотр */}
-      {isFullscreen && (
-        <div 
-          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
-          onClick={() => setIsFullscreen(false)}
-        >
-          <button
-            onClick={() => setIsFullscreen(false)}
-            className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition-all z-10"
-          >
-            <Icon name="X" size={24} />
-          </button>
-          
-          <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-            <img 
-              src={photos[currentPhotoIndex]} 
-              alt={property.title}
-              className="max-w-full max-h-full object-contain"
-            />
-            
-            {photos.length > 1 && (
-              <>
-                <button
-                  onClick={() => setCurrentPhotoIndex((currentPhotoIndex - 1 + photos.length) % photos.length)}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-4 rounded-full transition-all"
-                >
-                  <Icon name="ChevronLeft" size={32} />
-                </button>
-                <button
-                  onClick={() => setCurrentPhotoIndex((currentPhotoIndex + 1) % photos.length)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-4 rounded-full transition-all"
-                >
-                  <Icon name="ChevronRight" size={32} />
-                </button>
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full">
-                  {currentPhotoIndex + 1} / {photos.length}
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
