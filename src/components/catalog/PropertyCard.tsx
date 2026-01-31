@@ -51,6 +51,7 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
 
   const handleCardClick = () => {
     if (!onView) {
+      console.log('Navigating to property:', { id: property.id, slug: property.slug, url: propertyUrl });
       navigate(propertyUrl);
     }
   };
