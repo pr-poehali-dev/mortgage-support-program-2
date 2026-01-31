@@ -1,0 +1,8 @@
+[install]
+# Deduplicate packages to prevent multiple React instances
+exact = false
+peer = true
+
+[install.cache]
+# Force cache cleanup on install
+disable = false
