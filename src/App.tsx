@@ -55,6 +55,21 @@ function AppContent() {
   }, []);
 
   useEffect(() => {
+    // Global click logger - DEBUGGING
+    const globalClickHandler = (e: MouseEvent) => {
+      console.log('🔥 GLOBAL CLICK CAPTURED!', {
+        target: e.target,
+        currentTarget: e.currentTarget,
+        eventPhase: e.eventPhase,
+        bubbles: e.bubbles,
+        x: e.clientX,
+        y: e.clientY
+      });
+    };
+    
+    document.addEventListener('click', globalClickHandler, true); // capture phase
+    document.addEventListener('click', globalClickHandler, false); // bubble phase
+    
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker
@@ -67,6 +82,11 @@ function AppContent() {
           });
       });
     }
+    
+    return () => {
+      document.removeEventListener('click', globalClickHandler, true);
+      document.removeEventListener('click', globalClickHandler, false);
+    };
   }, []);
 
   return (
