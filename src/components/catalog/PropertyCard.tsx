@@ -106,14 +106,19 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
 
   return (
     <div 
-      onClick={handleClick}
+      onClick={(e) => {
+        console.log('[PropertyCard] ROOT DIV CLICK!', e.target);
+        handleClick();
+      }}
+      onMouseDown={() => console.log('[PropertyCard] MOUSE DOWN')}
+      onMouseUp={() => console.log('[PropertyCard] MOUSE UP')}
       className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all cursor-pointer"
     >
-      <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden">
+      <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden pointer-events-none">
         <img 
           src={photos[0]} 
           alt={property.title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover pointer-events-none"
         />
         <div className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-white/90 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg">
           <p className="font-bold text-primary text-sm sm:text-base lg:text-lg">{property.price.toLocaleString('ru-RU')} ₽</p>
