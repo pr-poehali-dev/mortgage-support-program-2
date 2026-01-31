@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import PropertyCard from '@/components/catalog/PropertyCard';
 import PropertyFormDialog from '@/components/catalog/PropertyFormDialog';
-import PropertyViewDialog from '@/components/catalog/PropertyViewDialog';
 import CatalogSortControls from '@/components/catalog/CatalogSortControls';
 
 const MANUAL_PROPERTIES_URL = 'https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d';
@@ -11,6 +10,7 @@ const UPLOAD_PHOTO_URL = 'https://functions.poehali.dev/94c626eb-409a-4a18-836f-
 
 interface Property {
   id: number;
+  slug?: string;
   title: string;
   type: string;
   price: number;
@@ -41,8 +41,6 @@ export default function CatalogTab() {
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string>('');
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
-  const [viewDialogOpen, setViewDialogOpen] = useState(false);
-  const [viewProperty, setViewProperty] = useState<Property | null>(null);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -379,10 +377,6 @@ export default function CatalogTab() {
               <PropertyCard
                 key={obj.id}
                 property={obj}
-                onView={() => {
-                  setViewProperty(obj);
-                  setViewDialogOpen(true);
-                }}
               />
             ))}
         </div>
@@ -398,12 +392,6 @@ export default function CatalogTab() {
         handlePhotoSelect={handlePhotoSelect}
         uploadingPhoto={uploadingPhoto}
         photoPreview={photoPreview}
-      />
-
-      <PropertyViewDialog
-        open={viewDialogOpen}
-        onOpenChange={setViewDialogOpen}
-        property={viewProperty}
       />
     </div>
   );
