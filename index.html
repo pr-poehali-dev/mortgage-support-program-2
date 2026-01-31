@@ -25,51 +25,7 @@
     <meta name="google-site-verification" content="0bo2zfYS64eKUojEop17aflXnQw2nnZTxr2qDnUDicA" />
     <!-- <meta name="msvalidate.01" content="ВАШ_КОД_ОТ_BING" /> -->
     
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript" >
-       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-       m[i].l=1*new Date();
-       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-       ym(105974763, "init", {
-            clickmap:true,
-            trackLinks:true,
-            accurateTrackBounce:true,
-            webvisor:true,
-            ecommerce:"dataLayer"
-       });
-    </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/105974763" style="position:absolute; left:-9999px;" alt="Яндекс Метрика" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
-    
-    <!-- Google Analytics 4 - Delayed load -->
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-PL79VVNQWD', {
-        'send_page_view': true,
-        'anonymize_ip': true
-      });
-      
-      // Delay GA loading until page is interactive
-      if (document.readyState === 'complete') {
-        loadGA();
-      } else {
-        window.addEventListener('load', loadGA);
-      }
-      
-      function loadGA() {
-        setTimeout(function() {
-          var script = document.createElement('script');
-          script.async = true;
-          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-PL79VVNQWD';
-          document.head.appendChild(script);
-        }, 2000);
-      }
-    </script>
+    <!-- Analytics loaded via React components for better performance -->
     <meta name="format-detection" content="telephone=no"/>
     <meta name="theme-color" content="#3b82f6"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -119,6 +75,8 @@
     <link rel="alternate" hreflang="x-default" href="https://ипотекакрым.рф/"/>
     
     <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link rel="preconnect" href="https://cdn.poehali.dev" crossorigin/>
     <link rel="dns-prefetch" href="https://cdn.poehali.dev"/>
     <link rel="preconnect" href="https://functions.poehali.dev" crossorigin/>

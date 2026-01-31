@@ -14,6 +14,7 @@ import NotificationPrompt from "./components/NotificationPrompt";
 import InstallPrompt from "./components/InstallPrompt";
 import Cart from "./components/Cart";
 import { useAnalytics } from "./hooks/useAnalytics";
+import PerformanceMonitor from "./components/PerformanceMonitor";
 
 // Lazy load admin pages
 const Admin = lazy(() => import("./pages/Admin"));
@@ -107,6 +108,7 @@ function AppContent() {
           <InstallPrompt />
           <NotificationPrompt />
           <Cart />
+          {import.meta.env.DEV && <PerformanceMonitor />}
         </BrowserRouter>
       </AnalyticsProvider>
     </>

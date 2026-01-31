@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -30,7 +30,7 @@ interface PropertyCardProps {
   isAdmin?: boolean;
 }
 
-export default function PropertyCard({ property, onView, isAdmin = false }: PropertyCardProps) {
+const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) => {
   const navigate = useNavigate();
   const photos = property.photos && property.photos.length > 0 ? property.photos : [property.photo_url];
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
@@ -125,3 +125,5 @@ export default function PropertyCard({ property, onView, isAdmin = false }: Prop
     </Card>
   );
 }
+
+export default memo(PropertyCard);

@@ -185,7 +185,7 @@ export default function PropertyView() {
                     alt={property.title}
                     className="w-full h-full"
                     objectFit="contain"
-                    loading="eager"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
                     <div className="bg-white/90 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all">
