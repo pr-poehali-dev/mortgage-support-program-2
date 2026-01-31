@@ -129,11 +129,21 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseEnter={handleMouseEnter}
-      style={{ cursor: 'pointer', position: 'relative', zIndex: 1 }}
+      style={{ cursor: 'pointer', position: 'relative', zIndex: 10 }}
       className="block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all"
     >
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          addLog('TEST BUTTON CLICKED!');
+          alert('Тестовая кнопка сработала! Значит клики доходят.');
+        }}
+        className="absolute top-20 left-1/2 -translate-x-1/2 z-[999] bg-red-500 text-white px-4 py-2 rounded-lg font-bold"
+      >
+        ТЕСТ
+      </button>
       {debugLogs.length > 0 && (
-        <div className="absolute top-0 left-0 right-0 bg-green-500 text-white text-xs p-2 z-50 max-h-24 overflow-auto">
+        <div className="absolute top-0 left-0 right-0 bg-green-500 text-white text-xs p-2 z-[100] max-h-24 overflow-auto">
           {debugLogs.map((log, i) => (
             <div key={i}>{log}</div>
           ))}
