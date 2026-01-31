@@ -1,6 +1,4 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 
 interface Property {
@@ -34,8 +32,73 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
   const urlParam = property.slug || property.id;
   const propertyUrl = `/property/${urlParam}`;
 
-  const cardContent = (
-    <>
+  if (onView) {
+    return (
+      <div 
+        onClick={onView}
+        className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all cursor-pointer"
+      >
+        <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden">
+          <img 
+            src={photos[0]} 
+            alt={property.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-white/90 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg">
+            <p className="font-bold text-primary text-sm sm:text-base lg:text-lg">{property.price.toLocaleString('ru-RU')} ₽</p>
+          </div>
+          {photos.length > 1 && (
+            <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 bg-black/70 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+              <Icon name="Image" size={12} />
+              <span>{photos.length}</span>
+            </div>
+          )}
+        </div>
+        <div className="p-3 sm:p-6">
+          <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-2">{property.title}</h3>
+          <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
+            <Icon name="MapPin" size={14} />
+            <span className="line-clamp-1">{property.location}</span>
+          </div>
+          <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm mb-3 sm:mb-4">
+            {property.area && (
+              <div className="flex items-center gap-1.5">
+                <Icon name="Maximize" size={14} className="text-gray-400" />
+                <span>{property.area} м²</span>
+              </div>
+            )}
+            {property.rooms && (
+              <div className="flex items-center gap-1.5">
+                <Icon name="DoorOpen" size={14} className="text-gray-400" />
+                <span>{property.rooms} комн.</span>
+              </div>
+            )}
+            {property.floor && (
+              <div className="flex items-center gap-1.5">
+                <Icon name="Layers" size={14} className="text-gray-400" />
+                <span>{property.floor}/{property.total_floors} эт.</span>
+              </div>
+            )}
+            {property.land_area && (
+              <div className="flex items-center gap-1.5">
+                <Icon name="TreePine" size={14} className="text-gray-400" />
+                <span>{property.land_area} сот.</span>
+              </div>
+            )}
+          </div>
+          {property.description && (
+            <p className="text-sm text-gray-600 line-clamp-3">{property.description}</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <Link 
+      to={propertyUrl}
+      className="block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all no-underline"
+    >
       <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden">
         <img 
           src={photos[0]} 
@@ -52,15 +115,13 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
           </div>
         )}
       </div>
-      <CardHeader className="p-3 sm:p-6">
-        <CardTitle className="text-base sm:text-lg lg:text-xl">{property.title}</CardTitle>
-        <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600">
+      <div className="p-3 sm:p-6">
+        <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-2 text-gray-900">{property.title}</h3>
+        <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
           <Icon name="MapPin" size={14} />
           <span className="line-clamp-1">{property.location}</span>
         </div>
-      </CardHeader>
-      <CardContent className="space-y-3 sm:space-y-4 p-3 sm:p-6 pt-0">
-        <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm">
+        <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm mb-3 sm:mb-4">
           {property.area && (
             <div className="flex items-center gap-1.5">
               <Icon name="Maximize" size={14} className="text-gray-400" />
@@ -86,31 +147,10 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
             </div>
           )}
         </div>
-
         {property.description && (
           <p className="text-sm text-gray-600 line-clamp-3">{property.description}</p>
         )}
-      </CardContent>
-    </>
-  );
-
-  const cardElement = (
-    <Card className="hover:shadow-xl transition-all overflow-hidden">
-      {cardContent}
-    </Card>
-  );
-
-  if (onView) {
-    return (
-      <div className="cursor-pointer" onClick={onView}>
-        {cardElement}
       </div>
-    );
-  }
-
-  return (
-    <Link to={propertyUrl} className="block no-underline cursor-pointer">
-      {cardElement}
     </Link>
   );
 };
