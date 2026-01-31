@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 
@@ -30,6 +30,7 @@ interface PropertyCardProps {
 }
 
 const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) => {
+  const navigate = useNavigate();
   const photos = property.photos && property.photos.length > 0 ? property.photos : [property.photo_url];
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
@@ -47,6 +48,12 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
 
   const urlParam = property.slug || property.id;
   const propertyUrl = `/property/${urlParam}`;
+
+  const handleCardClick = () => {
+    if (!onView) {
+      navigate(propertyUrl);
+    }
+  };
 
   const cardContent = (
     <>
@@ -121,20 +128,13 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
     </>
   );
 
-  if (onView) {
-    return (
-      <Card className="hover:shadow-xl transition-all overflow-hidden cursor-pointer" onClick={onView}>
-        {cardContent}
-      </Card>
-    );
-  }
-
   return (
-    <Link to={propertyUrl} className="block">
-      <Card className="hover:shadow-xl transition-all overflow-hidden">
-        {cardContent}
-      </Card>
-    </Link>
+    <Card 
+      className="hover:shadow-xl transition-all overflow-hidden cursor-pointer" 
+      onClick={onView || handleCardClick}
+    >
+      {cardContent}
+    </Card>
   );
 };
 
