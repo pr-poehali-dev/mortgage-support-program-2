@@ -130,11 +130,13 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
   );
 
   return (
-    <Card 
-      className="hover:shadow-xl transition-all overflow-hidden cursor-pointer" 
-      onClick={onView || handleCardClick}
-    >
-      {cardContent}
+    <Card className="hover:shadow-xl transition-all overflow-hidden">
+      <div 
+        className="cursor-pointer" 
+        onClick={onView || handleCardClick}
+      >
+        {cardContent}
+      </div>
     </Card>
   );
 };
