@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
 
@@ -31,35 +30,26 @@ interface PropertyCardProps {
 }
 
 const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) => {
-  const navigate = useNavigate();
   const photos = property.photos && property.photos.length > 0 ? property.photos : [property.photo_url];
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
-  const nextPhoto = () => {
+  const nextPhoto = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     setCurrentPhotoIndex((prev) => (prev + 1) % photos.length);
   };
 
-  const prevPhoto = () => {
+  const prevPhoto = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     setCurrentPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length);
   };
 
-  const handleClick = (e: React.MouseEvent) => {
-    // Ігноруємо клік, якщо натиснули на кнопку навігації фото
-    if ((e.target as HTMLElement).closest('button')) {
-      return;
-    }
-    
-    if (onView) {
-      onView();
-    } else {
-      const urlParam = property.slug || property.id;
-      console.log('Navigating to:', `/property/${urlParam}`);
-      navigate(`/property/${urlParam}`);
-    }
-  };
+  const urlParam = property.slug || property.id;
+  const propertyUrl = `/property/${urlParam}`;
 
-  return (
-    <Card className="hover:shadow-xl transition-all overflow-hidden cursor-pointer" onClick={handleClick}>
+  const cardContent = (
+    <>
       <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden group">
         <img 
           src={photos[currentPhotoIndex]} 
@@ -69,14 +59,14 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
         {photos.length > 1 && (
           <>
             <button
-              onClick={(e) => { e.stopPropagation(); prevPhoto(); }}
-              className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity touch-manipulation"
+              onClick={prevPhoto}
+              className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity touch-manipulation z-10"
             >
               <Icon name="ChevronLeft" size={18} className="sm:w-5 sm:h-5" />
             </button>
             <button
-              onClick={(e) => { e.stopPropagation(); nextPhoto(); }}
-              className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity touch-manipulation"
+              onClick={nextPhoto}
+              className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity touch-manipulation z-10"
             >
               <Icon name="ChevronRight" size={18} className="sm:w-5 sm:h-5" />
             </button>
@@ -128,8 +118,24 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
           <p className="text-sm text-gray-600 line-clamp-3">{property.description}</p>
         )}
       </CardContent>
-    </Card>
+    </>
   );
-}
+
+  if (onView) {
+    return (
+      <Card className="hover:shadow-xl transition-all overflow-hidden cursor-pointer" onClick={onView}>
+        {cardContent}
+      </Card>
+    );
+  }
+
+  return (
+    <Link to={propertyUrl} className="block">
+      <Card className="hover:shadow-xl transition-all overflow-hidden">
+        {cardContent}
+      </Card>
+    </Link>
+  );
+};
 
 export default PropertyCard;
