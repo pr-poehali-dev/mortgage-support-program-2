@@ -100,11 +100,7 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log('Card wrapper clicked!', propertyUrl);
-        alert(`Переход на: ${propertyUrl}`);
-        setTimeout(() => {
-          window.location.href = propertyUrl;
-        }, 100);
+        window.location.href = propertyUrl;
       }}
       className="block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all cursor-pointer"
     >
