@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { Property, PropertyFormData, PROPERTIES_URL } from '@/types/Property';
 import { compressImage } from '@/utils/imageCompressor';
 import { notifyPropertyPage, notifyAllMainPages } from '@/services/indexnow';
@@ -84,7 +84,7 @@ export function usePropertyManagement() {
     setPropertyDialogOpen(true);
   };
 
-  const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoSelect = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
@@ -171,7 +171,7 @@ export function usePropertyManagement() {
     }
   };
 
-  const handleDocumentSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDocumentSelect = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
@@ -220,7 +220,7 @@ export function usePropertyManagement() {
     }));
   };
 
-  const handlePropertySubmit = async (e: React.FormEvent) => {
+  const handlePropertySubmit = async (e: FormEvent) => {
     e.preventDefault();
     
     try {

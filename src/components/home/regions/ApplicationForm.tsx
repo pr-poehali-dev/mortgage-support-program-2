@@ -1,3 +1,4 @@
+import { FormEvent } from 'react';
 import Icon from '@/components/ui/icon';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,7 +9,7 @@ interface ApplicationFormProps {
   selectedCity: string;
   formData: { name: string; phone: string; city: string };
   onClose: () => void;
-  onSubmit: (e: React.FormEvent) => void;
+  onSubmit: (e: FormEvent) => void;
   onFormDataChange: (data: { name: string; phone: string; city: string }) => void;
 }
 

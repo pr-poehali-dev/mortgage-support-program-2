@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import * as XLSX from 'xlsx';
 import { trackExcelDownload, trackEmailReport } from '@/services/analytics';
 import { compressImage } from '@/utils/imageCompressor';
@@ -97,7 +97,7 @@ export function useAdminLogic() {
     }
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = (e: FormEvent) => {
     e.preventDefault();
     fetchAnalytics(password);
   };
@@ -125,7 +125,7 @@ export function useAdminLogic() {
     }
   };
 
-  const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoSelect = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
@@ -215,7 +215,7 @@ export function useAdminLogic() {
     }
   };
 
-  const handlePropertySubmit = async (e: React.FormEvent) => {
+  const handlePropertySubmit = async (e: FormEvent) => {
     e.preventDefault();
     
     try {

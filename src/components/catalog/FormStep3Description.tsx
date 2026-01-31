@@ -4,7 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Icon from '@/components/ui/icon';
-import { useState, useRef } from 'react';
+import { useState, useRef, ChangeEvent, DragEvent } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -27,11 +27,11 @@ interface FormStep3DescriptionProps {
   formData: any;
   setFormData: (data: any) => void;
   setCurrentStep: (step: number) => void;
-  handlePhotoSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handlePhotoSelect: (e: ChangeEvent<HTMLInputElement>) => void;
   uploadingPhoto: boolean;
   handleRemovePhoto: (photoUrl: string) => void;
   editProperty: any | null;
-  handleDocumentSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleDocumentSelect: (e: ChangeEvent<HTMLInputElement>) => void;
   handleRemoveDocument: (url: string) => void;
   agreedToTerms?: boolean;
   setAgreedToTerms?: (agreed: boolean) => void;
@@ -135,24 +135,24 @@ export default function FormStep3Description({
     })
   );
 
-  const handleDragEnter = (e: React.DragEvent) => {
+  const handleDragEnter = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(true);
   };
 
-  const handleDragLeave = (e: React.DragEvent) => {
+  const handleDragLeave = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
