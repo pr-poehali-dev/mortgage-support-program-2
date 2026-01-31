@@ -59,12 +59,15 @@ export default function PropertyView() {
       setLoading(true);
       const isNumeric = /^\d+$/.test(slugOrId || '');
       const queryParam = isNumeric ? `id=${slugOrId}` : `slug=${slugOrId}`;
+      console.log('Fetching property:', { slugOrId, isNumeric, queryParam, url: `${PROPERTIES_URL}?${queryParam}` });
       const response = await fetch(`${PROPERTIES_URL}?${queryParam}`);
       const data = await response.json();
+      console.log('Property response:', data);
       
       if (data.success && data.property) {
         setProperty(data.property);
       } else {
+        console.error('Property not found:', data);
         alert('Объект не найден');
         navigate('/');
       }
