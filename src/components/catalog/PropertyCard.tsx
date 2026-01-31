@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { useState } from 'react';
 
@@ -29,15 +29,10 @@ interface PropertyCardProps {
 }
 
 const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) => {
-  const [debugLogs, setDebugLogs] = useState<string[]>([]);
+  const navigate = useNavigate();
   const photos = property.photos && property.photos.length > 0 ? property.photos : [property.photo_url];
   const urlParam = property.slug || property.id;
   const propertyUrl = `/property/${urlParam}`;
-  
-  const addLog = (msg: string) => {
-    const timestamp = new Date().toLocaleTimeString();
-    setDebugLogs(prev => [...prev, `[${timestamp}] ${msg}`].slice(-5));
-  };
 
   if (onView) {
     return (
@@ -102,53 +97,17 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
   }
 
   const handleClick = (e: React.MouseEvent) => {
-    addLog('CARD CLICKED');
-    console.log('=== CARD CLICKED ===', propertyUrl);
     e.preventDefault();
     e.stopPropagation();
-    window.location.href = propertyUrl;
-  };
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    addLog('MOUSE DOWN');
-    console.log('=== MOUSE DOWN ===', propertyUrl);
-  };
-
-  const handleMouseUp = (e: React.MouseEvent) => {
-    addLog('MOUSE UP');
-    console.log('=== MOUSE UP ===', propertyUrl);
-  };
-  
-  const handleMouseEnter = () => {
-    addLog('MOUSE ENTER (hover)');
+    navigate(propertyUrl);
   };
 
   return (
     <div 
       onClick={handleClick}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onMouseEnter={handleMouseEnter}
       style={{ cursor: 'pointer', position: 'relative', zIndex: 10 }}
       className="block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all"
     >
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          addLog('TEST BUTTON CLICKED!');
-          alert('Тестовая кнопка сработала! Значит клики доходят.');
-        }}
-        className="absolute top-20 left-1/2 -translate-x-1/2 z-[999] bg-red-500 text-white px-4 py-2 rounded-lg font-bold"
-      >
-        ТЕСТ
-      </button>
-      {debugLogs.length > 0 && (
-        <div className="absolute top-0 left-0 right-0 bg-green-500 text-white text-xs p-2 z-[100] max-h-24 overflow-auto">
-          {debugLogs.map((log, i) => (
-            <div key={i}>{log}</div>
-          ))}
-        </div>
-      )}
       <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden">
         <img 
           src={photos[0]} 
