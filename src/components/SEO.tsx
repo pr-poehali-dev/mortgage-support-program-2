@@ -79,9 +79,9 @@ const seoConfig: Record<string, { title: string; description: string; keywords?:
     ogImage: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/4d093a65-2fb8-4f42-bd03-2748bab0d832.jpg'
   },
   '/sitemap': {
-    title: 'Карта сайта | Арендодатель - Агентство недвижимости',
-    description: 'Полная карта сайта агентства недвижимости Арендодатель: все страницы, объекты недвижимости и разделы сайта',
-    keywords: 'карта сайта, sitemap, навигация сайта, разделы сайта'
+    title: 'Карта сайта | Ипотека в Крыму от 0.1%',
+    description: 'Полная карта сайта: все страницы, объекты недвижимости и разделы по ипотеке в Крыму',
+    keywords: 'карта сайта, sitemap, навигация сайта, разделы сайта, ипотека крым'
   }
 };
 
