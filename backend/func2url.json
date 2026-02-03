@@ -6,6 +6,7 @@
   "yandex-reviews-import": "https://functions.poehali.dev/74f8510a-de62-4872-b899-3391a5510aa4",
   "reviews": "https://functions.poehali.dev/e9b4d624-81cd-46f6-b82b-59f9d89e033b",
   "upload-property-photo": "https://functions.poehali.dev/94c626eb-409a-4a18-836f-f3750239d1b4",
+  "manual-properties": "https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d",
   "quiz-submit": "https://functions.poehali.dev/a629770f-6198-42f3-b832-972cdcbcdf61",
   "register-submit": "https://functions.poehali.dev/5ce9a672-9918-45c3-bbfe-9689604ecec5",
   "crm-api": "https://functions.poehali.dev/e72807e0-91d8-4a57-992b-41b5cc49df17",

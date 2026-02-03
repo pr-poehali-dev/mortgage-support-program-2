@@ -69,6 +69,13 @@ export default function PropertyView() {
       const url = `${PROPERTIES_URL}?${queryParam}`;
       
       const response = await fetch(url);
+      
+      if (response.status === 404) {
+        setError('Объект не найден');
+        setLoading(false);
+        return;
+      }
+      
       const data = await response.json();
       
       if (data.success && data.property) {
