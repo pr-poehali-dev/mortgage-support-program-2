@@ -57,7 +57,8 @@ export default function SiteMap() {
       icon: 'FileText',
       links: [
         { label: 'Политика конфиденциальности', path: '/privacy-policy', onClick: () => navigate('/privacy-policy') },
-        { label: 'Условия использования', path: '/terms-of-service', onClick: () => navigate('/terms-of-service') }
+        { label: 'Условия использования', path: '/terms-of-service', onClick: () => navigate('/terms-of-service') },
+        { label: 'Карта сайта', path: '/sitemap', onClick: () => navigate('/sitemap') }
       ]
     }
   ];
