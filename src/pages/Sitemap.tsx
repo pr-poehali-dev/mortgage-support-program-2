@@ -72,8 +72,8 @@ export default function Sitemap() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-purple-50 to-primary/10">
       <SEO 
-        title="Карта сайта | Ипотека в Крыму от 0.1%"
-        description="Полная карта сайта: все страницы, объекты недвижимости и разделы по ипотеке в Крыму"
+        title="Карта сайта | Арендодатель - Агентство недвижимости"
+        description="Полная карта сайта агентства недвижимости Арендодатель: все страницы, объекты недвижимости и разделы сайта"
       />
       
       <div className="container mx-auto px-4 py-8">
