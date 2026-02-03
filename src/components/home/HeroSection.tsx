@@ -13,7 +13,7 @@ export default function HeroSection({ video }: HeroSectionProps) {
       <div className="absolute inset-0">
         <img 
           src="https://i.imgur.com/LxyQAtM.jpeg" 
-          alt="Крым недвижимость" 
+          alt="Ипотека в Крыму и Севастополе - Агентство недвижимости Арендодатель" 
           className="w-full h-full object-cover"
           loading="eager"
           fetchpriority="high"

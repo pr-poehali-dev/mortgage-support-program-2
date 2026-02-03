@@ -48,9 +48,25 @@ export default function Breadcrumbs() {
     breadcrumbs.push({ label, path: currentPath });
   });
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": breadcrumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": crumb.label,
+      "item": `https://ипотекакрым.рф${crumb.path}`
+    }))
+  };
+
   return (
-    <nav aria-label="Хлебные крошки" className="mb-4">
-      <ol className="flex items-center gap-2 text-sm flex-wrap" itemScope itemType="https://schema.org/BreadcrumbList">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <nav aria-label="Хлебные крошки" className="mb-4">
+        <ol className="flex items-center gap-2 text-sm flex-wrap" itemScope itemType="https://schema.org/BreadcrumbList">
         {breadcrumbs.map((crumb, index) => (
           <li 
             key={crumb.path} 
@@ -80,5 +96,6 @@ export default function Breadcrumbs() {
         ))}
       </ol>
     </nav>
+    </>
   );
 }

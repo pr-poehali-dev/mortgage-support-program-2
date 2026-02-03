@@ -66,7 +66,7 @@ export default function PropertyGallery({ photos, title }: PropertyGalleryProps)
                   index === currentPhotoIndex ? 'border-primary scale-95' : 'border-transparent hover:border-gray-300'
                 }`}
               >
-                <OptimizedImage src={photo} alt={`${index + 1}`} className="w-full h-full" objectFit="cover" />
+                <OptimizedImage src={photo} alt={`${title} - фото ${index + 1}`} className="w-full h-full" objectFit="cover" />
               </button>
             ))}
           </div>
@@ -89,7 +89,7 @@ export default function PropertyGallery({ photos, title }: PropertyGalleryProps)
           <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
             <img 
               src={photos[currentPhotoIndex]} 
-              alt={title}
+              alt={`${title} - фото ${currentPhotoIndex + 1} из ${photos.length}`}
               className="max-w-full max-h-full object-contain"
             />
             

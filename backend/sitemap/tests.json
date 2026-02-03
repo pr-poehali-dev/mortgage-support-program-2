@@ -1,0 +1,13 @@
+{
+  "tests": [
+    {
+      "name": "Generate sitemap XML",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "headers": {
+        "Content-Type": "application/xml; charset=utf-8"
+      }
+    }
+  ]
+}
