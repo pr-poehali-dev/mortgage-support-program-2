@@ -8,6 +8,7 @@ import MortgageQuiz from '@/components/MortgageQuiz';
 import MortgageTabsContent from '@/components/MortgageTabsContent';
 import PopularServicesSection from '@/components/PopularServicesSection';
 import RentalServicesSection from '@/components/RentalServicesSection';
+import MainServicesGrid from '@/components/MainServicesGrid';
 import InternalLinks from '@/components/InternalLinks';
 import SiteMap from '@/components/SiteMap';
 import ShareButton from '@/components/ShareButton';
@@ -217,6 +218,8 @@ export default function Index() {
 
       <main className="container mx-auto px-3 sm:px-4 py-3 sm:py-6">
         <RentalServicesSection />
+        
+        <MainServicesGrid />
         
         <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-3 sm:space-y-6">
           {/* Дополнительные разделы */}
