@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import SEO from '@/components/SEO';
+import AnimatedLogo from '@/components/AnimatedLogo';
 
 export default function About() {
   const navigate = useNavigate();
@@ -37,6 +38,15 @@ export default function About() {
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-10 shadow-lg mb-8">
           <div className="flex flex-col lg:flex-row items-center gap-8">
             <div className="flex-1">
+              {/* Логотип компании */}
+              <div className="flex justify-center lg:justify-start mb-6">
+                <AnimatedLogo
+                  src="https://cdn.poehali.dev/files/с дескриптором черный вариант (2).png"
+                  alt="Арендодатель"
+                  className="h-20 sm:h-24 w-auto object-contain"
+                />
+              </div>
+
               <div className="flex items-center gap-3 mb-4">
                 <div className="bg-primary/10 rounded-lg p-3">
                   <Icon name="Building2" size={32} className="text-primary" />

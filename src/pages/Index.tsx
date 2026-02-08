@@ -54,9 +54,9 @@ export default function Index() {
       <StructuredData />
       <header className={`border-b ${theme.headerBg} backdrop-blur-md sticky top-0 z-50`}>
         <div className="container mx-auto px-3 sm:px-4 py-2 sm:py-3">
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center justify-between gap-2 sm:gap-4">
             <div 
-              className="flex items-center gap-1.5 sm:gap-2 cursor-pointer hover:opacity-80 transition-opacity min-w-0 flex-shrink"
+              className="flex items-center gap-1.5 sm:gap-2 cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0"
               onClick={() => {
                 navigate('/');
                 setActiveTab('home');
@@ -67,11 +67,57 @@ export default function Index() {
                 alt="Арендодатель"
                 className="h-10 sm:h-12 md:h-14 w-auto object-contain flex-shrink-0"
               />
-              <div className="hidden sm:block">
-                <p className="text-xs md:text-sm text-gray-600 font-medium whitespace-nowrap">Аренда недвижимости | Севастополь</p>
-                <p className="text-[10px] md:text-xs text-gray-500">Квартиры, дома, коммерция | Ипотека 0.1%</p>
-              </div>
             </div>
+
+            {/* Основное меню */}
+            <nav className="hidden lg:flex items-center gap-1 flex-1">
+              <button
+                onClick={() => {
+                  navigate('/');
+                  setActiveTab('home');
+                }}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  activeTab === 'home' ? 'bg-blue-50 text-primary' : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Главная
+              </button>
+              <button
+                onClick={() => navigate('/about')}
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                О нас
+              </button>
+              <button
+                onClick={() => navigate('/catalog')}
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                Объекты
+              </button>
+              <button
+                onClick={() => {
+                  navigate('/');
+                  setActiveTab('mortgage');
+                }}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  activeTab === 'mortgage' ? 'bg-blue-50 text-primary' : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Ипотека
+              </button>
+              <button
+                onClick={() => navigate('/services')}
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                Услуги
+              </button>
+              <button
+                onClick={() => navigate('/contact')}
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                Контакты
+              </button>
+            </nav>
             <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
               <ShareButton />
               <a 
@@ -113,37 +159,58 @@ export default function Index() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-2 mt-2 sm:mt-3">
-            <Button
-              onClick={() => navigate('/register')}
-              className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
-            >
-              <Icon name="Home" className="mr-1 sm:mr-1.5" size={16} />
-              <span>Ипотека</span>
-            </Button>
-            <Button
-              onClick={() => navigate('/sell-help')}
-              className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
-            >
-              <Icon name="TrendingUp" className="mr-1 sm:mr-1.5" size={16} />
-              <span>Помощь продать</span>
-            </Button>
-            <Button
-              onClick={() => navigate('/services')}
-              variant="outline"
-              className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
-            >
-              <Icon name="Briefcase" className="mr-1 sm:mr-1.5" size={16} />
-              <span>Услуги</span>
-            </Button>
-            <Button
-              onClick={() => navigate('/rent-help')}
-              variant="outline"
-              className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold border-primary text-primary hover:bg-primary/10"
-            >
-              <Icon name="HandshakeIcon" className="mr-1 sm:mr-1.5" size={16} />
-              <span>Помощь сдать</span>
-            </Button>
+          {/* Мобильное меню (только на малых экранах) */}
+          <div className="lg:hidden w-full">
+            <div className="grid grid-cols-3 gap-1 mt-2">
+              <button
+                onClick={() => {
+                  navigate('/');
+                  setActiveTab('home');
+                }}
+                className={`px-2 py-2 rounded-lg text-xs font-medium transition-colors ${
+                  activeTab === 'home' ? 'bg-blue-50 text-primary' : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Главная
+              </button>
+              <button
+                onClick={() => navigate('/about')}
+                className="px-2 py-2 rounded-lg text-xs font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                О нас
+              </button>
+              <button
+                onClick={() => {
+                  navigate('/');
+                  setActiveTab('mortgage');
+                }}
+                className={`px-2 py-2 rounded-lg text-xs font-medium transition-colors ${
+                  activeTab === 'mortgage' ? 'bg-blue-50 text-primary' : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Ипотека
+              </button>
+            </div>
+            <div className="grid grid-cols-3 gap-1 mt-1">
+              <button
+                onClick={() => navigate('/catalog')}
+                className="px-2 py-2 rounded-lg text-xs font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                Объекты
+              </button>
+              <button
+                onClick={() => navigate('/services')}
+                className="px-2 py-2 rounded-lg text-xs font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                Услуги
+              </button>
+              <button
+                onClick={() => navigate('/contact')}
+                className="px-2 py-2 rounded-lg text-xs font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                Контакты
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -152,38 +219,12 @@ export default function Index() {
         <RentalServicesSection />
         
         <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-3 sm:space-y-6">
-          <TabsList className="bg-white/80 backdrop-blur-sm p-1 sm:p-1.5 rounded-lg shadow-sm h-auto flex flex-col gap-1">
-            <div className="grid grid-cols-6 gap-1 sm:gap-1.5 w-full">
-              <TabsTrigger value="home" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
-                <Icon name="Home" size={20} className="sm:w-5 sm:h-5" />
-                <span className="whitespace-nowrap">Главная</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="about" 
-                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
-                onClick={() => navigate('/about')}
-              >
-                <Icon name="Info" size={20} className="sm:w-5 sm:h-5" />
-                <span className="whitespace-nowrap">О нас</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="catalog" 
-                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
-                onClick={() => navigate('/catalog')}
-              >
-                <Icon name="Building2" size={20} className="sm:w-5 sm:h-5" />
-                <span className="whitespace-nowrap">Объекты</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="mortgage" 
-                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
-              >
-                <Icon name="Percent" size={20} className="sm:w-5 sm:h-5" />
-                <span className="whitespace-nowrap">Ипотека</span>
-              </TabsTrigger>
+          {/* Дополнительные разделы */}
+          <TabsList className="bg-white/80 backdrop-blur-sm p-1 sm:p-1.5 rounded-lg shadow-sm h-auto">
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-1 sm:gap-1.5 w-full">
               <TabsTrigger value="documents" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
                 <Icon name="FileText" size={20} className="sm:w-5 sm:h-5" />
-                <span className="whitespace-nowrap">Док.</span>
+                <span className="whitespace-nowrap">Документы</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="blog" 
@@ -193,19 +234,9 @@ export default function Index() {
                 <Icon name="BookOpen" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Блог</span>
               </TabsTrigger>
-            </div>
-            <div className="grid grid-cols-6 gap-1 sm:gap-1.5 w-full">
               <TabsTrigger value="videos" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
                 <Icon name="Video" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Видео</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="services" 
-                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
-                onClick={() => navigate('/services')}
-              >
-                <Icon name="Briefcase" size={20} className="sm:w-5 sm:h-5" />
-                <span className="whitespace-nowrap">Услуги</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="chatgpt" 
@@ -230,14 +261,6 @@ export default function Index() {
               >
                 <Icon name="HelpCircle" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">FAQ</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="contact" 
-                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
-                onClick={() => navigate('/contact')}
-              >
-                <Icon name="Phone" size={20} className="sm:w-5 sm:h-5" />
-                <span className="whitespace-nowrap">Контакты</span>
               </TabsTrigger>
             </div>
           </TabsList>
