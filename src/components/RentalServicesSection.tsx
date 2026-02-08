@@ -103,11 +103,11 @@ export default function RentalServicesSection() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button 
-              onClick={() => navigate('/catalog')}
+              onClick={() => navigate('/rental')}
               className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-6"
             >
               <Icon name="Building2" className="mr-2" size={20} />
-              Смотреть объекты
+              Смотреть каталог
             </Button>
             <Button 
               onClick={() => navigate('/contact')}
@@ -133,7 +133,7 @@ export default function RentalServicesSection() {
             <div 
               key={type.id}
               className={`bg-gradient-to-br ${type.color} rounded-xl p-5 border-2 hover:shadow-lg transition-all cursor-pointer group`}
-              onClick={() => navigate('/catalog')}
+              onClick={() => navigate('/rental')}
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="bg-white rounded-lg p-3">
