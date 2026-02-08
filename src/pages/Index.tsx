@@ -340,6 +340,11 @@ export default function Index() {
               <h3 className="font-semibold text-base mb-4">Информация</h3>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li>
+                  <button onClick={() => navigate('/about')} className="hover:text-white transition-colors">
+                    О компании
+                  </button>
+                </li>
+                <li>
                   <button onClick={() => { setActiveTab('blog'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
                     Блог и статьи
                   </button>

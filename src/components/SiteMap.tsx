@@ -46,7 +46,7 @@ export default function SiteMap() {
       title: 'Информация',
       icon: 'Info',
       links: [
-        { label: 'О компании', path: '/?tab=home', onClick: () => navigate('/?tab=home') },
+        { label: 'О компании', path: '/about', onClick: () => navigate('/about') },
         { label: 'Блог и статьи', path: '/blog', onClick: () => navigate('/blog') },
         { label: 'Видео', path: '/?tab=videos', onClick: () => navigate('/?tab=videos') },
         { label: 'Контакты', path: '/contact', onClick: () => navigate('/contact') }
