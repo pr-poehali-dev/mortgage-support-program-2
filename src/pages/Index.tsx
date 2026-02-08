@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import MortgageQuiz from '@/components/MortgageQuiz';
 import MortgageTabsContent from '@/components/MortgageTabsContent';
 import PopularServicesSection from '@/components/PopularServicesSection';
+import RentalServicesSection from '@/components/RentalServicesSection';
 import InternalLinks from '@/components/InternalLinks';
 import SiteMap from '@/components/SiteMap';
 import ShareButton from '@/components/ShareButton';
@@ -58,8 +59,8 @@ export default function Index() {
                 className="h-10 sm:h-12 md:h-14 w-auto object-contain flex-shrink-0"
               />
               <div className="hidden sm:block">
-                <p className="text-xs md:text-sm text-gray-600 font-medium whitespace-nowrap">Ипотечный центр | Крым, Севастополь</p>
-                <p className="text-[10px] md:text-xs text-gray-500">Продажа, Аренда, Оформление</p>
+                <p className="text-xs md:text-sm text-gray-600 font-medium whitespace-nowrap">Аренда недвижимости | Севастополь</p>
+                <p className="text-[10px] md:text-xs text-gray-500">Квартиры, дома, коммерция | Ипотека 0.1%</p>
               </div>
             </div>
             <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
@@ -249,6 +250,7 @@ export default function Index() {
           }} />
         </Tabs>
 
+        <RentalServicesSection />
         <PopularServicesSection />
 
         <div className="container mx-auto px-3 sm:px-4 mt-8 sm:mt-12 space-y-8">
@@ -266,7 +268,7 @@ export default function Index() {
                 alt="Арендодатель"
                 className="h-12 w-auto object-contain mb-4"
               />
-              <p className="text-sm text-gray-400 mb-2">Ипотечный центр</p>
+              <p className="text-sm text-gray-400 mb-2">Аренда и продажа недвижимости</p>
               <p className="text-sm text-gray-400 mb-4">Севастополь, Крым</p>
               <div className="flex gap-2">
                 <a
