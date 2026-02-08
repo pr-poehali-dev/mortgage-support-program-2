@@ -52,7 +52,7 @@ export default function About() {
                   <span className="font-semibold text-primary">Работаем с 2008 года</span>, помогая людям находить идеальное жилье и оформлять ипотеку на выгодных условиях в Крыму и Севастополе.
                 </p>
                 <p className="leading-relaxed">
-                  За годы работы мы стали надежным партнером для тысяч семей, помогая им решать самые сложные вопросы покупки, продажи и аренды недвижимости.
+                  Специализируемся на ипотечных программах с господдержкой и операциях с недвижимостью в Республике Крым. Наш профессиональный подход и индивидуальное сопровождение каждого клиента — залог успешных сделок.
                 </p>
               </div>
 
@@ -62,12 +62,12 @@ export default function About() {
                   <div className="text-sm text-gray-600 mt-1">лет опыта</div>
                 </div>
                 <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <div className="text-3xl font-bold text-green-600">1000+</div>
-                  <div className="text-sm text-gray-600 mt-1">довольных клиентов</div>
+                  <div className="text-3xl font-bold text-green-600">5</div>
+                  <div className="text-sm text-gray-600 mt-1">ипотечных программ</div>
                 </div>
                 <div className="text-center p-4 bg-orange-50 rounded-lg">
-                  <div className="text-3xl font-bold text-orange-600">500+</div>
-                  <div className="text-sm text-gray-600 mt-1">объектов в каталоге</div>
+                  <div className="text-3xl font-bold text-orange-600">127</div>
+                  <div className="text-sm text-gray-600 mt-1">отзывов клиентов</div>
                 </div>
                 <div className="text-center p-4 bg-purple-50 rounded-lg">
                   <div className="text-3xl font-bold text-purple-600">0.1%</div>
@@ -86,63 +86,140 @@ export default function About() {
           </div>
         </div>
 
-        {/* What is Rent Section */}
+        {/* Contact Person */}
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-6 sm:p-8 text-white shadow-lg mb-8">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="bg-white/10 backdrop-blur-sm rounded-full p-6">
+              <Icon name="UserCircle" size={64} className="text-white" />
+            </div>
+            <div className="flex-1 text-center md:text-left">
+              <h2 className="text-2xl font-bold mb-2">Николаев Дмитрий Юрьевич</h2>
+              <p className="text-blue-100 text-lg mb-4">Специалист по ипотеке</p>
+              <div className="space-y-2">
+                <a 
+                  href="tel:+79781281850"
+                  className="flex items-center gap-2 text-white hover:text-blue-200 transition-colors justify-center md:justify-start"
+                >
+                  <Icon name="Phone" size={20} />
+                  <span className="font-semibold">+7 978 128-18-50</span>
+                </a>
+                <a 
+                  href="mailto:ipoteka_krym@mail.ru"
+                  className="flex items-center gap-2 text-white hover:text-blue-200 transition-colors justify-center md:justify-start"
+                >
+                  <Icon name="Mail" size={20} />
+                  <span>ipoteka_krym@mail.ru</span>
+                </a>
+                <a 
+                  href="https://t.me/ipoteka_krym_rf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-white hover:text-blue-200 transition-colors justify-center md:justify-start"
+                >
+                  <Icon name="Send" size={20} />
+                  <span>@ipoteka_krym_rf</span>
+                </a>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
+              <div className="text-3xl font-bold mb-1">5.0</div>
+              <div className="flex items-center gap-1 justify-center mb-1">
+                {[...Array(5)].map((_, i) => (
+                  <Icon key={i} name="Star" size={16} className="fill-yellow-400 text-yellow-400" />
+                ))}
+              </div>
+              <div className="text-sm text-blue-100">Рейтинг</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mortgage Programs */}
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-10 shadow-lg mb-8">
           <div className="flex items-center gap-3 mb-6">
-            <div className="bg-blue-500/10 rounded-lg p-3">
-              <Icon name="BookOpen" size={28} className="text-blue-600" />
+            <div className="bg-green-500/10 rounded-lg p-3">
+              <Icon name="Percent" size={28} className="text-green-600" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Что такое аренда</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Ипотечные программы</h2>
           </div>
-          
-          <div className="prose prose-lg max-w-none">
-            <p className="text-gray-700 leading-relaxed mb-4">
-              <strong>Аренда</strong> (от лат. <em>arrendare</em> — отдавать внаём) — форма имущественного договора, при которой собственность передаётся во временное владение и пользование арендатору за арендную плату.
-            </p>
-            
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
-              <p className="text-gray-800 italic">
-                "Договор аренды является возмездным, взаимным и консенсуальным. В России регулируется Гражданским кодексом."
-              </p>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 p-6 rounded-xl hover:shadow-md transition-shadow border-2 border-blue-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-blue-600 rounded-full p-2">
+                  <Icon name="Users" size={24} className="text-white" />
+                </div>
+                <h3 className="font-bold text-gray-900 text-lg">Семейная</h3>
+              </div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">6%</div>
+              <p className="text-sm text-gray-600 mb-3">Для семей с детьми</p>
+              <ul className="text-sm text-gray-700 space-y-1">
+                <li>• Первоначальный взнос от 15%</li>
+                <li>• Льготные условия</li>
+                <li>• Господдержка</li>
+              </ul>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div className="bg-gradient-to-br from-green-50 to-green-100/50 p-5 rounded-xl">
-                <div className="flex items-center gap-2 mb-3">
-                  <Icon name="UserCheck" size={22} className="text-green-600" />
-                  <h3 className="text-lg font-semibold text-gray-900">Для арендатора</h3>
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 p-6 rounded-xl hover:shadow-md transition-shadow border-2 border-purple-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-purple-600 rounded-full p-2">
+                  <Icon name="Laptop" size={24} className="text-white" />
                 </div>
-                <p className="text-gray-700 text-sm leading-relaxed">
-                  Возможность пользоваться имуществом без крупных первоначальных вложений. Плоды, продукция и доходы, полученные в результате использования арендованного имущества, являются собственностью арендатора.
-                </p>
+                <h3 className="font-bold text-gray-900 text-lg">IT ипотека</h3>
               </div>
-
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 p-5 rounded-xl">
-                <div className="flex items-center gap-2 mb-3">
-                  <Icon name="Home" size={22} className="text-purple-600" />
-                  <h3 className="text-lg font-semibold text-gray-900">Для арендодателя</h3>
-                </div>
-                <p className="text-gray-700 text-sm leading-relaxed">
-                  Получение регулярного дохода от имущества при сохранении права собственности. Возможность передать имущество в аренду на выгодных условиях и с минимальными рисками.
-                </p>
-              </div>
+              <div className="text-3xl font-bold text-purple-600 mb-2">6%</div>
+              <p className="text-sm text-gray-600 mb-3">Для IT специалистов</p>
+              <ul className="text-sm text-gray-700 space-y-1">
+                <li>• Первоначальный взнос от 15%</li>
+                <li>• Специальные условия</li>
+                <li>• Поддержка отрасли</li>
+              </ul>
             </div>
 
-            <div className="bg-gray-50 p-5 rounded-xl">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Сроки аренды</h3>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-2">
-                  <Icon name="Clock" size={18} className="text-blue-600 mt-1 flex-shrink-0" />
-                  <span className="text-gray-700"><strong>Краткосрочная:</strong> до 1 года</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Icon name="Clock" size={18} className="text-green-600 mt-1 flex-shrink-0" />
-                  <span className="text-gray-700"><strong>Среднесрочная:</strong> 1-5 лет</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Icon name="Clock" size={18} className="text-purple-600 mt-1 flex-shrink-0" />
-                  <span className="text-gray-700"><strong>Долгосрочная:</strong> 5-49 лет</span>
-                </li>
+            <div className="bg-gradient-to-br from-green-50 to-green-100/50 p-6 rounded-xl hover:shadow-md transition-shadow border-2 border-green-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-green-600 rounded-full p-2">
+                  <Icon name="TreePine" size={24} className="text-white" />
+                </div>
+                <h3 className="font-bold text-gray-900 text-lg">Сельская</h3>
+              </div>
+              <div className="text-3xl font-bold text-green-600 mb-2">0.1-3%</div>
+              <p className="text-sm text-gray-600 mb-3">Жилье в сельской местности</p>
+              <ul className="text-sm text-gray-700 space-y-1">
+                <li>• Первоначальный взнос от 10%</li>
+                <li>• Самая низкая ставка</li>
+                <li>• Развитие регионов</li>
+              </ul>
+            </div>
+
+            <div className="bg-gradient-to-br from-red-50 to-red-100/50 p-6 rounded-xl hover:shadow-md transition-shadow border-2 border-red-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-red-600 rounded-full p-2">
+                  <Icon name="Shield" size={24} className="text-white" />
+                </div>
+                <h3 className="font-bold text-gray-900 text-lg">Военная</h3>
+              </div>
+              <div className="text-3xl font-bold text-red-600 mb-2">~9%</div>
+              <p className="text-sm text-gray-600 mb-3">Для военнослужащих</p>
+              <ul className="text-sm text-gray-700 space-y-1">
+                <li>• Первоначальный взнос от 15%</li>
+                <li>• С господдержкой</li>
+                <li>• Накопительная система</li>
+              </ul>
+            </div>
+
+            <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 p-6 rounded-xl hover:shadow-md transition-shadow border-2 border-gray-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-gray-600 rounded-full p-2">
+                  <Icon name="Home" size={24} className="text-white" />
+                </div>
+                <h3 className="font-bold text-gray-900 text-lg">Базовая</h3>
+              </div>
+              <div className="text-3xl font-bold text-gray-600 mb-2">от 17%</div>
+              <p className="text-sm text-gray-600 mb-3">Стандартная программа</p>
+              <ul className="text-sm text-gray-700 space-y-1">
+                <li>• Первоначальный взнос от 20%</li>
+                <li>• Для всех категорий</li>
+                <li>• Классические условия</li>
               </ul>
             </div>
           </div>
@@ -208,6 +285,27 @@ export default function About() {
           </div>
         </div>
 
+        {/* Work Schedule */}
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-lg mb-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="bg-blue-500/10 rounded-lg p-3">
+              <Icon name="Clock" size={28} className="text-blue-600" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Режим работы</h2>
+          </div>
+          
+          <div className="bg-gradient-to-r from-blue-50 to-blue-100/50 rounded-xl p-6">
+            <div className="flex items-center gap-4">
+              <Icon name="Calendar" size={32} className="text-blue-600" />
+              <div>
+                <p className="text-lg font-semibold text-gray-900 mb-1">Ежедневно</p>
+                <p className="text-2xl font-bold text-blue-600">09:00 - 20:00</p>
+                <p className="text-sm text-gray-600 mt-2">Без выходных и праздников</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Why Choose Us */}
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-10 shadow-lg mb-8">
           <div className="flex items-center gap-3 mb-6">
@@ -225,7 +323,7 @@ export default function About() {
               <div>
                 <h3 className="font-semibold text-gray-900 mb-1">Опыт с 2008 года</h3>
                 <p className="text-sm text-gray-600">
-                  16 лет успешной работы на рынке недвижимости Крыма
+                  16 лет успешной работы на рынке недвижимости Крыма и Севастополя
                 </p>
               </div>
             </div>
@@ -271,21 +369,21 @@ export default function About() {
                 <Icon name="HeadphonesIcon" size={24} className="text-red-600" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-1">Поддержка 24/7</h3>
+                <h3 className="font-semibold text-gray-900 mb-1">Поддержка 7 дней в неделю</h3>
                 <p className="text-sm text-gray-600">
-                  Консультации и помощь в любое удобное для вас время
+                  Консультации и помощь в удобное для вас время с 9:00 до 20:00
                 </p>
               </div>
             </div>
 
             <div className="flex gap-4">
               <div className="bg-pink-100 rounded-full p-3 h-fit">
-                <Icon name="ThumbsUp" size={24} className="text-pink-600" />
+                <Icon name="Star" size={24} className="text-pink-600" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-1">Довольные клиенты</h3>
+                <h3 className="font-semibold text-gray-900 mb-1">Рейтинг 5.0</h3>
                 <p className="text-sm text-gray-600">
-                  Более 1000 семей уже нашли свое жилье с нашей помощью
+                  Высокие оценки клиентов подтверждают качество наших услуг
                 </p>
               </div>
             </div>
