@@ -95,7 +95,7 @@ export default function RentalServicesSection() {
             </div>
             <div>
               <h2 className="text-3xl sm:text-4xl font-bold">Аренда недвижимости в Севастополе</h2>
-              <p className="text-blue-100 text-lg mt-1">Надежно • Быстро • Без посредников</p>
+              <p className="text-blue-100 text-lg mt-1">Надежно • Быстро • </p>
             </div>
           </div>
           <p className="text-lg text-white/90 mb-6 max-w-3xl">
