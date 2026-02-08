@@ -1,27 +1,13 @@
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import SEO from '@/components/SEO';
-import Breadcrumbs from '@/components/Breadcrumbs';
-import ProgramsAndComparisonTabs from '@/components/tabs/ProgramsAndComparisonTabs';
-import { useDailyTheme } from '@/hooks/useDailyTheme';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Programs() {
-  const theme = useDailyTheme();
+  const navigate = useNavigate();
 
-  return (
-    <div className={`min-h-screen ${theme.gradient}`}>
-      <SEO 
-        title="Ипотечные программы - Арендодатель"
-        description="Все актуальные ипотечные программы банков. Семейная ипотека, льготная ипотека, IT-ипотека и другие программы."
-      />
-      <Header />
-      <main className="container mx-auto px-3 sm:px-4 py-6">
-        <Breadcrumbs />
-        <div className="space-y-6">
-          <ProgramsAndComparisonTabs />
-        </div>
-      </main>
-      <Footer />
-    </div>
-  );
+  useEffect(() => {
+    // Перенаправление на главную с открытым разделом "Ипотека"
+    navigate('/?tab=mortgage&subtab=programs', { replace: true });
+  }, [navigate]);
+
+  return null;
 }

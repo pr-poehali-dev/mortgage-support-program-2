@@ -16,8 +16,7 @@ export default function SiteMap() {
       title: 'Ипотека',
       icon: 'Home',
       links: [
-        { label: 'Ипотечные программы', path: '/?tab=programs', onClick: () => navigate('/?tab=programs') },
-        { label: 'Калькулятор ипотеки', path: '/?tab=calculator', onClick: () => navigate('/?tab=calculator') },
+        { label: 'Калькулятор и программы', path: '/?tab=mortgage', onClick: () => navigate('/?tab=mortgage') },
         { label: 'Подать заявку на ипотеку', path: '/register', onClick: () => navigate('/register') },
         { label: 'Часто задаваемые вопросы', path: '/faq', onClick: () => navigate('/faq') }
       ]

@@ -1,7 +1,5 @@
 import { TabsContent } from '@/components/ui/tabs';
-import MortgageCalculator from './MortgageCalculator';
 import MortgageQuiz from './MortgageQuiz';
-import ProgramsAndComparisonTabs from './tabs/ProgramsAndComparisonTabs';
 import DocumentsAndBlogTabs from './tabs/DocumentsAndBlogTabs';
 import CatalogTab from './tabs/CatalogTab';
 import ContactAndFaqTabs from './tabs/ContactAndFaqTabs';
@@ -9,6 +7,7 @@ import VideosTab from './tabs/VideosTab';
 import TagsTab from './tabs/TagsTab';
 import HomeTab from './HomeTab';
 import ReviewsSection from './ReviewsSection';
+import MortgageTab from './tabs/MortgageTab';
 
 export default function MortgageTabsContent({ onNavigateToCalculator }: { onNavigateToCalculator: () => void }) {
   return (
@@ -21,11 +20,9 @@ export default function MortgageTabsContent({ onNavigateToCalculator }: { onNavi
 
       <CatalogTab />
 
-      <TabsContent value="calculator" className="space-y-3 sm:space-y-6">
-        <MortgageCalculator />
+      <TabsContent value="mortgage" className="space-y-3 sm:space-y-6">
+        <MortgageTab />
       </TabsContent>
-
-      <ProgramsAndComparisonTabs />
 
       <DocumentsAndBlogTabs />
 

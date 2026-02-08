@@ -28,10 +28,10 @@ const links: InternalLink[] = [
     description: 'Каталог квартир, домов и земельных участков'
   },
   {
-    title: 'Калькулятор ипотеки',
-    url: '/?tab=calculator',
-    icon: 'Calculator',
-    description: 'Рассчитайте ежемесячный платеж онлайн'
+    title: 'Ипотека',
+    url: '/?tab=mortgage',
+    icon: 'Percent',
+    description: 'Калькулятор, программы и сравнение условий'
   }
 ];
 

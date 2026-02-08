@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -33,6 +33,15 @@ export default function Index() {
   const theme = useDailyTheme();
   useAutoIndexNow();
   useSitemapGenerator();
+
+  // Обработка URL параметров для открытия нужной вкладки
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab');
+    if (tab) {
+      setActiveTab(tab);
+    }
+  }, []);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -166,31 +175,16 @@ export default function Index() {
                 <span className="whitespace-nowrap">Объекты</span>
               </TabsTrigger>
               <TabsTrigger 
-                value="calculator" 
+                value="mortgage" 
                 className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
-                onClick={() => navigate('/calculator')}
               >
-                <Icon name="Calculator" size={20} className="sm:w-5 sm:h-5" />
-                <span className="whitespace-nowrap">Расчёт</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="programs" 
-                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
-                onClick={() => navigate('/programs')}
-              >
-                <Icon name="ClipboardList" size={20} className="sm:w-5 sm:h-5" />
-                <span className="whitespace-nowrap">Прогр.</span>
-              </TabsTrigger>
-              <TabsTrigger value="comparison" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
-                <Icon name="GitCompare" size={20} className="sm:w-5 sm:h-5" />
-                <span className="whitespace-nowrap">Сравн.</span>
+                <Icon name="Percent" size={20} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">Ипотека</span>
               </TabsTrigger>
               <TabsTrigger value="documents" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
                 <Icon name="FileText" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Док.</span>
               </TabsTrigger>
-            </div>
-            <div className="grid grid-cols-6 gap-1 sm:gap-1.5 w-full">
               <TabsTrigger 
                 value="blog" 
                 className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
@@ -199,6 +193,8 @@ export default function Index() {
                 <Icon name="BookOpen" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Блог</span>
               </TabsTrigger>
+            </div>
+            <div className="grid grid-cols-6 gap-1 sm:gap-1.5 w-full">
               <TabsTrigger value="videos" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
                 <Icon name="Video" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Видео</span>
@@ -304,13 +300,8 @@ export default function Index() {
               <h3 className="font-semibold text-base mb-4">Ипотека</h3>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li>
-                  <button onClick={() => { setActiveTab('programs'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
-                    Ипотечные программы
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => { setActiveTab('calculator'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
-                    Калькулятор ипотеки
+                  <button onClick={() => { setActiveTab('mortgage'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">
+                    Калькулятор и программы
                   </button>
                 </li>
                 <li>
