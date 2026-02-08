@@ -140,6 +140,8 @@ export default function Index() {
       </header>
 
       <main className="container mx-auto px-3 sm:px-4 py-3 sm:py-6">
+        <RentalServicesSection />
+        
         <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-3 sm:space-y-6">
           <TabsList className="bg-white/80 backdrop-blur-sm p-1 sm:p-1.5 rounded-lg shadow-sm h-auto flex flex-col gap-1">
             <div className="grid grid-cols-6 gap-1 sm:gap-1.5 w-full">
@@ -250,7 +252,6 @@ export default function Index() {
           }} />
         </Tabs>
 
-        <RentalServicesSection />
         <PopularServicesSection />
 
         <div className="container mx-auto px-3 sm:px-4 mt-8 sm:mt-12 space-y-8">
