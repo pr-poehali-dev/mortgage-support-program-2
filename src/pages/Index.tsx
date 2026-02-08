@@ -103,32 +103,25 @@ export default function Index() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-2 mt-2 sm:mt-3">
-            <Button
-              onClick={() => navigate('/about')}
-              className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
-            >
-              <Icon name="Info" className="mr-1 sm:mr-1.5" size={16} />
-              <span>О нас</span>
-            </Button>
+          <div className="grid grid-cols-2 gap-2 mt-2 sm:mt-3">
             <Button
               onClick={() => navigate('/register')}
-              className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold"
+              className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
             >
               <Icon name="Home" className="mr-1 sm:mr-1.5" size={16} />
               <span>Ипотека</span>
             </Button>
             <Button
               onClick={() => navigate('/sell-help')}
-              className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+              className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
             >
               <Icon name="TrendingUp" className="mr-1 sm:mr-1.5" size={16} />
-              <span>Продать</span>
+              <span>Помощь продать</span>
             </Button>
             <Button
               onClick={() => navigate('/services')}
               variant="outline"
-              className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold"
+              className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
             >
               <Icon name="Briefcase" className="mr-1 sm:mr-1.5" size={16} />
               <span>Услуги</span>
@@ -136,18 +129,10 @@ export default function Index() {
             <Button
               onClick={() => navigate('/rent-help')}
               variant="outline"
-              className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold border-primary text-primary hover:bg-primary/10"
+              className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold border-primary text-primary hover:bg-primary/10"
             >
               <Icon name="HandshakeIcon" className="mr-1 sm:mr-1.5" size={16} />
-              <span>Сдать</span>
-            </Button>
-            <Button
-              onClick={() => navigate('/catalog')}
-              variant="outline"
-              className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold"
-            >
-              <Icon name="Building2" className="mr-1 sm:mr-1.5" size={16} />
-              <span>Каталог</span>
+              <span>Помощь сдать</span>
             </Button>
           </div>
         </div>
@@ -160,6 +145,14 @@ export default function Index() {
               <TabsTrigger value="home" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
                 <Icon name="Home" size={20} className="sm:w-5 sm:h-5" />
                 <span className="whitespace-nowrap">Главная</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="about" 
+                className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
+                onClick={() => navigate('/about')}
+              >
+                <Icon name="Info" size={20} className="sm:w-5 sm:h-5" />
+                <span className="whitespace-nowrap">О нас</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="catalog" 
