@@ -70,41 +70,6 @@ export default function Index() {
               />
             </div>
 
-            {/* 4 основных раздела под логотипом */}
-            <div className="hidden lg:grid grid-cols-4 gap-2 flex-1 max-w-4xl mx-4">
-              <button
-                onClick={() => {
-                  navigate('/');
-                  setActiveTab('mortgage');
-                }}
-                className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-3 rounded-lg font-semibold text-sm hover:from-blue-600 hover:to-blue-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
-              >
-                <Icon name="Home" size={18} />
-                Ипотека
-              </button>
-              <button
-                onClick={() => navigate('/sell-help')}
-                className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-3 rounded-lg font-semibold text-sm hover:from-green-600 hover:to-green-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
-              >
-                <Icon name="TrendingUp" size={18} />
-                Помощь продать
-              </button>
-              <button
-                onClick={() => navigate('/services')}
-                className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white px-4 py-3 rounded-lg font-semibold text-sm hover:from-cyan-600 hover:to-cyan-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
-              >
-                <Icon name="Briefcase" size={18} />
-                Услуги
-              </button>
-              <button
-                onClick={() => navigate('/rent-help')}
-                className="border-2 border-cyan-500 text-cyan-600 px-4 py-3 rounded-lg font-semibold text-sm hover:bg-cyan-50 transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2"
-              >
-                <Icon name="Handshake" size={18} />
-                Помощь сдать
-              </button>
-            </div>
-
             {/* Основное меню */}
             <nav className="hidden lg:flex items-center gap-1 flex-1">
               <button
@@ -194,6 +159,40 @@ export default function Index() {
                 </a>
               </div>
             </div>
+          </div>
+          {/* 4 основных раздела */}
+          <div className="hidden lg:grid grid-cols-4 gap-3 mt-3">
+            <button
+              onClick={() => {
+                navigate('/');
+                setActiveTab('mortgage');
+              }}
+              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-4 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+            >
+              <Icon name="Home" size={20} />
+              Ипотека
+            </button>
+            <button
+              onClick={() => navigate('/sell-help')}
+              className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+            >
+              <Icon name="TrendingUp" size={20} />
+              Помощь продать
+            </button>
+            <button
+              onClick={() => navigate('/services')}
+              className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white px-6 py-4 rounded-lg font-semibold hover:from-cyan-600 hover:to-cyan-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+            >
+              <Icon name="Briefcase" size={20} />
+              Услуги
+            </button>
+            <button
+              onClick={() => navigate('/rent-help')}
+              className="border-2 border-cyan-500 text-cyan-600 px-6 py-4 rounded-lg font-semibold hover:bg-cyan-50 transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2"
+            >
+              <Icon name="Handshake" size={20} />
+              Помощь сдать
+            </button>
           </div>
           {/* Мобильное меню (только на малых экранах) */}
           <div className="lg:hidden w-full">
