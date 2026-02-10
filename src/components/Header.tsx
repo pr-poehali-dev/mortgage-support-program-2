@@ -69,17 +69,17 @@ export default function Header() {
             </div>
           </div>
         </div>
-        <nav className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2 sm:mt-3">
+        <nav className="grid grid-cols-3 gap-2 mt-2 sm:mt-3">
           <Button
             onClick={() => navigate('/register')}
-            className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
+            className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold"
           >
             <Icon name="Home" className="mr-1 sm:mr-1.5" size={16} />
             <span>Ипотека</span>
           </Button>
           <Button
             onClick={() => navigate('/sell-help')}
-            className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+            className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
           >
             <Icon name="TrendingUp" className="mr-1 sm:mr-1.5" size={16} />
             <span>Помощь продать</span>
@@ -87,7 +87,7 @@ export default function Header() {
           <Button
             onClick={() => navigate('/services')}
             variant="outline"
-            className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
+            className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold"
           >
             <Icon name="Briefcase" className="mr-1 sm:mr-1.5" size={16} />
             <span>Услуги</span>
@@ -95,7 +95,7 @@ export default function Header() {
           <Button
             onClick={() => navigate('/rent-help')}
             variant="outline"
-            className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold border-primary text-primary hover:bg-primary/10"
+            className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold border-primary text-primary hover:bg-primary/10"
           >
             <Icon name="HandshakeIcon" className="mr-1 sm:mr-1.5" size={16} />
             <span>Помощь сдать</span>
@@ -103,7 +103,7 @@ export default function Header() {
           <Button
             onClick={() => navigate('/documents')}
             variant="outline"
-            className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
+            className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold"
           >
             <Icon name="FileText" className="mr-1 sm:mr-1.5" size={16} />
             <span>Документы</span>
@@ -111,7 +111,7 @@ export default function Header() {
           <Button
             onClick={() => navigate('/blog')}
             variant="outline"
-            className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
+            className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold"
           >
             <Icon name="BookOpen" className="mr-1 sm:mr-1.5" size={16} />
             <span>Блог</span>
@@ -119,15 +119,23 @@ export default function Header() {
           <Button
             onClick={() => navigate('/videos')}
             variant="outline"
-            className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
+            className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold"
           >
             <Icon name="Video" className="mr-1 sm:mr-1.5" size={16} />
             <span>Видео</span>
           </Button>
           <Button
+            onClick={() => navigate('/catalog')}
+            variant="outline"
+            className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold"
+          >
+            <Icon name="ShoppingCart" className="mr-1 sm:mr-1.5" size={16} />
+            <span>Онлайн</span>
+          </Button>
+          <Button
             onClick={() => navigate('/faq')}
             variant="outline"
-            className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
+            className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold"
           >
             <Icon name="HelpCircle" className="mr-1 sm:mr-1.5" size={16} />
             <span>FAQ</span>
