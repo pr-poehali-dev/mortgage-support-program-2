@@ -69,7 +69,7 @@ export default function Header() {
             </div>
           </div>
         </div>
-        <nav className="grid grid-cols-2 gap-2 mt-2 sm:mt-3">
+        <nav className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2 sm:mt-3">
           <Button
             onClick={() => navigate('/register')}
             className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
@@ -99,6 +99,38 @@ export default function Header() {
           >
             <Icon name="HandshakeIcon" className="mr-1 sm:mr-1.5" size={16} />
             <span>Помощь сдать</span>
+          </Button>
+          <Button
+            onClick={() => navigate('/documents')}
+            variant="outline"
+            className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
+          >
+            <Icon name="FileText" className="mr-1 sm:mr-1.5" size={16} />
+            <span>Документы</span>
+          </Button>
+          <Button
+            onClick={() => navigate('/blog')}
+            variant="outline"
+            className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
+          >
+            <Icon name="BookOpen" className="mr-1 sm:mr-1.5" size={16} />
+            <span>Блог</span>
+          </Button>
+          <Button
+            onClick={() => navigate('/videos')}
+            variant="outline"
+            className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
+          >
+            <Icon name="Video" className="mr-1 sm:mr-1.5" size={16} />
+            <span>Видео</span>
+          </Button>
+          <Button
+            onClick={() => navigate('/faq')}
+            variant="outline"
+            className="h-9 sm:h-10 px-2 sm:px-4 text-xs sm:text-sm font-semibold"
+          >
+            <Icon name="HelpCircle" className="mr-1 sm:mr-1.5" size={16} />
+            <span>FAQ</span>
           </Button>
         </nav>
       </div>
