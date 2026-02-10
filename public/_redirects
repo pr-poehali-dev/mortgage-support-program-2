@@ -19,5 +19,5 @@
 /add-property             /index.html   200
 /chatgpt                  /index.html   200
 
-# Everything else returns 404
-/*                        /index.html   404
+# Everything else goes to React Router
+/*                        /index.html   200
