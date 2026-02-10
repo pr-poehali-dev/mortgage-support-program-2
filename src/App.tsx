@@ -41,7 +41,7 @@ const Sitemap = lazy(() => import("./pages/Sitemap"));
 const About = lazy(() => import("./pages/About"));
 const RentalCatalog = lazy(() => import("./pages/RentalCatalog"));
 const ChatGPTPlaygroundPage = lazy(() => import("./components/extensions/chatgpt-polza/ChatGPTPlaygroundPage"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const NotFound = lazy(() => import("./pages/NotFoundCustom"));
 
 const queryClient = new QueryClient();
 
