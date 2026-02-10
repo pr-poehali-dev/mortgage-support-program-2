@@ -71,13 +71,13 @@ export default function Index() {
             </div>
 
             {/* Основное меню */}
-            <nav className="hidden lg:flex items-center gap-1 flex-1">
+            <nav className="hidden lg:flex items-center gap-1 flex-1 overflow-x-auto">
               <button
                 onClick={() => {
                   navigate('/');
                   setActiveTab('home');
                 }}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
                   activeTab === 'home' ? 'bg-blue-50 text-primary' : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
@@ -85,13 +85,13 @@ export default function Index() {
               </button>
               <button
                 onClick={() => navigate('/about')}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors whitespace-nowrap"
               >
                 О нас
               </button>
               <button
                 onClick={() => navigate('/catalog')}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors whitespace-nowrap"
               >
                 Объекты
               </button>
@@ -100,7 +100,7 @@ export default function Index() {
                   navigate('/');
                   setActiveTab('mortgage');
                 }}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
                   activeTab === 'mortgage' ? 'bg-blue-50 text-primary' : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
@@ -108,15 +108,33 @@ export default function Index() {
               </button>
               <button
                 onClick={() => navigate('/services')}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors whitespace-nowrap"
               >
                 Услуги
               </button>
               <button
-                onClick={() => navigate('/contact')}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                onClick={() => navigate('/documents')}
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors whitespace-nowrap"
               >
-                Контакты
+                Документы
+              </button>
+              <button
+                onClick={() => navigate('/blog')}
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors whitespace-nowrap"
+              >
+                Блог
+              </button>
+              <button
+                onClick={() => navigate('/videos')}
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors whitespace-nowrap"
+              >
+                Видео
+              </button>
+              <button
+                onClick={() => navigate('/faq')}
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors whitespace-nowrap"
+              >
+                FAQ
               </button>
             </nav>
             <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
