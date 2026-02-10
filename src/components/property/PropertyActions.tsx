@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import ShareButton from '@/components/ShareButton';
+import { useNavigate } from 'react-router-dom';
 
 interface PropertyActionsProps {
   isLand: boolean;
@@ -11,11 +12,13 @@ interface PropertyActionsProps {
 }
 
 export default function PropertyActions({ isLand, phone, contactName, title, price }: PropertyActionsProps) {
+  const navigate = useNavigate();
+
   return (
     <>
       {/* Кнопки действий */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-        <Button size="lg" className="gap-2">
+        <Button size="lg" className="gap-2" onClick={() => navigate('/programs')}>
           <Icon name="CreditCard" size={20} />
           Купить в ипотеку
         </Button>
