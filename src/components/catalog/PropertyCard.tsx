@@ -31,8 +31,8 @@ interface PropertyCardProps {
 const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) => {
   const navigate = useNavigate();
   const photos = property.photos && property.photos.length > 0 ? property.photos : [property.photo_url];
-  // Use ID instead of slug for now (slug has issues)
-  const propertyUrl = `/property/${property.id}`;
+  // Use slug for SEO-friendly URLs, fallback to ID
+  const propertyUrl = property.slug ? `/property/${property.slug}` : `/property/${property.id}`;
 
   if (onView) {
     return (
@@ -154,7 +154,9 @@ const PropertyCard = ({ property, onView, isAdmin = false }: PropertyCardProps) 
           )}
         </div>
         {property.description && (
-          <p className="text-sm text-gray-600 line-clamp-3">{property.description}</p>
+          <p className="text-sm text-primary hover:text-primary/80 font-medium line-clamp-3 transition-colors cursor-pointer">
+            {property.description}
+          </p>
         )}
       </div>
     </div>
