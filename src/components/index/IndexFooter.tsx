@@ -13,7 +13,7 @@ export default function IndexFooter({ setActiveTab }: IndexFooterProps) {
   return (
     <footer className="bg-gray-900 text-white mt-8 sm:mt-12 py-8 sm:py-12">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
           <div>
             <AnimatedLogo
               src="https://cdn.poehali.dev/files/с дескриптором белый вариант (1).png"
@@ -118,12 +118,12 @@ export default function IndexFooter({ setActiveTab }: IndexFooterProps) {
               </li>
             </ul>
           </div>
-        </div>
 
-        <div className="border-t border-gray-800 pt-6 mt-8">
-          <div className="mb-8">
-            <h3 className="font-semibold text-lg mb-4">Популярные запросы</h3>
-            <TagCloud />
+          <div>
+            <h3 className="font-semibold text-base mb-4">Теги</h3>
+            <div className="text-sm">
+              <TagCloud />
+            </div>
           </div>
         </div>
 

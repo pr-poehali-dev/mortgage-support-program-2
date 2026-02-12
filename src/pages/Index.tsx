@@ -7,7 +7,6 @@ import ThemeIndicator from '@/components/ThemeIndicator';
 import DailyHeroImage from '@/components/DailyHeroImage';
 import BlogPublicationIndicator from '@/components/BlogPublicationIndicator';
 import CookieConsent from '@/components/CookieConsent';
-import StatisticsCounter from '@/components/StatisticsCounter';
 import ViewsCounter from '@/components/ViewsCounter';
 import IndexHeader from '@/components/index/IndexHeader';
 import IndexMainSections from '@/components/index/IndexMainSections';
@@ -53,7 +52,6 @@ export default function Index() {
       <Toaster />
       <ThemeIndicator theme={theme} />
       <BlogPublicationIndicator />
-      <StatisticsCounter />
       <ViewsCounter />
       <CookieConsent />
     </div>
