@@ -33,10 +33,10 @@ export default function Header() {
               onClick={() => navigate('/admin')}
               variant="ghost"
               size="icon"
-              className="text-gray-500 hover:text-primary min-w-[44px] min-h-[44px]"
+              className="text-gray-700 hover:text-primary hover:bg-primary/10 min-w-[44px] min-h-[44px] bg-gray-100"
               title="Админ-панель"
             >
-              <Icon name="Settings" size={20} className="sm:w-6 sm:h-6" />
+              <Icon name="Settings" size={24} className="sm:w-7 sm:h-7" />
             </Button>
             <ShareButton />
             <a 
