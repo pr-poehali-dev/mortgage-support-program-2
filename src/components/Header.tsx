@@ -109,6 +109,14 @@ export default function Header() {
             <span>Документы</span>
           </Button>
           <Button
+            onClick={() => navigate('/contact')}
+            variant="outline"
+            className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold"
+          >
+            <Icon name="MapPin" className="mr-1 sm:mr-1.5" size={16} />
+            <span>Контакты</span>
+          </Button>
+          <Button
             onClick={() => navigate('/blog')}
             variant="outline"
             className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold"

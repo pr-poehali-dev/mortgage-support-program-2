@@ -63,14 +63,6 @@ export default function About() {
                 </div>
               </div>
             </div>
-
-            <div className="flex-1 max-w-md">
-              <img
-                src="https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/4d093a65-2fb8-4f42-bd03-2748bab0d832.jpg"
-                alt="Офис Арендодатель"
-                className="w-full h-auto rounded-xl shadow-lg"
-              />
-            </div>
           </div>
         </div>
 
