@@ -100,6 +100,12 @@ export default function IndexHeader({ activeTab, setActiveTab, theme }: IndexHea
             >
               FAQ
             </button>
+            <button
+              onClick={() => navigate('/online-services')}
+              className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors whitespace-nowrap"
+            >
+              Онлайн услуги
+            </button>
           </nav>
           <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
             <ShareButton />

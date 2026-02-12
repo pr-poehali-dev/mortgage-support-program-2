@@ -110,7 +110,7 @@ export default function Services() {
           {/* Быстрые ссылки */}
           <div className="mt-10 sm:mt-12 bg-white/90 backdrop-blur-sm rounded-xl p-6 sm:p-8 shadow-lg">
             <h3 className="text-lg font-bold mb-4 text-gray-800">Полезные разделы</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
               <button
                 onClick={() => navigate('/')}
                 className="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-all"
@@ -131,6 +131,13 @@ export default function Services() {
               >
                 <Icon name="Building" size={24} className="text-primary" />
                 <span className="text-sm font-medium text-center">Недвижимость</span>
+              </button>
+              <button
+                onClick={() => navigate('/online-services')}
+                className="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-all"
+              >
+                <Icon name="Globe" size={24} className="text-primary" />
+                <span className="text-sm font-medium text-center">Онлайн услуги</span>
               </button>
               <button
                 onClick={() => navigate('/contact')}
