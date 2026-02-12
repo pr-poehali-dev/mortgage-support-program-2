@@ -70,7 +70,7 @@ export default function IndexMainSections({ activeTab, setActiveTab }: IndexMain
               onClick={() => navigate('/online-services')}
             >
               <Icon name="ShoppingCart" size={20} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">Онлайн</span>
+              <span className="whitespace-nowrap text-center leading-tight">Онлайн услуги</span>
             </TabsTrigger>
           </div>
         </TabsList>
