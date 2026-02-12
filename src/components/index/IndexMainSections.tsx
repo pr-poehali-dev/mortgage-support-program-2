@@ -49,12 +49,12 @@ export default function IndexMainSections({ activeTab, setActiveTab }: IndexMain
               <span className="whitespace-nowrap">Видео</span>
             </TabsTrigger>
             <TabsTrigger 
-              value="online-services" 
+              value="photos" 
               className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
-              onClick={() => navigate('/online-services')}
+              onClick={() => navigate('/photos')}
             >
-              <Icon name="ShoppingCart" size={20} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">Онлайн</span>
+              <Icon name="Image" size={20} className="sm:w-5 sm:h-5" />
+              <span className="whitespace-nowrap">Фото</span>
             </TabsTrigger>
             <TabsTrigger 
               value="faq" 
@@ -65,12 +65,12 @@ export default function IndexMainSections({ activeTab, setActiveTab }: IndexMain
               <span className="whitespace-nowrap">FAQ</span>
             </TabsTrigger>
             <TabsTrigger 
-              value="photos" 
+              value="online-services" 
               className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
-              onClick={() => navigate('/photos')}
+              onClick={() => navigate('/online-services')}
             >
-              <Icon name="Image" size={20} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">Фото</span>
+              <Icon name="ShoppingCart" size={20} className="sm:w-5 sm:h-5" />
+              <span className="whitespace-nowrap">Онлайн</span>
             </TabsTrigger>
           </div>
         </TabsList>
