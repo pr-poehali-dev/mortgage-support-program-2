@@ -40,6 +40,8 @@ const Blog = lazy(() => import("./pages/Blog"));
 const Sitemap = lazy(() => import("./pages/Sitemap"));
 const About = lazy(() => import("./pages/About"));
 const RentalCatalog = lazy(() => import("./pages/RentalCatalog"));
+const Videos = lazy(() => import("./pages/Videos"));
+const Documents = lazy(() => import("./pages/Documents"));
 const ChatGPTPlaygroundPage = lazy(() => import("./components/extensions/chatgpt-polza/ChatGPTPlaygroundPage"));
 const NotFound = lazy(() => import("./pages/NotFoundCustom"));
 
@@ -106,6 +108,8 @@ function AppContent() {
               <Route path="/sitemap" element={<Sitemap />} />
               <Route path="/about" element={<About />} />
               <Route path="/rental" element={<RentalCatalog />} />
+              <Route path="/videos" element={<Videos />} />
+              <Route path="/documents" element={<Documents />} />
               <Route path="/chatgpt" element={<ChatGPTPlaygroundPage apiUrl="https://functions.poehali.dev/536eca85-b7ba-4712-8615-fc41995e6ee6" defaultModel="openai/gpt-4o-mini" />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
