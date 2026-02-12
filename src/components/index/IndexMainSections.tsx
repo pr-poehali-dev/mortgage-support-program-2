@@ -31,7 +31,7 @@ export default function IndexMainSections({ activeTab, setActiveTab }: IndexMain
       <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-3 sm:space-y-6">
         {/* Дополнительные разделы */}
         <TabsList className="bg-white/80 backdrop-blur-sm p-1 sm:p-1.5 rounded-lg shadow-sm h-auto">
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-1 sm:gap-1.5 w-full">
+          <div className="grid grid-cols-3 gap-1 sm:gap-1.5 w-full">
             <TabsTrigger value="documents" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
               <Icon name="FileText" size={20} className="sm:w-5 sm:h-5" />
               <span className="whitespace-nowrap">Документы</span>
@@ -49,14 +49,6 @@ export default function IndexMainSections({ activeTab, setActiveTab }: IndexMain
               <span className="whitespace-nowrap">Видео</span>
             </TabsTrigger>
             <TabsTrigger 
-              value="chatgpt" 
-              className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
-              onClick={() => navigate('/chatgpt')}
-            >
-              <Icon name="Bot" size={20} className="sm:w-5 sm:h-5" />
-              <span className="whitespace-nowrap">ChatGPT</span>
-            </TabsTrigger>
-            <TabsTrigger 
               value="online-services" 
               className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
               onClick={() => navigate('/online-services')}
@@ -71,6 +63,14 @@ export default function IndexMainSections({ activeTab, setActiveTab }: IndexMain
             >
               <Icon name="HelpCircle" size={20} className="sm:w-5 sm:h-5" />
               <span className="whitespace-nowrap">FAQ</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="photos" 
+              className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]"
+              onClick={() => navigate('/photos')}
+            >
+              <Icon name="Image" size={20} className="sm:w-5 sm:h-5" />
+              <span className="whitespace-nowrap">Фото</span>
             </TabsTrigger>
           </div>
         </TabsList>
