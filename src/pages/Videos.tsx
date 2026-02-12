@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
@@ -6,71 +7,58 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import Icon from '@/components/ui/icon';
 import { useDailyTheme } from '@/hooks/useDailyTheme';
 
+interface Video {
+  video_id: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  duration: number;
+  views: number;
+  created: string;
+  embed_url: string;
+}
+
 export default function Videos() {
   const theme = useDailyTheme();
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
 
-  const videoCategories = [
-    {
-      title: 'Обзоры недвижимости',
-      icon: 'Home',
-      videos: [
-        {
-          title: 'Обзор квартир в Севастополе 2025',
-          description: 'Актуальные предложения по продаже квартир в центре города',
-          thumbnail: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/cf3a8153-272d-4bad-ab6d-5d0f64e066f0.jpg',
-          duration: '12:45',
-          views: '2.5K'
-        },
-        {
-          title: 'Коттеджи и дома в Крыму',
-          description: 'Лучшие предложения загородной недвижимости',
-          thumbnail: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/4d093a65-2fb8-4f42-bd03-2748bab0d832.jpg',
-          duration: '15:20',
-          views: '1.8K'
-        }
-      ]
-    },
-    {
-      title: 'Инструкции по ипотеке',
-      icon: 'GraduationCap',
-      videos: [
-        {
-          title: 'Как получить ипотеку в 2025 году',
-          description: 'Пошаговая инструкция по оформлению ипотеки в Крыму',
-          thumbnail: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/7e56d26b-fbcb-4c95-a008-5edc882e651b.jpg',
-          duration: '18:30',
-          views: '5.2K'
-        },
-        {
-          title: 'Семейная ипотека: все нюансы',
-          description: 'Условия получения льготной ипотеки для семей с детьми',
-          thumbnail: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/c1e5480b-a628-4f12-9e94-2a8e7f37d3c4.jpg',
-          duration: '14:15',
-          views: '3.9K'
-        }
-      ]
-    },
-    {
-      title: 'Советы экспертов',
-      icon: 'Lightbulb',
-      videos: [
-        {
-          title: 'Как выбрать квартиру для покупки',
-          description: 'На что обратить внимание при выборе недвижимости',
-          thumbnail: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/4d093a65-2fb8-4f42-bd03-2748bab0d832.jpg',
-          duration: '10:45',
-          views: '4.1K'
-        },
-        {
-          title: 'Инвестиции в недвижимость Крыма',
-          description: 'Перспективные районы и объекты для инвестирования',
-          thumbnail: 'https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/files/cf3a8153-272d-4bad-ab6d-5d0f64e066f0.jpg',
-          duration: '16:50',
-          views: '2.7K'
-        }
-      ]
+  useEffect(() => {
+    fetchVideos();
+    const interval = setInterval(fetchVideos, 300000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const fetchVideos = async () => {
+    try {
+      const response = await fetch('https://functions.poehali.dev/4bf42b28-1491-44aa-a515-434841d027d6');
+      const data = await response.json();
+      
+      if (data.videos) {
+        setVideos(data.videos);
+      }
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  const formatDuration = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const formatViews = (views: number) => {
+    if (views >= 1000000) {
+      return `${(views / 1000000).toFixed(1)}M`;
+    } else if (views >= 1000) {
+      return `${(views / 1000).toFixed(1)}K`;
+    }
+    return views.toString();
+  };
 
   return (
     <div className={`min-h-screen ${theme.gradient}`}>
@@ -91,56 +79,102 @@ export default function Videos() {
           </p>
         </div>
 
-        {videoCategories.map((category, categoryIndex) => (
-          <section key={categoryIndex} className="mb-12">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                <Icon name={category.icon} className="text-white" size={24} />
+        {selectedVideo && (
+          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => setSelectedVideo(null)}>
+            <div className="relative w-full max-w-5xl bg-white rounded-xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+              <button
+                onClick={() => setSelectedVideo(null)}
+                className="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-colors"
+              >
+                <Icon name="X" size={24} />
+              </button>
+              <div className="relative pt-[56.25%]">
+                <iframe
+                  src={selectedVideo.embed_url}
+                  frameBorder="0"
+                  allow="clipboard-write; autoplay"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                ></iframe>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900">{category.title}</h2>
+              <div className="p-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  {selectedVideo.title}
+                </h3>
+                <p className="text-gray-600">
+                  {selectedVideo.description}
+                </p>
+              </div>
             </div>
+          </div>
+        )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {category.videos.map((video, videoIndex) => (
-                <Card key={videoIndex} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
-                  <div className="relative">
-                    <img 
-                      src={video.thumbnail} 
-                      alt={video.title}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                      <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <Icon name="Play" className="text-primary ml-1" size={32} />
-                      </div>
-                    </div>
-                    <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
-                      {video.duration}
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <div className="text-center">
+              <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-gray-600">Загрузка видео...</p>
+            </div>
+          </div>
+        ) : videos.length === 0 ? (
+          <Card className="text-center py-12">
+            <CardContent>
+              <Icon name="Video" size={64} className="mx-auto text-gray-400 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                Пока нет видео
+              </h3>
+              <p className="text-gray-600">
+                Скоро здесь появятся полезные материалы
+              </p>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {videos.map((video) => (
+              <Card 
+                key={video.video_id} 
+                className="overflow-hidden hover:shadow-xl transition-all cursor-pointer group"
+                onClick={() => setSelectedVideo(video)}
+              >
+                <div className="relative">
+                  <img 
+                    src={video.thumbnail} 
+                    alt={video.title}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                    <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Icon name="Play" className="text-primary ml-1" size={32} />
                     </div>
                   </div>
-                  <CardHeader>
-                    <CardTitle className="text-xl group-hover:text-primary transition-colors">
-                      {video.title}
-                    </CardTitle>
-                    <CardDescription className="text-base">
-                      {video.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center gap-4 text-sm text-gray-600">
-                      <div className="flex items-center gap-1">
-                        <Icon name="Eye" size={16} />
-                        <span>{video.views} просмотров</span>
-                      </div>
+                  {video.duration > 0 && (
+                    <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-sm font-medium">
+                      {formatDuration(video.duration)}
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-        ))}
+                  )}
+                </div>
+                <CardHeader>
+                  <CardTitle className="text-lg group-hover:text-primary transition-colors line-clamp-2">
+                    {video.title}
+                  </CardTitle>
+                  <CardDescription className="line-clamp-2">
+                    {video.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center gap-4 text-sm text-gray-600">
+                    <div className="flex items-center gap-1">
+                      <Icon name="Eye" size={16} />
+                      <span>{formatViews(video.views)} просмотров</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
 
-        <Card className="bg-gradient-to-br from-primary to-purple-600 text-white">
+        <Card className="mt-12 bg-gradient-to-br from-primary to-purple-600 text-white">
           <CardHeader>
             <CardTitle className="text-2xl">Подпишитесь на наш канал</CardTitle>
             <CardDescription className="text-white/90 text-base">
@@ -150,20 +184,29 @@ export default function Videos() {
           <CardContent>
             <div className="flex flex-col sm:flex-row gap-4">
               <a
-                href="https://t.me/+79781281850"
+                href="https://rutube.ru/channel/49706639/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-white/90 transition-colors"
               >
+                <Icon name="Video" size={20} />
+                Rutube канал
+              </a>
+              <a
+                href="https://t.me/+79781281850"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/30 transition-colors"
+              >
                 <Icon name="Send" size={20} />
-                Telegram канал
+                Telegram
               </a>
               <a
                 href="tel:+79781281850"
                 className="flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/30 transition-colors"
               >
                 <Icon name="Phone" size={20} />
-                Задать вопрос
+                Позвонить
               </a>
             </div>
           </CardContent>

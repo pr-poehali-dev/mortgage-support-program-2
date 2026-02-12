@@ -1,14 +1,13 @@
 {
   "tests": [
     {
-      "name": "Get latest video",
+      "name": "Get all videos from Rutube channel",
       "method": "GET",
       "path": "/",
       "expectedStatus": 200,
       "expectedBody": {
-        "video_id": "string",
-        "title": "string",
-        "embed_url": "string"
+        "videos": "array",
+        "total": "number"
       },
       "bodyMatcher": "partial"
     },

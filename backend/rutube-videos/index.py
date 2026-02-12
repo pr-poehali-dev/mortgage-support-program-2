@@ -28,7 +28,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     if method == 'GET':
         channel_id = '49706639'
         params = event.get('queryStringParameters', {}) or {}
-        page_size = params.get('page_size', '1')
+        page_size = params.get('page_size', '20')
         
         api_url = f'https://rutube.ru/api/video/person/{channel_id}/?page=1&page_size={page_size}'
         
