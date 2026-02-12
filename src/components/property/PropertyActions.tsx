@@ -15,15 +15,13 @@ export default function PropertyActions({ isLand, phone, contactName, title, pri
   const navigate = useNavigate();
   
   const cleanPhone = (phoneNumber?: string) => {
-    if (!phoneNumber) return '+79781281850';
-    const cleaned = phoneNumber.replace(/[^\d+]/g, '');
-    if (!cleaned.startsWith('+')) {
-      return '+' + cleaned;
-    }
-    return cleaned;
+    if (!phoneNumber) return '79781281850';
+    const cleaned = phoneNumber.replace(/[^\d]/g, '');
+    return cleaned.startsWith('7') ? cleaned : '7' + cleaned;
   };
 
-  const phoneLink = cleanPhone(phone);
+  const phoneNumber = cleanPhone(phone);
+  const displayName = contactName || 'Николаеву Дмитрию Юрьевичу';
 
   return (
     <>
@@ -46,10 +44,27 @@ export default function PropertyActions({ isLand, phone, contactName, title, pri
           </Button>
         )}
         
-        <Button size="lg" variant="secondary" className="gap-2" asChild>
-          <a href={`tel:${phoneLink}`}>
+        <Button size="lg" className="gap-2 bg-purple-600 hover:bg-purple-700" asChild>
+          <a href={`tel:+${phoneNumber}`}>
             <Icon name="Phone" size={20} />
-            {contactName ? `Позвонить ${contactName}` : 'Позвонить'}
+            Позвонить {displayName}
+          </a>
+        </Button>
+      </div>
+
+      {/* Кнопки мессенджеров */}
+      <div className="grid grid-cols-2 gap-3 pt-4">
+        <Button size="lg" variant="outline" className="gap-2 text-blue-600 hover:bg-blue-50" asChild>
+          <a href={`https://t.me/+${phoneNumber}`} target="_blank" rel="noopener noreferrer">
+            <Icon name="Send" size={20} />
+            Написать в Telegram
+          </a>
+        </Button>
+        
+        <Button size="lg" variant="outline" className="gap-2 text-red-600 hover:bg-red-50" asChild>
+          <a href={`https://maxim.chat/${phoneNumber}`} target="_blank" rel="noopener noreferrer">
+            <Icon name="MessageSquare" size={20} />
+            Написать в Max
           </a>
         </Button>
       </div>
