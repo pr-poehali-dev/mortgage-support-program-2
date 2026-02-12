@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import AnimatedLogo from '@/components/AnimatedLogo';
+import TagCloud from '@/components/TagCloud';
 
 interface IndexFooterProps {
   setActiveTab: (tab: string) => void;
@@ -116,6 +117,13 @@ export default function IndexFooter({ setActiveTab }: IndexFooterProps) {
                 </button>
               </li>
             </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-800 pt-6 mt-8">
+          <div className="mb-8">
+            <h3 className="font-semibold text-lg mb-4">Популярные запросы</h3>
+            <TagCloud />
           </div>
         </div>
 
