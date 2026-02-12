@@ -302,10 +302,6 @@ export default function DocumentsAndBlogTabs() {
           </div>
         </div>
 
-        <div className="mb-6">
-          <NewsletterSubscription />
-        </div>
-
         {blogArticles.length === 0 ? (
           <Card className="p-8 text-center">
             <Icon name="BookOpen" size={48} className="mx-auto text-gray-300 mb-4" />
