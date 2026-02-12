@@ -118,9 +118,14 @@ export default function Contact() {
               </div>
 
               <div>
-                <div className="mb-6">
+                <div className="mb-6 flex flex-col items-center">
+                  <img 
+                    src="https://cdn.poehali.dev/projects/1379efae-15a5-489f-bda0-505b22ad3d6a/bucket/715ca48c-2ce9-40df-be4e-f169442e96c7.jpg" 
+                    alt="Арендодатель - логотип" 
+                    className="w-full max-w-sm h-auto object-contain mb-6 rounded-lg"
+                  />
                   <h4 className="font-semibold text-lg mb-4">Реквизиты</h4>
-                  <div className="space-y-3 p-4 bg-gray-50 rounded-lg">
+                  <div className="space-y-3 p-4 bg-gray-50 rounded-lg w-full">
                     <div>
                       <p className="text-sm text-gray-600">Полное наименование</p>
                       <p className="font-semibold text-gray-900">ИП Николаев Дмитрий Юрьевич</p>

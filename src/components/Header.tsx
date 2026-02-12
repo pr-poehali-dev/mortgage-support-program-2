@@ -125,12 +125,12 @@ export default function Header() {
             <span>Видео</span>
           </Button>
           <Button
-            onClick={() => navigate('/catalog')}
+            onClick={() => navigate('/online-services')}
             variant="outline"
             className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold"
           >
-            <Icon name="ShoppingCart" className="mr-1 sm:mr-1.5" size={16} />
-            <span>Онлайн</span>
+            <Icon name="Globe" className="mr-1 sm:mr-1.5" size={16} />
+            <span>Онлайн услуги</span>
           </Button>
           <Button
             onClick={() => navigate('/faq')}
