@@ -4,7 +4,6 @@ import DocumentsAndBlogTabs from './tabs/DocumentsAndBlogTabs';
 import CatalogTab from './tabs/CatalogTab';
 import ContactAndFaqTabs from './tabs/ContactAndFaqTabs';
 import VideosTab from './tabs/VideosTab';
-import TagsTab from './tabs/TagsTab';
 import HomeTab from './HomeTab';
 import ReviewsSection from './ReviewsSection';
 import MortgageTab from './tabs/MortgageTab';
@@ -27,8 +26,6 @@ export default function MortgageTabsContent({ onNavigateToCalculator }: { onNavi
       <DocumentsAndBlogTabs />
 
       <VideosTab />
-
-      <TagsTab />
 
       <ContactAndFaqTabs />
     </>
