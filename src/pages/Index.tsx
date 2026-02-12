@@ -3,7 +3,6 @@ import { Toaster } from '@/components/ui/toaster';
 import MortgageQuiz from '@/components/MortgageQuiz';
 import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
-import DailyHeroImage from '@/components/DailyHeroImage';
 import BlogPublicationIndicator from '@/components/BlogPublicationIndicator';
 import CookieConsent from '@/components/CookieConsent';
 import IndexHeader from '@/components/index/IndexHeader';
@@ -45,7 +44,6 @@ export default function Index() {
 
       <IndexFooter setActiveTab={setActiveTab} theme={theme} />
 
-      <DailyHeroImage />
       <MortgageQuiz />
       <Toaster />
       <BlogPublicationIndicator />
