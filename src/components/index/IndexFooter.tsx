@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import AnimatedLogo from '@/components/AnimatedLogo';
@@ -9,6 +10,7 @@ interface IndexFooterProps {
 
 export default function IndexFooter({ setActiveTab }: IndexFooterProps) {
   const navigate = useNavigate();
+  const [isTagsOpen, setIsTagsOpen] = useState(false);
 
   return (
     <footer className="bg-gray-900 text-white mt-8 sm:mt-12 py-8 sm:py-12">
@@ -120,10 +122,18 @@ export default function IndexFooter({ setActiveTab }: IndexFooterProps) {
           </div>
 
           <div>
-            <h3 className="font-semibold text-base mb-4">Теги</h3>
-            <div className="text-sm">
-              <TagCloud />
-            </div>
+            <button 
+              onClick={() => setIsTagsOpen(!isTagsOpen)}
+              className="flex items-center gap-2 font-semibold text-base mb-4 hover:text-gray-300 transition-colors"
+            >
+              <span>Теги</span>
+              <Icon name={isTagsOpen ? "ChevronUp" : "ChevronDown"} size={16} />
+            </button>
+            {isTagsOpen && (
+              <div className="text-sm">
+                <TagCloud />
+              </div>
+            )}
           </div>
         </div>
 
