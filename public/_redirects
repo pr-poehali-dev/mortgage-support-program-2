@@ -7,6 +7,8 @@
 /contact                  /index.html   200
 /faq                      /index.html   200
 /blog                     /index.html   200
+/videos                   /index.html   200
+/documents                /index.html   200
 /property/*               /index.html   200
 /admin                    /index.html   200
 /admin/*                  /index.html   200
@@ -17,6 +19,9 @@
 /rent-help                /index.html   200
 /sell-help                /index.html   200
 /add-property             /index.html   200
+/sitemap                  /index.html   200
+/about                    /index.html   200
+/rental                   /index.html   200
 /chatgpt                  /index.html   200
 
 # Everything else goes to React Router

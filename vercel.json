@@ -8,6 +8,8 @@
     { "source": "/contact", "destination": "/index.html" },
     { "source": "/faq", "destination": "/index.html" },
     { "source": "/blog", "destination": "/index.html" },
+    { "source": "/videos", "destination": "/index.html" },
+    { "source": "/documents", "destination": "/index.html" },
     { "source": "/property/:id", "destination": "/index.html" },
     { "source": "/admin", "destination": "/index.html" },
     { "source": "/admin/:path*", "destination": "/index.html" },
@@ -18,6 +20,9 @@
     { "source": "/rent-help", "destination": "/index.html" },
     { "source": "/sell-help", "destination": "/index.html" },
     { "source": "/add-property", "destination": "/index.html" },
+    { "source": "/sitemap", "destination": "/index.html" },
+    { "source": "/about", "destination": "/index.html" },
+    { "source": "/rental", "destination": "/index.html" },
     { "source": "/chatgpt", "destination": "/index.html" }
   ]
 }
