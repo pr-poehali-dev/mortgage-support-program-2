@@ -402,8 +402,9 @@ def handler(event: dict, context) -> dict:
             }
 
         elif method == 'DELETE':
-            params = event.get('queryStringParameters', {})
-            property_id = params.get('id')
+            params = event.get('queryStringParameters', {}) or {}
+            body_data = json.loads(event.get('body', '{}'))
+            property_id = params.get('id') or body_data.get('id')
             delete_all = params.get('all')
             
             if delete_all == 'true':

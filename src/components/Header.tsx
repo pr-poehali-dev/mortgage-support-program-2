@@ -29,6 +29,15 @@ export default function Header() {
             </div>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+            <Button
+              onClick={() => navigate('/admin')}
+              variant="ghost"
+              size="icon"
+              className="text-gray-500 hover:text-primary min-w-[44px] min-h-[44px]"
+              title="Админ-панель"
+            >
+              <Icon name="Settings" size={20} className="sm:w-6 sm:h-6" />
+            </Button>
             <ShareButton />
             <a 
               href="tel:+79781281850" 
