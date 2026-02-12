@@ -1,0 +1,20 @@
+{
+  "tests": [
+    {
+      "name": "Send newsletter to subscribers",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "article_id": 1,
+        "article_title": "Test Article",
+        "article_excerpt": "This is a test article"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "message": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

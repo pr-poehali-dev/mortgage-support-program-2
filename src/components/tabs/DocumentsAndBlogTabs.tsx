@@ -10,7 +10,10 @@ import { jsPDF } from 'jspdf';
 import { programs, documentsData } from '@/data/mortgageData';
 import { useDailyBlogPost } from '@/hooks/useDailyBlogPost';
 import { useArticlePublisher } from '@/hooks/useArticlePublisher';
+import NewsletterSubscription from '@/components/NewsletterSubscription';
+import ArticleComments from '@/components/ArticleComments';
 import FullscreenArticle from '@/components/FullscreenArticle';
+import ArticleStatsDisplay from '@/components/ArticleStatsDisplay';
 
 export default function DocumentsAndBlogTabs() {
   const blogArticles = useDailyBlogPost();
@@ -302,6 +305,10 @@ export default function DocumentsAndBlogTabs() {
           </div>
         </div>
 
+        <div className="mb-6">
+          <NewsletterSubscription />
+        </div>
+
         {blogArticles.length === 0 ? (
           <Card className="p-8 text-center">
             <Icon name="BookOpen" size={48} className="mx-auto text-gray-300 mb-4" />
@@ -345,6 +352,9 @@ export default function DocumentsAndBlogTabs() {
                     <Icon name="Clock" size={14} />
                     <span>{article.readTime}</span>
                   </div>
+                </div>
+                <div className="mb-4">
+                  <ArticleStatsDisplay articleId={article.id} />
                 </div>
                 <div className="flex gap-2">
                   <Button

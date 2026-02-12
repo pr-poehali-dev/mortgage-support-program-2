@@ -1,0 +1,36 @@
+{
+  "tests": [
+    {
+      "name": "Test quiz submission with all fields",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "category": "family",
+        "region": "moscow",
+        "loanAmountRange": "3-6M",
+        "recommendedProgram": "Семейная ипотека",
+        "sessionId": "test-session-123"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "result_id": "number",
+        "session_id": "string"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test quiz submission without required fields",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "category": "family"
+      },
+      "expectedStatus": 400,
+      "expectedBody": {
+        "error": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

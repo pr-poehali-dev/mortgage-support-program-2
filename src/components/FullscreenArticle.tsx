@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
+import ArticleComments from '@/components/ArticleComments';
+import { useArticleStats } from '@/hooks/useArticleStats';
 
 interface Article {
   id: number;
@@ -22,8 +24,11 @@ interface FullscreenArticleProps {
 }
 
 export default function FullscreenArticle({ article, onClose }: FullscreenArticleProps) {
+  const { stats, trackView, trackShare } = useArticleStats(article.id);
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+    trackView();
     return () => {
       document.body.style.overflow = 'unset';
     };
@@ -45,6 +50,7 @@ export default function FullscreenArticle({ article, onClose }: FullscreenArticl
   const handleShare = (platform: string) => {
     const url = shareLinks[platform as keyof typeof shareLinks];
     window.open(url, '_blank', 'width=600,height=400');
+    trackShare(platform);
   };
 
   const handleCopyLink = () => {
@@ -67,6 +73,16 @@ export default function FullscreenArticle({ article, onClose }: FullscreenArticl
               <span className="hidden sm:inline">Закрыть</span>
             </Button>
             <Badge variant="secondary">{article.category}</Badge>
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <div className="flex items-center gap-1">
+                <Icon name="Eye" size={16} />
+                <span>{stats.views_count}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Icon name="Share2" size={16} />
+                <span>{stats.shares.total}</span>
+              </div>
+            </div>
           </div>
           
           <div className="flex items-center gap-2">
@@ -237,6 +253,8 @@ export default function FullscreenArticle({ article, onClose }: FullscreenArticl
             </div>
           </div>
         </div>
+
+        <ArticleComments articleId={article.id} />
 
         <div className="border-t pt-8 mt-8">
           <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-2xl">
