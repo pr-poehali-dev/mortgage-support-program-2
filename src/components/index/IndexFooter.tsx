@@ -6,9 +6,10 @@ import TagCloud from '@/components/TagCloud';
 
 interface IndexFooterProps {
   setActiveTab: (tab: string) => void;
+  theme: { name: string; primary: string; gradient: string };
 }
 
-export default function IndexFooter({ setActiveTab }: IndexFooterProps) {
+export default function IndexFooter({ setActiveTab, theme }: IndexFooterProps) {
   const navigate = useNavigate();
   const [isTagsOpen, setIsTagsOpen] = useState(false);
 
@@ -139,9 +140,16 @@ export default function IndexFooter({ setActiveTab }: IndexFooterProps) {
 
         <div className="border-t border-gray-800 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-400">
-              © {new Date().getFullYear()} Арендодатель. Все права защищены.
-            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <p className="text-sm text-gray-400">
+                © {new Date().getFullYear()} Арендодатель. Все права защищены.
+              </p>
+              <div className="flex items-center gap-2 text-gray-400 text-sm">
+                <Icon name="Palette" size={16} />
+                <span>Дизайн дня:</span>
+                <span className="font-semibold text-white">{theme.name}</span>
+              </div>
+            </div>
             <div className="flex gap-4 text-sm text-gray-400">
               <button onClick={() => navigate('/privacy')} className="hover:text-white transition-colors">
                 Конфиденциальность
