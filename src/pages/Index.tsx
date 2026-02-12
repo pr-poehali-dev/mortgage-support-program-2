@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Toaster } from '@/components/ui/toaster';
-import MortgageQuiz from '@/components/MortgageQuiz';
 import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
 import BlogPublicationIndicator from '@/components/BlogPublicationIndicator';
@@ -44,7 +43,6 @@ export default function Index() {
 
       <IndexFooter setActiveTab={setActiveTab} theme={theme} />
 
-      <MortgageQuiz />
       <Toaster />
       <BlogPublicationIndicator />
       <CookieConsent />

@@ -108,6 +108,13 @@ export default function IndexHeader({ activeTab, setActiveTab, theme }: IndexHea
             </button>
           </nav>
           <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+            <button
+              onClick={() => navigate('/admin')}
+              className="text-gray-700 hover:text-primary hover:bg-primary/10 p-2.5 sm:p-3 rounded-lg min-w-[44px] min-h-[44px] bg-gray-100 flex items-center justify-center transition-colors"
+              title="Админ-панель"
+            >
+              <Icon name="Settings" size={24} className="sm:w-7 sm:h-7" />
+            </button>
             <ShareButton />
             <a 
               href="tel:+79781281850" 
