@@ -66,9 +66,8 @@ function SortablePhotoItem({ photo, index, onRemove, onView }: SortablePhotoItem
     <div
       ref={setNodeRef}
       style={style}
-      className="relative group cursor-move"
+      className="relative group"
       {...attributes}
-      {...listeners}
     >
       <img
         src={photo}
@@ -93,16 +92,19 @@ function SortablePhotoItem({ photo, index, onRemove, onView }: SortablePhotoItem
           e.stopPropagation();
           onRemove(photo);
         }}
-        className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
+        className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
       >
-        <Icon name="X" size={14} />
+        <Icon name="X" size={16} />
       </button>
       {index === 0 && (
         <div className="absolute bottom-1 left-1 bg-primary text-white text-xs px-2 py-0.5 rounded">
           Главное
         </div>
       )}
-      <div className="absolute top-1 left-1 bg-black/50 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+      <div 
+        {...listeners}
+        className="absolute top-1 left-1 bg-black/50 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity cursor-move"
+      >
         <Icon name="GripVertical" size={14} />
       </div>
     </div>

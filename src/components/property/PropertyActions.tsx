@@ -13,6 +13,17 @@ interface PropertyActionsProps {
 
 export default function PropertyActions({ isLand, phone, contactName, title, price }: PropertyActionsProps) {
   const navigate = useNavigate();
+  
+  const cleanPhone = (phoneNumber?: string) => {
+    if (!phoneNumber) return '+79781281850';
+    const cleaned = phoneNumber.replace(/[^\d+]/g, '');
+    if (!cleaned.startsWith('+')) {
+      return '+' + cleaned;
+    }
+    return cleaned;
+  };
+
+  const phoneLink = cleanPhone(phone);
 
   return (
     <>
@@ -36,7 +47,7 @@ export default function PropertyActions({ isLand, phone, contactName, title, pri
         )}
         
         <Button size="lg" variant="secondary" className="gap-2" asChild>
-          <a href={`tel:${phone || '+79781281850'}`}>
+          <a href={`tel:${phoneLink}`}>
             <Icon name="Phone" size={20} />
             {contactName ? `Позвонить ${contactName}` : 'Позвонить'}
           </a>
