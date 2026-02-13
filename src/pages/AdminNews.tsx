@@ -53,6 +53,7 @@ export default function AdminNews() {
   const [editItem, setEditItem] = useState<NewsItem | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [parsing, setParsing] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -161,6 +162,27 @@ export default function AdminNews() {
     loadNews();
   };
 
+  const runParser = async () => {
+    setParsing(true);
+    try {
+      const res = await fetch(funcUrls['news-parser'], {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast({ title: `Спарсено ${data.parsed}, добавлено ${data.inserted}, пропущено ${data.skipped}` });
+        loadNews();
+      } else {
+        toast({ title: 'Ошибка парсинга', variant: 'destructive' });
+      }
+    } catch {
+      toast({ title: 'Ошибка сети', variant: 'destructive' });
+    }
+    setParsing(false);
+  };
+
   const togglePinned = async (item: NewsItem) => {
     await fetch(funcUrls.news, {
       method: 'PUT',
@@ -203,10 +225,16 @@ export default function AdminNews() {
             <h1 className="text-lg font-bold">Управление новостями</h1>
             <span className="text-sm text-gray-400">({news.length})</span>
           </div>
-          <Button onClick={openCreate} size="sm">
-            <Icon name="Plus" size={16} className="mr-1.5" />
-            Добавить новость
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button onClick={runParser} size="sm" variant="outline" disabled={parsing}>
+              {parsing ? <Icon name="Loader2" size={16} className="mr-1.5 animate-spin" /> : <Icon name="Rss" size={16} className="mr-1.5" />}
+              {parsing ? 'Парсинг...' : 'Загрузить из RSS'}
+            </Button>
+            <Button onClick={openCreate} size="sm">
+              <Icon name="Plus" size={16} className="mr-1.5" />
+              Добавить
+            </Button>
+          </div>
         </div>
       </header>
 
