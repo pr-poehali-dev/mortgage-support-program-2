@@ -7,6 +7,7 @@ import RentalServicesSection from '@/components/RentalServicesSection';
 import MainServicesGrid from '@/components/MainServicesGrid';
 import InternalLinks from '@/components/InternalLinks';
 import SiteMap from '@/components/SiteMap';
+import NewsSection from '@/components/NewsSection';
 import { trackTabChanged } from '@/services/analytics';
 
 interface IndexMainSectionsProps {
@@ -80,6 +81,8 @@ export default function IndexMainSections({ activeTab, setActiveTab }: IndexMain
           trackTabChanged('calculator');
         }} />
       </Tabs>
+
+      <NewsSection />
 
       <PopularServicesSection />
 

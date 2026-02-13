@@ -1,0 +1,20 @@
+{
+  "tests": [
+    {
+      "name": "Get all news",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"success": true, "news": "array"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Get news by slug not found",
+      "method": "GET",
+      "path": "/?slug=nonexistent-slug-12345",
+      "expectedStatus": 404,
+      "expectedBody": {"success": false},
+      "bodyMatcher": "partial"
+    }
+  ]
+}
