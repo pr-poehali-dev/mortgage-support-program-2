@@ -32,7 +32,11 @@ export default function IndexMainSections({ activeTab, setActiveTab }: IndexMain
       <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-3 sm:space-y-6">
         {/* Дополнительные разделы */}
         <TabsList className="bg-white/80 backdrop-blur-sm p-1 sm:p-1.5 rounded-lg shadow-sm h-auto">
-          <div className="grid grid-cols-3 gap-1 sm:gap-1.5 w-full">
+          <div className="grid grid-cols-4 gap-1 sm:gap-1.5 w-full">
+            <TabsTrigger value="mortgage" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
+              <Icon name="Percent" size={20} className="sm:w-5 sm:h-5" />
+              <span className="whitespace-nowrap">Ипотека</span>
+            </TabsTrigger>
             <TabsTrigger value="documents" className="flex flex-col items-center gap-0.5 sm:gap-1 py-3 sm:py-3 text-[10px] sm:text-xs min-h-[48px]">
               <Icon name="FileText" size={20} className="sm:w-5 sm:h-5" />
               <span className="whitespace-nowrap">Документы</span>

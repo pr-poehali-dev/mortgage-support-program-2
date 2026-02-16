@@ -198,6 +198,17 @@ export default function IndexHeader({ activeTab, setActiveTab, theme }: IndexHea
               Объекты
             </button>
             <button
+              onClick={() => {
+                navigate('/');
+                setActiveTab('mortgage');
+              }}
+              className={`px-2 py-2 rounded-lg text-xs font-medium transition-colors ${
+                activeTab === 'mortgage' ? 'bg-blue-50 text-primary' : 'text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              Ипотека
+            </button>
+            <button
               onClick={() => navigate('/services')}
               className="px-2 py-2 rounded-lg text-xs font-medium text-gray-700 hover:bg-gray-100 transition-colors"
             >
