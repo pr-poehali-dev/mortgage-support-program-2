@@ -65,20 +65,20 @@ export default function Cart() {
 
   return (
     <>
-      <div className="fixed bottom-6 left-6 z-50">
-        <Button
-          onClick={() => setIsOpen(!isOpen)}
-          className="relative rounded-full w-16 h-16 shadow-2xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
-          size="lg"
-        >
-          <Icon name="ShoppingCart" size={28} />
-          {itemCount > 0 && (
+      {itemCount > 0 && (
+        <div className="fixed bottom-6 left-6 z-50">
+          <Button
+            onClick={() => setIsOpen(!isOpen)}
+            className="relative rounded-full w-16 h-16 shadow-2xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+            size="lg"
+          >
+            <Icon name="ShoppingCart" size={28} />
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
               {itemCount}
             </span>
-          )}
-        </Button>
-      </div>
+          </Button>
+        </div>
+      )}
 
       {isOpen && (
         <div className="fixed inset-0 bg-black/50 z-40" onClick={() => setIsOpen(false)}>
