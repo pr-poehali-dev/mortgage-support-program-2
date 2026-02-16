@@ -34,23 +34,23 @@ const ScrollButtons = () => {
   if (!showUp && !showDown) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2">
+    <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-1.5">
       {showUp && (
         <button
           onClick={scrollToTop}
-          className="w-11 h-11 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center hover:opacity-90 transition-all duration-300 animate-fade-in"
+          className="w-10 h-10 rounded-full bg-foreground/70 text-background shadow-md backdrop-blur-sm flex items-center justify-center hover:bg-foreground/90 transition-all duration-300 animate-fade-in"
           aria-label="Наверх"
         >
-          <Icon name="ChevronUp" size={22} />
+          <Icon name="ChevronUp" size={20} />
         </button>
       )}
       {showDown && (
         <button
           onClick={scrollToBottom}
-          className="w-11 h-11 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center hover:opacity-90 transition-all duration-300 animate-fade-in"
+          className="w-10 h-10 rounded-full bg-foreground/70 text-background shadow-md backdrop-blur-sm flex items-center justify-center hover:bg-foreground/90 transition-all duration-300 animate-fade-in"
           aria-label="Вниз"
         >
-          <Icon name="ChevronDown" size={22} />
+          <Icon name="ChevronDown" size={20} />
         </button>
       )}
     </div>
