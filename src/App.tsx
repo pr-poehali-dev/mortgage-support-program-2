@@ -13,6 +13,7 @@ import RouteTransition from "./components/RouteTransition";
 import NotificationPrompt from "./components/NotificationPrompt";
 import InstallPrompt from "./components/InstallPrompt";
 import Cart from "./components/Cart";
+import ScrollButtons from "./components/ScrollButtons";
 import { useAnalytics } from "./hooks/useAnalytics";
 import PerformanceMonitor from "./components/PerformanceMonitor";
 
@@ -124,6 +125,7 @@ function AppContent() {
           <InstallPrompt />
           <NotificationPrompt />
           <Cart />
+          <ScrollButtons />
           {import.meta.env.DEV && <PerformanceMonitor />}
         </BrowserRouter>
       </AnalyticsProvider>
