@@ -107,10 +107,8 @@ export function CRMClientsTab({ clients, requests, onRefresh }: CRMClientsTabPro
     if (!confirm(`Удалить клиента «${client.name}»? Будут удалены все его объекты.`)) return;
     setDeletingId(client.id);
     try {
-      await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'delete_client', client_id: client.id }),
+      await fetch(`${API_URL}?action=delete_client&client_id=${client.id}`, {
+        method: 'DELETE',
       });
       onRefresh();
     } finally {
