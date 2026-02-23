@@ -157,6 +157,13 @@ export default function Header() {
             <Icon name="HelpCircle" className="mr-1 sm:mr-1.5" size={16} />
             <span>FAQ</span>
           </Button>
+          <Button
+            onClick={() => navigate('/construction')}
+            className="h-9 sm:h-10 px-2 sm:px-3 text-xs sm:text-sm font-semibold bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+          >
+            <Icon name="HardHat" className="mr-1 sm:mr-1.5" size={16} />
+            <span>Строительство</span>
+          </Button>
         </nav>
       </div>
     </header>

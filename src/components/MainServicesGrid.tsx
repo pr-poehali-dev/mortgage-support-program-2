@@ -52,12 +52,22 @@ export default function MainServicesGrid() {
       bgGradient: 'from-orange-50 to-orange-100/50',
       borderColor: 'border-orange-200',
       onClick: () => navigate('/rent-help')
+    },
+    {
+      id: 'construction',
+      title: 'Строительство',
+      icon: 'HardHat',
+      description: 'Строим дома и коттеджи под ключ. Кирпич, газоблок, каркас. Ипотека на строительство',
+      color: 'from-amber-500 to-orange-600',
+      bgGradient: 'from-amber-50 to-orange-100/50',
+      borderColor: 'border-amber-200',
+      onClick: () => navigate('/construction')
     }
   ];
 
   return (
     <section className="mb-8 sm:mb-12">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
         {mainServices.map((service) => (
           <div
             key={service.id}
