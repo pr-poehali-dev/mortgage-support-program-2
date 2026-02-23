@@ -65,7 +65,7 @@ export default function AdminNews() {
   }, []);
 
   const handleLogin = () => {
-    if (password === 'admin2024') {
+    if (password === '200555') {
       setIsAuthenticated(true);
       localStorage.setItem('adminAuthenticated', 'true');
     } else {

@@ -24,7 +24,7 @@ interface Article {
   image?: string;
 }
 
-const ADMIN_PASSWORD = 'ipoteka2025';
+const ADMIN_PASSWORD = '200555';
 
 export default function AdminArticleManager() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
