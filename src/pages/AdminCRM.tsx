@@ -14,7 +14,7 @@ import { CRMListTab, CRMClientsTab } from '@/components/admin/crm/CRMListAndClie
 import CRMAnalyticsTab from '@/components/admin/crm/CRMAnalyticsTab';
 import CRMEditDialog from '@/components/admin/crm/CRMEditDialog';
 
-const ADMIN_PASSWORD = 'admin2024';
+const ADMIN_PASSWORD = '200555';
 const API_URL = 'https://functions.poehali.dev/e72807e0-91d8-4a57-992b-41b5cc49df17';
 
 const PIPELINE_STAGES_LABELS: Record<string, string> = {
