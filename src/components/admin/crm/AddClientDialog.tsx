@@ -1,31 +1,52 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
+import { Client } from './crm-types';
 
 interface AddClientDialogProps {
   open: boolean;
   onClose: () => void;
   onSuccess: () => void;
   apiUrl: string;
+  editClient?: Client | null;
 }
 
-export default function AddClientDialog({ open, onClose, onSuccess, apiUrl }: AddClientDialogProps) {
+export default function AddClientDialog({ open, onClose, onSuccess, apiUrl, editClient }: AddClientDialogProps) {
   const [form, setForm] = useState({ name: '', phone: '', email: '', notes: '' });
   const [loading, setLoading] = useState(false);
+
+  const isEdit = !!editClient;
+
+  useEffect(() => {
+    if (editClient) {
+      setForm({
+        name: editClient.name || '',
+        phone: editClient.phone || '',
+        email: editClient.email || '',
+        notes: editClient.notes || '',
+      });
+    } else {
+      setForm({ name: '', phone: '', email: '', notes: '' });
+    }
+  }, [editClient, open]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim()) return;
     setLoading(true);
     try {
+      const body = isEdit
+        ? { action: 'update_client', client_id: editClient!.id, ...form }
+        : { action: 'create_client', ...form, source: 'crm' };
+
       const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'create_client', ...form, source: 'crm' }),
+        body: JSON.stringify(body),
       });
       const data = await res.json();
       if (data.success) {
@@ -43,8 +64,8 @@ export default function AddClientDialog({ open, onClose, onSuccess, apiUrl }: Ad
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Icon name="UserPlus" size={20} />
-            Добавить клиента
+            <Icon name={isEdit ? 'UserCog' : 'UserPlus'} size={20} />
+            {isEdit ? 'Редактировать клиента' : 'Добавить клиента'}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">
@@ -89,7 +110,7 @@ export default function AddClientDialog({ open, onClose, onSuccess, apiUrl }: Ad
             </Button>
             <Button type="submit" className="flex-1" disabled={loading || !form.name.trim()}>
               {loading ? <Icon name="Loader2" size={16} className="animate-spin mr-2" /> : null}
-              Добавить
+              {isEdit ? 'Сохранить' : 'Добавить'}
             </Button>
           </div>
         </form>

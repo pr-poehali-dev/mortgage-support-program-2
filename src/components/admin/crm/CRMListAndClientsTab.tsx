@@ -99,7 +99,20 @@ interface CRMClientsTabProps {
 
 export function CRMClientsTab({ clients, requests, onRefresh }: CRMClientsTabProps) {
   const [addOpen, setAddOpen] = useState(false);
+  const [editClient, setEditClient] = useState<Client | null>(null);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  const handleDelete = async (client: Client) => {
+    if (!confirm(`Удалить клиента «${client.name}»? Будут удалены все его объекты.`)) return;
+    setDeletingId(client.id);
+    try {
+      await fetch(`${API_URL}?action=delete_client&client_id=${client.id}`, { method: 'DELETE' });
+      onRefresh();
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -165,9 +178,38 @@ export function CRMClientsTab({ clients, requests, onRefresh }: CRMClientsTabPro
                     <span className="font-medium">Последняя:</span> {lastReq.service_type} · {STATUS_LABELS[lastReq.status]}
                   </div>
                 )}
-                <div className="mt-2 flex items-center gap-1 text-xs text-primary">
-                  <Icon name="Building2" size={12} />
-                  <span>Нажмите для просмотра объектов</span>
+                {client.notes && (
+                  <div className="mt-2 bg-yellow-50 rounded-lg p-2 text-xs text-gray-600 line-clamp-2">
+                    {client.notes}
+                  </div>
+                )}
+                <div className="mt-3 pt-2 border-t flex gap-1.5" onClick={e => e.stopPropagation()}>
+                  <Button
+                    size="sm" variant="outline"
+                    className="flex-1 h-7 text-xs"
+                    onClick={e => { e.stopPropagation(); setEditClient(client); }}
+                  >
+                    <Icon name="Pencil" size={11} className="mr-1" />Изменить
+                  </Button>
+                  <Button
+                    size="sm" variant="ghost"
+                    className="h-7 px-2 text-red-500 hover:text-red-700 hover:bg-red-50"
+                    disabled={deletingId === client.id}
+                    onClick={e => { e.stopPropagation(); handleDelete(client); }}
+                  >
+                    {deletingId === client.id
+                      ? <Icon name="Loader2" size={12} className="animate-spin" />
+                      : <Icon name="Trash2" size={12} />
+                    }
+                  </Button>
+                  <Button
+                    size="sm" variant="ghost"
+                    className="h-7 px-2 text-primary hover:bg-primary/10"
+                    onClick={e => { e.stopPropagation(); setSelectedClient(client); }}
+                  >
+                    <Icon name="Building2" size={12} className="mr-1" />
+                    <span className="text-xs">Объекты</span>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -180,6 +222,14 @@ export function CRMClientsTab({ clients, requests, onRefresh }: CRMClientsTabPro
         onClose={() => setAddOpen(false)}
         onSuccess={onRefresh}
         apiUrl={API_URL}
+      />
+
+      <AddClientDialog
+        open={!!editClient}
+        onClose={() => setEditClient(null)}
+        onSuccess={() => { onRefresh(); setEditClient(null); }}
+        apiUrl={API_URL}
+        editClient={editClient}
       />
 
       <ClientDetailDialog

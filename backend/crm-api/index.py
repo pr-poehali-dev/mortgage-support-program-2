@@ -215,6 +215,23 @@ def handler(event: dict, context) -> dict:
 
                 return _ok({'success': True, 'sent': sent, 'errors': errors, 'text': text})
 
+            elif action == 'update_client':
+                client_id = body.get('client_id')
+                if not client_id:
+                    return _err(400, 'client_id is required')
+                name = body.get('name', '').strip()
+                if not name:
+                    return _err(400, 'name is required')
+                cursor.execute(f"""
+                    UPDATE {SCHEMA}.clients
+                    SET name=%s, phone=%s, email=%s, notes=%s, updated_at=CURRENT_TIMESTAMP
+                    WHERE id=%s
+                    RETURNING *
+                """, (name, body.get('phone', ''), body.get('email', ''), body.get('notes', ''), client_id))
+                client = dict(cursor.fetchone())
+                conn.commit()
+                return _ok({'success': True, 'client': client})
+
             elif action == 'create_client':
                 name = body.get('name', '').strip()
                 phone = body.get('phone', '').strip()
@@ -313,6 +330,15 @@ def handler(event: dict, context) -> dict:
                 # Мягкое удаление через UPDATE (DELETE запрещен инструментом)
                 # Используем реальный DELETE через прямой SQL
                 cursor.execute(f"DELETE FROM {SCHEMA}.client_properties WHERE id = %s", (prop_id,))
+                conn.commit()
+                return _ok({'success': True})
+
+            if action == 'delete_client':
+                client_id = params.get('client_id')
+                if not client_id:
+                    return _err(400, 'client_id is required')
+                cursor.execute(f"DELETE FROM {SCHEMA}.client_properties WHERE client_id = %s", (client_id,))
+                cursor.execute(f"DELETE FROM {SCHEMA}.clients WHERE id = %s", (client_id,))
                 conn.commit()
                 return _ok({'success': True})
 
