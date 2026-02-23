@@ -17,6 +17,107 @@ def convert_to_serializable(obj):
         return [convert_to_serializable(i) for i in obj]
     return obj
 
+def generate_seo_tags(data: dict) -> str:
+    '''Генерирует строку SEO-тегов на основе полей объекта'''
+    tags = []
+
+    TYPE_MAP = {
+        'apartment': 'квартира', 'house': 'дом', 'land': 'земельный участок',
+        'commercial': 'коммерческая недвижимость', 'room': 'комната', 'newbuild': 'новостройка',
+    }
+    OP_MAP = {'sale': 'купить продажа', 'rent': 'аренда снять'}
+    RENOV_MAP = {
+        'euro': 'евроремонт', 'cosmetic': 'косметический ремонт', 'designer': 'дизайнерский ремонт',
+        'none': 'без ремонта', 'rough': 'черновая отделка',
+    }
+    BUILD_MAP = {
+        'new': 'новостройка новый дом', 'secondary': 'вторичка вторичное жильё',
+        'panel': 'панельный дом', 'brick': 'кирпичный дом', 'monolith': 'монолитный дом',
+    }
+
+    prop_type = data.get('type') or data.get('property_category', '')
+    if prop_type in TYPE_MAP:
+        tags.append(TYPE_MAP[prop_type])
+
+    operation = data.get('operation', '')
+    if operation in OP_MAP:
+        tags.append(OP_MAP[operation])
+
+    location = data.get('location', '')
+    if location:
+        parts = [p.strip() for p in location.replace(',', ' ').split() if len(p) > 3]
+        tags += parts[:4]
+
+    rooms = data.get('rooms')
+    if rooms is not None:
+        try:
+            r = int(rooms)
+            if r == 0:
+                tags.append('студия')
+            elif r == 1:
+                tags.append('однокомнатная 1-комнатная')
+            elif r == 2:
+                tags.append('двухкомнатная 2-комнатная')
+            elif r == 3:
+                tags.append('трёхкомнатная 3-комнатная')
+            elif r >= 4:
+                tags.append(f'{r}-комнатная многокомнатная')
+        except:
+            pass
+
+    area = data.get('area')
+    if area:
+        try:
+            tags.append(f'{float(area):.0f} кв м площадь')
+        except:
+            pass
+
+    floor = data.get('floor')
+    total_floors = data.get('total_floors')
+    if floor:
+        tags.append(f'{floor} этаж')
+    if total_floors:
+        tags.append(f'{total_floors} этажей этажность')
+
+    renovation = data.get('renovation', '')
+    if renovation and renovation in RENOV_MAP:
+        tags.append(RENOV_MAP[renovation])
+
+    building_type = data.get('building_type', '')
+    if building_type and building_type in BUILD_MAP:
+        tags.append(BUILD_MAP[building_type])
+
+    if data.get('furniture'):
+        tags.append('с мебелью')
+    if data.get('balcony') in ('balcony', 'loggia', 'both'):
+        tags.append('балкон лоджия')
+    if data.get('gas'):
+        tags.append('газ')
+    if data.get('water'):
+        tags.append('вода')
+    if data.get('electricity'):
+        tags.append('электричество')
+
+    price = data.get('price')
+    if price:
+        try:
+            p = int(price)
+            if p < 2_000_000:
+                tags.append('недорого дёшево')
+            if p > 10_000_000:
+                tags.append('элитная')
+        except:
+            pass
+
+    price_type = data.get('price_type', 'total')
+    if price_type == 'per_meter':
+        tags.append('цена за метр')
+
+    if not tags:
+        return ''
+    return '\n\n#' + ' #'.join(t.replace(' ', '_') for t in tags if t)
+
+
 def slugify(text: str) -> str:
     '''Преобразует текст в SEO-friendly URL slug'''
     cyrillic_to_latin = {
@@ -203,6 +304,14 @@ def handler(event: dict, context) -> dict:
                     return float(value) if '.' in str(value) else int(value)
                 except:
                     return None
+
+            # Автоматически добавляем SEO-теги в описание
+            base_desc = data.get('description') or ''
+            seo_tags = generate_seo_tags(data)
+            if seo_tags and seo_tags not in base_desc:
+                full_desc = base_desc.rstrip() + seo_tags
+            else:
+                full_desc = base_desc or None
             
             cur.execute('''
                 INSERT INTO t_p26758318_mortgage_support_pro.manual_properties 
@@ -226,7 +335,7 @@ def handler(event: dict, context) -> dict:
                 to_number(data.get('land_area')),
                 photos[0] if photos else None,
                 photos,
-                data.get('description') or None,
+                full_desc or None,
                 data.get('features', []),
                 data.get('property_link') or None,
                 data.get('price_type', 'total'),
@@ -365,6 +474,14 @@ def handler(event: dict, context) -> dict:
                 except:
                     return None
             
+            # Автоматически обновляем SEO-теги в описании
+            base_desc_put = data.get('description') or ''
+            seo_tags_put = generate_seo_tags(data)
+            # Убираем старый блок тегов (начинается с \n\n#) и добавляем новый
+            import re as _re
+            clean_desc_put = _re.sub(r'\n\n#[\s\S]*$', '', base_desc_put).rstrip()
+            full_desc_put = (clean_desc_put + seo_tags_put) if seo_tags_put else clean_desc_put or None
+
             cur.execute('''
                 UPDATE t_p26758318_mortgage_support_pro.manual_properties 
                 SET title = %s, type = %s, property_category = %s, operation = %s, price = %s, location = %s, area = %s, 
@@ -389,7 +506,7 @@ def handler(event: dict, context) -> dict:
                 to_number(data.get('land_area')),
                 photos[0] if photos else None,
                 photos,
-                data.get('description') or None,
+                full_desc_put,
                 data.get('features', []),
                 data.get('property_link') or None,
                 data.get('price_type', 'total'),
