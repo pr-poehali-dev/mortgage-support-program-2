@@ -345,6 +345,7 @@ export default function AdminCRM() {
             <CRMClientsTab
               clients={clients}
               requests={requests}
+              onRefresh={fetchClients}
             />
           </TabsContent>
 

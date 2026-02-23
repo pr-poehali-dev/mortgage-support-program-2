@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { Request, Client, STATUS_COLORS, STATUS_LABELS, PRIORITY_COLORS, PRIORITY_LABELS, getTimeAgo, isNewRequest } from './crm-types';
+import AddClientDialog from './AddClientDialog';
+import ClientDetailDialog from './ClientDetailDialog';
 
 interface CRMListTabProps {
   filteredRequests: Request[];
@@ -86,67 +89,105 @@ export function CRMListTab({ filteredRequests, onOpenEdit, onDelete }: CRMListTa
   );
 }
 
+const API_URL = 'https://functions.poehali.dev/e72807e0-91d8-4a57-992b-41b5cc49df17';
+
 interface CRMClientsTabProps {
   clients: Client[];
   requests: Request[];
+  onRefresh: () => void;
 }
 
-export function CRMClientsTab({ clients, requests }: CRMClientsTabProps) {
+export function CRMClientsTab({ clients, requests, onRefresh }: CRMClientsTabProps) {
+  const [addOpen, setAddOpen] = useState(false);
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {clients.length === 0 && (
-        <div className="col-span-3 text-center py-16 text-gray-400">
-          <Icon name="Users" size={48} className="mx-auto mb-3 opacity-30" />
-          <p>Клиентов пока нет</p>
-        </div>
-      )}
-      {clients.map(client => {
-        const clientRequests = requests.filter(r => r.client_id === client.id);
-        const lastReq = clientRequests[0];
-        return (
-          <Card key={client.id} className="border-0 shadow-sm hover:shadow-md transition-all">
-            <CardContent className="p-4">
-              <div className="flex items-start gap-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-bold text-lg">
-                    {client.name?.charAt(0)?.toUpperCase() || '?'}
-                  </span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-gray-900">{client.name}</p>
-                  <p className="text-sm text-gray-500 flex items-center gap-1 mt-0.5">
-                    <Icon name="Phone" size={12} />{client.phone}
-                  </p>
-                  {client.email && (
-                    <p className="text-xs text-gray-400 flex items-center gap-1 mt-0.5 truncate">
-                      <Icon name="Mail" size={12} />{client.email}
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-gray-500">{clients.length} клиентов</span>
+        <Button size="sm" onClick={() => setAddOpen(true)}>
+          <Icon name="UserPlus" size={14} className="mr-1.5" />
+          Добавить клиента
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {clients.length === 0 && (
+          <div className="col-span-3 text-center py-16 text-gray-400">
+            <Icon name="Users" size={48} className="mx-auto mb-3 opacity-30" />
+            <p>Клиентов пока нет</p>
+          </div>
+        )}
+        {clients.map(client => {
+          const clientRequests = requests.filter(r => r.client_id === client.id);
+          const lastReq = clientRequests[0];
+          return (
+            <Card
+              key={client.id}
+              className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer"
+              onClick={() => setSelectedClient(client)}
+            >
+              <CardContent className="p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center flex-shrink-0">
+                    <span className="text-white font-bold text-lg">
+                      {client.name?.charAt(0)?.toUpperCase() || '?'}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-gray-900">{client.name}</p>
+                    <p className="text-sm text-gray-500 flex items-center gap-1 mt-0.5">
+                      <Icon name="Phone" size={12} />{client.phone}
                     </p>
-                  )}
+                    {client.email && (
+                      <p className="text-xs text-gray-400 flex items-center gap-1 mt-0.5 truncate">
+                        <Icon name="Mail" size={12} />{client.email}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="mt-3 pt-3 border-t flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-xs">
-                    <Icon name="FileText" size={10} className="mr-1" />
-                    {client.requests_count ?? clientRequests.length} заявок
-                  </Badge>
-                  {client.source && (
-                    <Badge variant="outline" className="text-xs text-gray-500">
-                      {client.source}
+                <div className="mt-3 pt-3 border-t flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-xs">
+                      <Icon name="FileText" size={10} className="mr-1" />
+                      {client.requests_count ?? clientRequests.length} заявок
                     </Badge>
-                  )}
+                    {client.source && client.source !== 'crm' && (
+                      <Badge variant="outline" className="text-xs text-gray-500">
+                        {client.source}
+                      </Badge>
+                    )}
+                  </div>
+                  <span className="text-xs text-gray-400">{getTimeAgo(client.created_at)}</span>
                 </div>
-                <span className="text-xs text-gray-400">{getTimeAgo(client.created_at)}</span>
-              </div>
-              {lastReq && (
-                <div className="mt-2 bg-gray-50 rounded-lg p-2 text-xs text-gray-600">
-                  <span className="font-medium">Последняя:</span> {lastReq.service_type} · {STATUS_LABELS[lastReq.status]}
+                {lastReq && (
+                  <div className="mt-2 bg-gray-50 rounded-lg p-2 text-xs text-gray-600">
+                    <span className="font-medium">Последняя:</span> {lastReq.service_type} · {STATUS_LABELS[lastReq.status]}
+                  </div>
+                )}
+                <div className="mt-2 flex items-center gap-1 text-xs text-primary">
+                  <Icon name="Building2" size={12} />
+                  <span>Нажмите для просмотра объектов</span>
                 </div>
-              )}
-            </CardContent>
-          </Card>
-        );
-      })}
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      <AddClientDialog
+        open={addOpen}
+        onClose={() => setAddOpen(false)}
+        onSuccess={onRefresh}
+        apiUrl={API_URL}
+      />
+
+      <ClientDetailDialog
+        client={selectedClient}
+        open={!!selectedClient}
+        onClose={() => setSelectedClient(null)}
+        apiUrl={API_URL}
+      />
     </div>
   );
 }

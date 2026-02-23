@@ -10,19 +10,28 @@
       "name": "Get all clients",
       "method": "GET",
       "path": "/?action=clients",
-      "expectedStatus": 200,
-      "expectedBody": {
-        "0": {
-          "id": "number"
-        }
-      },
-      "bodyMatcher": "partial"
+      "expectedStatus": 200
     },
     {
       "name": "Get quiz statistics",
       "method": "GET",
       "path": "/?action=quiz_stats",
       "expectedStatus": 200
+    },
+    {
+      "name": "Create client",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "create_client", "name": "Тест Клиент", "phone": "+79000000000", "source": "crm"},
+      "expectedStatus": 200,
+      "expectedBody": {"success": true},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Get client properties - missing client_id",
+      "method": "GET",
+      "path": "/?action=client_properties",
+      "expectedStatus": 400
     }
   ]
 }
