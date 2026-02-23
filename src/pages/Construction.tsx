@@ -6,7 +6,9 @@ import Icon from '@/components/ui/icon';
 import ShareButton from '@/components/ShareButton';
 import SEO from '@/components/SEO';
 import { useDailyTheme } from '@/hooks/useDailyTheme';
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
+
+const SERVICE_REQUEST_URL = 'https://functions.poehali.dev/2b90e05c-e0e5-4b9e-a294-cd50f2c39e6c';
 
 const services = [
   {
@@ -117,6 +119,30 @@ export default function Construction() {
   const navigate = useNavigate();
   const theme = useDailyTheme();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [form, setForm] = useState({ name: '', phone: '', message: '' });
+  const [formLoading, setFormLoading] = useState(false);
+  const [formSuccess, setFormSuccess] = useState(false);
+  const [formError, setFormError] = useState('');
+
+  const handleFormSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setFormLoading(true);
+    setFormError('');
+    try {
+      const res = await fetch(SERVICE_REQUEST_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: form.name, phone: form.phone, service: `Строительство: ${form.message || 'Консультация'}` }),
+      });
+      if (!res.ok) throw new Error('Ошибка отправки');
+      setFormSuccess(true);
+      setForm({ name: '', phone: '', message: '' });
+    } catch {
+      setFormError('Не удалось отправить заявку. Позвоните нам по телефону.');
+    } finally {
+      setFormLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
@@ -157,9 +183,9 @@ export default function Construction() {
               гарантия 3 года. Помогаем оформить ипотеку на строительство.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white text-base px-8" onClick={() => navigate('/register')}>
+              <Button size="lg" className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white text-base px-8" onClick={() => document.getElementById('request-form')?.scrollIntoView({ behavior: 'smooth' })}>
                 <Icon name="MessageSquare" size={20} className="mr-2" />
-                Получить консультацию
+                Оставить заявку
               </Button>
               <Button size="lg" variant="outline" className="border-amber-400 text-amber-700 hover:bg-amber-50 text-base px-8" asChild>
                 <a href="tel:+79781281850">
@@ -332,6 +358,94 @@ export default function Construction() {
             </div>
           </section>
 
+          {/* Форма заявки */}
+          <section className="mb-16" id="request-form">
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+              <div className="bg-gradient-to-r from-amber-500 to-orange-600 px-8 py-6">
+                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-1">Оставить заявку</h2>
+                <p className="text-white/90">Бесплатный выезд на участок и консультация специалиста</p>
+              </div>
+              <div className="p-8">
+                {formSuccess ? (
+                  <div className="py-8 text-center">
+                    <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Icon name="CheckCircle" size={40} className="text-green-600" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Заявка отправлена!</h3>
+                    <p className="text-gray-600 mb-1">Мы получили вашу заявку и скоро свяжемся с вами.</p>
+                    <p className="text-gray-500 text-sm">Также можете написать нам в Telegram или WhatsApp</p>
+                    <div className="flex gap-3 justify-center mt-5">
+                      <a href="https://t.me/+79781281850" target="_blank" rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors">
+                        <Icon name="Send" size={16} /> Telegram
+                      </a>
+                      <a href="https://wa.me/79781281850" target="_blank" rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors">
+                        <Icon name="MessageCircle" size={16} /> WhatsApp
+                      </a>
+                    </div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleFormSubmit} className="grid sm:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Ваше имя <span className="text-red-500">*</span></label>
+                      <input
+                        type="text"
+                        value={form.name}
+                        onChange={e => setForm({ ...form, name: e.target.value })}
+                        required
+                        placeholder="Иван Иванович"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-transparent outline-none transition"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Телефон <span className="text-red-500">*</span></label>
+                      <input
+                        type="tel"
+                        value={form.phone}
+                        onChange={e => setForm({ ...form, phone: e.target.value })}
+                        required
+                        placeholder="+7 (978) 128-18-50"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-transparent outline-none transition"
+                      />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Что планируете строить?</label>
+                      <textarea
+                        value={form.message}
+                        onChange={e => setForm({ ...form, message: e.target.value })}
+                        rows={3}
+                        placeholder="Например: одноэтажный дом 100 м² из газоблока, есть участок в Севастополе"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-transparent outline-none transition resize-none"
+                      />
+                    </div>
+                    {formError && (
+                      <div className="sm:col-span-2 bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-700">
+                        {formError}
+                      </div>
+                    )}
+                    <div className="sm:col-span-2">
+                      <Button
+                        type="submit"
+                        disabled={formLoading}
+                        className="w-full h-12 text-base bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+                      >
+                        {formLoading ? (
+                          <><Icon name="Loader2" size={20} className="mr-2 animate-spin" />Отправляем...</>
+                        ) : (
+                          <><Icon name="Send" size={20} className="mr-2" />Отправить заявку в Telegram</>
+                        )}
+                      </Button>
+                      <p className="text-center text-xs text-gray-400 mt-3">
+                        Нажимая кнопку, вы соглашаетесь с обработкой персональных данных
+                      </p>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </div>
+          </section>
+
           {/* CTA */}
           <section className="bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl p-8 sm:p-12 text-center text-white">
             <Icon name="HardHat" size={48} className="mx-auto mb-4 opacity-80" />
@@ -340,7 +454,7 @@ export default function Construction() {
               Оставьте заявку — бесплатно выедем на участок, оценим и составим смету без обязательств
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-orange-600 hover:bg-orange-50 font-bold text-base px-8" onClick={() => navigate('/register')}>
+              <Button size="lg" className="bg-white text-orange-600 hover:bg-orange-50 font-bold text-base px-8" onClick={() => document.getElementById('request-form')?.scrollIntoView({ behavior: 'smooth' })}>
                 <Icon name="Send" size={18} className="mr-2" />
                 Оставить заявку
               </Button>
