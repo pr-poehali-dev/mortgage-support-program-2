@@ -11,7 +11,7 @@
       "method": "GET",
       "path": "/?days=7",
       "headers": {
-        "X-Admin-Password": "admin123"
+        "X-Admin-Password": "200555"
       },
       "expectedStatus": 200
     },

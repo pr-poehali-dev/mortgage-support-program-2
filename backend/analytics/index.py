@@ -29,7 +29,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     # Check admin password
     headers = event.get('headers', {})
     admin_password = headers.get('X-Admin-Password') or headers.get('x-admin-password')
-    expected_password = os.environ.get('ADMIN_PASSWORD', 'admin123')
+    expected_password = os.environ.get('ADMIN_PASSWORD', '200555')
     
     if admin_password != expected_password:
         return {
