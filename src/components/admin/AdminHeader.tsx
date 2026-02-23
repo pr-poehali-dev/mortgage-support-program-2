@@ -82,6 +82,13 @@ export default function AdminHeader({
           Новости
         </Button>
         <Button
+          onClick={() => window.location.href = '/admin/crm'}
+          className="h-10 bg-indigo-600 hover:bg-indigo-700"
+        >
+          <Icon name="Users" className="mr-2" size={18} />
+          CRM
+        </Button>
+        <Button
           onClick={() => window.open('https://metrika.yandex.ru/dashboard?id=105974763', '_blank')}
           className="h-10 bg-red-600 hover:bg-red-700"
         >
