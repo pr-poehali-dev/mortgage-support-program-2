@@ -232,6 +232,15 @@ def handler(event: dict, context) -> dict:
                 conn.commit()
                 return _ok({'success': True, 'client': client})
 
+            elif action == 'delete_client':
+                client_id = body.get('client_id')
+                if not client_id:
+                    return _err(400, 'client_id is required')
+                cursor.execute(f"DELETE FROM {SCHEMA}.client_properties WHERE client_id = %s", (client_id,))
+                cursor.execute(f"DELETE FROM {SCHEMA}.clients WHERE id = %s", (client_id,))
+                conn.commit()
+                return _ok({'success': True})
+
             elif action == 'create_client':
                 name = body.get('name', '').strip()
                 phone = body.get('phone', '').strip()

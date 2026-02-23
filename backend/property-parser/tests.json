@@ -1,0 +1,12 @@
+{
+  "tests": [
+    {
+      "name": "Search listings Sevastopol",
+      "method": "GET",
+      "path": "/?action=search&city=Севастополь&operation=sale",
+      "expectedStatus": 200,
+      "expectedBody": {"listings": []},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

@@ -13,6 +13,7 @@ import CRMPipelineTab from '@/components/admin/crm/CRMPipelineTab';
 import { CRMListTab, CRMClientsTab } from '@/components/admin/crm/CRMListAndClientsTab';
 import CRMAnalyticsTab from '@/components/admin/crm/CRMAnalyticsTab';
 import CRMEditDialog from '@/components/admin/crm/CRMEditDialog';
+import CRMParserTab from '@/components/admin/crm/CRMParserTab';
 
 const ADMIN_PASSWORD = '200555';
 const API_URL = 'https://functions.poehali.dev/e72807e0-91d8-4a57-992b-41b5cc49df17';
@@ -319,6 +320,10 @@ export default function AdminCRM() {
               Клиенты
               <Badge className="bg-primary/10 text-primary text-xs ml-1 px-1.5">{clients.length}</Badge>
             </TabsTrigger>
+            <TabsTrigger value="parser" className="flex items-center gap-1.5">
+              <Icon name="Globe" size={15} />
+              Подбор
+            </TabsTrigger>
             <TabsTrigger value="analytics" className="flex items-center gap-1.5">
               <Icon name="BarChart2" size={15} />
               Аналитика
@@ -347,6 +352,10 @@ export default function AdminCRM() {
               requests={requests}
               onRefresh={fetchClients}
             />
+          </TabsContent>
+
+          <TabsContent value="parser" className="mt-4">
+            <CRMParserTab clients={clients} />
           </TabsContent>
 
           <TabsContent value="analytics" className="mt-4">

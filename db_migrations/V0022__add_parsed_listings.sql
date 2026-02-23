@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS t_p26758318_mortgage_support_pro.parsed_listings (
+    id SERIAL PRIMARY KEY,
+    external_id VARCHAR(255) NOT NULL,
+    source VARCHAR(50) NOT NULL,
+    title TEXT NOT NULL,
+    price BIGINT,
+    location TEXT,
+    area NUMERIC(10,2),
+    rooms INTEGER,
+    floor INTEGER,
+    total_floors INTEGER,
+    property_type VARCHAR(50),
+    operation VARCHAR(20) DEFAULT 'sale',
+    photo_url TEXT,
+    url TEXT,
+    description TEXT,
+    phone VARCHAR(50),
+    parsed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN DEFAULT true,
+    UNIQUE(external_id, source)
+);
