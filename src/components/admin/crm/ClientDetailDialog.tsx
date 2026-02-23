@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import Icon from '@/components/ui/icon';
 import { Client } from './crm-types';
 
@@ -55,6 +56,11 @@ export default function ClientDetailDialog({ client, open, onClose, apiUrl }: Cl
   const [form, setForm] = useState({ ...emptyForm });
   const [saving, setSaving] = useState(false);
   const [showProposal, setShowProposal] = useState(false);
+  const [sendDialog, setSendDialog] = useState(false);
+  const [sendChannels, setSendChannels] = useState<string[]>([]);
+  const [sendEmail, setSendEmail] = useState('');
+  const [sending, setSending] = useState(false);
+  const [sendResult, setSendResult] = useState<{sent: string[], errors: string[]} | null>(null);
 
   useEffect(() => {
     if (open && client) fetchProperties();
@@ -105,6 +111,42 @@ export default function ClientDetailDialog({ client, open, onClose, apiUrl }: Cl
   const formatPrice = (price: number | null) =>
     price ? new Intl.NumberFormat('ru-RU').format(price) + ' ₽' : '';
 
+  const openSendDialog = () => {
+    setSendEmail(client?.email || '');
+    setSendChannels(client?.email ? ['email'] : []);
+    setSendResult(null);
+    setSendDialog(true);
+  };
+
+  const handleSend = async () => {
+    if (!client || sendChannels.length === 0) return;
+    setSending(true);
+    setSendResult(null);
+    try {
+      const res = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'send_proposal',
+          client_id: client.id,
+          client_name: client.name,
+          email: sendEmail,
+          phone: client.phone,
+          channels: sendChannels,
+          properties,
+        }),
+      });
+      const data = await res.json();
+      setSendResult({ sent: data.sent || [], errors: data.errors || [] });
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const toggleChannel = (ch: string) => {
+    setSendChannels(prev => prev.includes(ch) ? prev.filter(c => c !== ch) : [...prev, ch]);
+  };
+
   const generateProposal = () => {
     if (!client || properties.length === 0) return;
     const lines: string[] = [];
@@ -147,6 +189,7 @@ export default function ClientDetailDialog({ client, open, onClose, apiUrl }: Cl
   if (!client) return null;
 
   return (
+    <>
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
@@ -334,15 +377,119 @@ export default function ClientDetailDialog({ client, open, onClose, apiUrl }: Cl
           )}
 
           {properties.length > 0 && (
-            <div className="pt-2 border-t">
-              <Button className="w-full" onClick={generateProposal}>
+            <div className="pt-2 border-t flex gap-2">
+              <Button className="flex-1" variant="outline" onClick={generateProposal}>
                 <Icon name="FileDown" size={16} className="mr-2" />
-                Сформировать и скачать предложение ({properties.length} объ.)
+                Скачать
+              </Button>
+              <Button className="flex-1" onClick={openSendDialog}>
+                <Icon name="Send" size={16} className="mr-2" />
+                Отправить клиенту
               </Button>
             </div>
           )}
         </div>
       </DialogContent>
     </Dialog>
+
+    <Dialog open={sendDialog} onOpenChange={v => { setSendDialog(v); setSendResult(null); }}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Icon name="Send" size={20} />
+            Отправить подборку
+          </DialogTitle>
+        </DialogHeader>
+
+        {sendResult ? (
+          <div className="space-y-3 py-2">
+            {sendResult.sent.length > 0 && (
+              <div className="flex items-start gap-3 bg-green-50 border border-green-200 rounded-lg p-3">
+                <Icon name="CheckCircle2" size={20} className="text-green-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium text-green-800">Успешно отправлено!</p>
+                  <p className="text-sm text-green-600 mt-0.5">
+                    {sendResult.sent.map(c => c === 'email' ? '📧 Email' : '✈️ Telegram').join(', ')}
+                  </p>
+                </div>
+              </div>
+            )}
+            {sendResult.errors.length > 0 && (
+              <div className="flex items-start gap-3 bg-red-50 border border-red-200 rounded-lg p-3">
+                <Icon name="AlertCircle" size={20} className="text-red-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium text-red-800">Ошибки при отправке:</p>
+                  {sendResult.errors.map((e, i) => (
+                    <p key={i} className="text-sm text-red-600 mt-0.5">{e}</p>
+                  ))}
+                </div>
+              </div>
+            )}
+            <Button className="w-full" onClick={() => { setSendDialog(false); setSendResult(null); }}>
+              Закрыть
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-4 py-2">
+            <p className="text-sm text-gray-500">
+              Отправить подборку из <strong>{properties.length} объ.</strong> для <strong>{client?.name}</strong>
+            </p>
+
+            <div className="space-y-3">
+              <p className="text-sm font-medium text-gray-700">Выберите канал отправки:</p>
+
+              <div className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
+                onClick={() => toggleChannel('email')}>
+                <Checkbox checked={sendChannels.includes('email')} onCheckedChange={() => toggleChannel('email')} />
+                <Icon name="Mail" size={18} className="text-blue-500" />
+                <span className="font-medium text-sm">Email</span>
+              </div>
+
+              {sendChannels.includes('email') && (
+                <div className="ml-4 space-y-1">
+                  <Label className="text-xs text-gray-500">Email адрес клиента</Label>
+                  <Input
+                    type="email"
+                    placeholder="client@example.com"
+                    value={sendEmail}
+                    onChange={e => setSendEmail(e.target.value)}
+                  />
+                </div>
+              )}
+
+              <div className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
+                onClick={() => toggleChannel('telegram')}>
+                <Checkbox checked={sendChannels.includes('telegram')} onCheckedChange={() => toggleChannel('telegram')} />
+                <Icon name="MessageCircle" size={18} className="text-sky-500" />
+                <span className="font-medium text-sm">Telegram (уведомление в чат агентства)</span>
+              </div>
+            </div>
+
+            {sendChannels.length === 0 && (
+              <p className="text-xs text-amber-600 flex items-center gap-1">
+                <Icon name="AlertCircle" size={13} />
+                Выберите хотя бы один канал
+              </p>
+            )}
+          </div>
+        )}
+
+        {!sendResult && (
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setSendDialog(false)}>Отмена</Button>
+            <Button
+              onClick={handleSend}
+              disabled={sending || sendChannels.length === 0 || (sendChannels.includes('email') && !sendEmail)}
+            >
+              {sending
+                ? <><Icon name="Loader2" size={14} className="animate-spin mr-1.5" />Отправляю...</>
+                : <><Icon name="Send" size={14} className="mr-1.5" />Отправить</>
+              }
+            </Button>
+          </DialogFooter>
+        )}
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }

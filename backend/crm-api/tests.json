@@ -32,6 +32,13 @@
       "method": "GET",
       "path": "/?action=client_properties",
       "expectedStatus": 400
+    },
+    {
+      "name": "Send proposal - missing data",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "send_proposal"},
+      "expectedStatus": 400
     }
   ]
 }

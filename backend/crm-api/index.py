@@ -1,6 +1,10 @@
 import json
 import os
+import smtplib
 import psycopg2
+import requests as http_requests
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from psycopg2.extras import RealDictCursor
 
 SCHEMA = 't_p26758318_mortgage_support_pro'
@@ -92,7 +96,126 @@ def handler(event: dict, context) -> dict:
             body = json.loads(event.get('body', '{}')) if event.get('body') else {}
             action = body.get('action') or params.get('action', '')
 
-            if action == 'create_client':
+            if action == 'send_proposal':
+                client_id = body.get('client_id')
+                channels = body.get('channels', [])
+                custom_email = body.get('email', '')
+                custom_phone = body.get('phone', '')
+                client_name = body.get('client_name', 'Клиент')
+                properties = body.get('properties', [])
+
+                if not client_id or not properties:
+                    return _err(400, 'client_id and properties are required')
+
+                PROPERTY_TYPES = {
+                    'apartment': 'Квартира', 'house': 'Дом', 'land': 'Земельный участок',
+                    'commercial': 'Коммерческая', 'room': 'Комната', 'newbuild': 'Новостройка',
+                }
+
+                def fmt_price(p):
+                    if not p: return ''
+                    return f"{int(p):,}".replace(',', ' ') + ' ₽'
+
+                lines = []
+                lines.append(f'ПОДБОРКА ОБЪЕКТОВ ДЛЯ: {client_name}')
+                if custom_phone: lines.append(f'Телефон: {custom_phone}')
+                if custom_email: lines.append(f'Email: {custom_email}')
+                lines.append(f'Дата: {__import__("datetime").date.today().strftime("%d.%m.%Y")}')
+                lines.append('')
+                lines.append('=' * 50)
+                lines.append('')
+
+                for i, p in enumerate(properties, 1):
+                    lines.append(f'{i}. {p.get("title", "")}')
+                    ptype = PROPERTY_TYPES.get(p.get('property_type', ''), p.get('property_type', ''))
+                    if ptype: lines.append(f'   Тип: {ptype}')
+                    if p.get('address'): lines.append(f'   Адрес: {p["address"]}')
+                    details = []
+                    if p.get('area'): details.append(f'{p["area"]} м²')
+                    if p.get('rooms'): details.append(f'{p["rooms"]} комн.')
+                    if p.get('floor') and p.get('total_floors'): details.append(f'{p["floor"]}/{p["total_floors"]} эт.')
+                    elif p.get('floor'): details.append(f'{p["floor"]} эт.')
+                    if details: lines.append(f'   {" · ".join(details)}')
+                    if p.get('price'): lines.append(f'   Цена: {fmt_price(p["price"])}')
+                    if p.get('description'): lines.append(f'   {p["description"]}')
+                    lines.append('')
+
+                lines.append('-' * 50)
+                lines.append('Ипотека Крым — ваш надёжный партнёр в сфере недвижимости')
+                text = '\n'.join(lines)
+
+                sent = []
+                errors = []
+
+                if 'email' in channels and custom_email:
+                    try:
+                        smtp_host = os.environ.get('SMTP_HOST', '')
+                        smtp_port = int(os.environ.get('SMTP_PORT', 587))
+                        smtp_user = os.environ.get('SMTP_USER', '')
+                        smtp_pass = os.environ.get('SMTP_PASSWORD', '')
+                        msg = MIMEMultipart('alternative')
+                        msg['Subject'] = f'Подборка объектов для {client_name}'
+                        msg['From'] = smtp_user
+                        msg['To'] = custom_email
+                        html_parts = ['<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">']
+                        html_parts.append(f'<h2 style="color:#1a56db;">Подборка объектов для {client_name}</h2>')
+                        html_parts.append(f'<p style="color:#666;">Дата: {__import__("datetime").date.today().strftime("%d.%m.%Y")}</p>')
+                        for i, p in enumerate(properties, 1):
+                            html_parts.append('<div style="border:1px solid #e5e7eb;border-radius:8px;padding:16px;margin:12px 0;">')
+                            html_parts.append(f'<h3 style="margin:0 0 8px;color:#111827;">{i}. {p.get("title","")}</h3>')
+                            ptype = PROPERTY_TYPES.get(p.get('property_type',''), p.get('property_type',''))
+                            if ptype: html_parts.append(f'<p style="margin:4px 0;color:#6b7280;font-size:14px;">Тип: {ptype}</p>')
+                            if p.get('address'): html_parts.append(f'<p style="margin:4px 0;color:#374151;font-size:14px;">📍 {p["address"]}</p>')
+                            details = []
+                            if p.get('area'): details.append(f'{p["area"]} м²')
+                            if p.get('rooms'): details.append(f'{p["rooms"]} комн.')
+                            if p.get('floor') and p.get('total_floors'): details.append(f'{p["floor"]}/{p["total_floors"]} эт.')
+                            if details: html_parts.append(f'<p style="margin:4px 0;color:#374151;font-size:14px;">{" · ".join(details)}</p>')
+                            if p.get('price'): html_parts.append(f'<p style="margin:8px 0 0;font-size:18px;font-weight:bold;color:#059669;">{fmt_price(p["price"])}</p>')
+                            if p.get('description'): html_parts.append(f'<p style="margin:6px 0 0;color:#6b7280;font-size:13px;">{p["description"]}</p>')
+                            html_parts.append('</div>')
+                        html_parts.append('<p style="margin-top:24px;color:#9ca3af;font-size:12px;">Ипотека Крым — ваш надёжный партнёр в сфере недвижимости</p>')
+                        html_parts.append('</div>')
+                        msg.attach(MIMEText('\n'.join(html_parts), 'html', 'utf-8'))
+                        with smtplib.SMTP(smtp_host, smtp_port) as server:
+                            server.starttls()
+                            server.login(smtp_user, smtp_pass)
+                            server.sendmail(smtp_user, custom_email, msg.as_string())
+                        sent.append('email')
+                    except Exception as e:
+                        errors.append(f'email: {str(e)}')
+
+                if 'telegram' in channels:
+                    try:
+                        bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+                        chat_id = os.environ.get('TELEGRAM_CHAT_ID', '')
+                        tg_text = f'📋 *Подборка для {client_name}*\n\n'
+                        for i, p in enumerate(properties, 1):
+                            tg_text += f'*{i}. {p.get("title","")}*\n'
+                            ptype = PROPERTY_TYPES.get(p.get('property_type',''), p.get('property_type',''))
+                            if ptype: tg_text += f'Тип: {ptype}\n'
+                            if p.get('address'): tg_text += f'📍 {p["address"]}\n'
+                            details = []
+                            if p.get('area'): details.append(f'{p["area"]} м²')
+                            if p.get('rooms'): details.append(f'{p["rooms"]} комн.')
+                            if details: tg_text += f'{" · ".join(details)}\n'
+                            if p.get('price'): tg_text += f'💰 {fmt_price(p["price"])}\n'
+                            tg_text += '\n'
+                        resp = http_requests.post(
+                            f'https://api.telegram.org/bot{bot_token}/sendMessage',
+                            json={'chat_id': chat_id, 'text': tg_text, 'parse_mode': 'Markdown'},
+                            timeout=10
+                        )
+                        if resp.status_code == 200:
+                            sent.append('telegram')
+                        else:
+                            errors.append(f'telegram: {resp.text}')
+                    except Exception as e:
+                        errors.append(f'telegram: {str(e)}')
+
+                return _ok({'success': True, 'sent': sent, 'errors': errors, 'text': text})
+
+            elif action == 'create_client':
                 name = body.get('name', '').strip()
                 phone = body.get('phone', '').strip()
                 if not name:
