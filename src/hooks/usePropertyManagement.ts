@@ -29,7 +29,7 @@ export function usePropertyManagement() {
   const fetchProperties = async () => {
     try {
       setLoading(true);
-      const response = await fetch(PROPERTIES_URL);
+      const response = await fetch(`${PROPERTIES_URL}?show_all=true`);
       const data = await response.json();
       
       if (data.success && data.properties) {
@@ -224,7 +224,7 @@ export function usePropertyManagement() {
     e.preventDefault();
     
     try {
-      const payload: any = {
+      const payload: Record<string, unknown> = {
         title: formData.title,
         type: formData.type,
         property_category: formData.property_category,
@@ -290,6 +290,28 @@ export function usePropertyManagement() {
     }
   };
 
+  const handleArchiveProperty = async (id: number, archive: boolean) => {
+    const action = archive ? 'архивировать' : 'опубликовать';
+    if (!confirm(`${archive ? 'Архивировать' : 'Опубликовать'} этот объект?`)) return;
+
+    try {
+      const response = await fetch(PROPERTIES_URL, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, is_active: !archive })
+      });
+      const result = await response.json();
+      if (result.success) {
+        alert(`Объект успешно ${archive ? 'архивирован' : 'опубликован'}!`);
+        fetchProperties();
+      } else {
+        alert('Ошибка: ' + (result.error || 'Неизвестная ошибка'));
+      }
+    } catch (err) {
+      alert(`Ошибка при попытке ${action}: ` + (err as Error).message);
+    }
+  };
+
   const handleDeleteProperty = async (id: number) => {
     if (!confirm('Вы уверены, что хотите удалить этот объект?')) {
       return;
@@ -335,6 +357,7 @@ export function usePropertyManagement() {
     handleDocumentSelect,
     handleRemoveDocument,
     handlePropertySubmit,
+    handleArchiveProperty,
     handleDeleteProperty,
   };
 }

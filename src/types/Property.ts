@@ -29,6 +29,7 @@ export interface Property {
   wall_material?: string;
   contact_method?: string;
   documents?: string[];
+  is_active?: boolean;
 }
 
 export interface PropertyFormData {

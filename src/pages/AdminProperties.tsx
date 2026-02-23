@@ -19,6 +19,7 @@ export default function AdminProperties() {
     handleDocumentSelect,
     handleRemoveDocument,
     handlePropertySubmit,
+    handleArchiveProperty,
     handleDeleteProperty,
   } = usePropertyManagement();
 
@@ -31,6 +32,7 @@ export default function AdminProperties() {
           properties={properties}
           loading={loading}
           onEdit={openEditDialog}
+          onArchive={handleArchiveProperty}
           onDelete={handleDeleteProperty}
         />
       </div>

@@ -336,6 +336,22 @@ def handler(event: dict, context) -> dict:
                     'body': json.dumps({'success': False, 'error': 'Property ID required'})
                 }
             
+            # Архивирование / публикация объекта
+            if 'is_active' in data and len(data) == 2:
+                cur.execute('''
+                    UPDATE t_p26758318_mortgage_support_pro.manual_properties
+                    SET is_active = %s, updated_at = NOW()
+                    WHERE id = %s
+                ''', (data['is_active'], property_id))
+                conn.commit()
+                action = 'опубликован' if data['is_active'] else 'архивирован'
+                return {
+                    'statusCode': 200,
+                    'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                    'body': json.dumps({'success': True, 'message': f'Объект {action}'}, ensure_ascii=False),
+                    'isBase64Encoded': False
+                }
+            
             photos = data.get('photos', [])
             if not photos and data.get('photo_url'):
                 photos = [data.get('photo_url')]
