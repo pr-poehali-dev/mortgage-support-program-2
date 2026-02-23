@@ -235,6 +235,32 @@ def handler(event: dict, context) -> dict:
                     'isBase64Encoded': False
                 }
             
+            # Массовое обновление SEO-тегов для всех объектов
+            if data.get('rebuild_seo_tags'):
+                import re as _re
+                cur.execute('SELECT * FROM t_p26758318_mortgage_support_pro.manual_properties')
+                all_props = cur.fetchall()
+                updated = 0
+                for prop in all_props:
+                    row = dict(prop)
+                    seo = generate_seo_tags(row)
+                    old_desc = row.get('description') or ''
+                    clean = _re.sub(r'\n\n#[\s\S]*$', '', old_desc).rstrip()
+                    new_desc = (clean + seo) if seo else clean or None
+                    if new_desc != old_desc:
+                        cur.execute(
+                            'UPDATE t_p26758318_mortgage_support_pro.manual_properties SET description = %s, updated_at = NOW() WHERE id = %s',
+                            (new_desc, row['id'])
+                        )
+                        updated += 1
+                conn.commit()
+                return {
+                    'statusCode': 200,
+                    'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+                    'body': json.dumps({'success': True, 'updated': updated}, ensure_ascii=False),
+                    'isBase64Encoded': False
+                }
+
             # Массовый импорт
             if 'items' in data:
                 imported = 0
