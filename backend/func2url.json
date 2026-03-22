@@ -6,17 +6,12 @@
   "yookassa-yookassa": "https://functions.poehali.dev/72d9915f-4d87-4e17-9854-dba7c8bae060",
   "yookassa-yookassa-webhook": "https://functions.poehali.dev/0a88be08-6509-43c8-8379-afa796d9644a",
   "service-request": "https://functions.poehali.dev/2b90e05c-e0e5-4b9e-a294-cd50f2c39e6c",
-  "chatgpt-polza-chatgpt": "https://functions.poehali.dev/536eca85-b7ba-4712-8615-fc41995e6ee6",
   "yandex-reviews-import": "https://functions.poehali.dev/74f8510a-de62-4872-b899-3391a5510aa4",
   "reviews": "https://functions.poehali.dev/e9b4d624-81cd-46f6-b82b-59f9d89e033b",
-  "manual-properties": "https://functions.poehali.dev/616c095a-7986-4278-8e36-03ef6cdf517d",
   "rutube-videos": "https://functions.poehali.dev/4bf42b28-1491-44aa-a515-434841d027d6",
-  "metrika-trends": "https://functions.poehali.dev/16c51e8c-714b-4cbb-955a-75003b59702a",
-  "metrika-stats": "https://functions.poehali.dev/b04ca2ea-c45c-4dc1-b73c-ba60c3641d0f",
   "metrika-setup": "https://functions.poehali.dev/5ee362e0-261a-45f7-8c6d-6bbcd110368a",
   "analytics-config": "https://functions.poehali.dev/be14ce68-1655-468e-be45-ca3e59d65813",
   "indexnow": "https://functions.poehali.dev/e96cd64b-29a1-4638-a5e1-b57be7f496c9",
   "rss-parser": "https://functions.poehali.dev/fa7fba79-8d4e-408d-9177-7d0078f39e64",
-  "email-reports": "https://functions.poehali.dev/2e6103d5-386e-4440-bed1-61b66d7e25f9",
   "analytics": "https://functions.poehali.dev/66427508-92e1-41bc-837c-dfc3f217d6c3"
 }
