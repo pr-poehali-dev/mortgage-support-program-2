@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 import { blogArticles } from '@/data/mortgageData';
-import { sendNewsletter } from '@/utils/sendNewsletter';
 import AdminLoginForm from '@/components/admin/AdminLoginForm';
 import AdminArticleCard from '@/components/admin/AdminArticleCard';
 import AdminArticleEditor from '@/components/admin/AdminArticleEditor';
@@ -129,27 +128,6 @@ export default function AdminArticleManager() {
     });
   };
 
-  const handleSendNewsletter = async (article: Article) => {
-    const result = await sendNewsletter({
-      articleId: article.id,
-      articleTitle: article.title,
-      articleExcerpt: article.excerpt
-    });
-
-    if (result.success) {
-      toast({
-        title: '✅ Рассылка отправлена',
-        description: `Email отправлен ${result.sent_count} подписчикам`
-      });
-    } else {
-      toast({
-        title: '❌ Ошибка отправки',
-        description: result.error || 'Попробуйте позже',
-        variant: 'destructive'
-      });
-    }
-  };
-
   const handleOpenContentEditor = (article: Article) => {
     setEditingContentId(article.id);
     setEditForm({
@@ -258,7 +236,6 @@ export default function AdminArticleManager() {
               }}
               onTogglePublished={handleTogglePublished}
               onOpenContentEditor={handleOpenContentEditor}
-              onSendNewsletter={handleSendNewsletter}
               formatDate={formatDate}
               isPublishDatePassed={isPublishDatePassed}
             />
@@ -276,8 +253,6 @@ export default function AdminArticleManager() {
             <p><strong>Дата публикации:</strong> Статья автоматически появится в блоге, когда наступит указанная дата</p>
             <p><strong>Опубликовать сейчас:</strong> Статья станет видна немедленно, независимо от даты</p>
             <p><strong>Редактировать текст:</strong> Изменить заголовок, описание и содержимое статьи</p>
-            <p><strong>Отправить рассылку:</strong> Отправить email всем подписчикам о новой статье</p>
-            <p><strong>Автоматическая рассылка:</strong> Email отправляется автоматически при первом показе новой статьи</p>
           </CardContent>
         </Card>
 

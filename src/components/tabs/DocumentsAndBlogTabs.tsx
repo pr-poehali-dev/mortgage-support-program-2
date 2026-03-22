@@ -9,15 +9,11 @@ import { toast } from '@/hooks/use-toast';
 import { jsPDF } from 'jspdf';
 import { programs, documentsData } from '@/data/mortgageData';
 import { useDailyBlogPost } from '@/hooks/useDailyBlogPost';
-import { useArticlePublisher } from '@/hooks/useArticlePublisher';
-import NewsletterSubscription from '@/components/NewsletterSubscription';
-import ArticleComments from '@/components/ArticleComments';
 import FullscreenArticle from '@/components/FullscreenArticle';
 import ArticleStatsDisplay from '@/components/ArticleStatsDisplay';
 
 export default function DocumentsAndBlogTabs() {
   const blogArticles = useDailyBlogPost();
-  useArticlePublisher(blogArticles);
   const [selectedArticle, setSelectedArticle] = useState<number | null>(null);
   const [fullscreenArticle, setFullscreenArticle] = useState<number | null>(null);
   const [blogCategory, setBlogCategory] = useState('all');
@@ -305,10 +301,6 @@ export default function DocumentsAndBlogTabs() {
           </div>
         </div>
 
-        <div className="mb-6">
-          <NewsletterSubscription />
-        </div>
-
         {blogArticles.length === 0 ? (
           <Card className="p-8 text-center">
             <Icon name="BookOpen" size={48} className="mx-auto text-gray-300 mb-4" />
@@ -414,8 +406,6 @@ export default function DocumentsAndBlogTabs() {
                       }}
                     />
                     <div className="border-t pt-6 mt-6 space-y-6">
-                      <ArticleComments articleId={article.id} />
-                      
                       <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg">
                         <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
                           <Icon name="Phone" className="text-primary" size={20} />

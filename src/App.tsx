@@ -43,7 +43,6 @@ const About = lazy(() => import("./pages/About"));
 const RentalCatalog = lazy(() => import("./pages/RentalCatalog"));
 const Videos = lazy(() => import("./pages/Videos"));
 const Documents = lazy(() => import("./pages/Documents"));
-const ChatGPTPlaygroundPage = lazy(() => import("./components/extensions/chatgpt-polza/ChatGPTPlaygroundPage"));
 const News = lazy(() => import("./pages/News"));
 const NewsArticle = lazy(() => import("./pages/NewsArticle"));
 const AdminNews = lazy(() => import("./pages/AdminNews"));
@@ -120,7 +119,6 @@ function AppContent() {
               <Route path="/news/:slug" element={<NewsArticle />} />
               <Route path="/admin/news" element={<AdminNews />} />
               <Route path="/admin/crm" element={<AdminCRM />} />
-              <Route path="/chatgpt" element={<ChatGPTPlaygroundPage apiUrl="https://functions.poehali.dev/536eca85-b7ba-4712-8615-fc41995e6ee6" defaultModel="openai/gpt-4o-mini" />} />
               <Route path="/construction" element={<Construction />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

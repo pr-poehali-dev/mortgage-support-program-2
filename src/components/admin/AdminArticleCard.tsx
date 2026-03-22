@@ -29,7 +29,6 @@ interface AdminArticleCardProps {
   onCancelEditDate: () => void;
   onTogglePublished: (articleId: number, currentStatus: boolean) => void;
   onOpenContentEditor: (article: Article) => void;
-  onSendNewsletter: (article: Article) => void;
   formatDate: (dateString?: string) => string;
   isPublishDatePassed: (dateString?: string) => boolean;
 }
@@ -44,7 +43,6 @@ export default function AdminArticleCard({
   onCancelEditDate,
   onTogglePublished,
   onOpenContentEditor,
-  onSendNewsletter,
   formatDate,
   isPublishDatePassed
 }: AdminArticleCardProps) {
@@ -143,16 +141,6 @@ export default function AdminArticleCard({
             >
               <Icon name="Edit" size={16} className="mr-1" />
               Редактировать текст
-            </Button>
-
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onSendNewsletter(article)}
-              className="flex-1"
-            >
-              <Icon name="Send" size={16} className="mr-1" />
-              Отправить рассылку
             </Button>
           </div>
         </div>

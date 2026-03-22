@@ -23,9 +23,6 @@ import CRMPanel from '@/components/admin/CRMPanel';
 import IndexNowNotifier from '@/components/IndexNowNotifier';
 import SitemapInfo from '@/components/SitemapInfo';
 import AnalyticsInfo from '@/components/AnalyticsInfo';
-import MetrikaGoalsSetup from '@/components/MetrikaGoalsSetup';
-import MetrikaGoalsDashboard from '@/components/MetrikaGoalsDashboard';
-import MetrikaTrendsChart from '@/components/MetrikaTrendsChart';
 import AdminClock from '@/components/AdminClock';
 import AdminCalendar from '@/components/AdminCalendar';
 import IndexNowControl from '@/components/admin/IndexNowControl';
@@ -124,14 +121,7 @@ export default function Admin() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <AnalyticsInfo />
-          <MetrikaGoalsSetup />
-        </div>
-
-        <MetrikaGoalsDashboard />
-
-        <MetrikaTrendsChart />
+        <AnalyticsInfo />
 
         <AdminCharts analytics={analytics} />
 

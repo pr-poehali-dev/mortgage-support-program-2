@@ -19,7 +19,6 @@ const routeNames: Record<string, string> = {
   '/register': 'Заявка на ипотеку',
   '/sell-help': 'Помощь продать',
   '/rent-help': 'Помощь сдать',
-  '/chatgpt': 'ChatGPT',
   '/add-property': 'Добавить объект',
   '/privacy-policy': 'Политика конфиденциальности',
   '/terms-of-service': 'Условия использования',
