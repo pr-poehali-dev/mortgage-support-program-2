@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
-import ArticleComments from '@/components/ArticleComments';
 import { useArticleStats } from '@/hooks/useArticleStats';
 
 interface Article {
@@ -253,8 +252,6 @@ export default function FullscreenArticle({ article, onClose }: FullscreenArticl
             </div>
           </div>
         </div>
-
-        <ArticleComments articleId={article.id} />
 
         <div className="border-t pt-8 mt-8">
           <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-2xl">
